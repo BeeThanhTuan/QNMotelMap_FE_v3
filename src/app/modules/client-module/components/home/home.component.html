@@ -8,7 +8,6 @@
                     </div>
                 </div><!-- End header main-->
                 <div class="header_control flex items-center gap-3 pl-4 min-w-[378px]">
-                    <a href=""></a>
                     <a href="" class="font-semibold px-3 py-3 hover:bg-[#1a4f9f] rounded-[3px] text-white">Xem trên bảng đồ</a>
                     <div class="flex items-center gap-3">
                         <a href="" class="ntt-custom-button"><span>Đăng ký</span></a>
@@ -27,13 +26,12 @@
                     <form class="max-w-custom mx-auto bg-[#ffb700] flex rounded-lg p-1 gap-1 ntt-shadow-searchbox">
                         <div class="ntt-field-search">
                             <div class="h-full w-full flex items-center ">
-                                <i class='bx bx-map text-[24px] pl-1 text-custom-color-black-light'></i>
+                                <i class='bx bx-map ntt-custom-icon'></i>
                                 <input id="input_address_search"
                                     (focus)="showDropdownSuggestWardCommune = true" 
                                     class="w-full h-[36px] px-2 py-1 text-[14px] text-custom-color-black-light font-semibold focus:outline-none placeholder:text-custom-color-black-light"
-                                    type="text" 
+                                    type="search" 
                                     placeholder="Bạn muốn tìm ở đâu?">
-                                <i class='bx bx-x text-[20px] cursor-pointer text-custom-color-black-light'></i>
                             </div>
                             <div id="address_suggest_ward_commune_popup"
                                 appClickOutsideSuggestWardCommune
@@ -63,8 +61,8 @@
                             <div id="field_desired_price" 
                                 (click)="showDesiredPricePopup = true"
                                 class="h-full flex items-center bg-white rounded-[5px]">
-                                <i class="bx bx-money-withdraw text-[24px] pl-1 text-custom-color-black-light"></i>
-                                <p class="w-full px-2 py-1 text-[14px] font-semibold text-custom-color-black-light flex justify-between ntt-truncate">Giá tiền mà bạn muốn: <span class="pl-1">{{desiredPrice ? (desiredPrice | money) + ' VND' : '_ _ _ VND'}}</span></p>
+                                <i class="bx bx-money-withdraw ntt-custom-icon"></i>
+                                <p class="ntt-custom-p">Giá tiền mà bạn muốn: <span class="pl-1">{{desiredPrice ? (desiredPrice | money) + ' VND' : '_ _ _ VND'}}</span></p>
                             </div>
                             <div id="desired_price_popup"
                                 *ngIf="showDesiredPricePopup"
@@ -79,12 +77,70 @@
                                     [options]="optionsDesiredPrice"
                                     (valueChange)="onSliderValueChange($event)"></ngx-slider>
                                 </div>
-                            </div> <!-- End  desired price popup-->
+                                <div *ngIf="desiredPrice" class="w-full p-3 pb-5">
+                                    <button type="button" (click)="resetToDefaultDesiredPrice()"
+                                        class="w-full px-3 py-2 border-2 rounded-[4px] text-[15px] text-custom-color-black-light font-semibold
+                                        hover:bg-custom-hv-color-blue hover:border-blue-200 ">Đặt lại ban đầu</button>
+                                </div>
+                            </div> <!-- End desired price popup-->
                         </div>
                         <div class="ntt-field-search cursor-pointer">
-                            <div class="h-full flex items-center bg-white rounded-[5px]">
-                                <input type="text">
+                            <div id="other_choose_fields"
+                                (click)="showOtherChoosePopup = true"
+                                 class="h-full flex items-center bg-white rounded-[5px]">
+                                <i class='bx bx-add-to-queue ntt-custom-icon'></i>
+                                <p class="ntt-custom-p">Các lựa chọn khác: <span class="pl-1"></span></p>
+                                <i class='bx bx-chevron-down text-[20px] text-custom-color-black-light'></i>
                             </div>
+                            <div id="other_choose_popup"
+                                *ngIf="showOtherChoosePopup"
+                                appClickOutsideOtherChooseFields
+                                (clickOutsideOtherChooseFields)="showOtherChoosePopup = false"
+                                class="absolute w-[380px] bg-white translate-y-4 right-0 rounded-lg ntt-shadow-input-suggest ">
+                                <div class="w-full px-4 pb-2 pt-6 flex justify-between items-center">
+                                   <span class=" text-[14px] font-semibold text-custom-color-black-light">Khoảng cách tới trường dưới:</span>
+                                   <div class="flex justify-center items-center">
+                                        <button type="button" 
+                                            (click)="onClickDecreaseDistance()"
+                                            (mousedown)="decreaseDistance()"
+                                            (mouseleave)="stopDecreaseDistance()"
+                                            (mouseup)="stopDecreaseDistance()"
+                                             class="hover:bg-custom-hv-color-blue"><i class='bx bx-minus p-2'></i></button>
+                                        <span class="text-[15px] w-[50px] font-semibold text-center">{{distance}} km</span>
+                                        <button type="button"
+                                            (click)="onClickIncreaseDistance()"
+                                            (mousedown)="increaseDistance()" 
+                                            (mouseleave)="stopIncreaseDistance()"
+                                            (mouseup)="stopIncreaseDistance()"
+                                            class=" hover:bg-custom-hv-color-blue"><i class='bx bx-plus p-2' ></i></button>
+                                   </div>
+                                </div>
+                                <div class="w-full px-4 py-2 flex justify-between items-center">
+                                    <span class=" text-[14px] font-semibold text-custom-color-black-light">Có gác lững</span>
+                                    <div class="w-[100px] flex justify-center items-center">
+                                        <mat-slide-toggle [(ngModel)]="isChecked" name="toggleSwitch" class=""></mat-slide-toggle>
+                                    </div>
+                                </div>
+                                <div class="w-full px-4 py-2 flex justify-between items-center">
+                                    <span class="text-[14px] font-semibold text-custom-color-black-light">Có nhà vệ sinh riêng</span>
+                                    <div class="w-[100px] flex justify-center items-center">
+                                        <mat-slide-toggle [(ngModel)]="isChecked" name="toggleSwitch3" class=""></mat-slide-toggle>
+                                    </div>
+                                </div>
+                                <div class="w-full px-4 py-2 flex justify-between items-center">
+                                    <span class="text-[14px] font-semibold text-custom-color-black-light">Có điều hoà</span>
+                                    <div class="w-[100px] flex justify-center items-center">
+                                        <mat-slide-toggle [(ngModel)]="isChecked" name="toggleSwitch2" class=""></mat-slide-toggle>
+                                    </div>
+                                </div>
+                                <div  class="w-full px-4 py-2 pb-6">
+                                    <button type="button"
+                                        class="w-full px-3 py-2 border-2 rounded-[4px] text-[15px] text-custom-color-black-light font-semibold
+                                        hover:bg-custom-hv-color-blue hover:border-blue-200 ">Đặt lại ban đầu</button>
+                                </div>
+                                
+
+                            </div> <!-- End other choose popup-->
                         </div>
                         <div class=" h-[54px]">
                             <button class="h-full bg-custom-color-blue-light rounded-[5px] hover:bg-[#0157b6]"><span class="px-6 py-1 text-[20px] font-semibold text-white">Tìm</span></button>
