@@ -17,11 +17,16 @@
     .ntt-shadow-input-suggest{
         box-shadow:0px 2px 16px 0px rgba(26,26,26,.24)
     }
+    .ntt-truncate {
+        white-space: nowrap;      
+        overflow: hidden;        
+        text-overflow: ellipsis;
+    }
 }
 /*  login - register */
 .ntt-custom-button {
     @apply px-3 py-1 bg-white rounded-[3px] text-[14px] font-semibold text-custom-color-blue hover:bg-custom-hv-color-blue;
 }
 .ntt-field-search{
-    @apply h-[54px] flex-1 rounded-[5px] bg-white p-2 hover-shadow-custom transition-shadow duration-200 relative;
+    @apply h-[54px] flex-1 rounded-[5px] bg-white p-2 hover-shadow-custom transition-shadow duration-100 relative ;
 }

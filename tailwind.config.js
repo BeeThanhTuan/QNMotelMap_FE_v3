@@ -9,6 +9,8 @@ module.exports = {
         'custom': '1140px', // max width
       },
       colors: {
+        'custom-color-black-light': '#535353', // color màu chữ đen nhạt
+        'custom-color-black': '#343334', // color màu chữ đen đậm
         'custom-bg-blue': '#003B95', // background color header
         'custom-color-blue': '#006CE4', // color đăng nhập đăng kí
         'custom-color-blue-light': '#006ce2', // color đăng nhập đăng kí
