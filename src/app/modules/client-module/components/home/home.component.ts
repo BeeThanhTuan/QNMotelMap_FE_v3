@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Options } from '@angular-slider/ngx-slider';
+import { FormBuilder, FormGroup } from '@angular/forms';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -10,8 +11,6 @@ export class HomeComponent {
   showDropdownSuggestWardCommune = false;
   showDesiredPricePopup = false;
   showOtherChoosePopup = false;
-  desiredPrice! :number | null;
-  distance = 0;
   valueDesiredPrice: number = 0;
   optionsDesiredPrice: Options = {
     floor: 0,
@@ -24,9 +23,17 @@ export class HomeComponent {
   isChecked: boolean = false;
   intervalDecreaseDistance:any;
   intervalIncreaseDistance:any;
-  constructor(private titleService: Title) { 
+  formSearch! : FormGroup;
+  constructor(private titleService: Title, private formBuilder: FormBuilder) { 
     this.titleService.setTitle('QNMoteMap | Trang chủ ');
-
+    this.formSearch = this.formBuilder.group({
+      wardCommune: [''],
+      desiredPrice: [0],
+      distance: [0],
+      haveMezzanine: [false],
+      haveToilet: [false],
+      haveAirConditioner: [false],
+    });
   }
 
   ngOnInit(): void {
@@ -34,26 +41,28 @@ export class HomeComponent {
   }
 
   onSliderValueChange(value: number): void {
-    this.desiredPrice = parseFloat(value.toFixed(1)) * 1000000; 
+    this.formSearch.get('desiredPrice')?.setValue(parseFloat(value.toFixed(1)) * 1000000); 
   }
 
   // đặt lại giá muốn chọn
   resetToDefaultDesiredPrice(){
-    this.desiredPrice = null;
+    this.formSearch.get('desiredPrice')?.setValue(0);
     this.valueDesiredPrice = 0;
   }
 
   // giảm khoảng cách
   onClickDecreaseDistance(){
-    if (this.distance > 0) {
-      this.distance = parseFloat((this.distance - 0.1).toFixed(1))
+    const distance = this.formSearch.get('distance')?.value;
+    if (distance >  0) {
+      this.formSearch.get('distance')?.setValue(parseFloat((distance - 0.1).toFixed(1)));
     }
   }
 
   decreaseDistance(){
     this.intervalDecreaseDistance = setInterval(() => {
-      if (this.distance > 0) {
-        this.distance = parseFloat((this.distance - 0.1).toFixed(1))
+      const distance = this.formSearch.get('distance')?.value;
+      if (distance > 0) {
+        this.formSearch.get('distance')?.setValue(parseFloat((distance - 0.1).toFixed(1)));
       }
     },100)
 
@@ -65,15 +74,17 @@ export class HomeComponent {
 
   // tăng khoảng cách
   onClickIncreaseDistance(){
-    if (this.distance < 7) {
-      this.distance = parseFloat((this.distance + 0.1).toFixed(1))
+    const distance = this.formSearch.get('distance')?.value;
+    if (distance < 7) {
+      this.formSearch.get('distance')?.setValue(parseFloat((distance + 0.1).toFixed(1)));
     }
   }
 
   increaseDistance(){
     this.intervalIncreaseDistance = setInterval(() => {
-      if (this.distance < 7) {
-        this.distance = parseFloat((this.distance + 0.1).toFixed(1))
+      const distance = this.formSearch.get('distance')?.value;
+      if (distance < 7) {
+        this.formSearch.get('distance')?.setValue(parseFloat((distance + 0.1).toFixed(1)));
       }
     },100)
   }
@@ -81,6 +92,22 @@ export class HomeComponent {
   stopIncreaseDistance(){
     clearInterval(this.intervalIncreaseDistance);
   }
+
+  // đặt lại các lựa chọn
+  resetToDefaultOtherChoose(){
+    this.formSearch.get('distance')?.setValue(0);
+    this.formSearch.get('haveMezzanine')?.setValue(false);
+    this.formSearch.get('haveToilet')?.setValue(false);
+    this.formSearch.get('haveAirConditioner')?.setValue(false);
+  }
+
+  //tìm kiếm 
+  handleSearch(){
+    console.table(this.formSearch.value);
+  }
+
+
+
 
 
 

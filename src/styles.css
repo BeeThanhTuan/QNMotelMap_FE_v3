@@ -28,10 +28,10 @@
     @apply px-3 py-1 bg-white rounded-[3px] text-[14px] font-semibold text-custom-color-blue hover:bg-custom-hv-color-blue;
 }
 .ntt-field-search{
-    @apply h-[54px] flex-1 rounded-[5px] bg-white p-2 hover-shadow-custom transition-shadow duration-100 relative ;
+    @apply ml:min-w-[235px] h-[54px] flex-1 rounded-[5px] bg-white p-2 hover-shadow-custom transition-shadow duration-100 relative ;
 }
 .ntt-custom-p{
-    @apply w-full max-w-[282px] px-2 py-1 text-[14px] font-semibold text-custom-color-black-light flex justify-between ntt-truncate ;
+    @apply w-full ml:max-w-[282px]  max-w-none px-2 py-1 text-[14px] font-semibold text-custom-color-black-light flex justify-between ntt-truncate ;
 }
 .ntt-custom-icon{
     @apply text-[24px] pl-1 text-custom-color-black-light ;

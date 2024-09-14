@@ -5,6 +5,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      screens: {
+        'ml': '900px', // Thay đổi breakpoint cho màn hình nhỏ hơn 900px
+      },
       maxWidth: {
         'custom': '1140px', // max width
       },

@@ -7,18 +7,27 @@ export class ClickOutsideSuggestWardCommuneDirective {
 
   @Output() clickOutsideSuggestWardCommune = new EventEmitter<void>();
 
-  private elements: HTMLElement[];
+  private elements: HTMLElement[] = [];
 
-  constructor(private _elementRef: ElementRef) {
-    // Lưu trữ các phần tử DOM mà bạn muốn kiểm tra
+  constructor(private _elementRef: ElementRef) {}
+
+  // Cập nhật danh sách các phần tử DOM khi directive khởi tạo
+  ngOnInit(): void {
+    this.updateElements();
+  }
+
+  // Cập nhật danh sách các phần tử DOM
+  private updateElements(): void {
     this.elements = [
       document.getElementById('input_address_search'),
-      document.getElementById('address_suggest_ward_commune_popup')
+      document.getElementById('suggest_ward_commune_popup')
     ].filter(el => el !== null) as HTMLElement[];
   }
 
+
   @HostListener('document:click', ['$event'])
   onClick(event: Event): void {
+    this.updateElements();
     const clickedInside = this.elements.some(element =>
       element.contains(event.target as Node)
     );

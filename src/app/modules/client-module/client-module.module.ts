@@ -13,7 +13,7 @@ import { NgxSliderModule } from '@angular-slider/ngx-slider';
 // Import MatSlideToggleModule
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { FormsModule } from '@angular/forms';
-
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -32,7 +32,8 @@ import { FormsModule } from '@angular/forms';
     ClientModuleRoutingModule,
     NgxSliderModule,
     MatSlideToggleModule,
-    FormsModule  // Cần thiết để sử dụng ngModel
+    FormsModule,
+    ReactiveFormsModule 
   ]
 })
 export class ClientModuleModule { }

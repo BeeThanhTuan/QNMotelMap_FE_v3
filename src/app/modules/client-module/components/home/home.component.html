@@ -23,21 +23,26 @@
                     </div>
                 </div>
                 <div class="banner-searchbox w-full ntt-bg-custom-gradient pt-3 px-2">
-                    <form class="max-w-custom mx-auto bg-[#ffb700] flex rounded-lg p-1 gap-1 ntt-shadow-searchbox">
+                    <form [formGroup]="formSearch" (ngSubmit)="handleSearch()"
+                         class="max-w-custom mx-auto bg-[#ffb700] flex rounded-lg p-1 gap-1 ntt-shadow-searchbox flex-col ml:flex-row">
                         <div class="ntt-field-search">
-                            <div class="h-full w-full flex items-center ">
+                            <div class="h-full w-full flex items-center"
+                                 id="input_address_search"
+                                 (click)="wardCommuneInput.focus(); showDropdownSuggestWardCommune = true">
                                 <i class='bx bx-map ntt-custom-icon'></i>
-                                <input id="input_address_search"
-                                    (focus)="showDropdownSuggestWardCommune = true" 
+                                <input 
                                     class="w-full h-[36px] px-2 py-1 text-[14px] text-custom-color-black-light font-semibold focus:outline-none placeholder:text-custom-color-black-light"
                                     type="search" 
+                                    #wardCommuneInput
+                                    formControlName = "wardCommune"
                                     placeholder="Bạn muốn tìm ở đâu?">
+                               
                             </div>
-                            <div id="address_suggest_ward_commune_popup"
+                            <div id="suggest_ward_commune_popup"
                                 appClickOutsideSuggestWardCommune
                                 (clickOutsideSuggestWardCommune)="showDropdownSuggestWardCommune = false" 
                                 *ngIf="showDropdownSuggestWardCommune"
-                                class="absolute w-[380px] bg-white translate-y-4 left-0 rounded-lg ntt-shadow-input-suggest">
+                                class="absolute w-[380px] bg-white translate-y-4 left-0 rounded-lg ntt-shadow-input-suggest z-10" >
                                 <div class="pt-3 pb-1 px-3 text-[14px] font-bold text-custom-color-black">
                                     Phường/xã được gợi ý
                                 </div>
@@ -62,13 +67,13 @@
                                 (click)="showDesiredPricePopup = true"
                                 class="h-full flex items-center bg-white rounded-[5px]">
                                 <i class="bx bx-money-withdraw ntt-custom-icon"></i>
-                                <p class="ntt-custom-p">Giá tiền mà bạn muốn: <span class="pl-1">{{desiredPrice ? (desiredPrice | money) + ' VND' : '_ _ _ VND'}}</span></p>
+                                <p class="ntt-custom-p">Giá tiền mà bạn muốn: <span class="pl-1">{{formSearch.get('desiredPrice')?.value ? (formSearch.get('desiredPrice')?.value | money) + ' VND' : '_ _ _ VND'}}</span></p>
                             </div>
                             <div id="desired_price_popup"
                                 *ngIf="showDesiredPricePopup"
                                 appClickOutsideDesiredPrice
                                 (clickOutsideDesiredPrice)="showDesiredPricePopup = false"
-                                class="absolute w-[380px] bg-white translate-y-4 left-0 rounded-lg ntt-shadow-input-suggest ">
+                                class="absolute w-[380px] bg-white translate-y-4 left-0 rounded-lg ntt-shadow-input-suggest z-10 ">
                                 <div class="pt-3 pb-1 px-3 text-[14px] font-bold text-custom-color-black">
                                     Chọn số tiềm bạn mong muốn
                                 </div>
@@ -77,10 +82,13 @@
                                     [options]="optionsDesiredPrice"
                                     (valueChange)="onSliderValueChange($event)"></ngx-slider>
                                 </div>
-                                <div *ngIf="desiredPrice" class="w-full p-3 pb-5">
-                                    <button type="button" (click)="resetToDefaultDesiredPrice()"
+                                <div *ngIf="formSearch.get('desiredPrice')?.value" class="w-full p-3 pb-5">
+                                    <button type="button"
+                                        (click)="resetToDefaultDesiredPrice()"
                                         class="w-full px-3 py-2 border-2 rounded-[4px] text-[15px] text-custom-color-black-light font-semibold
-                                        hover:bg-custom-hv-color-blue hover:border-blue-200 ">Đặt lại ban đầu</button>
+                                        hover:bg-custom-hv-color-blue hover:border-blue-200 ">
+                                        Đặt lại ban đầu
+                                    </button>
                                 </div>
                             </div> <!-- End desired price popup-->
                         </div>
@@ -89,14 +97,22 @@
                                 (click)="showOtherChoosePopup = true"
                                  class="h-full flex items-center bg-white rounded-[5px]">
                                 <i class='bx bx-add-to-queue ntt-custom-icon'></i>
-                                <p class="ntt-custom-p">Các lựa chọn khác: <span class="pl-1"></span></p>
+                                <div class="ntt-custom-p">
+                                    <p class="pr-2">Các lựa chọn khác:</p>
+                                    <p>
+                                        <span *ngIf="formSearch.get('distance')?.value">{{formSearch.get('distance')?.value }} km</span>
+                                        <span *ngIf="formSearch.get('haveMezzanine')?.value"> - gác lững</span>
+                                        <span *ngIf="formSearch.get('haveToilet')?.value" > - nhà vệ sinh riêng</span>
+                                        <span *ngIf="formSearch.get('haveAirConditioner')?.value" > - điều hoà </span>
+                                    </p>
+                                </div>
                                 <i class='bx bx-chevron-down text-[20px] text-custom-color-black-light'></i>
                             </div>
                             <div id="other_choose_popup"
                                 *ngIf="showOtherChoosePopup"
                                 appClickOutsideOtherChooseFields
                                 (clickOutsideOtherChooseFields)="showOtherChoosePopup = false"
-                                class="absolute w-[380px] bg-white translate-y-4 right-0 rounded-lg ntt-shadow-input-suggest ">
+                                class="absolute w-[380px] bg-white translate-y-4 left-0 ml:left-auto ml:right-0 rounded-lg ntt-shadow-input-suggest z-10">
                                 <div class="w-full px-4 pb-2 pt-6 flex justify-between items-center">
                                    <span class=" text-[14px] font-semibold text-custom-color-black-light">Khoảng cách tới trường dưới:</span>
                                    <div class="flex justify-center items-center">
@@ -106,7 +122,7 @@
                                             (mouseleave)="stopDecreaseDistance()"
                                             (mouseup)="stopDecreaseDistance()"
                                              class="hover:bg-custom-hv-color-blue"><i class='bx bx-minus p-2'></i></button>
-                                        <span class="text-[15px] w-[50px] font-semibold text-center">{{distance}} km</span>
+                                        <span class="text-[15px] w-[50px] font-semibold text-center">{{ formSearch.get('distance')?.value }} km</span>
                                         <button type="button"
                                             (click)="onClickIncreaseDistance()"
                                             (mousedown)="increaseDistance()" 
@@ -118,23 +134,24 @@
                                 <div class="w-full px-4 py-2 flex justify-between items-center">
                                     <span class=" text-[14px] font-semibold text-custom-color-black-light">Có gác lững</span>
                                     <div class="w-[100px] flex justify-center items-center">
-                                        <mat-slide-toggle [(ngModel)]="isChecked" name="toggleSwitch" class=""></mat-slide-toggle>
+                                        <mat-slide-toggle formControlName="haveMezzanine" class=""></mat-slide-toggle>
                                     </div>
                                 </div>
                                 <div class="w-full px-4 py-2 flex justify-between items-center">
                                     <span class="text-[14px] font-semibold text-custom-color-black-light">Có nhà vệ sinh riêng</span>
                                     <div class="w-[100px] flex justify-center items-center">
-                                        <mat-slide-toggle [(ngModel)]="isChecked" name="toggleSwitch3" class=""></mat-slide-toggle>
+                                        <mat-slide-toggle formControlName="haveToilet" class=""></mat-slide-toggle>
                                     </div>
                                 </div>
                                 <div class="w-full px-4 py-2 flex justify-between items-center">
                                     <span class="text-[14px] font-semibold text-custom-color-black-light">Có điều hoà</span>
                                     <div class="w-[100px] flex justify-center items-center">
-                                        <mat-slide-toggle [(ngModel)]="isChecked" name="toggleSwitch2" class=""></mat-slide-toggle>
+                                        <mat-slide-toggle formControlName="haveAirConditioner"></mat-slide-toggle>
                                     </div>
                                 </div>
                                 <div  class="w-full px-4 py-2 pb-6">
                                     <button type="button"
+                                        (click)="resetToDefaultOtherChoose()"
                                         class="w-full px-3 py-2 border-2 rounded-[4px] text-[15px] text-custom-color-black-light font-semibold
                                         hover:bg-custom-hv-color-blue hover:border-blue-200 ">Đặt lại ban đầu</button>
                                 </div>
@@ -142,8 +159,8 @@
 
                             </div> <!-- End other choose popup-->
                         </div>
-                        <div class=" h-[54px]">
-                            <button class="h-full bg-custom-color-blue-light rounded-[5px] hover:bg-[#0157b6]"><span class="px-6 py-1 text-[20px] font-semibold text-white">Tìm</span></button>
+                        <div class="h-[54px] w-full ml:w-[82px]">
+                            <button type="submit" class="h-full w-full bg-custom-color-blue-light rounded-[5px] hover:bg-[#0157b6]"><span class="px-6 py-1 text-[20px] font-semibold text-white">Tìm</span></button>
                         </div>
 
                     </form>
