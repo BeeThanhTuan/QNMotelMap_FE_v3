@@ -22,6 +22,34 @@
         overflow: hidden;        
         text-overflow: ellipsis;
     }
+    .ntt-custom-width{
+        min-width: calc((100% - (12 * 3)px)  / 4);
+    }
+    .ntt-shadow-motel-card{
+        box-shadow: 0px 2px 8px 0px rgba(26,26,26,.16)
+    }
+    .ntt-custom-ul{
+        overflow-x: scroll;
+        scroll-behavior: smooth;
+        scrollbar-width: none;
+        box-sizing: border-box;
+        scroll-snap-type: x mandatory;
+    }
+    .ntt-custom-name-motel{
+        -webkit-line-clamp: 2;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+    .ntt-custom-address-motel{
+        -webkit-line-clamp: 1;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+    .ntt-shadow-button{
+        box-shadow: 0px 2px 8px 0px rgba(26,26,26,.16);
+    }
 }
 /*  login - register */
 .ntt-custom-button {
@@ -35,4 +63,7 @@
 }
 .ntt-custom-icon{
     @apply text-[24px] pl-1 text-custom-color-black-light ;
+}
+.ntt-custom-button-prev-next{
+    @apply ntt-shadow-button w-9 h-9 rounded-full bg-white pointer-events-auto  hover:bg-[#f2f2f2] 
 }
