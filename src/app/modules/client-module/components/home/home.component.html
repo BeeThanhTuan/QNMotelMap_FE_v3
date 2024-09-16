@@ -15,14 +15,14 @@
                     </div>
                 </div><!-- End header control -->
             </div><!-- End header bar -->
-            <div class="search-wrapper w-full mb-[45px]">
-                <div class="banner-wrapper h-[180px] max-w-custom mx-auto flex justify-start items-center bg-custom-bg-blue px-2">
+            <div class="search_wrapper w-full mb-[35px]">
+                <div class="banner-wrapper h-[150px] max-w-custom mx-auto flex justify-start items-center bg-custom-bg-blue px-2">
                     <div>
                         <h1 class="text-5xl font-extrabold text-white font-sans"><span>Tìm nhà trọ tiếp theo</span></h1>
                         <p class="text-2xl text-white font-sans mt-3">Nhà trọ đa dạng và nhiều hơn nữa...</p>
                     </div>
                 </div>
-                <div class="banner-searchbox w-full ntt-bg-custom-gradient pt-3 px-2">
+                <div class="banner_searchbox w-full ntt-bg-custom-gradient pt-3 px-2">
                     <form [formGroup]="formSearch" (ngSubmit)="handleSearch()"
                          class="max-w-custom mx-auto bg-[#ffb700] flex rounded-lg p-1 gap-1 ntt-shadow-searchbox flex-col ml:flex-row">
                         <div class="ntt-field-search">
@@ -101,6 +101,7 @@
                                     <p class="pr-2">Các lựa chọn khác:</p>
                                     <p>
                                         <span *ngIf="formSearch.get('distance')?.value">{{formSearch.get('distance')?.value }} km</span>
+                                        <span *ngIf="formSearch.get('haveLiveWithLandlord')?.value" > - chung chủ</span>
                                         <span *ngIf="formSearch.get('haveMezzanine')?.value"> - gác lững</span>
                                         <span *ngIf="formSearch.get('haveToilet')?.value" > - nhà vệ sinh riêng</span>
                                         <span *ngIf="formSearch.get('haveAirConditioner')?.value" > - điều hoà </span>
@@ -132,7 +133,13 @@
                                    </div>
                                 </div>
                                 <div class="w-full px-4 py-2 flex justify-between items-center">
-                                    <span class=" text-[14px] font-semibold text-custom-color-black-light">Có gác lững</span>
+                                    <span class=" text-[14px] font-semibold text-custom-color-black-light">Không chung với chủ</span>
+                                    <div class="w-[100px] flex justify-center items-center">
+                                        <mat-slide-toggle formControlName="noLiveWithLandlord" class=""></mat-slide-toggle>
+                                    </div>
+                                </div>
+                                <div class="w-full px-4 py-2 flex justify-between items-center">
+                                    <span class=" text-[14px] font-semibold text-custom-color-black-light">Có gác lửng</span>
                                     <div class="w-[100px] flex justify-center items-center">
                                         <mat-slide-toggle formControlName="haveMezzanine" class=""></mat-slide-toggle>
                                     </div>
@@ -156,11 +163,12 @@
                                         hover:bg-custom-hv-color-blue hover:border-blue-200 ">Đặt lại ban đầu</button>
                                 </div>
                                 
-
                             </div> <!-- End other choose popup-->
                         </div>
                         <div class="h-[54px] w-full ml:w-[82px]">
-                            <button type="submit" class="h-full w-full bg-custom-color-blue-light rounded-[5px] hover:bg-[#0157b6]"><span class="px-6 py-1 text-[20px] font-semibold text-white">Tìm</span></button>
+                            <button type="submit" class="h-full w-full bg-custom-bg-blue-light rounded-[5px] hover:bg-custom-bg-hover-blue">
+                                <span class="px-6 py-1 text-[20px] font-semibold text-white">Tìm</span>
+                            </button>
                         </div>
 
                     </form>
@@ -168,10 +176,12 @@
             </div><!-- End search wrapper -->
         </header>
         <main>
-            <app-content-main></app-content-main>
+            <app-search></app-search>
+            <!-- <app-content-main></app-content-main> -->
             <router-outlet>
 
             </router-outlet>
         </main>
+        <footer class="w-full h-[100px]"></footer>
     </div><!-- End content wrapper -->
 </div><!-- End root -->

@@ -30,6 +30,7 @@ export class HomeComponent {
       wardCommune: [''],
       desiredPrice: [0],
       distance: [0],
+      noLiveWithLandlord:[false],
       haveMezzanine: [false],
       haveToilet: [false],
       haveAirConditioner: [false],
