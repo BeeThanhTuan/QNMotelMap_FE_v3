@@ -2,7 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 * {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-family:  BlinkMacSystemFont, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    box-sizing: border-box;
 }
 @layer utilities {
     .ntt-bg-custom-gradient {
@@ -28,6 +29,9 @@
     .ntt-shadow-motel-card{
         box-shadow: 0px 2px 8px 0px rgba(26,26,26,.16)
     }
+    .ntt-shadow-motel-card-hover{
+        box-shadow: 0px 2px 8px 0px rgba(141, 195, 240, 0.664)
+    }
     .ntt-custom-ul{
         overflow-x: scroll;
         scroll-behavior: smooth;
@@ -36,7 +40,7 @@
         scroll-snap-type: x mandatory;
     }
     .ntt-custom-name-motel{
-        -webkit-line-clamp: 2;
+        -webkit-line-clamp: 1;
         display: -webkit-box;
         -webkit-box-orient: vertical;
         overflow: hidden;
@@ -50,8 +54,11 @@
     .ntt-shadow-button{
         box-shadow: 0px 2px 8px 0px rgba(26,26,26,.16);
     }
+    .ntt-shadow-box{
+        box-shadow: 0 1px 5px 1px #dae1ec;
+    }
 }
-/*  login - register */
+
 .ntt-custom-button {
     @apply px-3 py-1 bg-white rounded-[3px] text-[14px] font-semibold text-custom-color-blue hover:bg-custom-hv-color-blue;
 }
@@ -67,3 +74,22 @@
 .ntt-custom-button-prev-next{
     @apply ntt-shadow-button w-9 h-9 rounded-full bg-white pointer-events-auto  hover:bg-[#f2f2f2] 
 }
+/*filter field */
+.ntt-custom-filter-field{
+    @apply w-full flex gap-2 py-[5px] 
+}
+.ntt-custom-content-filter{
+    @apply h-[20px] flex justify-between text-[14px] text-custom-color-black 
+}
+
+/*detail motel*/
+.ntt-a-router{
+    @apply p-4 h-full flex justify-center items-center border-b-2 text-custom-color-black hover:bg-[#f2f2f2]
+}
+
+/*overall motel*/
+.ntt-li-convenient{
+    @apply border border-[#e7e7e7] p-2 rounded-md flex justify-center items-center
+}
+
+

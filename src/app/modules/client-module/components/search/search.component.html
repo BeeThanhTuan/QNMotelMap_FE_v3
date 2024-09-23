@@ -12,13 +12,13 @@
                     </button>
                 </div>
             </div> <!--End view on map-->
-            <div class="filters mt-2 border rounded-md border-[#e7e7e7]">
+            <form [formGroup]="formFilters" class="filters mt-2 border rounded-md border-[#e7e7e7]">
                 <div class="p-2 text-[16px] text-custom-color-black font-bold border-b border-[#e7e7e7] ">Chọn lọc theo:</div>
                 <div class="pt-3 pr-4 pb-2 pl-3 border-b border-[#e7e7e7]">
                     <div class="text-[14px] text-custom-color-black font-bold">Dùng các bộ lọc cũ</div>
                     <div class="ntt-custom-filter-field">
                         <div>
-                           <input class="w-5 h-5" type="checkbox">
+                           <input class="w-5 h-5" type="checkbox" formControlName="motelHasRoomAvailable" (ngModelChange)="handleFilters()">
                         </div>
                         <div class="flex flex-col w-full">
                             <div class="ntt-custom-content-filter">
@@ -28,7 +28,7 @@
                     </div>
                     <div class="ntt-custom-filter-field">
                         <div>
-                           <input class="w-5 h-5" type="checkbox">
+                           <input class="w-5 h-5" type="checkbox" formControlName="noLiveWithLandlord">
                         </div>
                         <div class="flex flex-col w-full">
                             <div class="ntt-custom-content-filter">
@@ -39,29 +39,35 @@
                     </div>
                     <div class="ntt-custom-filter-field">
                         <div>
-                           <input class="w-5 h-5" type="checkbox">
+                           <input class="w-5 h-5" type="checkbox" formControlName="distanceLess1Km">
                         </div>
-                        <div class="flex flex-col w-full">
+                        <div class="flex flex-col w-full" title="Đại học Quy Nhơn">
                             <div class="ntt-custom-content-filter">
                                 <div>Dưới 1 km</div>
                                 <span>13</span>
                             </div>
-                            <div class="h-[20px] text-[12px] text-custom-color-black-light">Khoảng cách từ địa chỉ tới trường</div>
+                            <div class="h-[20px] text-[12px] text-custom-color-black-light">Khoảng cách từ địa chỉ tới trường </div>
                         </div>
                     </div> 
                 </div>
-                <div class=" pt-3 pr-4 pb-2 pl-3 border-b border-[#e7e7e7]">
+                <div class="h-[180px] pt-3 pr-4 pb-2 pl-3 border-b border-[#e7e7e7] relative">
                     <div class="text-[14px] text-custom-color-black font-bold">Ngân sách của bạn</div>
-                    <div class="text-[14px] mt-2 text-custom-color-black-light font-normal">1.000.000 VND</div>
-                    <div class="mb-4">
-                        <input type="range" #price class="w-full h-[4px]" min="500000" max="5000000" step="100000">
+                    <div class="text-[14px] mt-1 text-custom-color-black-light font-normal">{{formFilters.get('desiredPrice')?.value | money}} VND</div>
+                    <div id="chart" class="w-[278px]  p-0 relative left-[-20px] top-[-20px]">
+                        <apx-chart [series]="chartOptions.series" [chart]="chartOptions.chart"
+                                    [xaxis]="chartOptions.xaxis" [yaxis]="chartOptions.yaxis"
+                                    [dataLabels]="chartOptions.dataLabels" [tooltip]="chartOptions.tooltip">
+                        </apx-chart>
+                      </div>
+                    <div class="mb-4 relative z-10 top-[-83px]">
+                        <input type="range" #price class="w-full " min="500000" max="5000000" step="100000" formControlName="desiredPrice">
                     </div>
                 </div>
                 <div class="pt-3 pr-4 pb-5 pl-3 ">
                     <div class="text-[14px] text-custom-color-black font-bold">Tiện nghi</div>
                     <div class="ntt-custom-filter-field">
                         <div>
-                           <input class="w-5 h-5" type="checkbox">
+                           <input class="w-5 h-5" type="checkbox" formControlName="haveMezzanine">
                         </div>
                         <div class="flex flex-col w-full">
                             <div class="ntt-custom-content-filter">
@@ -72,7 +78,7 @@
                     </div>
                     <div class="ntt-custom-filter-field">
                         <div>
-                           <input class="w-5 h-5" type="checkbox">
+                           <input class="w-5 h-5" type="checkbox" formControlName="haveToilet">
                         </div>
                         <div class="flex flex-col w-full">
                             <div class="ntt-custom-content-filter">
@@ -83,7 +89,7 @@
                     </div>
                     <div class="ntt-custom-filter-field">
                         <div>
-                           <input class="w-5 h-5" type="checkbox">
+                           <input class="w-5 h-5" type="checkbox" formControlName="havePlaceToCook">
                         </div>
                         <div class="flex flex-col w-full">
                             <div class="ntt-custom-content-filter">
@@ -94,7 +100,7 @@
                     </div>
                     <div class="ntt-custom-filter-field">
                         <div>
-                           <input class="w-5 h-5" type="checkbox">
+                           <input class="w-5 h-5" type="checkbox" formControlName="haveAirConditioner" >
                         </div>
                         <div class="flex flex-col w-full">
                             <div class="ntt-custom-content-filter">
@@ -104,10 +110,112 @@
                         </div>
                     </div>
                 </div>
-               
-            </div><!--End filters motels-->
+            </form><!--End filters motels-->
         </div> <!--End filters area motels-->
-        <div class="result w-[calc(100%-280px)]">
+        <div class="result w-[calc(100%-280px)] pl-4">
+            <div class="w-full">
+                <h1 class="h-[28px] text-[20px] text-custom-color-black font-sans font-bold"><span class="capitalize">Ngô mây:</span> tìm thấy 20 nhà trọ</h1>
+            </div>
+            <div class="w-full pt-3">
+                <ul class="w-full flex flex-col gap-4">
+                    <li class="w-full min-w-[712px] p-4 flex border border-[#e7e7e7] rounded-md ">
+                       <div class="image_motel w-[250px] h-[250px] relative">
+                            <a href="">
+                                <img class="w-full h-full object-cover rounded-md" src="assets/images/img-motel.jpg" alt="">
+                            </a>
+                            <div title="Lưu">
+                                <button class="w-9 h-9 favorite-motel absolute top-3 right-3 flex justify-center items-center rounded-full bg-white hover:bg-[#f2f2f2] group">
+                                    <i class="bx bx-heart text-[20px] text-custom-color-black-light group-hover:text-[red]"></i>
+                                </button>
+                            </div>
+                       </div> <!--End image motel-->
+                       <div class="info_motel w-[calc(100%-250px)] pl-4 flex flex-col justify-between">
+                            <div class="flex justify-between">
+                                <div>
+                                    <div class="mb-2 text-[21px] font-sans font-bold text-custom-color-blue ">Tên nhà trọ</div>
+                                    <div class=" text-custom-color-blue flex flex-col" >
+                                        <div class="mr-2 flex items-center flex-wrap">
+                                            <span class="capitalize text-[14px] font-semibold">79 Biên cương, Ngô Mây</span>
+                                            <span class="mx-2"> - </span>
+                                            <span class="text-[14px] font-semibold underline cursor-pointer"> Xem trên bản đồ </span>
+                                        </div>
+                                        <span class="text-[12px] font-normal text-custom-color-black">Khoảng cách tới trường 1km</span>
+                                    </div>
+                                </div>
+                                <div class="flex gap-2 h-9">
+                                    <div class="w-[70px] flex justify-end items-end">
+                                        <span class="text-[14px] font-normal text-custom-color-black"> 8 đánh giá</span>
+                                    </div>
+                                    <div class="w-8 h-8 flex justify-center items-center bg-[#003B95] rounded-[5px] rounded-bl-none">
+                                        <span class="text-[17px] font-semibold text-white">5.0</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="h-[calc(100%-80px)] flex justify-between w-full">
+                                <div class="w-[calc(100%-170px)]">12</div>
+                                <div class="w-[170px] flex flex-col justify-end items-end">
+                                    <div class="text-[20px] font-medium text-custom-color-black ">1.000.000 VND</div>
+                                    <div class="mt-2 w-fit text-center">
+                                        <a href="" class="px-3 py-[5px] bg-custom-color-blue flex justify-center items-center rounded-md cursor-pointer
+                                            hover:bg-custom-bg-hover-blue" >
+                                            <span class="pb-[2px] text-[15px] text-white font-semibold text-center ">Xem nhà trọ </span>           
+                                            <i class='bx bx-chevron-right text-[20px] text-white '></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                       </div><!--End info motel-->
+                    </li>
+                    <li class="w-full min-w-[712px] p-4 flex border border-[#e7e7e7] rounded-md ">
+                        <div class="image_motel w-[250px] h-[250px] relative">
+                             <a href="">
+                                 <img class="w-full h-full object-cover rounded-md" src="assets/images/img-motel.jpg" alt="">
+                             </a>
+                             <div title="Lưu">
+                                 <button class="w-9 h-9 favorite-motel absolute top-3 right-3 flex justify-center items-center rounded-full bg-white hover:bg-[#f2f2f2] group">
+                                     <i class="bx bx-heart text-[20px] text-custom-color-black-light group-hover:text-[red]"></i>
+                                 </button>
+                             </div>
+                        </div> <!--End image motel-->
+                        <div class="info_motel w-[calc(100%-250px)] pl-4 flex flex-col justify-between">
+                             <div class="flex justify-between">
+                                 <div>
+                                     <div class="mb-2 text-[21px] font-sans font-bold text-custom-color-blue line-clamp-1">Tên nhà trọ</div>
+                                     <div class=" text-custom-color-blue flex items-center flex-wrap" >
+                                         <div class="mr-2 flex items-center flex-wrap">
+                                             <span class="capitalize text-[14px] font-semibold">79 Biên cương, Ngô Mây</span>
+                                             <span class="mx-2"> - </span>
+                                             <span class="text-[14px] font-semibold underline cursor-pointer"> Xem trên bản đồ </span>
+                                         </div>
+                                         <span class="text-[12px] font-normal text-custom-color-black">Khoảng cách tới trường 1km</span>
+                                     </div>
+                                 </div>
+                                 <div class="flex gap-2 h-9">
+                                     <div class="w-[70px] flex justify-end items-end">
+                                         <span class="text-[14px] font-normal text-custom-color-black"> 8 đánh giá</span>
+                                     </div>
+                                     <div class="w-8 h-8 flex justify-center items-center bg-[#003B95] rounded-[5px] rounded-bl-none">
+                                         <span class="text-[17px] font-semibold text-white">5.0</span>
+                                     </div>
+                                 </div>
+                             </div>
+                             <div class="h-[calc(100%-80px)] flex justify-between w-full">
+                                 <div class="w-[calc(100%-170px)]">12</div>
+                                 <div class="w-[170px] flex flex-col justify-end items-end">
+                                     <div class="text-[20px] font-medium text-custom-color-black ">1.000.000 VND</div>
+                                     <div class="mt-2 w-fit text-center">
+                                         <a href="" class="px-3 py-[5px] bg-custom-color-blue flex justify-center items-center rounded-md cursor-pointer
+                                             hover:bg-custom-bg-hover-blue" >
+                                             <span class="pb-[2px] text-[15px] text-white font-semibold text-center ">Xem nhà trọ </span>           
+                                             <i class='bx bx-chevron-right text-[20px] text-white '></i>
+                                         </a>
+                                     </div>
+                                 </div>
+                             </div>
+                        </div><!--End info motel-->
+                     </li>
+                </ul>
+            </div>
         </div> <!--End result motels-->
     </div>
 </div> <!--End content wrapper-->

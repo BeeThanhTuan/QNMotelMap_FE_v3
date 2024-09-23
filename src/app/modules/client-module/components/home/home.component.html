@@ -1,28 +1,28 @@
 <div class="root">
     <div class="content_wrappper w-full text-base">
         <header class="w-full bg-custom-bg-blue pt-2">
-            <div class="header_bar max-w-custom mx-auto px-4 pt-1 pb-2 h-[60px] flex justify-between bg-custom-bg-blue mb-3">
+            <div class="header_bar max-w-custom mx-auto px-4 pt-1 pb-2 h-[60px] flex justify-between bg-custom-bg-blue ">
                 <div class="header_main flex justify-center items-center">
                     <div class="header_logo ">
-                        <a routerLink="/client/home" class="text-2xl font-bold text-white">QNMotelMap</a>
+                        <a routerLink="/client/home/content" class="text-2xl font-bold text-white">QNMotelMap</a>
                     </div>
                 </div><!-- End header main-->
                 <div class="header_control flex items-center gap-3 pl-4 min-w-[378px]">
-                    <a href="" class="font-semibold px-3 py-3 hover:bg-[#1a4f9f] rounded-[3px] text-white">Xem trên bảng đồ</a>
+                    <a routerLink="/client/home/map" class="font-semibold px-3 py-3 hover:bg-[#1a4f9f] rounded-[3px] text-white">Xem trên bảng đồ</a>
                     <div class="flex items-center gap-3">
                         <a href="" class="ntt-custom-button"><span>Đăng ký</span></a>
                         <a href="" class="ntt-custom-button"><span>Đăng nhập</span></a>
                     </div>
                 </div><!-- End header control -->
             </div><!-- End header bar -->
-            <div class="search_wrapper w-full mb-[35px]">
-                <div class="banner-wrapper h-[150px] max-w-custom mx-auto flex justify-start items-center bg-custom-bg-blue px-2">
+            <div class="search_wrapper w-full ">
+                <div *ngIf="showBannerWrapper" class="banner_wrapper h-[150px] max-w-custom mx-auto flex justify-start items-center bg-custom-bg-blue px-2">
                     <div>
                         <h1 class="text-5xl font-extrabold text-white font-sans"><span>Tìm nhà trọ tiếp theo</span></h1>
                         <p class="text-2xl text-white font-sans mt-3">Nhà trọ đa dạng và nhiều hơn nữa...</p>
                     </div>
                 </div>
-                <div class="banner_searchbox w-full ntt-bg-custom-gradient pt-3 px-2">
+                <div *ngIf="showFormSearch" class="banner_searchbox w-full ntt-bg-custom-gradient pt-3 px-2 mb-[35px] mt-4">
                     <form [formGroup]="formSearch" (ngSubmit)="handleSearch()"
                          class="max-w-custom mx-auto bg-[#ffb700] flex rounded-lg p-1 gap-1 ntt-shadow-searchbox flex-col ml:flex-row">
                         <div class="ntt-field-search">
@@ -101,7 +101,7 @@
                                     <p class="pr-2">Các lựa chọn khác:</p>
                                     <p>
                                         <span *ngIf="formSearch.get('distance')?.value">{{formSearch.get('distance')?.value }} km</span>
-                                        <span *ngIf="formSearch.get('haveLiveWithLandlord')?.value" > - chung chủ</span>
+                                        <span *ngIf="formSearch.get('noLiveWithLandlord')?.value" > - chung chủ</span>
                                         <span *ngIf="formSearch.get('haveMezzanine')?.value"> - gác lững</span>
                                         <span *ngIf="formSearch.get('haveToilet')?.value" > - nhà vệ sinh riêng</span>
                                         <span *ngIf="formSearch.get('haveAirConditioner')?.value" > - điều hoà </span>
@@ -175,13 +175,10 @@
                 </div>
             </div><!-- End search wrapper -->
         </header>
-        <main>
-            <app-search></app-search>
-            <!-- <app-content-main></app-content-main> -->
+        <main class="w-full h-auto relative ">
             <router-outlet>
-
             </router-outlet>
         </main>
-        <footer class="w-full h-[100px]"></footer>
+       
     </div><!-- End content wrapper -->
 </div><!-- End root -->

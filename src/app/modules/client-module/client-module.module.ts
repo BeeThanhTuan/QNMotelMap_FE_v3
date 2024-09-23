@@ -16,7 +16,14 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ContentMainComponent } from './components/content-main/content-main.component';
 import { ClickPrevRecommendMotelDirective } from './directives/click-prev-recommend-motel.directive';
 import { ClickNextRecommendMotelDirective } from './directives/click-next-recommend-motel.directive';
-
+import { SearchComponent } from './components/search/search.component';
+import { NgApexchartsModule } from 'ng-apexcharts';
+import { DetailMotelComponent } from './components/details-motel/detail-motel/detail-motel.component';
+import { OverallComponent } from './components/details-motel/overall/overall.component';
+import { RoomsComponent } from './components/details-motel/rooms/rooms.component';
+import { RatingComponent } from './components/details-motel/rating/rating.component';
+import { RoomDetailComponent } from './components/details-motel/room-detail/room-detail.component';
+import { ViewOnMapComponent } from './components/view-on-map/view-on-map.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +37,13 @@ import { ClickNextRecommendMotelDirective } from './directives/click-next-recomm
     ContentMainComponent,
     ClickPrevRecommendMotelDirective,
     ClickNextRecommendMotelDirective,
+    SearchComponent,
+    DetailMotelComponent,
+    OverallComponent,
+    RoomsComponent,
+    RatingComponent,
+    RoomDetailComponent,
+    ViewOnMapComponent,
     
   ],
   imports: [
@@ -38,7 +52,8 @@ import { ClickNextRecommendMotelDirective } from './directives/click-next-recomm
     NgxSliderModule,
     MatSlideToggleModule,
     FormsModule,
-    ReactiveFormsModule 
+    ReactiveFormsModule,
+    NgApexchartsModule
   ]
 })
 export class ClientModuleModule { }

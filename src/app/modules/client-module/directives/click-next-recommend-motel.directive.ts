@@ -39,7 +39,7 @@ export class ClickNextRecommendMotelDirective implements AfterViewInit {
       const clientWidth = this.scrollContainer.clientWidth;
 
       // Disable nextButton if we are at the end of the scroll
-      if (scrollLeft + clientWidth >= scrollWidth ) {
+      if (scrollLeft + clientWidth >= scrollWidth - 10 ) {
         nextButton.classList.add('invisible');
         nextButton.classList.add('flex-none');
       } else {

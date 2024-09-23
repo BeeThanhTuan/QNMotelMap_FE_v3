@@ -2,19 +2,20 @@ import { Component } from '@angular/core';
 import { chartOptions } from '../../config-charts/chart-bar-options';
 import { Title } from '@angular/platform-browser';
 import { FormBuilder, FormGroup } from '@angular/forms';
-
+import * as L from 'leaflet';
 @Component({
-  selector: 'app-search',
-  templateUrl: './search.component.html',
-  styleUrls: ['./search.component.css']
+  selector: 'app-view-on-map',
+  templateUrl: './view-on-map.component.html',
+  styleUrls: ['./view-on-map.component.css']
 })
-export class SearchComponent {
+export class ViewOnMapComponent {
   chartOptions: any;
   formFilters!: FormGroup;
-
   // Giá nhà trọ cụ thể
   rentalPrices = [500000,1300000, 1500000, 1250000, 2000000, 2000000, 2500000,2000000, 3000000, 4000000, 5000000];
   rentalData: { price: number, count: number }[];
+
+  private map!: L.Map;
 
   constructor(private titleService: Title, private formBuilder: FormBuilder) {
     this.titleService.setTitle('QNMoteMap | Tìm kiếm ');
@@ -42,6 +43,22 @@ export class SearchComponent {
       havePlaceToCook: [false],
       haveAirConditioner: [false],
     });
+  }
+
+  ngAfterViewInit(): void {
+    this.initMap();
+    
+  }
+
+  initMap(): void {
+    // Khởi tạo bản đồ với chế độ xem tại một tọa độ cụ thể
+    this.map = L.map('map').setView([13.76240, 109.21801], 13); // Tọa độ London, zoom level 13
+
+    // Thêm lớp bản đồ từ OpenStreetMap
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(this.map);
   }
 
   handleFilters(){

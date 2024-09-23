@@ -2,12 +2,15 @@ import { Component } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Options } from '@angular-slider/ngx-slider';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { Router, NavigationEnd } from '@angular/router';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent {
+  showBannerWrapper = true;
+  showFormSearch = true;
   showDropdownSuggestWardCommune = false;
   showDesiredPricePopup = false;
   showOtherChoosePopup = false;
@@ -24,7 +27,7 @@ export class HomeComponent {
   intervalDecreaseDistance:any;
   intervalIncreaseDistance:any;
   formSearch! : FormGroup;
-  constructor(private titleService: Title, private formBuilder: FormBuilder) { 
+  constructor(private titleService: Title, private formBuilder: FormBuilder, private router: Router) { 
     this.titleService.setTitle('QNMoteMap | Trang chủ ');
     this.formSearch = this.formBuilder.group({
       wardCommune: [''],
@@ -37,8 +40,16 @@ export class HomeComponent {
     });
   }
 
-  ngOnInit(): void {
 
+  ngOnInit(): void {
+    this.handleHiddenElement(this.router.url);
+
+    // Lắng nghe sự kiện NavigationEnd khi có thay đổi router
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        this.handleHiddenElement(event.urlAfterRedirects); // Kiểm tra lại URL sau điều hướng
+      }
+    });
   }
 
   onSliderValueChange(value: number): void {
@@ -107,9 +118,22 @@ export class HomeComponent {
     console.table(this.formSearch.value);
   }
 
+  // ẩn các element không sử dung ở các component khác nhau
+  handleHiddenElement(url: string){
+    if (url.includes('/map')) {
+      this.showBannerWrapper = false;
+      this.showFormSearch = false;  
+    }
+    if (url.includes('/content')) {
+      this.showBannerWrapper = true;
+      this.showFormSearch = true; 
 
-
-
+    }
+    if (url.includes('/detail-motel')) {
+      this.showBannerWrapper = false;
+      this.showFormSearch = true; 
+    }
+  }
 
 
 }
