@@ -90,3 +90,8 @@ input[type="checkbox"]:checked::before {
   justify-content: center;
   align-items: center;
 }
+
+.custom-price-icon{
+  position: relative;
+  top: -20px;
+}

@@ -15,6 +15,12 @@
     .ntt-shadow-searchbox{
         box-shadow: 0 5px 8px -2px #dae1ec;
     }
+    .ntt-shadow-input-search{
+        box-shadow: 0 5px 8px 0px rgba(26,26,26,.24)
+    }
+    .ntt-shadow-input-search-focus{
+        box-shadow: 0 0px 0px 2.5px #529ce680;
+    }
     .ntt-shadow-input-suggest{
         box-shadow:0px 2px 16px 0px rgba(26,26,26,.24)
     }
