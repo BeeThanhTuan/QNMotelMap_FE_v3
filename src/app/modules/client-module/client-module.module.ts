@@ -24,6 +24,9 @@ import { RoomsComponent } from './components/details-motel/rooms/rooms.component
 import { RatingComponent } from './components/details-motel/rating/rating.component';
 import { RoomDetailComponent } from './components/details-motel/room-detail/room-detail.component';
 import { ViewOnMapComponent } from './components/view-on-map/view-on-map.component';
+import { ViewMotelOnMapComponent } from './components/view-motel-on-map/view-motel-on-map.component';
+import { ClickOutsidePopupMotelOnMapDirective } from './directives/click-outside-popup-motel-on-map.directive';
+
 
 @NgModule({
   declarations: [
@@ -37,6 +40,7 @@ import { ViewOnMapComponent } from './components/view-on-map/view-on-map.compone
     ContentMainComponent,
     ClickPrevRecommendMotelDirective,
     ClickNextRecommendMotelDirective,
+    ClickOutsidePopupMotelOnMapDirective,
     SearchComponent,
     DetailMotelComponent,
     OverallComponent,
@@ -44,6 +48,7 @@ import { ViewOnMapComponent } from './components/view-on-map/view-on-map.compone
     RatingComponent,
     RoomDetailComponent,
     ViewOnMapComponent,
+    ViewMotelOnMapComponent,
     
   ],
   imports: [
@@ -53,7 +58,7 @@ import { ViewOnMapComponent } from './components/view-on-map/view-on-map.compone
     MatSlideToggleModule,
     FormsModule,
     ReactiveFormsModule,
-    NgApexchartsModule
+    NgApexchartsModule,
   ]
 })
 export class ClientModuleModule { }

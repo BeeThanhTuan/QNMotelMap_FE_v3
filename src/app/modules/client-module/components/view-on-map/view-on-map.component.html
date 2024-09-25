@@ -99,6 +99,7 @@
                 </div>
             </div>
         </form><!--End filters motels-->
+        <button (click)="changeData()">click</button>
     </div>
     <div class="w-[calc(100%-300px)] h-full relative ">
         <div class="absolute z-10 top-3 left-[30px] ">
@@ -135,6 +136,11 @@
                 </ul>
             </div> <!-- End dropdown suggest ward/commune -->
         </div>
+        <app-view-motel-on-map *ngIf="showPopupMotelOnMap" 
+            appClickOutsidePopupMotelOnMap
+            (clickOutsidePopupMotelOnMap)="showPopupMotelOnMap = false"
+            class="absolute w-[320px] z-10 top-[65px] left-[30px] bg-white p-3 ntt-shadow-input-search rounded-[5px]">
+        </app-view-motel-on-map>
         <div id="map" class="w-full h-full relative z-0" ></div>
     </div>
 </div>

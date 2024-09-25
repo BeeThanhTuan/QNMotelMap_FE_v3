@@ -9,17 +9,26 @@ import * as L from 'leaflet';
   templateUrl: './view-on-map.component.html',
   styleUrls: ['./view-on-map.component.css'],
 })
+
 export class ViewOnMapComponent {
+  //popup properties
   showDropdownSuggestWardCommune = false;
+  showPopupMotelOnMap = false;
+  //chart properties 
   chartOptions: any;
   formFilters!: FormGroup;
   rentalPrices = [500000, 1300000, 1500000, 1250000, 2000000, 2000000, 2500000, 2000000, 3000000, 4000000, 5000000];
   rentalData: { price: number; count: number }[] = [];
+  //map properties 
   map!: L.Map;
   markersArray: L.Marker[] = [];
+  selectedMarker: L.Marker | null = null; // Lưu trữ marker được chọn
+  selectedPriceMarker: L.Marker | null = null; // Lưu trữ marker giá được chọn
   markers = [
     { locations: '13.76240, 109.21801', price: 900000 },
-    { locations: '13.76400, 109.22001', price: 1300000 }
+    { locations: '13.76400, 109.22001', price: 1300000 },
+    { locations: '13.76073, 109.21316', price: 1300000 },
+
   ]; // Thêm thông tin giá vào mảng markers
   constructor(private titleService: Title, private formBuilder: FormBuilder) {
     this.titleService.setTitle('QNMoteMap | Tìm kiếm');
@@ -62,7 +71,7 @@ export class ViewOnMapComponent {
     });
   }
 
-  // Khởi tạo bản đồ
+  // Initialize map
   initMap(): void {
     this.map = L.map('map').setView([13.7624, 109.21801], 15);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -71,6 +80,7 @@ export class ViewOnMapComponent {
     }).addTo(this.map);
   }
 
+  // Initialize icon marker
   createNormalIcon(): L.Icon {
     return L.icon({
       iconUrl: './assets/images/marker.png', // Icon bình thường
@@ -81,15 +91,19 @@ export class ViewOnMapComponent {
   
   createHoverIcon(): L.Icon {
     return L.icon({
-      iconUrl: './assets/images/marker-i.png', // Icon khi hover
+      iconUrl: './assets/images/marker-hover.png', // Icon khi hover
       iconSize: [38, 38],
       iconAnchor: [19, 38],
     });
   }
 
+
+  //add markers into map 
   addMarkers(markerData: { locations: string, price: number }[]): void {
     const normalIcon = this.createNormalIcon();
     const hoverIcon = this.createHoverIcon();
+    const normalBg = '#00358f';
+    const hoverBg = '#3A8FFE'
   
     markerData.forEach((marker) => {
       const [lat, lng] = marker.locations.split(',').map(location => parseFloat(location.trim()));
@@ -97,18 +111,9 @@ export class ViewOnMapComponent {
       // Tạo marker với icon bình thường
       const leafletMarker = L.marker([lat, lng], { icon: normalIcon }).addTo(this.map);
   
-      // Thêm sự kiện hover
-      leafletMarker.on('mouseover', () => {
-        leafletMarker.setIcon(hoverIcon); // Đổi icon khi hover
-      });
-  
-      leafletMarker.on('mouseout', () => {
-        leafletMarker.setIcon(normalIcon); // Trả về icon bình thường khi không hover
-      });
-  
       // Tạo một div để hiển thị giá (sẽ xuất hiện phía trên marker)
       const priceLabelDiv = L.divIcon({
-        html: `<div class="price-label w-fit px-2 py-1 font-bold bg-[#00358f] text-white pointer-events-none rounded-[5px] absolute top-[-40px] ">${marker.price.toLocaleString()} VND</div>`,
+        html: `<div class="price-label w-fit px-2 py-1 font-bold bg-[#00358f] text-white pointer-events-none rounded-[5px] absolute top-[-40px]">${marker.price.toLocaleString()} VND</div>`,
         className: 'custom-price-icon',
         iconSize: [110, 30],
         iconAnchor: [45, 27],
@@ -117,25 +122,167 @@ export class ViewOnMapComponent {
       // Tạo một marker cho giá
       const priceMarker = L.marker([lat, lng], { icon: priceLabelDiv }).addTo(this.map);
   
-      // Thêm cả hai marker vào mảng markersArray
+      // Thêm sự kiện hover cho marker
+      leafletMarker.on('mouseover', () => {
+        if (this.selectedMarker !== leafletMarker) {
+          leafletMarker.setIcon(hoverIcon); // Đổi icon khi hover nếu chưa được chọn
+          const priceLabel = priceMarker.getElement()?.querySelector('.price-label') as HTMLElement;
+          if (priceLabel) {
+            priceLabel.style.backgroundColor = hoverBg; // Thay đổi màu khi hover
+          }
+        }
+      });
+  
+      leafletMarker.on('mouseout', () => {
+        if (this.selectedMarker !== leafletMarker) {
+          leafletMarker.setIcon(normalIcon); // Trả về icon bình thường nếu chưa được chọn
+          const priceLabel = priceMarker.getElement()?.querySelector('.price-label') as HTMLElement;
+          if (priceLabel) {
+            priceLabel.style.backgroundColor = normalBg; // Trả về màu ban đầu
+          }
+        }
+      });
+  
+      // Thêm sự kiện click để cố định trạng thái hover
+      leafletMarker.on('click', (event) => {
+        event.originalEvent.stopPropagation();
+
+        if (this.selectedMarker) {
+          // Đặt marker được chọn trước đó về trạng thái bình thường
+          this.selectedMarker.setIcon(normalIcon);
+          const prevPriceLabel = this.selectedPriceMarker?.getElement()?.querySelector('.price-label') as HTMLElement;
+          if (prevPriceLabel) {
+            prevPriceLabel.style.backgroundColor = normalBg; // Trả về màu ban đầu cho giá của marker cũ
+          }
+        }
+  
+        // Cập nhật marker được chọn mới
+        this.selectedMarker = leafletMarker;
+        this.selectedPriceMarker = priceMarker;
+        leafletMarker.setIcon(hoverIcon); // Đổi icon thành trạng thái hover khi click
+        const priceLabel = priceMarker.getElement()?.querySelector('.price-label') as HTMLElement;
+        if (priceLabel) {
+          priceLabel.style.backgroundColor = hoverBg; // Cố định màu khi click
+        }
+
+        //hiện thị popup motel trên map
+        this.handleShowPopupMotelOnMap();
+      });
+  
       this.markersArray.push(leafletMarker);
       this.markersArray.push(priceMarker);
     });
   }
 
-  // Xóa tất cả các marker khỏi bản đồ
+  //add markers into map with special marker
+  addMarkersSpecial(markerData: { locations: string, price: number }[], specialMarkerIndex: number): void {
+    const normalIcon = this.createNormalIcon();
+    const hoverIcon = this.createHoverIcon();
+    const normalBg = '#00358f';
+    const hoverBg = '#3A8FFE'
+  
+    markerData.forEach((marker, index) => {
+      const [lat, lng] = marker.locations.split(',').map(location => parseFloat(location.trim()));
+  
+      // Kiểm tra nếu marker hiện tại là đặc biệt
+      const isSpecialMarker = index === specialMarkerIndex;
+      const iconToUse = isSpecialMarker ? hoverIcon : normalIcon; // Nếu là special thì dùng hoverIcon
+      const hoverColor = '#3A8FFE'; // Màu hover khác cho marker đặc biệt
+      const defaultColor = isSpecialMarker ? hoverBg : normalBg; // Màu nền mặc định khác cho marker đặc biệt
+  
+      // Tạo marker với icon tương ứng
+      const leafletMarker = L.marker([lat, lng], { icon: iconToUse }).addTo(this.map);
+  
+      // Tạo div hiển thị giá với màu khác cho marker đặc biệt
+      const priceLabelDiv = L.divIcon({
+        html: `<div class="price-label w-fit px-2 py-1 font-bold text-white pointer-events-none rounded-[5px] absolute top-[-40px]" style="background-color: ${defaultColor}">${marker.price.toLocaleString()} VND</div>`,
+        className: 'custom-price-icon',
+        iconSize: [110, 30],
+        iconAnchor: [45, 27],
+      });
+  
+      // Tạo marker cho giá
+      const priceMarker = L.marker([lat, lng], { icon: priceLabelDiv }).addTo(this.map);
+  
+      // Nếu là specialMarker, gán làm selectedMarker và set trạng thái ngay từ đầu
+      if (isSpecialMarker) {
+        this.selectedMarker = leafletMarker;
+        this.selectedPriceMarker = priceMarker;
+      }
+  
+      // Thêm sự kiện hover cho marker
+      leafletMarker.on('mouseover', () => {
+        if (this.selectedMarker !== leafletMarker) {
+          leafletMarker.setIcon(hoverIcon); // Đổi icon khi hover nếu chưa được chọn
+          const priceLabel = priceMarker.getElement()?.querySelector('.price-label') as HTMLElement;
+          if (priceLabel) {
+            priceLabel.style.backgroundColor = hoverColor; // Thay đổi màu khi hover
+          }
+        }
+      });
+  
+      leafletMarker.on('mouseout', () => {
+        if (this.selectedMarker !== leafletMarker) {
+          leafletMarker.setIcon(normalIcon); // Trả về icon ban đầu nếu chưa được chọn
+          const priceLabel = priceMarker.getElement()?.querySelector('.price-label') as HTMLElement;
+          if (priceLabel) {
+            priceLabel.style.backgroundColor = normalBg; // Trả về màu ban đầu
+          }
+        }
+      });
+  
+      // Thêm sự kiện click để cố định trạng thái hover
+      leafletMarker.on('click', (event) => {
+        event.originalEvent.stopPropagation();
+        if (this.selectedMarker) {
+          // Đặt marker được chọn trước đó về trạng thái bình thường
+          this.selectedMarker.setIcon(normalIcon);
+          const prevPriceLabel = this.selectedPriceMarker?.getElement()?.querySelector('.price-label') as HTMLElement;
+          if (prevPriceLabel) {
+            prevPriceLabel.style.backgroundColor = normalBg; 
+          }
+        }
+  
+        // Cập nhật marker được chọn mới
+        this.selectedMarker = leafletMarker;
+        this.selectedPriceMarker = priceMarker;
+        leafletMarker.setIcon(hoverIcon); // Đổi icon thành trạng thái hover khi click
+        const priceLabel = priceMarker.getElement()?.querySelector('.price-label') as HTMLElement;
+        if (priceLabel) {
+          priceLabel.style.backgroundColor = hoverColor; // Cố định màu khi click
+        }
+
+        //hiện thị popup motel trên map
+        this.handleShowPopupMotelOnMap();
+      });
+  
+      this.markersArray.push(leafletMarker);
+      this.markersArray.push(priceMarker);
+    });
+  }
+  
+  //Delete all markers from the map
   clearMarkers(): void {
-    this.markersArray.forEach(marker => marker.remove()); // Xóa từng marker
-    this.markersArray = []; // Làm trống mảng
+    this.markersArray.forEach(marker => marker.remove()); 
+    this.markersArray = []; 
   }
 
+  //show motel on map
+  handleShowPopupMotelOnMap(){
+    this.showPopupMotelOnMap = true;
+  }
+
+  //event change data
   changeData() {
     this.markers = [
       { locations: '13.76644, 109.21217', price: 1700000 },
-      { locations: '13.77603, 109.22848', price: 2500000 }
+      { locations: '13.77603, 109.22848', price: 2500000 },
+      { locations: '13.76400, 109.22001', price: 1300000 },
+      { locations: '13.76073, 109.21316', price: 1300000 },
     ]; // Dữ liệu mới với giá thuê
     this.clearMarkers();
-    this.addMarkers(this.markers);
+    this.addMarkersSpecial(this.markers,2);
+    this.handleChangeStyle()
   }
 
   // Handle the form filter values
@@ -174,15 +321,15 @@ export class ViewOnMapComponent {
     return { categories, counts };
   }
 
-  //hidden control zoom 
+  //handle hidden control zoom 
   handHiddenControlZoom(){
     const div = document.querySelector('.leaflet-control-zoom.leaflet-bar.leaflet-control') as HTMLElement;
     div.style.display = 'none';
   }
 
+  //handle change style price label marker
   handleChangeStyle(){
     const popups = document.querySelectorAll('.custom-price-icon'); 
-    console.log(popups);  
     popups.forEach(popup => {
       (popup as HTMLElement).style.pointerEvents = 'none';
       (popup as HTMLElement).style.position = 'absolute';
