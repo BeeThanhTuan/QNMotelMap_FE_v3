@@ -25,6 +25,7 @@
     "apexcharts": "^3.53.0",
     "leaflet": "^1.9.4",
     "ng-apexcharts": "^1.12.0",
+    "ng-zorro-antd": "^16.2.2",
     "ngx-ui-switch": "^15.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",

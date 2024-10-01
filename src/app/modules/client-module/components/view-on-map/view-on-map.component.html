@@ -6,7 +6,7 @@
                 <div class="text-[14px] text-custom-color-black font-bold">Dùng các bộ lọc cũ</div>
                 <div class="ntt-custom-filter-field">
                     <div>
-                       <input class="w-5 h-5" type="checkbox" formControlName="motelHasRoomAvailable" (ngModelChange)="handleFilters()">
+                       <label nz-checkbox class="w-5 h-5"  formControlName="motelHasRoomAvailable" (ngModelChange)="handleFilters()"></label>
                     </div>
                     <div class="flex flex-col w-full">
                         <div class="ntt-custom-content-filter">
@@ -16,7 +16,7 @@
                 </div>
                 <div class="ntt-custom-filter-field">
                     <div>
-                       <input class="w-5 h-5" type="checkbox" formControlName="noLiveWithLandlord">
+                       <label nz-checkbox class="w-5 h-5"  formControlName="noLiveWithLandlord"></label>
                     </div>
                     <div class="flex flex-col w-full">
                         <div class="ntt-custom-content-filter">
@@ -27,7 +27,7 @@
                 </div>
                 <div class="ntt-custom-filter-field">
                     <div>
-                       <input class="w-5 h-5" type="checkbox" formControlName="distanceLess1Km">
+                       <label nz-checkbox class="w-5 h-5"  formControlName="distanceLess1Km"></label>
                     </div>
                     <div class="flex flex-col w-full" title="Đại học Quy Nhơn">
                         <div class="ntt-custom-content-filter">
@@ -55,7 +55,7 @@
                 <div class="text-[14px] text-custom-color-black font-bold">Tiện nghi</div>
                 <div class="ntt-custom-filter-field">
                     <div>
-                       <input class="w-5 h-5" type="checkbox" formControlName="haveMezzanine">
+                       <label nz-checkbox  class="w-5 h-5"  formControlName="haveMezzanine"></label>
                     </div>
                     <div class="flex flex-col w-full">
                         <div class="ntt-custom-content-filter">
@@ -66,7 +66,7 @@
                 </div>
                 <div class="ntt-custom-filter-field">
                     <div>
-                       <input class="w-5 h-5" type="checkbox" formControlName="haveToilet">
+                       <label nz-checkbox class="w-5 h-5"  formControlName="haveToilet" (ngModelChange)="handleFilters()"> </label>
                     </div>
                     <div class="flex flex-col w-full">
                         <div class="ntt-custom-content-filter">
@@ -77,7 +77,7 @@
                 </div>
                 <div class="ntt-custom-filter-field">
                     <div>
-                       <input class="w-5 h-5" type="checkbox" formControlName="havePlaceToCook">
+                       <label nz-checkbox class="w-5 h-5"  formControlName="havePlaceToCook"></label>    
                     </div>
                     <div class="flex flex-col w-full">
                         <div class="ntt-custom-content-filter">
@@ -88,7 +88,7 @@
                 </div>
                 <div class="ntt-custom-filter-field">
                     <div>
-                       <input class="w-5 h-5" type="checkbox" formControlName="haveAirConditioner" >
+                       <label nz-checkbox class="w-5 h-5"  formControlName="haveAirConditioner" ></label>    
                     </div>
                     <div class="flex flex-col w-full">
                         <div class="ntt-custom-content-filter">

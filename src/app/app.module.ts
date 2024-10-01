@@ -5,6 +5,7 @@ import { AppComponent } from './app.component';
 import { Title } from '@angular/platform-browser';
 import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -12,7 +13,7 @@ import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
   ],
   providers: [Title],
   bootstrap: [AppComponent]

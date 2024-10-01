@@ -48,6 +48,7 @@ export class ViewOnMapComponent {
   ngAfterViewInit(): void {
     this.initMap();
     this.handHiddenControlZoom();
+    this.handleChangeStyleCheckbox();
   }
 
   // Setup the chart options with dynamic data
@@ -384,6 +385,16 @@ export class ViewOnMapComponent {
       (popup as HTMLElement).style.justifyContent = 'center';
       (popup as HTMLElement).style.alignItems= 'center';
     });
+  }
+
+  //handle change style price label marker
+  handleChangeStyleCheckbox(){
+    const checkboxs = document.querySelectorAll('.ant-checkbox-inner'); 
+    checkboxs .forEach(checkbox => {
+      (checkbox as HTMLElement).style.width = '20px';
+      (checkbox as HTMLElement).style.height = '20px';
+      (checkbox as HTMLElement).style.borderRadius = '4px';
+    })
   }
   
 }

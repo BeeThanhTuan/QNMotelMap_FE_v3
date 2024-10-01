@@ -26,7 +26,11 @@ import { RoomDetailComponent } from './components/details-motel/room-detail/room
 import { ViewOnMapComponent } from './components/view-on-map/view-on-map.component';
 import { ViewMotelOnMapComponent } from './components/view-motel-on-map/view-motel-on-map.component';
 import { ClickOutsidePopupMotelOnMapDirective } from './directives/click-outside-popup-motel-on-map.directive';
-
+//ant design
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzSwitchModule } from 'ng-zorro-antd/switch';
+import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
+import { NzSliderModule } from 'ng-zorro-antd/slider';
 
 @NgModule({
   declarations: [
@@ -59,6 +63,10 @@ import { ClickOutsidePopupMotelOnMapDirective } from './directives/click-outside
     FormsModule,
     ReactiveFormsModule,
     NgApexchartsModule,
+    NzInputModule,
+    NzSwitchModule,
+    NzCheckboxModule,
+    NzSliderModule
   ]
 })
 export class ClientModuleModule { }
