@@ -21,7 +21,7 @@
                     <div class="flex flex-col w-full">
                         <div class="ntt-custom-content-filter">
                             <div>Không chung chủ</div>
-                            <span>12</span>
+                            <span>{{listMotelFiltered.motelsWithoutLandlord.length}}</span>
                         </div>
                     </div>
                 </div>
@@ -32,7 +32,7 @@
                     <div class="flex flex-col w-full" title="Đại học Quy Nhơn">
                         <div class="ntt-custom-content-filter">
                             <div>Dưới 1 km</div>
-                            <span>13</span>
+                            <span>{{listMotelFiltered.motelsWithin1km.length}}</span>
                         </div>
                         <div class="h-[20px] text-[12px] text-custom-color-black-light">Khoảng cách từ địa chỉ tới trường </div>
                     </div>
@@ -60,7 +60,7 @@
                     <div class="flex flex-col w-full">
                         <div class="ntt-custom-content-filter">
                             <div>Gác lửng</div>
-                            <span>12</span>
+                            <span>{{listMotelFiltered.convenientCounts['Gác lửng']}}</span>
                         </div>
                     </div>
                 </div>
@@ -71,7 +71,7 @@
                     <div class="flex flex-col w-full">
                         <div class="ntt-custom-content-filter">
                             <div>Vệ sinh riêng</div>
-                            <span>12</span>
+                            <span>{{listMotelFiltered.convenientCounts['Vệ sinh riêng']}}</span>
                         </div>
                     </div>
                 </div>
@@ -81,8 +81,8 @@
                     </div>
                     <div class="flex flex-col w-full">
                         <div class="ntt-custom-content-filter">
-                            <div>Chỗ nấu ăn</div>
-                            <span>12</span>
+                            <div>Nơi nấu ăn</div>
+                            <span>{{listMotelFiltered.convenientCounts['Nơi nấu ăn']}}</span>
                         </div>
                     </div>
                 </div>
@@ -93,7 +93,7 @@
                     <div class="flex flex-col w-full">
                         <div class="ntt-custom-content-filter">
                             <div>Điều hoà</div>
-                            <span>12</span>
+                            <span>{{listMotelFiltered.convenientCounts['Điều hoà']}}</span>
                         </div>
                     </div>
                 </div>
@@ -139,6 +139,8 @@
         <app-view-motel-on-map *ngIf="showPopupMotelOnMap" 
             appClickOutsidePopupMotelOnMap
             (clickOutsidePopupMotelOnMap)="showPopupMotelOnMap = false"
+            (showPopupMotelOnMap)="handleHiddenPopupMotelOnMap($event)"
+            [idMotel]="idMotel!"
             class="absolute w-[320px] z-10 top-[65px] left-[30px] bg-white p-3 ntt-shadow-input-search rounded-[5px]">
         </app-view-motel-on-map>
         <div id="map" class="w-full h-full relative z-0" ></div>

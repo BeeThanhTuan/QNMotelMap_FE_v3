@@ -3,7 +3,9 @@ import { chartOptions } from '../../config-charts/chart-bar-options';
 import { Title } from '@angular/platform-browser';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import * as L from 'leaflet';
-
+import { MotelService } from 'src/app/services/motel.service';
+import { Motel } from 'src/app/interfaces/motel';
+import { MotelFiltered} from 'src/app/interfaces/motelFiltered';
 @Component({
   selector: 'app-view-on-map',
   templateUrl: './view-on-map.component.html',
@@ -17,30 +19,35 @@ export class ViewOnMapComponent {
   //chart properties 
   chartOptions: any;
   formFilters!: FormGroup;
-  rentalPrices = [500000, 1300000, 1500000, 1250000, 2000000, 2000000, 2500000, 2000000, 3000000, 4000000, 5000000];
+  rentalPrices:number[]= [];
   rentalData: { price: number; count: number }[] = [];
   //map properties 
   map!: L.Map;
   markersArray: L.Marker[] = [];
   selectedMarker: L.Marker | null = null; // Lưu trữ marker được chọn
   selectedPriceMarker: L.Marker | null = null; // Lưu trữ marker giá được chọn
-  markers = [
-    { locations: '13.76240, 109.21801', price: 900000 },
-    { locations: '13.76400, 109.22001', price: 1300000 },
-    { locations: '13.76073, 109.21316', price: 1300000 },
+  //data motel
+  listMotels = [];
+  listMotelFiltered: MotelFiltered = {
+    motelsWithoutLandlord: [],
+    motelsWithin1km: [],
+    convenientCounts: {}
+  };
+  idMotel!: string | null;
 
-  ]; // Thêm thông tin giá vào mảng markers
-  constructor(private titleService: Title, private formBuilder: FormBuilder) {
+  constructor(private titleService: Title, private formBuilder: FormBuilder, private motelService: MotelService) {
     this.titleService.setTitle('QNMoteMap | Tìm kiếm');
-    this.initializeData();
     this.initializeForm();
+  }
+
+  ngOnInit(): void {
+    this.initDataMotels();
+    this.initializeDataChart()
   }
 
   ngAfterViewInit(): void {
     this.initMap();
     this.handHiddenControlZoom();
-    this.addMarkers(this.markers);
-    this.handleChangeStyle();
   }
 
   // Setup the chart options with dynamic data
@@ -51,11 +58,24 @@ export class ViewOnMapComponent {
   }
 
   // Initialize data for the chart and rental information
-  initializeData(): void {
+  initializeDataChart(): void {
     this.rentalData = this.getHouseCountByPrice(this.rentalPrices);
+  
+    if (!this.rentalData) {
+      console.error("rentalData is undefined.");
+      return;
+    }
+  
     const { categories, counts } = this.getChartCategoriesAndCounts(this.rentalData);
-    this.setupChart(categories, counts);
+    
+    // Kiểm tra categories và counts trước khi gọi setupChart
+    if (categories && counts) {
+      this.setupChart(categories, counts);
+    } else {
+      console.error("categories or counts are undefined.");
+    }
   }
+  
 
   // Initialize form filters
   initializeForm(): void {
@@ -99,21 +119,21 @@ export class ViewOnMapComponent {
 
 
   //add markers into map 
-  addMarkers(markerData: { locations: string, price: number }[]): void {
+  addMarkers(markerData: { _id: string; Locations: string; Price: number }[]): void {
     const normalIcon = this.createNormalIcon();
     const hoverIcon = this.createHoverIcon();
     const normalBg = '#00358f';
     const hoverBg = '#3A8FFE'
   
     markerData.forEach((marker) => {
-      const [lat, lng] = marker.locations.split(',').map(location => parseFloat(location.trim()));
+      const [lat, lng] = marker.Locations.split(',').map(location => parseFloat(location.trim()));
   
       // Tạo marker với icon bình thường
       const leafletMarker = L.marker([lat, lng], { icon: normalIcon }).addTo(this.map);
   
       // Tạo một div để hiển thị giá (sẽ xuất hiện phía trên marker)
       const priceLabelDiv = L.divIcon({
-        html: `<div class="price-label w-fit px-2 py-1 font-bold bg-[#00358f] text-white pointer-events-none rounded-[5px] absolute top-[-40px]">${marker.price.toLocaleString()} VND</div>`,
+        html: `<div class="price-label w-fit px-2 py-1 font-bold bg-[#00358f] text-white pointer-events-none rounded-[5px] absolute top-[-40px]">${marker.Price.toLocaleString()} VND</div>`,
         className: 'custom-price-icon',
         iconSize: [110, 30],
         iconAnchor: [45, 27],
@@ -165,6 +185,7 @@ export class ViewOnMapComponent {
           priceLabel.style.backgroundColor = hoverBg; // Cố định màu khi click
         }
 
+        this.idMotel = marker._id;
         //hiện thị popup motel trên map
         this.handleShowPopupMotelOnMap();
       });
@@ -175,14 +196,14 @@ export class ViewOnMapComponent {
   }
 
   //add markers into map with special marker
-  addMarkersSpecial(markerData: { locations: string, price: number }[], specialMarkerIndex: number): void {
+  addMarkersSpecial(markerData: { _id: string; Locations: string; Price: number }[], specialMarkerIndex: number): void {
     const normalIcon = this.createNormalIcon();
     const hoverIcon = this.createHoverIcon();
     const normalBg = '#00358f';
     const hoverBg = '#3A8FFE'
   
     markerData.forEach((marker, index) => {
-      const [lat, lng] = marker.locations.split(',').map(location => parseFloat(location.trim()));
+      const [lat, lng] = marker.Locations.split(',').map(location => parseFloat(location.trim()));
   
       // Kiểm tra nếu marker hiện tại là đặc biệt
       const isSpecialMarker = index === specialMarkerIndex;
@@ -195,7 +216,7 @@ export class ViewOnMapComponent {
   
       // Tạo div hiển thị giá với màu khác cho marker đặc biệt
       const priceLabelDiv = L.divIcon({
-        html: `<div class="price-label w-fit px-2 py-1 font-bold text-white pointer-events-none rounded-[5px] absolute top-[-40px]" style="background-color: ${defaultColor}">${marker.price.toLocaleString()} VND</div>`,
+        html: `<div class="price-label w-fit px-2 py-1 font-bold text-white pointer-events-none rounded-[5px] absolute top-[-40px]" style="background-color: ${defaultColor}">${marker.Price.toLocaleString()} VND</div>`,
         className: 'custom-price-icon',
         iconSize: [110, 30],
         iconAnchor: [45, 27],
@@ -251,7 +272,8 @@ export class ViewOnMapComponent {
         if (priceLabel) {
           priceLabel.style.backgroundColor = hoverColor; // Cố định màu khi click
         }
-
+        
+        this.idMotel = marker._id;
         //hiện thị popup motel trên map
         this.handleShowPopupMotelOnMap();
       });
@@ -267,21 +289,45 @@ export class ViewOnMapComponent {
     this.markersArray = []; 
   }
 
-  //show motel on map
+
+  // Hàm để lọc dữ liệu từ listMotel
+  filterMotelData(listMotel: any) {
+    return listMotel.map((motel :any)=> ({
+      _id: motel._id,
+      Locations: motel.Location,
+      Price: motel.Price
+    }));
+  }
+
+  // Initialize data motels
+  initDataMotels(): void{
+    this.motelService.getAllMotels().subscribe((response)=>{
+      this.listMotelFiltered = response.dataFiltered;
+      this.listMotels = this.filterMotelData(response.data);
+      this.addMarkers(this.listMotels);
+      this.handleChangeStyle();
+      response.data.map((motel: any)=>{
+        this.rentalPrices.push(motel.Price);
+      })
+      this.initializeDataChart();
+    })
+  }
+
+
+  //show popup motel on map
   handleShowPopupMotelOnMap(){
     this.showPopupMotelOnMap = true;
   }
 
+  //hidden popup motel on map
+  handleHiddenPopupMotelOnMap(status: boolean){
+    this.showPopupMotelOnMap = status;
+  }
+
   //event change data
   changeData() {
-    this.markers = [
-      { locations: '13.76644, 109.21217', price: 1700000 },
-      { locations: '13.77603, 109.22848', price: 2500000 },
-      { locations: '13.76400, 109.22001', price: 1300000 },
-      { locations: '13.76073, 109.21316', price: 1300000 },
-    ]; // Dữ liệu mới với giá thuê
     this.clearMarkers();
-    this.addMarkersSpecial(this.markers,2);
+    // this.addMarkersSpecial(this.markers,2);
     this.handleChangeStyle()
   }
 
