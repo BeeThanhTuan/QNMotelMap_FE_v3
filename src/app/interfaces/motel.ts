@@ -8,12 +8,12 @@ import { User } from "./user";
 export interface Motel {
     _id: string;
     Location: string;
-    LandlordID: object | Landlord;
+    LandlordID: object;
     ListImages: Images[];
     Address: string;
     WardCommune: string;
     Description: string;
-    ListConvenient: Convenient[];
+    ListConvenient: object[];
     Price: number;
     LiveWithLandlord: boolean;
     ElectricityBill: number;

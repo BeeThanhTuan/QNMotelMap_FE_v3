@@ -31,6 +31,8 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzSliderModule } from 'ng-zorro-antd/slider';
+//loading
+import { NgxSpinnerModule } from "ngx-spinner";
 
 @NgModule({
   declarations: [
@@ -66,7 +68,8 @@ import { NzSliderModule } from 'ng-zorro-antd/slider';
     NzInputModule,
     NzSwitchModule,
     NzCheckboxModule,
-    NzSliderModule
+    NzSliderModule,
+    NgxSpinnerModule
   ]
 })
 export class ClientModuleModule { }

@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
 import { chartOptions } from '../../config-charts/chart-bar-options';
 import { Title } from '@angular/platform-browser';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import * as L from 'leaflet';
 import { MotelService } from 'src/app/services/motel.service';
-import { Motel } from 'src/app/interfaces/motel';
+import { NgxSpinnerService } from "ngx-spinner";
 import { MotelFiltered} from 'src/app/interfaces/motelFiltered';
+import { debounceTime } from 'rxjs/operators';
+
 @Component({
   selector: 'app-view-on-map',
   templateUrl: './view-on-map.component.html',
@@ -28,27 +30,41 @@ export class ViewOnMapComponent {
   selectedPriceMarker: L.Marker | null = null; // Lưu trữ marker giá được chọn
   //data motel
   listMotels = [];
+  //form filter
   listMotelFiltered: MotelFiltered = {
     motelsWithoutLandlord: [],
     motelsWithin1km: [],
     convenientCounts: {}
   };
   idMotel!: string | null;
+  //form search
+  addressSearch = new FormControl()
+  desiredPriceChanged: boolean = false;
+  //list ward commune
+  listWardCommune = [];
 
-  constructor(private titleService: Title, private formBuilder: FormBuilder, private motelService: MotelService) {
+  constructor(private titleService: Title, private formBuilder: FormBuilder, private motelService: MotelService, private spinner: NgxSpinnerService ) {
     this.titleService.setTitle('QNMoteMap | Tìm kiếm');
     this.initializeForm();
   }
 
   ngOnInit(): void {
-    this.initDataMotels();
-    this.initializeDataChart()
+    this.initializeDataMotels();
+    this.initializeDataChart();
+    this.initializeListWardCommune();
+    
   }
 
   ngAfterViewInit(): void {
-    this.initMap();
+    this.initializeMap();
     this.handHiddenControlZoom();
     this.handleChangeStyleCheckbox();
+    this.formFilters.get('desiredPrice')!.valueChanges.pipe(debounceTime(500)).subscribe(() => {
+      this.handleFiltersPrice();
+    });
+    this.addressSearch.valueChanges.pipe(debounceTime(500)).subscribe(() => {
+      this.handleFilters();
+    });
   }
 
   // Setup the chart options with dynamic data
@@ -61,15 +77,11 @@ export class ViewOnMapComponent {
   // Initialize data for the chart and rental information
   initializeDataChart(): void {
     this.rentalData = this.getHouseCountByPrice(this.rentalPrices);
-  
     if (!this.rentalData) {
-      console.error("rentalData is undefined.");
       return;
     }
-  
     const { categories, counts } = this.getChartCategoriesAndCounts(this.rentalData);
-    
-    // Kiểm tra categories và counts trước khi gọi setupChart
+     // Kiểm tra categories và counts trước khi gọi setupChart
     if (categories && counts) {
       this.setupChart(categories, counts);
     } else {
@@ -77,7 +89,6 @@ export class ViewOnMapComponent {
     }
   }
   
-
   // Initialize form filters
   initializeForm(): void {
     this.formFilters = this.formBuilder.group({
@@ -93,7 +104,7 @@ export class ViewOnMapComponent {
   }
 
   // Initialize map
-  initMap(): void {
+  initializeMap(): void {
     this.map = L.map('map').setView([13.7624, 109.21801], 15);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
@@ -300,8 +311,21 @@ export class ViewOnMapComponent {
     }));
   }
 
+  //kiểm tra giá tiền mong muốn đã thay đổi chưa
+  onChangeDesiredPrice():void {
+    this.desiredPriceChanged = true
+  }
+
+  //Đặt lại giá tiền mong muốn
+  handleResetDesiredPrice():void {
+    this.formFilters.get('desiredPrice')?.setValue(500000);
+    this.desiredPriceChanged = false;
+    this.handleFilters();
+    
+  }
+
   // Initialize data motels
-  initDataMotels(): void{
+  initializeDataMotels(): void{
     this.motelService.getAllMotels().subscribe((response)=>{
       this.listMotelFiltered = response.dataFiltered;
       this.listMotels = this.filterMotelData(response.data);
@@ -314,28 +338,90 @@ export class ViewOnMapComponent {
     })
   }
 
+  //Initialize list ward commune
+  initializeListWardCommune(): void{
+    this.motelService.getListWardCommune().subscribe((response)=>{
+      this.listWardCommune = response
+    })
+  }
+
 
   //show popup motel on map
-  handleShowPopupMotelOnMap(){
+  handleShowPopupMotelOnMap(): void{
     this.showPopupMotelOnMap = true;
   }
 
   //hidden popup motel on map
-  handleHiddenPopupMotelOnMap(status: boolean){
+  handleHiddenPopupMotelOnMap(status: boolean) :void{
     this.showPopupMotelOnMap = status;
   }
 
-  //event change data
-  changeData() {
-    this.clearMarkers();
-    // this.addMarkersSpecial(this.markers,2);
-    this.handleChangeStyle()
+  //Handle choose ward commune
+  handleChooseWardCommune(event: Event) :void{
+    const target = event.currentTarget as HTMLElement;
+    const lastChild = target.lastElementChild as HTMLElement;
+    this.addressSearch.setValue(lastChild.textContent);
+    this.showDropdownSuggestWardCommune = false;
   }
 
   // Handle the form filter values
-  handleFilters(): void {
-    console.table(this.formFilters.value);
+  handleFilters() :void {
+    const filters = {
+      addressSearch: this.addressSearch.value ? this.addressSearch.value : '',
+      motelHasRoomAvailable: this.formFilters.get('motelHasRoomAvailable')!.value,
+      noLiveWithLandlord: this.formFilters.get('noLiveWithLandlord')!.value,
+      distanceLess1Km: this.formFilters.get('distanceLess1Km')!.value,
+      haveMezzanine: this.formFilters.get('haveMezzanine')!.value,
+      haveToilet: this.formFilters.get('haveToilet')!.value,
+      havePlaceToCook: this.formFilters.get('havePlaceToCook')!.value,
+      haveAirConditioner: this.formFilters.get('haveAirConditioner')!.value,
+      desiredPrice: this.desiredPriceChanged ? this.formFilters.get('desiredPrice')!.value : '',
+    }
+    this.motelService.getMotelsFiltered(filters).subscribe((response)=>{
+      this.spinner.show();
+      setTimeout(() => {
+        this.listMotels = this.filterMotelData(response.data);
+        this.rentalPrices= [];
+        response.data.map((motel: any)=>{
+          this.rentalPrices.push(motel.Price);
+        })
+        this.initializeDataChart();
+        this.clearMarkers();
+        this.addMarkers(this.listMotels);
+        this.handleChangeStyle();
+        this.listMotelFiltered = response.dataFiltered;
+        this.spinner.hide();
+      }, 500);
+    })
   }
+
+   // Handle the form filter values
+   handleFiltersPrice() :void {
+    const filters = {
+      addressSearch: this.addressSearch.value ? this.addressSearch.value : '',
+      motelHasRoomAvailable: this.formFilters.get('motelHasRoomAvailable')!.value,
+      noLiveWithLandlord: this.formFilters.get('noLiveWithLandlord')!.value,
+      distanceLess1Km: this.formFilters.get('distanceLess1Km')!.value,
+      haveMezzanine: this.formFilters.get('haveMezzanine')!.value,
+      haveToilet: this.formFilters.get('haveToilet')!.value,
+      havePlaceToCook: this.formFilters.get('havePlaceToCook')!.value,
+      haveAirConditioner: this.formFilters.get('haveAirConditioner')!.value,
+      desiredPrice: this.desiredPriceChanged ? this.formFilters.get('desiredPrice')!.value : '',
+    }
+    this.motelService.getMotelsFiltered(filters).subscribe((response)=>{
+      this.spinner.show();
+      setTimeout(() => {
+        this.listMotels = this.filterMotelData(response.data);
+        this.clearMarkers();
+        this.addMarkers(this.listMotels);
+        this.handleChangeStyle();
+        this.listMotelFiltered = response.dataFiltered;
+        this.spinner.hide();
+      }, 500);
+    })
+  }
+
+  
 
   // Get the house count by price for the chart
   getHouseCountByPrice(prices: number[]): { price: number; count: number }[] {

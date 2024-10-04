@@ -26,9 +26,11 @@
             ],
             "styles": [
               "node_modules/ng-zorro-antd/ng-zorro-antd.min.css",
+              "node_modules/ngx-spinner/animations/ball-pulse-sync.css",
+              "node_modules/ngx-spinner/animations/ball-scale-multiple.css",
               "src/styles.css",
-              "node_modules/leaflet/dist/leaflet.css",
-              "@angular/material/prebuilt-themes/pink-bluegrey.css"
+              "node_modules/leaflet/dist/leaflet.css"
+
             ],
             "scripts": []
           },
