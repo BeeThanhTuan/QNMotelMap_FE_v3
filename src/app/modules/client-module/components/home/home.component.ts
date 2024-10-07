@@ -3,6 +3,8 @@ import { Title } from '@angular/platform-browser';
 import { Options } from '@angular-slider/ngx-slider';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router, NavigationEnd } from '@angular/router';
+import { MotelService } from 'src/app/services/motel.service';
+import { NzMarks } from 'ng-zorro-antd/slider';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -11,28 +13,46 @@ import { Router, NavigationEnd } from '@angular/router';
 export class HomeComponent {
   showBannerWrapper = true;
   showFormSearch = true;
+  showHeader = true;
   showDropdownSuggestWardCommune = false;
   showDesiredPricePopup = false;
   showOtherChoosePopup = false;
-  valueDesiredPrice: number = 0;
-  optionsDesiredPrice: Options = {
-    floor: 0,
-    ceil: 5,
-    step: 0.1,
-    translate: (value: number): string => {
-      return value + ' Triệu'; 
-    }
-  }
   isChecked: boolean = false;
   intervalDecreaseDistance:any;
   intervalIncreaseDistance:any;
   formSearch! : FormGroup;
-  constructor(private titleService: Title, private formBuilder: FormBuilder, private router: Router) { 
+  listWardCommune = [];
+  marks: NzMarks = {
+    500000: {
+      style: {
+        color: 'black',
+        position: 'relative',
+        left: '35px',
+        top: '5px'
+      },
+      label: '<p>500.000 VND</p>'
+    },
+    5000000: {
+      style: {
+        color: 'black',
+        position: 'relative',
+        left: '65%',
+        top: '5px'
+      },
+      label: '<p>5.000.000 VND</p>'
+    },
+  };
+
+  constructor(private titleService: Title, private formBuilder: FormBuilder, private router: Router, private motelService: MotelService) { 
     this.titleService.setTitle('QNMoteMap | Trang chủ ');
+    this.initializeFormFilters();
+  }
+
+  initializeFormFilters():void{
     this.formSearch = this.formBuilder.group({
       wardCommune: [''],
-      desiredPrice: [0],
-      distance: [0],
+      desiredPrice: [5000000],
+      distance: [7],
       noLiveWithLandlord:[false],
       haveMezzanine: [false],
       haveToilet: [false],
@@ -40,10 +60,9 @@ export class HomeComponent {
     });
   }
 
-
   ngOnInit(): void {
     this.handleHiddenElement(this.router.url);
-
+    this.initializeListWardCommune();
     // Lắng nghe sự kiện NavigationEnd khi có thay đổi router
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
@@ -51,15 +70,17 @@ export class HomeComponent {
       }
     });
   }
-
-  onSliderValueChange(value: number): void {
-    this.formSearch.get('desiredPrice')?.setValue(parseFloat(value.toFixed(1)) * 1000000); 
+  
+ //Initialize list ward commune
+  initializeListWardCommune(): void{
+    this.motelService.getListWardCommune().subscribe((response)=>{
+      this.listWardCommune = response
+    })
   }
 
   // đặt lại giá muốn chọn
   resetToDefaultDesiredPrice(){
-    this.formSearch.get('desiredPrice')?.setValue(0);
-    this.valueDesiredPrice = 0;
+    this.formSearch.get('desiredPrice')?.setValue(5000000);
   }
 
   // giảm khoảng cách
@@ -107,7 +128,7 @@ export class HomeComponent {
 
   // đặt lại các lựa chọn
   resetToDefaultOtherChoose(){
-    this.formSearch.get('distance')?.setValue(0);
+    this.formSearch.get('distance')?.setValue(7);
     this.formSearch.get('haveMezzanine')?.setValue(false);
     this.formSearch.get('haveToilet')?.setValue(false);
     this.formSearch.get('haveAirConditioner')?.setValue(false);
@@ -121,18 +142,27 @@ export class HomeComponent {
   // ẩn các element không sử dung ở các component khác nhau
   handleHiddenElement(url: string){
     if (url.includes('/map')) {
-      this.showBannerWrapper = false;
-      this.showFormSearch = false;  
+      this.showHeader= false;  
     }
     if (url.includes('/content')) {
       this.showBannerWrapper = true;
       this.showFormSearch = true; 
-
+      this.showHeader = true; 
     }
     if (url.includes('/detail-motel')) {
       this.showBannerWrapper = false;
       this.showFormSearch = true; 
+      this.showHeader = true; 
+
     }
+  }
+
+  //Handle choose ward commune
+  handleChooseWardCommune(event: Event) :void{
+    const target = event.currentTarget as HTMLElement;
+    const lastChild = target.lastElementChild as HTMLElement;
+    this.formSearch.get('wardCommune')!.setValue(lastChild.textContent);
+    this.showDropdownSuggestWardCommune = false;
   }
 
 

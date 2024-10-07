@@ -1,6 +1,6 @@
 <div class="root">
     <div class="content_wrappper w-full text-base">
-        <header class="w-full bg-custom-bg-blue pt-2">
+        <header *ngIf="showHeader" class="w-full bg-custom-bg-blue pt-2">
             <div class="header_bar max-w-custom mx-auto px-4 pt-1 pb-2 h-[60px] flex justify-between bg-custom-bg-blue ">
                 <div class="header_main flex justify-center items-center">
                     <div class="header_logo ">
@@ -33,6 +33,7 @@
                                 <input 
                                     class="w-full h-[36px] px-2 py-1 text-[14px] text-custom-color-black-light font-semibold focus:outline-none placeholder:text-custom-color-black-light"
                                     type="search" 
+                                    spellcheck="false"
                                     #wardCommuneInput
                                     formControlName = "wardCommune"
                                     placeholder="Bạn muốn tìm ở đâu?">
@@ -41,23 +42,18 @@
                                 appClickOutsideSuggestWardCommune
                                 (clickOutsideSuggestWardCommune)="showDropdownSuggestWardCommune = false" 
                                 *ngIf="showDropdownSuggestWardCommune"
-                                class="absolute w-[380px] bg-white translate-y-4 left-0 rounded-lg ntt-shadow-input-suggest z-10" >
+                                class="absolute w-[380px] bg-white translate-y-4 left-0 rounded-lg ntt-shadow-input-suggest z-10 overflow-hidden" >
                                 <div class="pt-3 pb-1 px-3 text-[14px] font-bold text-custom-color-black">
                                     Phường/xã được gợi ý
                                 </div>
-                                <ul class="w-full">
-                                    <li class="p-3 flex border-b hover:bg-[#f2f2f2] cursor-pointer">
+                                <ul class="w-full ">
+                                    <li *ngFor="let wardCommune of listWardCommune"
+                                        (click)= "handleChooseWardCommune($event)"
+                                        class="w-full p-3 flex border-b hover:bg-[#f2f2f2] cursor-pointer ">
                                         <i class='bx bx-map text-[24px] pr-2 text-custom-color-black-light'></i>
-                                        <p class="w-full text-[14px] font-bold text-custom-color-black">Ngô Mây</p>
+                                        <p class="w-full text-[14px] font-medium text-custom-color-black">{{wardCommune}}</p>
                                     </li>
-                                    <li class="p-3 flex border-b hover:bg-[#f2f2f2] cursor-pointer">
-                                        <i class='bx bx-map text-[24px] pr-2 text-custom-color-black-light'></i>
-                                        <p class="w-full text-[14px] font-bold text-custom-color-black">Ngô Mây</p>
-                                    </li>
-                                    <li class="p-3 flex border-b hover:bg-[#f2f2f2] cursor-pointer">
-                                        <i class='bx bx-map text-[24px] pr-2 text-custom-color-black-light'></i>
-                                        <p class="w-full text-[14px] font-bold text-custom-color-black">Ngô Mây</p>
-                                    </li>
+                                    
                                 </ul>
                             </div> <!-- End dropdown suggest ward/commune -->
                         </div>
@@ -77,9 +73,7 @@
                                     Chọn số tiềm bạn mong muốn
                                 </div>
                                 <div class="p-3 ">
-                                    <ngx-slider [(value)]="valueDesiredPrice"
-                                    [options]="optionsDesiredPrice"
-                                    (valueChange)="onSliderValueChange($event)"></ngx-slider>
+                                    <nz-slider class="w-full" [nzMin]="500000" [nzMax]="5000000"  [nzStep]="100000" [nzMarks]="marks" [nzTooltipVisible]="'never'" formControlName="desiredPrice"></nz-slider>
                                 </div>
                                 <div *ngIf="formSearch.get('desiredPrice')?.value" class="w-full p-3 pb-5">
                                     <button type="button"

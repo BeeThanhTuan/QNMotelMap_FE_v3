@@ -1,5 +1,4 @@
 // src/app/chart-options.ts
-
 import { ApexAxisChartSeries, ApexChart, ApexXAxis, ApexYAxis, ApexDataLabels, ApexTooltip, ApexPlotOptions } from 'ng-apexcharts';
 
 export const chartOptions = (colors: string[]): {

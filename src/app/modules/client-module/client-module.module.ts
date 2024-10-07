@@ -34,6 +34,7 @@ import { NzSliderModule } from 'ng-zorro-antd/slider';
 //loading
 import { NgxSpinnerModule } from "ngx-spinner";
 
+
 @NgModule({
   declarations: [
     HomeComponent,

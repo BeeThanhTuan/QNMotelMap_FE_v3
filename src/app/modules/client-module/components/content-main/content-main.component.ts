@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { response } from 'express';
+import { MotelService } from 'src/app/services/motel.service';
 
 @Component({
   selector: 'app-content-main',
@@ -6,7 +8,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./content-main.component.css']
 })
 export class ContentMainComponent {
-  log(){
-    alert(123)
-  }
+ 
 }

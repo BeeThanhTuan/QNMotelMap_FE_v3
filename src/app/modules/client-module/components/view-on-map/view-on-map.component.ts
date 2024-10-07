@@ -7,6 +7,7 @@ import { MotelService } from 'src/app/services/motel.service';
 import { NgxSpinnerService } from "ngx-spinner";
 import { MotelFiltered} from 'src/app/interfaces/motelFiltered';
 import { debounceTime } from 'rxjs/operators';
+import { Motel } from 'src/app/interfaces/motel';
 
 @Component({
   selector: 'app-view-on-map',
@@ -19,10 +20,12 @@ export class ViewOnMapComponent {
   showDropdownSuggestWardCommune = false;
   showPopupMotelOnMap = false;
   //chart properties 
-  chartOptions: any;
-  formFilters!: FormGroup;
+  chartOptionsPrice: any;
   rentalPrices:number[]= [];
-  rentalData: { price: number; count: number }[] = [];
+  rentalDataPrice: { price: number; count: number }[] = [];
+  chartOptionsDistance: any;
+  rentalDistances:number[]= [];
+  rentalDataDistance: { distance: number; count: number }[] = [];
   //map properties 
   map!: L.Map;
   markersArray: L.Marker[] = [];
@@ -38,10 +41,14 @@ export class ViewOnMapComponent {
   };
   idMotel!: string | null;
   //form search
+  formFilters!: FormGroup;
   addressSearch = new FormControl()
   desiredPriceChanged: boolean = false;
+  desiredDistanceChanged: boolean = false;
   //list ward commune
   listWardCommune = [];
+  //filters
+  filters: any
 
   constructor(private titleService: Title, private formBuilder: FormBuilder, private motelService: MotelService, private spinner: NgxSpinnerService ) {
     this.titleService.setTitle('QNMoteMap | Tìm kiếm');
@@ -50,7 +57,8 @@ export class ViewOnMapComponent {
 
   ngOnInit(): void {
     this.initializeDataMotels();
-    this.initializeDataChart();
+    this.initializeDataPriceChart();
+    this.initializeDataDistanceChart();
     this.initializeListWardCommune();
     
   }
@@ -59,6 +67,11 @@ export class ViewOnMapComponent {
     this.initializeMap();
     this.handHiddenControlZoom();
     this.handleChangeStyleCheckbox();
+    this.handleChangeStyleInputRangePrice();
+    this.handleChangeStyleInputRangeDistance();
+    this.formFilters.get('desiredDistance')!.valueChanges.pipe(debounceTime(500)).subscribe(() => {
+      this.handleFiltersDistance();
+    });
     this.formFilters.get('desiredPrice')!.valueChanges.pipe(debounceTime(500)).subscribe(() => {
       this.handleFiltersPrice();
     });
@@ -68,22 +81,44 @@ export class ViewOnMapComponent {
   }
 
   // Setup the chart options with dynamic data
-  setupChart(categories: number[], counts: number[]): void {
-    this.chartOptions = chartOptions(['#039445']);
-    this.chartOptions.series[0].data = counts;
-    this.chartOptions.xaxis.categories = categories;
+  setupChartPrice(categories: number[], counts: number[]): void {
+    this.chartOptionsPrice = chartOptions(['#039445']);
+    this.chartOptionsPrice.series[0].data = counts;
+    this.chartOptionsPrice.xaxis.categories = categories;
+  }
+
+  // Setup the chart options with dynamic data
+  setupChartDistance(categories: number[], counts: number[]): void {
+    this.chartOptionsDistance = chartOptions(['#039445']);
+    this.chartOptionsDistance.series[0].data = counts;
+    this.chartOptionsDistance.xaxis.categories = categories;
   }
 
   // Initialize data for the chart and rental information
-  initializeDataChart(): void {
-    this.rentalData = this.getHouseCountByPrice(this.rentalPrices);
-    if (!this.rentalData) {
+  initializeDataPriceChart(): void {
+    this.rentalDataPrice = this.getHouseCountByPrice(this.rentalPrices);
+    if (!this.rentalDataPrice) {
       return;
     }
-    const { categories, counts } = this.getChartCategoriesAndCounts(this.rentalData);
+    const { categories, counts } = this.getChartCategoriesAndCountsByPrice(this.rentalDataPrice);
      // Kiểm tra categories và counts trước khi gọi setupChart
     if (categories && counts) {
-      this.setupChart(categories, counts);
+      this.setupChartPrice(categories, counts);
+    } else {
+      console.error("categories or counts are undefined.");
+    }
+  }
+
+  // Initialize data for the chart and rental information
+  initializeDataDistanceChart(): void {
+    this.rentalDataDistance = this.getHouseCountByDistance(this.rentalDistances);
+    if (!this.rentalDataDistance) {
+      return;
+    }
+    const { categories, counts } = this.getChartCategoriesAndCountsByDistance(this.rentalDataDistance);
+     // Kiểm tra categories và counts trước khi gọi setupChart
+    if (categories && counts) {
+      this.setupChartDistance(categories, counts);
     } else {
       console.error("categories or counts are undefined.");
     }
@@ -95,7 +130,8 @@ export class ViewOnMapComponent {
       motelHasRoomAvailable: [false],
       noLiveWithLandlord: [false],
       distanceLess1Km: [false],
-      desiredPrice: [500000],
+      desiredPrice: [5000000],
+      desiredDistance: [7.0],
       haveMezzanine: [false],
       haveToilet: [false],
       havePlaceToCook: [false],
@@ -313,15 +349,34 @@ export class ViewOnMapComponent {
 
   //kiểm tra giá tiền mong muốn đã thay đổi chưa
   onChangeDesiredPrice():void {
-    this.desiredPriceChanged = true
+    this.desiredPriceChanged = true;
+    if(this.formFilters.get('desiredPrice')!.value === 5000000){
+      this.desiredPriceChanged = false;
+    }
+  }
+
+  //kiểm tra giá tiền mong muốn đã thay đổi chưa
+  onChangeDesiredDistance():void {
+    this.desiredDistanceChanged = true;
+    if(this.formFilters.get('desiredDistance')!.value === 7.0){
+      this.desiredDistanceChanged = false;
+    }
   }
 
   //Đặt lại giá tiền mong muốn
   handleResetDesiredPrice():void {
-    this.formFilters.get('desiredPrice')?.setValue(500000);
+    this.formFilters.get('desiredPrice')?.setValue(5000000);
     this.desiredPriceChanged = false;
     this.handleFilters();
-    
+    this.handleChangeStyleInputRangePrice();
+  }
+
+  //Đặt lại giá tiền mong muốn
+  handleResetDesiredDistance():void {
+    this.formFilters.get('desiredDistance')?.setValue(7.0);
+    this.desiredDistanceChanged = false;
+    this.handleFilters();
+    this.handleChangeStyleInputRangeDistance();
   }
 
   // Initialize data motels
@@ -331,10 +386,14 @@ export class ViewOnMapComponent {
       this.listMotels = this.filterMotelData(response.data);
       this.addMarkers(this.listMotels);
       this.handleChangeStyle();
-      response.data.map((motel: any)=>{
+      response.data.map((motel: Motel)=>{
+        this.rentalDistances.push(motel.Distance);
+      })
+      this.initializeDataDistanceChart();
+      response.data.map((motel: Motel)=>{
         this.rentalPrices.push(motel.Price);
       })
-      this.initializeDataChart();
+      this.initializeDataPriceChart();
     })
   }
 
@@ -364,20 +423,51 @@ export class ViewOnMapComponent {
     this.showDropdownSuggestWardCommune = false;
   }
 
-  // Handle the form filter values
-  handleFilters() :void {
-    const filters = {
+  getFilters() :void{
+    this.filters = {
       addressSearch: this.addressSearch.value ? this.addressSearch.value : '',
       motelHasRoomAvailable: this.formFilters.get('motelHasRoomAvailable')!.value,
       noLiveWithLandlord: this.formFilters.get('noLiveWithLandlord')!.value,
       distanceLess1Km: this.formFilters.get('distanceLess1Km')!.value,
+      desiredDistance: this.formFilters.get('desiredDistance')!.value,
+      desiredPrice: this.formFilters.get('desiredPrice')!.value,
       haveMezzanine: this.formFilters.get('haveMezzanine')!.value,
       haveToilet: this.formFilters.get('haveToilet')!.value,
       havePlaceToCook: this.formFilters.get('havePlaceToCook')!.value,
       haveAirConditioner: this.formFilters.get('haveAirConditioner')!.value,
-      desiredPrice: this.desiredPriceChanged ? this.formFilters.get('desiredPrice')!.value : '',
     }
-    this.motelService.getMotelsFiltered(filters).subscribe((response)=>{
+  }
+  // Handle the form filter values
+  handleFilters() :void {
+    this.getFilters();
+    this.motelService.getMotelsFiltered(this.filters).subscribe((response)=>{
+      this.spinner.show();
+      setTimeout(() => {
+        this.listMotels = this.filterMotelData(response.data);
+        this.rentalDistances= [];
+        response.data.map((motel: any)=>{
+          this.rentalDistances.push(motel.Distance);
+        })
+        this.initializeDataDistanceChart();
+        this.rentalPrices= [];
+        response.data.map((motel: any)=>{
+          this.rentalPrices.push(motel.Price);
+        })
+        this.initializeDataPriceChart();
+        this.clearMarkers();
+        this.addMarkers(this.listMotels);
+        this.handleChangeStyle();
+        this.listMotelFiltered = response.dataFiltered;
+        this.spinner.hide();
+      }, 500);
+    }); 
+
+  }
+
+   // Handle the form filter values
+   handleFiltersDistance() :void {
+    this.getFilters();
+    this.motelService.getMotelsFiltered(this.filters).subscribe((response)=>{
       this.spinner.show();
       setTimeout(() => {
         this.listMotels = this.filterMotelData(response.data);
@@ -385,43 +475,39 @@ export class ViewOnMapComponent {
         response.data.map((motel: any)=>{
           this.rentalPrices.push(motel.Price);
         })
-        this.initializeDataChart();
+        this.initializeDataPriceChart();
         this.clearMarkers();
         this.addMarkers(this.listMotels);
         this.handleChangeStyle();
         this.listMotelFiltered = response.dataFiltered;
         this.spinner.hide();
-      }, 500);
-    })
+      }, 700);
+    });
+    this.handleChangeStyleInputRangeDistance();
   }
 
-   // Handle the form filter values
-   handleFiltersPrice() :void {
-    const filters = {
-      addressSearch: this.addressSearch.value ? this.addressSearch.value : '',
-      motelHasRoomAvailable: this.formFilters.get('motelHasRoomAvailable')!.value,
-      noLiveWithLandlord: this.formFilters.get('noLiveWithLandlord')!.value,
-      distanceLess1Km: this.formFilters.get('distanceLess1Km')!.value,
-      haveMezzanine: this.formFilters.get('haveMezzanine')!.value,
-      haveToilet: this.formFilters.get('haveToilet')!.value,
-      havePlaceToCook: this.formFilters.get('havePlaceToCook')!.value,
-      haveAirConditioner: this.formFilters.get('haveAirConditioner')!.value,
-      desiredPrice: this.desiredPriceChanged ? this.formFilters.get('desiredPrice')!.value : '',
-    }
-    this.motelService.getMotelsFiltered(filters).subscribe((response)=>{
+  // Handle the form filter values
+  handleFiltersPrice() :void {
+    this.getFilters();
+    this.motelService.getMotelsFiltered(this.filters).subscribe((response)=>{
       this.spinner.show();
       setTimeout(() => {
         this.listMotels = this.filterMotelData(response.data);
+        this.rentalDistances= [];
+        response.data.map((motel: any)=>{
+          this.rentalDistances.push(motel.Distance);
+        })
+        this.initializeDataDistanceChart();
         this.clearMarkers();
         this.addMarkers(this.listMotels);
         this.handleChangeStyle();
         this.listMotelFiltered = response.dataFiltered;
         this.spinner.hide();
-      }, 500);
-    })
+      }, 700);
+    });
+    this.handleChangeStyleInputRangeDistance();
   }
 
-  
 
   // Get the house count by price for the chart
   getHouseCountByPrice(prices: number[]): { price: number; count: number }[] {
@@ -448,20 +534,51 @@ export class ViewOnMapComponent {
   }
 
   // Get chart categories and counts based on the rental data
-  getChartCategoriesAndCounts(rentalData: { price: number; count: number }[]): { categories: number[], counts: number[] } {
+  getChartCategoriesAndCountsByPrice(rentalData: { price: number; count: number }[]): { categories: number[], counts: number[] } {
     const categories = Array.from({ length: 46 }, (_, i) => 500000 + i * 100000);
     const counts = categories.map((cat) => rentalData.find((item) => item.price === cat)?.count || 0);
     return { categories, counts };
   }
 
+  // Get the house count by distance for the chart
+  getHouseCountByDistance(distances: number[]): { distance: number; count: number }[] {
+    const distanceBuckets: { [key: number]: number } = {};
+    for (let distance = 0.0; distance <= 7.0; distance = parseFloat((distance + 0.1).toFixed(1))) {
+      distanceBuckets[distance] = 0;
+    }
+    distances.forEach((distance) => {
+      const bucket = this.getDistanceBucket(distance);
+      if (bucket !== null) {
+        distanceBuckets[bucket] += 1;
+      }
+    });
+    return Object.keys(distanceBuckets).map((bucket) => ({
+      distance: parseFloat(bucket),
+      count: distanceBuckets[parseFloat(bucket)],
+    }));
+  }
+
+  // Get the distance bucket for a given distance
+  getDistanceBucket(distance: number): number | null {
+    if (distance < 0 || distance > 7.0) return null;
+    return parseFloat((Math.floor((distance - 0.0) / 0.1) * 0.1 + 0.0).toFixed(1));
+  }
+
+  // Get chart categories and counts based on the rental data (for distances)
+  getChartCategoriesAndCountsByDistance(rentalData: { distance: number; count: number }[]): { categories: number[], counts: number[] } {
+    const categories = Array.from({ length: 71 }, (_, i) => parseFloat((0.0 + i * 0.1).toFixed(1)));
+    const counts = categories.map((cat) => rentalData.find((item) => item.distance === cat)?.count || 0);
+    return { categories, counts };
+  }
+
   //handle hidden control zoom 
-  handHiddenControlZoom(){
+  handHiddenControlZoom() :void {
     const div = document.querySelector('.leaflet-control-zoom.leaflet-bar.leaflet-control') as HTMLElement;
     div.style.display = 'none';
   }
 
   //handle change style price label marker
-  handleChangeStyle(){
+  handleChangeStyle() :void {
     const popups = document.querySelectorAll('.custom-price-icon'); 
     popups.forEach(popup => {
       (popup as HTMLElement).style.pointerEvents = 'none';
@@ -474,7 +591,7 @@ export class ViewOnMapComponent {
   }
 
   //handle change style price label marker
-  handleChangeStyleCheckbox(){
+  handleChangeStyleCheckbox() :void {
     const checkboxs = document.querySelectorAll('.ant-checkbox-inner'); 
     checkboxs .forEach(checkbox => {
       (checkbox as HTMLElement).style.width = '20px';
@@ -482,5 +599,36 @@ export class ViewOnMapComponent {
       (checkbox as HTMLElement).style.borderRadius = '4px';
     })
   }
+
+  //handle change style input range
+  handleChangeStyleInputRangePrice() :void {
+    const rangeInput = document.getElementById('desiredPrice') as HTMLInputElement;
+    // Hàm cập nhật màu nền
+    const updateBackground = () => {
+      const value = (parseInt(rangeInput.value) - parseInt(rangeInput.min)) /
+        (parseInt(rangeInput.max) - parseInt(rangeInput.min)) * 100;
+      rangeInput.style.background = `linear-gradient(to right, #299ffa ${value}%, #bdced3 ${value}%)`;
+    };
+    // Gọi hàm để cập nhật màu nền ban đầu
+    updateBackground();
+    // Lắng nghe sự kiện 'input' để cập nhật màu nền khi thay đổi giá trị
+    rangeInput.addEventListener('input', updateBackground);
+  }
+
+  //handle change style input range
+  handleChangeStyleInputRangeDistance() :void {
+    const rangeInput = document.getElementById('desiredDistance') as HTMLInputElement;
+    // Hàm cập nhật màu nền
+    const updateBackground = () => {
+      const value = (parseFloat(rangeInput.value) - parseFloat(rangeInput.min)) /
+        (parseInt(rangeInput.max) - parseInt(rangeInput.min)) * 100;
+      rangeInput.style.background = `linear-gradient(to right, #299ffa ${value}%, #bdced3 ${value}%)`;
+    };
+    // Gọi hàm để cập nhật màu nền ban đầu
+    updateBackground();
+    // Lắng nghe sự kiện 'input' để cập nhật màu nền khi thay đổi giá trị
+    rangeInput.addEventListener('input', updateBackground);
+  }
+
   
 }

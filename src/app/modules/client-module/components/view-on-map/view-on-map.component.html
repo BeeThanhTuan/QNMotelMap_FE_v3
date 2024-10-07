@@ -1,12 +1,12 @@
-<div class="content_wrapper w-full h-[calc(100vh-68px)] flex">
-    <div class="filters_area w-[300px] h-full bg-[#f8f7f5] pt-2">
+<div class="content_wrapper w-full h-[100vh]  flex">
+    <div class="filters_area w-[300px] h-full bg-[#f8f7f5] pt-2 ">
         <form [formGroup]="formFilters" class="filters min-w-[280px] max-w-[280px] mx-auto border rounded-md border-[#e7e7e7] bg-white  ">
             <div class="p-2 text-[16px] text-custom-color-black font-bold border-b border-[#e7e7e7] ">Chọn lọc theo:</div>
             <div class="pt-3 pr-4 pb-2 pl-3 border-b border-[#e7e7e7]">
-                <div class="text-[14px] text-custom-color-black font-bold">Dùng các bộ lọc cũ</div>
+                <div class="text-[14px] text-custom-color-black font-bold">Dùng các bộ lọc</div>
                 <div class="ntt-custom-filter-field">
                     <div>
-                       <label nz-checkbox class="w-5 h-5"  formControlName="motelHasRoomAvailable" (ngModelChange)="handleFilters()"></label>
+                       <label nz-checkbox [nzDisabled]="listMotels.length ? false : true" class="w-5 h-5"  formControlName="motelHasRoomAvailable" (ngModelChange)="handleFilters()"></label>
                     </div>
                     <div class="flex flex-col w-full">
                         <div class="ntt-custom-content-filter">
@@ -16,7 +16,7 @@
                 </div>
                 <div class="ntt-custom-filter-field">
                     <div>
-                       <label nz-checkbox class="w-5 h-5"  formControlName="noLiveWithLandlord" (ngModelChange)="handleFilters()"></label>
+                       <label nz-checkbox [nzDisabled]="listMotelFiltered.motelsWithoutLandlord.length ? false : true" class="w-5 h-5"  formControlName="noLiveWithLandlord" (ngModelChange)="handleFilters()"></label>
                     </div>
                     <div class="flex flex-col w-full">
                         <div class="ntt-custom-content-filter">
@@ -27,7 +27,7 @@
                 </div>
                 <div class="ntt-custom-filter-field">
                     <div>
-                       <label nz-checkbox class="w-5 h-5"  formControlName="distanceLess1Km" (ngModelChange)="handleFilters()"></label>
+                       <label nz-checkbox [nzDisabled]="listMotelFiltered.motelsWithin1km.length ? false : true" class="w-5 h-5"  formControlName="distanceLess1Km" (ngModelChange)="handleFilters();"></label>
                     </div>
                     <div class="flex flex-col w-full" title="Đại học Quy Nhơn">
                         <div class="ntt-custom-content-filter">
@@ -38,24 +38,53 @@
                     </div>
                 </div> 
             </div>
-            <div class="h-[180px] pt-3 pr-4 pb-2 pl-3 border-b border-[#e7e7e7] relative">
+            <div  class=" h-[180px] pt-3 pr-4 pb-4 pl-3 border-b border-[#e7e7e7] relative flex-col" [style.display]="formFilters.get('distanceLess1Km')?.value ? 'none' : 'flex'">
+                <div class="text-[14px] font-bold ">Khoảng cách mong muốn</div>
+                <div class="flex justify-between text-custom-color-black ">
+                    <div class="text-[14px] ">{{formFilters.get('desiredDistance')?.value }} km</div>
+                    <div *ngIf="desiredDistanceChanged === true"
+                        class="flex justify-center items-center cursor-pointer pointer-events-auto relative z-10"
+                        (click)="handleResetDesiredDistance()">
+                        <i class='bx bx-reset text-[25px] text-custom-color-black-light hover:text-[#1392ff]' title="Đặt lại khoảng cách"></i>
+                    </div>
+                </div>
+                <div id="chart1" class="w-[278px] p-0 relative left-[-20px] top-[-20px] ">
+                    <apx-chart [series]="chartOptionsDistance.series" [chart]="chartOptionsDistance.chart"
+                                [xaxis]="chartOptionsDistance.xaxis" [yaxis]="chartOptionsDistance.yaxis"
+                                [dataLabels]="chartOptionsDistance.dataLabels" [tooltip]="chartOptionsDistance.tooltip">
+                    </apx-chart>
+                </div>
+                <div class="mb-4 relative z-10 top-[-83px] left-[-2px]">
+                    <input id="desiredDistance" type="range" #price class="w-full " min="0.0" max="7.0" step="0.1" (ngModelChange)="onChangeDesiredDistance()"
+                     formControlName="desiredDistance"  title="Khoảng cách mong muốn">
+                    <div class="text-[12px] text-custom-color-black-light flex justify-between">
+                        <span>0 km</span>
+                        <span>7 km</span>
+                    </div>
+                </div>
+            </div>
+            <div class="h-[180px] pt-3 pr-4 pb-4 pl-3 border-b border-[#e7e7e7] relative">
                 <div class="text-[14px] text-custom-color-black font-bold">Ngân sách của bạn</div>
                 <div class="flex justify-between">
-                    <div class="text-[14px] mt-1 text-custom-color-black-light font-normal">{{formFilters.get('desiredPrice')?.value | money}} VND</div>
+                    <div class="text-[14px] text-custom-color-black-light font-normal">{{formFilters.get('desiredPrice')?.value | money}} VND</div>
                     <div *ngIf="desiredPriceChanged === true"
                         class="flex justify-center items-center cursor-pointer pointer-events-auto relative z-10"
                         (click)="handleResetDesiredPrice()">
                         <i class='bx bx-reset text-[25px] text-custom-color-black-light hover:text-[#1392ff]' title="Đặt lại giá "></i>
                     </div>
                 </div>
-                <div id="chart" class="w-[278px]  p-0 relative left-[-20px] top-[-20px]">
-                    <apx-chart [series]="chartOptions.series" [chart]="chartOptions.chart"
-                                [xaxis]="chartOptions.xaxis" [yaxis]="chartOptions.yaxis"
-                                [dataLabels]="chartOptions.dataLabels" [tooltip]="chartOptions.tooltip">
+                <div id="chart2" class="w-[278px]  p-0 relative left-[-20px] top-[-20px] ">
+                    <apx-chart [series]="chartOptionsPrice.series" [chart]="chartOptionsPrice.chart"
+                                [xaxis]="chartOptionsPrice.xaxis" [yaxis]="chartOptionsPrice.yaxis"
+                                [dataLabels]="chartOptionsPrice.dataLabels" [tooltip]="chartOptionsPrice.tooltip">
                     </apx-chart>
-                  </div>
+                </div>
                 <div class="mb-4 relative z-10 top-[-83px]">
-                    <input type="range" #price class="w-full " min="500000" max="5000000" step="100000" formControlName="desiredPrice" (ngModelChange)="onChangeDesiredPrice()">
+                    <input id="desiredPrice" type="range" #price class="w-full " min="500000" max="5000000" step="100000" formControlName="desiredPrice" (ngModelChange)="onChangeDesiredPrice()" title="Giá tiền mong muốn">
+                    <div class="text-[12px] text-custom-color-black-light flex justify-between ">
+                        <span>500.000 VND</span>
+                        <span>5.000.000 VND</span>
+                    </div>
                 </div>
             </div>
             <div class="pt-3 pr-4 pb-5 pl-3 ">
@@ -108,7 +137,7 @@
         </form><!--End filters motels-->
     </div>
     <div class="w-[calc(100%-300px)] h-full relative ">
-        <ngx-spinner bdColor = "rgba(0, 0, 0, 0.2)" size ="medium" color ="#fff" type ="ball-scale-multiple" [fullScreen] ="false"><p style="color: white" > Đang tải nhà trọ... </p></ngx-spinner>
+        <ngx-spinner bdColor = "rgba(0, 0, 0, 0.2)" size ="medium" color ="#fff" type ="ball-clip-rotate" [fullScreen] ="false"><p style="color: white" > Đang tải nhà trọ... </p></ngx-spinner>
         <div class="absolute z-10 top-3 left-[30px] ">
             <div class="w-[320px] h-[40px] px-2 flex justify-center items-center bg-white  rounded-[5px] relative z-10 ntt-shadow-input-search focus-within:ntt-shadow-input-search-focus" >
                 <i class='bx bx-search text-[20px]'></i>
@@ -123,7 +152,7 @@
                 appClickOutsideSuggestWardCommune
                 (clickOutsideSuggestWardCommune)="showDropdownSuggestWardCommune = false" 
                 *ngIf="showDropdownSuggestWardCommune"
-                class="relative w-full bg-white top-[-4px] left-0 rounded-bl-md rounded-br-md  ntt-shadow-input-suggest z-1" >
+                class="relative w-full bg-white top-[-4px] left-0 rounded-bl-md rounded-br-md  ntt-shadow-input-suggest z-1 overflow-hidden" >
                 <ul class="w-full pt-2">
                     <li *ngFor="let wardCommune of listWardCommune"
                          (click)="handleChooseWardCommune($event)"
