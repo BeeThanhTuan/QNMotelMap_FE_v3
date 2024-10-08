@@ -9,6 +9,7 @@ import { MotelFiltered} from 'src/app/interfaces/motelFiltered';
 import { debounceTime } from 'rxjs/operators';
 import { Motel } from 'src/app/interfaces/motel';
 import { Location } from '@angular/common';
+import { NzMarks } from 'ng-zorro-antd/slider';
 
 @Component({
   selector: 'app-view-on-map',
@@ -51,6 +52,47 @@ export class ViewOnMapComponent {
   //filters
   filters: any
 
+  marksPrice: NzMarks = {
+    500000: {
+      style: {
+        color: '#535353',
+        position: 'relative',
+        left: '35px',
+        'font-size': '13px'
+      },
+      label: '<p>500.000 VND</p>'
+    },
+    5000000: {
+      style: {
+        color: '#535353',
+        position: 'relative',
+        left: '55%',
+        'font-size': '13px'
+      },
+      label: '<p>5.000.000 VND</p>'
+    },
+  };
+  marksDistance: NzMarks = {
+    0: {
+      style: {
+        color: '#535353',
+        position: 'relative',
+        left: '15px',
+        'font-size': '13px'
+      },
+      label: '<p>0 km</p>'
+    },
+    7: {
+      style: {
+        color: '#535353',
+        position: 'relative',
+        left: '86%',
+        'font-size': '13px'
+      },
+      label: '<p>7 km</p>'
+    },
+  };
+  
   constructor(private titleService: Title, private formBuilder: FormBuilder, private motelService: MotelService,
     private location: Location,  private spinner: NgxSpinnerService ) {
     this.titleService.setTitle('QNMoteMap | Tìm kiếm');
@@ -68,8 +110,6 @@ export class ViewOnMapComponent {
     this.initializeMap();
     this.handHiddenControlZoom();
     this.handleChangeStyleCheckbox();
-    this.handleChangeStyleInputRangeDistance();
-    this.handleChangeStyleInputRangePrice();
     this.formFilters.get('desiredDistance')!.valueChanges.pipe(debounceTime(500)).subscribe(() => {
       this.handleFiltersDistance();
     });
@@ -369,15 +409,12 @@ export class ViewOnMapComponent {
     this.formFilters.get('desiredPrice')?.setValue(5000000);
     this.desiredPriceChanged = false;
     this.handleFilters();
-    this.handleChangeStyleInputRangePrice();
   }
 
   //Đặt lại giá tiền mong muốn
   handleResetDesiredDistance():void {
     this.formFilters.get('desiredDistance')?.setValue(7.0);
     this.desiredDistanceChanged = false;
-    this.handleFilters();
-    this.handleChangeStyleInputRangeDistance();
   }
 
   // Initialize data motels
@@ -595,39 +632,12 @@ export class ViewOnMapComponent {
     checkboxs .forEach(checkbox => {
       (checkbox as HTMLElement).style.width = '20px';
       (checkbox as HTMLElement).style.height = '20px';
-      (checkbox as HTMLElement).style.borderRadius = '4px';
+      (checkbox as HTMLElement).style.borderRadius = '3px';
+      (checkbox as HTMLElement).style.borderColor = '#999999';
+
     })
   }
 
-  //handle change style input range
-  handleChangeStyleInputRangePrice() :void {
-    const rangeInput = document.getElementById('desiredPriceMap') as HTMLInputElement;
-    // Hàm cập nhật màu nền
-    const updateBackground = () => {
-      const value = (parseInt(rangeInput.value) - parseInt(rangeInput.min)) /
-        (parseInt(rangeInput.max) - parseInt(rangeInput.min)) * 100;
-      rangeInput.style.background = `linear-gradient(to right, #299ffa ${value}%, #bdced3 ${value}%)`;
-    };
-    // Gọi hàm để cập nhật màu nền ban đầu
-    updateBackground();
-    // Lắng nghe sự kiện 'input' để cập nhật màu nền khi thay đổi giá trị
-    rangeInput.addEventListener('input', updateBackground);
-  }
-
-  //handle change style input range
-  handleChangeStyleInputRangeDistance() :void {
-    const rangeInput = document.getElementById('desiredDistanceMap') as HTMLInputElement;
-    // Hàm cập nhật màu nền
-    const updateBackground = () => {
-      const value = (parseFloat(rangeInput.value) - parseFloat(rangeInput.min)) /
-        (parseInt(rangeInput.max) - parseInt(rangeInput.min)) * 100;
-      rangeInput.style.background = `linear-gradient(to right, #299ffa ${value}%, #bdced3 ${value}%)`;
-    };
-    // Gọi hàm để cập nhật màu nền ban đầu
-    updateBackground();
-    // Lắng nghe sự kiện 'input' để cập nhật màu nền khi thay đổi giá trị
-    rangeInput.addEventListener('input', updateBackground);
-  }
 
 
   goBack(): void {

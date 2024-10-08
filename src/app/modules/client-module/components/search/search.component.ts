@@ -3,13 +3,13 @@ import { chartOptions } from '../../config-charts/chart-bar-options';
 import { Title } from '@angular/platform-browser';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router, NavigationEnd } from '@angular/router';
-import { NgxSpinnerService } from "ngx-spinner";
 import { MotelFiltered} from 'src/app/interfaces/motelFiltered';
 import { SetFieldSearchFilterService } from 'src/app/services/set-field-search-filter.service';
 import { MotelService } from 'src/app/services/motel.service';
 import { Motel } from 'src/app/interfaces/motel';
 import { debounceTime } from 'rxjs/operators';
-import { trigger } from '@angular/animations';
+import { NzMarks } from 'ng-zorro-antd/slider';
+
 
 interface FieldSearch {
   wardCommune: string,
@@ -51,29 +51,75 @@ export class SearchComponent {
   desiredPriceChanged: boolean = false;
   desiredDistanceChanged: boolean = false;
   //data navigation search
-  fieldSearch!: FieldSearch;
+  fieldSearch!: FieldSearch
 
   filters: any;
 
+  marksPrice: NzMarks = {
+    500000: {
+      style: {
+        color: '#535353',
+        position: 'relative',
+        left: '35px',
+        'font-size': '13px'
+      },
+      label: '<p>500.000 VND</p>'
+    },
+    5000000: {
+      style: {
+        color: '#535353',
+        position: 'relative',
+        left: '55%',
+        'font-size': '13px'
+      },
+      label: '<p>5.000.000 VND</p>'
+    },
+  };
+  marksDistance: NzMarks = {
+    0: {
+      style: {
+        color: '#535353',
+        position: 'relative',
+        left: '15px',
+        'font-size': '13px'
+      },
+      label: '<p>0 km</p>'
+    },
+    7: {
+      style: {
+        color: '#535353',
+        position: 'relative',
+        left: '86%',
+        'font-size': '13px'
+      },
+      label: '<p>7 km</p>'
+    },
+  };
+
   constructor(private titleService: Title, private formBuilder: FormBuilder, private router: Router,
     private setFieldSearch: SetFieldSearchFilterService, private cdr: ChangeDetectorRef,
-    private motelService: MotelService, private spinner: NgxSpinnerService) {
+    private motelService: MotelService) {
     this.titleService.setTitle('QNMoteMap | Tìm kiếm ');
     this.initializeForm();
   }
 
   ngOnInit(): void {
+    // await this.setDataFormLocal();  // Giả sử setDataFormLocal là hàm bất đồng bộ   
     this.setFieldSearch.fieldSearch$.subscribe(data => {
-      this.fieldSearch = data;
-      this.handleSetFieldForm();
+      if (data) {
+        this.fieldSearch = data;
+        this.handleSetFieldForm();
+        this.handleFilters();
+      }
     });
-    this.initializeDataPriceChart();
-    this.initializeDataDistanceChart();
-  }
+
+    this.initializeDataPriceChart();  
+    this.initializeDataDistanceChart(); 
+}
+
 
   ngAfterViewInit(): void {
-    this.handleChangeStyleInputRangeDistance();
-    this.handleChangeStyleInputRangePrice();
+    this.handleChangeStyleCheckbox()
     this.formFilters.get('desiredDistance')!.valueChanges.pipe(debounceTime(500)).subscribe(() => {
       this.handleFiltersDistance();
     });
@@ -82,8 +128,28 @@ export class SearchComponent {
     });
   }
 
+  async setDataFormLocal() {
+    let listMotelLocal = await JSON.parse(localStorage.getItem('listMotelLocal')!) || []
+    let filtersLocal = await JSON.parse(localStorage.getItem('filtersLocal')!)
+    let listMotelFiltered = await JSON.parse(localStorage.getItem('listMotelFiltered')!)
+
+    if(listMotelLocal){
+      this.listMotels = listMotelLocal;
+    }
+    if(filtersLocal){
+      this.fieldSearch = filtersLocal;
+    }
+    if(listMotelFiltered){
+      this.listMotelFiltered = listMotelFiltered;
+    }
+    console.log(listMotelLocal);
+    console.log(filtersLocal);
+    console.log(listMotelFiltered);
+    
+    
+  }
+
   handleSetFieldForm(): void {
-    // Nhóm cập nhật form filters bằng patchValue
     setTimeout(() => {
       this.formFilters.patchValue({
         wardCommune: this.fieldSearch.wardCommune,
@@ -94,18 +160,8 @@ export class SearchComponent {
         haveToilet: this.fieldSearch.haveToilet,
         haveAirConditioner: this.fieldSearch.haveAirConditioner
       }, { emitEvent: false });
-  
-      // Thủ công đánh dấu để kiểm tra thay đổi, nếu cần
-      this.cdr.detectChanges();
-  
-      this.handleFilters();
-      this.handleChangeStyleInputRangeDistance();
-      this.handleChangeStyleInputRangePrice();
-      // Gọi handleFilters sau khi cập nhật tất cả form
     }, 100);
-    // setTimeout(()=>{
-
-    // },710)
+   
   }
   
 
@@ -168,6 +224,15 @@ export class SearchComponent {
     });
   }
 
+  // Hàm để lọc dữ liệu từ listMotel
+  filterMotelData(listMotel: any) {
+   return listMotel.map((motel :any)=> ({
+     _id: motel._id,
+     Locations: motel.Location,
+     Price: motel.Price
+   }));
+ }
+
   getFilters() :void{
     this.filters = {
       addressSearch: this.fieldSearch.wardCommune,
@@ -183,13 +248,10 @@ export class SearchComponent {
     }
   }
 
-   // Hàm để lọc dữ liệu từ listMotel
-   filterMotelData(listMotel: any) {
-    return listMotel.map((motel :any)=> ({
-      _id: motel._id,
-      Locations: motel.Location,
-      Price: motel.Price
-    }));
+  setDataIntoLocalStorage():void{
+    localStorage.setItem('listMotelLocal', JSON.stringify(this.listMotels)); 
+    localStorage.setItem('filtersLocal', JSON.stringify(this.filters));  
+    localStorage.setItem('listMotelFiltered', JSON.stringify(this.listMotelFiltered));  
   }
 
   // Handle the form filter values
@@ -198,7 +260,7 @@ export class SearchComponent {
     this.getFilters();
     console.log(this.filters);
     this.motelService.getMotelsFiltered(this.filters).subscribe((response)=>{
-      this.listMotels = response.data;    
+      this.listMotels = response.data;
       this.rentalDistances= [];
       response.data.map((motel: any)=>{
         this.rentalDistances.push(motel.Distance);
@@ -210,6 +272,7 @@ export class SearchComponent {
       })
       this.initializeDataPriceChart();
       this.listMotelFiltered = response.dataFiltered;
+      this.setDataIntoLocalStorage();
       setTimeout(() => {
         this.isLoading = false;
       }, 1000);
@@ -220,7 +283,6 @@ export class SearchComponent {
    handleFiltersDistance() :void {
     this.isLoading = true;
     this.getFilters();
-    console.log(this.filters);
     this.motelService.getMotelsFiltered(this.filters).subscribe((response)=>{
       this.listMotels = response.data;    
       this.rentalPrices= [];
@@ -229,6 +291,7 @@ export class SearchComponent {
       })
       this.initializeDataPriceChart();
       this.listMotelFiltered = response.dataFiltered;
+      this.setDataIntoLocalStorage();
       setTimeout(() => {
         this.isLoading = false;
       }, 1000);
@@ -239,7 +302,6 @@ export class SearchComponent {
   handleFiltersPrice() :void {
     this.isLoading = true;
     this.getFilters();
-    console.log(this.filters);
     this.motelService.getMotelsFiltered(this.filters).subscribe((response)=>{
       this.listMotels = response.data;    
       this.rentalDistances= [];
@@ -248,10 +310,11 @@ export class SearchComponent {
       })
       this.initializeDataDistanceChart();
       this.listMotelFiltered = response.dataFiltered;
-      this.spinner.hide();
+      this.setDataIntoLocalStorage();
       setTimeout(() => {
         this.isLoading = false;
       }, 1000);
+
     });
   }
 
@@ -278,7 +341,6 @@ export class SearchComponent {
     this.formFilters.get('desiredPrice')?.setValue(5000000);
     this.desiredPriceChanged = false;
     this.handleFilters();
-    this.handleChangeStyleInputRangePrice();
   }
 
   //Đặt lại giá tiền mong muốn
@@ -286,7 +348,6 @@ export class SearchComponent {
     this.formFilters.get('desiredDistance')?.setValue(7.0);
     this.desiredDistanceChanged = false;
     this.handleFilters();
-    this.handleChangeStyleInputRangeDistance();
   }
 
 
@@ -352,33 +413,18 @@ export class SearchComponent {
     return { categories, counts };
   }
 
-  //handle change style input range
-  handleChangeStyleInputRangePrice() :void {
-    const rangeInput = document.getElementById('desiredPrice') as HTMLInputElement;
-    // Hàm cập nhật màu nền
-    const updateBackground = () => {
-      const value = (parseInt(rangeInput.value) - parseInt(rangeInput.min)) /
-        (parseInt(rangeInput.max) - parseInt(rangeInput.min)) * 100;
-      rangeInput.style.background = `linear-gradient(to right, #299ffa ${value}%, #bdced3 ${value}%)`;
-    };
-    // Gọi hàm để cập nhật màu nền ban đầu
-    updateBackground();
-    // Lắng nghe sự kiện 'input' để cập nhật màu nền khi thay đổi giá trị
-    rangeInput.addEventListener('input', updateBackground);
+
+
+  //handle change style price label marker
+  handleChangeStyleCheckbox() :void {
+    const checkboxs = document.querySelectorAll('.ant-checkbox-inner'); 
+    checkboxs .forEach(checkbox => {
+      (checkbox as HTMLElement).style.width = '20px';
+      (checkbox as HTMLElement).style.height = '20px';
+      (checkbox as HTMLElement).style.borderRadius = '3px';
+      (checkbox as HTMLElement).style.borderColor = '#999999';
+    })
   }
 
-  //handle change style input range
-  handleChangeStyleInputRangeDistance() :void {
-    const rangeInput = document.getElementById('desiredDistance') as HTMLInputElement;
-    // Hàm cập nhật màu nền
-    const updateBackground = () => {
-      const value = (parseFloat(rangeInput.value) - parseFloat(rangeInput.min)) /
-        (parseInt(rangeInput.max) - parseInt(rangeInput.min)) * 100;
-      rangeInput.style.background = `linear-gradient(to right, #299ffa ${value}%, #bdced3 ${value}%)`;
-    };
-    // Gọi hàm để cập nhật màu nền ban đầu
-    updateBackground();
-    // Lắng nghe sự kiện 'input' để cập nhật màu nền khi thay đổi giá trị
-    rangeInput.addEventListener('input', updateBackground);
-  }
+
 }

@@ -1,9 +1,8 @@
 import { Convenient } from "./convenient";
 import { Images } from "./images";
-import { Landlord } from "./landlord";
 import { Rating } from "./rating";
 import { Room } from "./room";
-import { User } from "./user";
+
 
 export interface Motel {
     _id: string;
@@ -14,7 +13,7 @@ export interface Motel {
     Address: string;
     WardCommune: string;
     Description: string;
-    ListConvenient: object[];
+    ListConvenient: Convenient[];
     Price: number;
     LiveWithLandlord: boolean;
     ElectricityBill: number;
@@ -25,7 +24,7 @@ export interface Motel {
     Distance: number;
     TotalStar:number;
     CreateAt: string;
-    CreateBy: object | User | null;
+    CreateBy: string | null;
     UpdateAt: string;
-    UpdateBy: object | User | null;
+    UpdateBy: string | null;
   }

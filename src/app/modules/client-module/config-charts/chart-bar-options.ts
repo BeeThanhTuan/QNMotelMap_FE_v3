@@ -1,5 +1,5 @@
 // src/app/chart-options.ts
-import { ApexAxisChartSeries, ApexChart, ApexXAxis, ApexYAxis, ApexDataLabels, ApexTooltip, ApexPlotOptions } from 'ng-apexcharts';
+import { ApexAxisChartSeries, ApexChart, ApexXAxis, ApexYAxis, ApexDataLabels, ApexTooltip, ApexPlotOptions, ApexFill, ApexGrid } from 'ng-apexcharts';
 
 export const chartOptions = (colors: string[]): {
   series: ApexAxisChartSeries;
@@ -10,6 +10,9 @@ export const chartOptions = (colors: string[]): {
   tooltip: ApexTooltip;
   plotOptions: ApexPlotOptions;
   colors: string[];
+  fill: ApexFill
+  states: any;
+  grid: ApexGrid
 } => ({
   series: [
     {
@@ -17,9 +20,10 @@ export const chartOptions = (colors: string[]): {
       data: []  // Dữ liệu sẽ được cập nhật từ component
     }
   ],
+  grid: {show: false},
   chart: {
     type: 'bar',
-    height: 130,
+    height: 110,
     background: 'transparent',
     toolbar: {
       show: false
@@ -64,8 +68,22 @@ export const chartOptions = (colors: string[]): {
           to: 10000000,
           color: colors[0]  // Màu sắc của các cột
         }]
+      },
+      distributed: false, 
+      dataLabels: {
+        position: 'top'
       }
     }
   },
-  colors
+  colors,
+  fill: {
+    colors: ['#e0e0e0']
+  },
+  states: {
+    hover: {
+      filter: {
+        type: 'none'  
+      }
+    }
+  }
 });

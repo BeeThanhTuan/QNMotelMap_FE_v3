@@ -50,7 +50,7 @@
                         </div>
                     </div> 
                 </div>
-                <div  class=" h-[180px] pt-3 pr-4 pb-4 pl-3 border-b border-[#e7e7e7] relative flex-col" [style.display]="formFilters.get('distanceLess1Km')?.value ? 'none' : 'flex'">
+                <div  class=" h-[160px] pt-3 pr-4 pb-4 pl-3 border-b border-[#e7e7e7] relative flex-col" [style.display]="formFilters.get('distanceLess1Km')?.value ? 'none' : 'flex'">
                     <div class="text-[14px] font-bold ">Khoảng cách mong muốn</div>
                     <div class="flex justify-between text-custom-color-black ">
                         <div class="text-[14px] ">{{formFilters.get('desiredDistance')?.value }} km</div>
@@ -60,22 +60,18 @@
                             <i class='bx bx-reset text-[25px] text-custom-color-black-light hover:text-[#1392ff]' title="Đặt lại khoảng cách"></i>
                         </div>
                     </div>
-                    <div id="chart1" class="w-[278px] p-0 relative left-[-20px] top-[-20px] ">
-                        <apx-chart [series]="chartOptionsDistance.series" [chart]="chartOptionsDistance.chart"
-                                    [xaxis]="chartOptionsDistance.xaxis" [yaxis]="chartOptionsDistance.yaxis"
+                    <div id="chart1" class="w-[280px] p-0 relative left-[-20px] top-[-20px] ">
+                        <apx-chart [series]="chartOptionsDistance.series" [chart]="chartOptionsDistance.chart" [grid]="chartOptionsPrice.grid"
+                                    [xaxis]="chartOptionsDistance.xaxis" [yaxis]="chartOptionsDistance.yaxis" [fill]="chartOptionsPrice.fill"
                                     [dataLabels]="chartOptionsDistance.dataLabels" [tooltip]="chartOptionsDistance.tooltip">
                         </apx-chart>
                     </div>
-                    <div class="mb-4 relative z-10 top-[-83px] left-[-2px]">
-                        <input id="desiredDistance" type="range" #price class="w-full " min="0.0" max="7.0" step="0.1" (change)="onChangeDesiredDistance()"
-                         formControlName="desiredDistance"  title="Khoảng cách mong muốn">
-                        <div class="text-[12px] text-custom-color-black-light flex justify-between">
-                            <span>0 km</span>
-                            <span>7 km</span>
-                        </div>
+                    <div class="mb-4 relative z-10 top-[-83px] ">
+                        <nz-slider class="w-full" [nzMarks]="marksDistance" [nzMin]="0" [nzMax]="7"  [nzStep]="0.1"  [nzTooltipVisible]="'never'"  (change)="onChangeDesiredDistance()"
+                         formControlName="desiredDistance"  title="Khoảng cách mong muốn"></nz-slider>    
                     </div>
                 </div>
-                <div class="h-[180px] pt-3 pr-4 pb-4 pl-3 border-b border-[#e7e7e7] relative">
+                <div class="h-[160px] pt-3 pr-4 pb-4 pl-3 border-b border-[#e7e7e7] relative">
                     <div class="text-[14px] text-custom-color-black font-bold">Ngân sách của bạn</div>
                     <div class="flex justify-between">
                         <div class="text-[14px] text-custom-color-black-light font-normal">{{formFilters.get('desiredPrice')?.value | money}} VND</div>
@@ -85,18 +81,15 @@
                             <i class='bx bx-reset text-[25px] text-custom-color-black-light hover:text-[#1392ff]' title="Đặt lại giá "></i>
                         </div>
                     </div>
-                    <div id="chart2" class="w-[278px]  p-0 relative left-[-20px] top-[-20px] ">
-                        <apx-chart [series]="chartOptionsPrice.series" [chart]="chartOptionsPrice.chart"
-                                    [xaxis]="chartOptionsPrice.xaxis" [yaxis]="chartOptionsPrice.yaxis"
+                    <div id="chart2" class="w-[280px]  p-0 relative left-[-20px] top-[-20px] ">
+                        <apx-chart [series]="chartOptionsPrice.series" [chart]="chartOptionsPrice.chart" [grid]="chartOptionsPrice.grid"
+                                    [xaxis]="chartOptionsPrice.xaxis" [yaxis]="chartOptionsPrice.yaxis" [fill]="chartOptionsPrice.fill"
                                     [dataLabels]="chartOptionsPrice.dataLabels" [tooltip]="chartOptionsPrice.tooltip">
                         </apx-chart>
                     </div>
                     <div class="mb-4 relative z-10 top-[-83px]">
-                        <input id="desiredPrice" type="range" #price class="w-full " min="500000" max="5000000" step="100000" formControlName="desiredPrice" (change)="onChangeDesiredPrice()" title="Giá tiền mong muốn">
-                        <div class="text-[12px] text-custom-color-black-light flex justify-between ">
-                            <span>500.000 VND</span>
-                            <span>5.000.000 VND</span>
-                        </div>
+                        <nz-slider class="w-full" [nzMarks]="marksPrice" [nzMin]="500000" [nzMax]="5000000"  [nzStep]="100000"  [nzTooltipVisible]="'never'" 
+                         formControlName="desiredPrice" (change)="onChangeDesiredPrice()" title="Giá tiền mong muốn"> </nz-slider>
                     </div>
                 </div>
                 <div class="pt-3 pr-4 pb-5 pl-3 ">
@@ -157,7 +150,7 @@
                     <li *ngFor="let motel of listMotels" class="w-full min-w-[712px] p-4 flex border border-[#e7e7e7] rounded-md ">
                         <ngx-skeleton-loader  *ngIf="isLoading" appearance="line" [theme]="{height: '250px', width: '250px', 'margin-bottom': '0'}"></ngx-skeleton-loader>
                         <div *ngIf="!isLoading" class="image_motel w-[250px] h-[250px] relative">
-                            <a href="">
+                            <a href="/client/home/detail-motel/{{motel._id}}">
                                 <img class="w-full h-full object-cover rounded-md" src="http://localhost:3000/resources/img-motels/{{motel.ListImages[0].LinkImage}}" alt="">
                             </a>
                             <div title="Lưu">
@@ -196,10 +189,10 @@
                                 <div class="w-[calc(100%-170px)]">12</div>
                                 <div class="w-[170px] flex flex-col justify-end items-end">
                                     <ngx-skeleton-loader  *ngIf="isLoading" appearance="line" [theme]="{height: '30px', width: '130px','margin-bottom': '5px'}"></ngx-skeleton-loader>
-                                    <div *ngIf="!isLoading" class="text-[20px] font-medium text-custom-color-black ">{{motel.Price}} VND</div>
+                                    <div *ngIf="!isLoading" class="text-[20px] font-medium text-custom-color-black ">{{motel.Price | money}} VND</div>
                                     <ngx-skeleton-loader  *ngIf="isLoading" appearance="line" [theme]="{height: '40px', width: '130px','margin-bottom': '0'}"></ngx-skeleton-loader>
                                     <div *ngIf="!isLoading" class="mt-2 w-fit text-center">
-                                        <a href="" class="px-3 py-[5px] bg-custom-color-blue flex justify-center items-center rounded-md cursor-pointer
+                                        <a href="/client/home/detail-motel/{{motel._id}}" class="px-3 py-[5px] bg-custom-color-blue flex justify-center items-center rounded-md cursor-pointer
                                             hover:bg-custom-bg-hover-blue" >
                                             <span class="pb-[2px] text-[15px] text-white font-semibold text-center ">Xem nhà trọ </span>           
                                             <i class='bx bx-chevron-right text-[20px] text-white '></i>
