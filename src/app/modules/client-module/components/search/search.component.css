@@ -1,92 +1,50 @@
-/*********** Baseline, reset styles ***********/
+
 input[type="range"] {
-    -webkit-appearance: none;
-    appearance: none;
-    background: transparent;
-    cursor: pointer;
-    width: 100%;
-  }
-  
-  /* Removes default focus */
-  input[type="range"]:focus {
-    outline: none;
-  }
-  
-  /******** Chrome, Safari, Opera and Edge Chromium styles ********/
-  /* slider track */
-  input[type="range"]::-webkit-slider-runnable-track {
-    background-color: #bdced3b6;
-    border-radius: 0.5rem;
-    height: 3px;
-  }
-  
-  /* slider thumb */
-  input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none; /* Override default look */
-    appearance: none;
-    margin-top: -6.5px; /* Centers thumb on the track */
-    background-color: #006CE4;
-    border-radius: 0.5rem;
-    height: 1rem;
-    width: 1rem;
-  }
-  
-  input[type="range"]:focus::-webkit-slider-thumb {
-    box-shadow: 0px 0px 0px 6px #90c2fc91
-  }
-  
-  /*********** Firefox styles ***********/
-  /* slider track */
-  input[type="range"]::-moz-range-track {
-    background-color: #bdced3b6;
-    border-radius: 0.5rem;
-    height: 3.5px;
-  }
-  
-  /* slider thumb */
-  input[type="range"]::-moz-range-thumb {
-    border: none; /*Removes extra border that FF applies*/
-    background-color: #006CE4;
-    border-radius: 0.5rem;
-    height: 1rem;
-    width: 1rem;
-  }
-  
-  input[type="range"]:focus::-moz-range-thumb{
-    box-shadow: 0px 0px 0px 6px #90c2fc91
-  }
-
-
-/* Base styles for the checkbox */
-input[type="checkbox"] {
-  appearance: none;
   -webkit-appearance: none;
-  width: 20px;
-  height: 20px;
-  border: 1.5px solid #a2a6a7;
-  border-radius: 0.25rem;
-  background-color: #fff;
+  appearance: none;
   cursor: pointer;
-  position: relative;
+  width: 100%;
 }
 
-/* Styles when the checkbox is checked */
-input[type="checkbox"]:checked {
-  background-color: #006CE4;
-  border-color: #006CE4;
+input[type="range"]:focus {
+  outline: none;
 }
 
-/* Optional: Add a checkmark icon when the checkbox is checked */
-input[type="checkbox"]:checked::before {
-  content: '✔';
-  color: #fff;
-  font-size: 15px;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+
+input[type="range"]::-webkit-slider-runnable-track {
+  background-color: transparent;
+  border-radius: 0.5rem;
+  height: 3.74px;
 }
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none; 
+  margin-top: -6.5px; 
+  background-color: #006ce4;
+  border-radius: 0.5rem;
+  height: 1rem;
+  width: 1rem;
+}
+
+input[type="range"]:focus::-webkit-slider-thumb {
+  box-shadow: 0px 0px 0px 6px #90c2fc91;
+}
+
+
+input[type="range"]::-moz-range-track {
+  background-color: transparent;
+  border-radius: 0.5rem;
+  height: 3.74px;
+}
+
+input[type="range"]::-moz-range-thumb {
+  border: none; 
+  background-color: #006ce4;
+  border-radius: 0.5rem;
+  height: 1rem;
+  width: 1rem;
+}
+
+input[type="range"]:focus::-moz-range-thumb {
+  box-shadow: 0px 0px 0px 6px #90c2fc91;
+} 

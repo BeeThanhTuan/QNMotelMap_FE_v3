@@ -12,6 +12,7 @@ export class ViewMotelOnMapComponent {
   @Output() showPopupMotelOnMap = new EventEmitter<boolean>()
   motel: Motel = {
     _id: '',
+    NameMotel: '',
     Location: '',
     LandlordID: {},
     ListImages: [], 

@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { Options } from '@angular-slider/ngx-slider';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router, NavigationEnd } from '@angular/router';
 import { MotelService } from 'src/app/services/motel.service';
 import { NzMarks } from 'ng-zorro-antd/slider';
+import { SetFieldSearchFilterService } from 'src/app/services/set-field-search-filter.service';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -43,7 +43,8 @@ export class HomeComponent {
     },
   };
 
-  constructor(private titleService: Title, private formBuilder: FormBuilder, private router: Router, private motelService: MotelService) { 
+  constructor(private titleService: Title, private formBuilder: FormBuilder, private router: Router,
+     private motelService: MotelService, private setFieldSearch: SetFieldSearchFilterService) { 
     this.titleService.setTitle('QNMoteMap | Trang chủ ');
     this.initializeFormFilters();
   }
@@ -52,7 +53,7 @@ export class HomeComponent {
     this.formSearch = this.formBuilder.group({
       wardCommune: [''],
       desiredPrice: [5000000],
-      distance: [7],
+      desiredDistance: [7],
       noLiveWithLandlord:[false],
       haveMezzanine: [false],
       haveToilet: [false],
@@ -85,17 +86,17 @@ export class HomeComponent {
 
   // giảm khoảng cách
   onClickDecreaseDistance(){
-    const distance = this.formSearch.get('distance')?.value;
+    const distance = this.formSearch.get('desiredDistance')?.value;
     if (distance >  0) {
-      this.formSearch.get('distance')?.setValue(parseFloat((distance - 0.1).toFixed(1)));
+      this.formSearch.get('desiredDistance')?.setValue(parseFloat((distance - 0.1).toFixed(1)));
     }
   }
 
   decreaseDistance(){
     this.intervalDecreaseDistance = setInterval(() => {
-      const distance = this.formSearch.get('distance')?.value;
+      const distance = this.formSearch.get('desiredDistance')?.value;
       if (distance > 0) {
-        this.formSearch.get('distance')?.setValue(parseFloat((distance - 0.1).toFixed(1)));
+        this.formSearch.get('desiredDistance')?.setValue(parseFloat((distance - 0.1).toFixed(1)));
       }
     },100)
 
@@ -107,17 +108,17 @@ export class HomeComponent {
 
   // tăng khoảng cách
   onClickIncreaseDistance(){
-    const distance = this.formSearch.get('distance')?.value;
+    const distance = this.formSearch.get('desiredDistance')?.value;
     if (distance < 7) {
-      this.formSearch.get('distance')?.setValue(parseFloat((distance + 0.1).toFixed(1)));
+      this.formSearch.get('desiredDistance')?.setValue(parseFloat((distance + 0.1).toFixed(1)));
     }
   }
 
   increaseDistance(){
     this.intervalIncreaseDistance = setInterval(() => {
-      const distance = this.formSearch.get('distance')?.value;
+      const distance = this.formSearch.get('desiredDistance')?.value;
       if (distance < 7) {
-        this.formSearch.get('distance')?.setValue(parseFloat((distance + 0.1).toFixed(1)));
+        this.formSearch.get('desiredDistance')?.setValue(parseFloat((distance + 0.1).toFixed(1)));
       }
     },100)
   }
@@ -128,15 +129,17 @@ export class HomeComponent {
 
   // đặt lại các lựa chọn
   resetToDefaultOtherChoose(){
-    this.formSearch.get('distance')?.setValue(7);
+    this.formSearch.get('desiredDistance')?.setValue(7);
     this.formSearch.get('haveMezzanine')?.setValue(false);
     this.formSearch.get('haveToilet')?.setValue(false);
     this.formSearch.get('haveAirConditioner')?.setValue(false);
+    this.formSearch.get('noLiveWithLandlord')?.setValue(false);
   }
 
   //tìm kiếm 
   handleSearch(){
-    console.table(this.formSearch.value);
+    this.router.navigate(['/client/home/search']);
+    this.setFieldSearch.setFieldSearch(this.formSearch.value)
   }
 
   // ẩn các element không sử dung ở các component khác nhau
@@ -146,6 +149,11 @@ export class HomeComponent {
     }
     if (url.includes('/content')) {
       this.showBannerWrapper = true;
+      this.showFormSearch = true; 
+      this.showHeader = true; 
+    }
+    if (url.includes('/search')) {
+      this.showBannerWrapper = false;
       this.showFormSearch = true; 
       this.showHeader = true; 
     }

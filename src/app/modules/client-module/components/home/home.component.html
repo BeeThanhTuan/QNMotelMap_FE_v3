@@ -93,7 +93,7 @@
                                 <div class="ntt-custom-p">
                                     <p class="pr-2">Các lựa chọn khác:</p>
                                     <p>
-                                        <span *ngIf="formSearch.get('distance')?.value">{{formSearch.get('distance')?.value }} km</span>
+                                        <span *ngIf="formSearch.get('desiredDistance')?.value">{{formSearch.get('desiredDistance')?.value }} km</span>
                                         <span *ngIf="formSearch.get('noLiveWithLandlord')?.value" > - chung chủ</span>
                                         <span *ngIf="formSearch.get('haveMezzanine')?.value"> - gác lững</span>
                                         <span *ngIf="formSearch.get('haveToilet')?.value" > - nhà vệ sinh riêng</span>
@@ -116,7 +116,7 @@
                                             (mouseleave)="stopDecreaseDistance()"
                                             (mouseup)="stopDecreaseDistance()"
                                              class="hover:bg-custom-hv-color-blue"><i class='bx bx-minus p-2'></i></button>
-                                        <span class="text-[15px] w-[50px] font-semibold text-center">{{ formSearch.get('distance')?.value }} km</span>
+                                        <span class="text-[15px] w-[50px] font-semibold text-center">{{ formSearch.get('desiredDistance')?.value }} km</span>
                                         <button type="button"
                                             (click)="onClickIncreaseDistance()"
                                             (mousedown)="increaseDistance()" 

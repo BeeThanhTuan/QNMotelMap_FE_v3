@@ -7,6 +7,7 @@ import { User } from "./user";
 
 export interface Motel {
     _id: string;
+    NameMotel: string,
     Location: string;
     LandlordID: object;
     ListImages: Images[];

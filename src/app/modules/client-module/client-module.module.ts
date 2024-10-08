@@ -33,7 +33,7 @@ import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzSliderModule } from 'ng-zorro-antd/slider';
 //loading
 import { NgxSpinnerModule } from "ngx-spinner";
-
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 
 @NgModule({
   declarations: [
@@ -70,7 +70,8 @@ import { NgxSpinnerModule } from "ngx-spinner";
     NzSwitchModule,
     NzCheckboxModule,
     NzSliderModule,
-    NgxSpinnerModule
+    NgxSpinnerModule,
+    NgxSkeletonLoaderModule
   ]
 })
 export class ClientModuleModule { }

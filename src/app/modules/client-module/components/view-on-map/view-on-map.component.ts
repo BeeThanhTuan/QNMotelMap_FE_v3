@@ -8,6 +8,7 @@ import { NgxSpinnerService } from "ngx-spinner";
 import { MotelFiltered} from 'src/app/interfaces/motelFiltered';
 import { debounceTime } from 'rxjs/operators';
 import { Motel } from 'src/app/interfaces/motel';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-view-on-map',
@@ -50,7 +51,8 @@ export class ViewOnMapComponent {
   //filters
   filters: any
 
-  constructor(private titleService: Title, private formBuilder: FormBuilder, private motelService: MotelService, private spinner: NgxSpinnerService ) {
+  constructor(private titleService: Title, private formBuilder: FormBuilder, private motelService: MotelService,
+    private location: Location,  private spinner: NgxSpinnerService ) {
     this.titleService.setTitle('QNMoteMap | Tìm kiếm');
     this.initializeForm();
   }
@@ -60,15 +62,14 @@ export class ViewOnMapComponent {
     this.initializeDataPriceChart();
     this.initializeDataDistanceChart();
     this.initializeListWardCommune();
-    
   }
 
   ngAfterViewInit(): void {
     this.initializeMap();
     this.handHiddenControlZoom();
     this.handleChangeStyleCheckbox();
-    this.handleChangeStyleInputRangePrice();
     this.handleChangeStyleInputRangeDistance();
+    this.handleChangeStyleInputRangePrice();
     this.formFilters.get('desiredDistance')!.valueChanges.pipe(debounceTime(500)).subscribe(() => {
       this.handleFiltersDistance();
     });
@@ -483,7 +484,6 @@ export class ViewOnMapComponent {
         this.spinner.hide();
       }, 700);
     });
-    this.handleChangeStyleInputRangeDistance();
   }
 
   // Handle the form filter values
@@ -505,7 +505,6 @@ export class ViewOnMapComponent {
         this.spinner.hide();
       }, 700);
     });
-    this.handleChangeStyleInputRangeDistance();
   }
 
 
@@ -602,7 +601,7 @@ export class ViewOnMapComponent {
 
   //handle change style input range
   handleChangeStyleInputRangePrice() :void {
-    const rangeInput = document.getElementById('desiredPrice') as HTMLInputElement;
+    const rangeInput = document.getElementById('desiredPriceMap') as HTMLInputElement;
     // Hàm cập nhật màu nền
     const updateBackground = () => {
       const value = (parseInt(rangeInput.value) - parseInt(rangeInput.min)) /
@@ -617,7 +616,7 @@ export class ViewOnMapComponent {
 
   //handle change style input range
   handleChangeStyleInputRangeDistance() :void {
-    const rangeInput = document.getElementById('desiredDistance') as HTMLInputElement;
+    const rangeInput = document.getElementById('desiredDistanceMap') as HTMLInputElement;
     // Hàm cập nhật màu nền
     const updateBackground = () => {
       const value = (parseFloat(rangeInput.value) - parseFloat(rangeInput.min)) /
@@ -629,6 +628,12 @@ export class ViewOnMapComponent {
     // Lắng nghe sự kiện 'input' để cập nhật màu nền khi thay đổi giá trị
     rangeInput.addEventListener('input', updateBackground);
   }
+
+
+  goBack(): void {
+    this.location.back();
+  }
+
 
   
 }

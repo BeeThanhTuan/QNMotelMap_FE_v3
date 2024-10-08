@@ -1,6 +1,6 @@
 <div class="content_wrapper w-full text-base px-3">
-    <div class="flex max-w-custom mx-auto">
-        <div class="filters_area min-w-[280px] max-w-[280px]">
+    <div class="flex max-w-custom mx-auto scroll-smooth">
+        <div class="filters_area min-w-[280px] max-w-[280px] ">
             <div class="view_on_map w-full h-[150px] bg-cover bg-center bg-no-repeat rounded-lg flex flex-col justify-center gap-2"
                  style="background-image: url('/assets/images/map-entry-point.png');">
                 <div class="w-full flex justify-center">
@@ -12,13 +12,13 @@
                     </button>
                 </div>
             </div> <!--End view on map-->
-            <form [formGroup]="formFilters" class="filters mt-2 border rounded-md border-[#e7e7e7]">
+            <form [formGroup]="formFilters" class="filters min-w-[280px] max-w-[280px] mx-auto my-3 border rounded-md border-[#e7e7e7] bg-white ">
                 <div class="p-2 text-[16px] text-custom-color-black font-bold border-b border-[#e7e7e7] ">Chọn lọc theo:</div>
                 <div class="pt-3 pr-4 pb-2 pl-3 border-b border-[#e7e7e7]">
-                    <div class="text-[14px] text-custom-color-black font-bold">Dùng các bộ lọc cũ</div>
+                    <div class="text-[14px] text-custom-color-black font-bold">Dùng các bộ lọc</div>
                     <div class="ntt-custom-filter-field">
                         <div>
-                           <input class="w-5 h-5" type="checkbox" formControlName="motelHasRoomAvailable" (ngModelChange)="handleFilters()">
+                           <label nz-checkbox  class="w-5 h-5"  formControlName="motelHasRoomAvailable" (change)="handleFilters()"></label>
                         </div>
                         <div class="flex flex-col w-full">
                             <div class="ntt-custom-content-filter">
@@ -28,100 +28,137 @@
                     </div>
                     <div class="ntt-custom-filter-field">
                         <div>
-                           <input class="w-5 h-5" type="checkbox" formControlName="noLiveWithLandlord">
+                           <label nz-checkbox [nzDisabled]="listMotelFiltered.motelsWithoutLandlord.length ? false : true" class="w-5 h-5"  formControlName="noLiveWithLandlord" (change)="handleFilters()"></label>
                         </div>
                         <div class="flex flex-col w-full">
                             <div class="ntt-custom-content-filter">
                                 <div>Không chung chủ</div>
-                                <span>12</span>
+                                <span>{{listMotelFiltered.motelsWithoutLandlord.length}}</span>
                             </div>
                         </div>
                     </div>
                     <div class="ntt-custom-filter-field">
                         <div>
-                           <input class="w-5 h-5" type="checkbox" formControlName="distanceLess1Km">
+                           <label nz-checkbox [nzDisabled]="listMotelFiltered.motelsWithin1km.length ? false : true" class="w-5 h-5"  formControlName="distanceLess1Km" (change)="handleFilters();"></label>
                         </div>
                         <div class="flex flex-col w-full" title="Đại học Quy Nhơn">
                             <div class="ntt-custom-content-filter">
                                 <div>Dưới 1 km</div>
-                                <span>13</span>
+                                <span>{{listMotelFiltered.motelsWithin1km.length}}</span>
                             </div>
                             <div class="h-[20px] text-[12px] text-custom-color-black-light">Khoảng cách từ địa chỉ tới trường </div>
                         </div>
                     </div> 
                 </div>
-                <div class="h-[180px] pt-3 pr-4 pb-2 pl-3 border-b border-[#e7e7e7] relative">
-                    <div class="text-[14px] text-custom-color-black font-bold">Ngân sách của bạn</div>
-                    <div class="text-[14px] mt-1 text-custom-color-black-light font-normal">{{formFilters.get('desiredPrice')?.value | money}} VND</div>
-                    <div id="chart" class="w-[278px]  p-0 relative left-[-20px] top-[-20px]">
-                        <apx-chart [series]="chartOptions.series" [chart]="chartOptions.chart"
-                                    [xaxis]="chartOptions.xaxis" [yaxis]="chartOptions.yaxis"
-                                    [dataLabels]="chartOptions.dataLabels" [tooltip]="chartOptions.tooltip">
+                <div  class=" h-[180px] pt-3 pr-4 pb-4 pl-3 border-b border-[#e7e7e7] relative flex-col" [style.display]="formFilters.get('distanceLess1Km')?.value ? 'none' : 'flex'">
+                    <div class="text-[14px] font-bold ">Khoảng cách mong muốn</div>
+                    <div class="flex justify-between text-custom-color-black ">
+                        <div class="text-[14px] ">{{formFilters.get('desiredDistance')?.value }} km</div>
+                        <div *ngIf="desiredDistanceChanged === true"
+                            class="flex justify-center items-center cursor-pointer pointer-events-auto relative z-10"
+                            (click)="handleResetDesiredDistance()">
+                            <i class='bx bx-reset text-[25px] text-custom-color-black-light hover:text-[#1392ff]' title="Đặt lại khoảng cách"></i>
+                        </div>
+                    </div>
+                    <div id="chart1" class="w-[278px] p-0 relative left-[-20px] top-[-20px] ">
+                        <apx-chart [series]="chartOptionsDistance.series" [chart]="chartOptionsDistance.chart"
+                                    [xaxis]="chartOptionsDistance.xaxis" [yaxis]="chartOptionsDistance.yaxis"
+                                    [dataLabels]="chartOptionsDistance.dataLabels" [tooltip]="chartOptionsDistance.tooltip">
                         </apx-chart>
-                      </div>
+                    </div>
+                    <div class="mb-4 relative z-10 top-[-83px] left-[-2px]">
+                        <input id="desiredDistance" type="range" #price class="w-full " min="0.0" max="7.0" step="0.1" (change)="onChangeDesiredDistance()"
+                         formControlName="desiredDistance"  title="Khoảng cách mong muốn">
+                        <div class="text-[12px] text-custom-color-black-light flex justify-between">
+                            <span>0 km</span>
+                            <span>7 km</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="h-[180px] pt-3 pr-4 pb-4 pl-3 border-b border-[#e7e7e7] relative">
+                    <div class="text-[14px] text-custom-color-black font-bold">Ngân sách của bạn</div>
+                    <div class="flex justify-between">
+                        <div class="text-[14px] text-custom-color-black-light font-normal">{{formFilters.get('desiredPrice')?.value | money}} VND</div>
+                        <div *ngIf="desiredPriceChanged === true"
+                            class="flex justify-center items-center cursor-pointer pointer-events-auto relative z-10"
+                            (click)="handleResetDesiredPrice()">
+                            <i class='bx bx-reset text-[25px] text-custom-color-black-light hover:text-[#1392ff]' title="Đặt lại giá "></i>
+                        </div>
+                    </div>
+                    <div id="chart2" class="w-[278px]  p-0 relative left-[-20px] top-[-20px] ">
+                        <apx-chart [series]="chartOptionsPrice.series" [chart]="chartOptionsPrice.chart"
+                                    [xaxis]="chartOptionsPrice.xaxis" [yaxis]="chartOptionsPrice.yaxis"
+                                    [dataLabels]="chartOptionsPrice.dataLabels" [tooltip]="chartOptionsPrice.tooltip">
+                        </apx-chart>
+                    </div>
                     <div class="mb-4 relative z-10 top-[-83px]">
-                        <input type="range" #price class="w-full " min="500000" max="5000000" step="100000" formControlName="desiredPrice">
+                        <input id="desiredPrice" type="range" #price class="w-full " min="500000" max="5000000" step="100000" formControlName="desiredPrice" (change)="onChangeDesiredPrice()" title="Giá tiền mong muốn">
+                        <div class="text-[12px] text-custom-color-black-light flex justify-between ">
+                            <span>500.000 VND</span>
+                            <span>5.000.000 VND</span>
+                        </div>
                     </div>
                 </div>
                 <div class="pt-3 pr-4 pb-5 pl-3 ">
                     <div class="text-[14px] text-custom-color-black font-bold">Tiện nghi</div>
                     <div class="ntt-custom-filter-field">
                         <div>
-                           <input class="w-5 h-5" type="checkbox" formControlName="haveMezzanine">
+                           <label nz-checkbox [nzDisabled]="listMotelFiltered.convenientCounts['Gác lửng'] ? false : true"  class="w-5 h-5"  formControlName="haveMezzanine" (change)="handleFilters()"></label>
                         </div>
                         <div class="flex flex-col w-full">
                             <div class="ntt-custom-content-filter">
                                 <div>Gác lửng</div>
-                                <span>12</span>
+                                <span>{{listMotelFiltered.convenientCounts['Gác lửng'] ? listMotelFiltered.convenientCounts['Gác lửng'] : 0}}</span>
                             </div>
                         </div>
                     </div>
                     <div class="ntt-custom-filter-field">
                         <div>
-                           <input class="w-5 h-5" type="checkbox" formControlName="haveToilet">
+                           <label nz-checkbox [nzDisabled]="listMotelFiltered.convenientCounts['Vệ sinh riêng'] ? false : true" class="w-5 h-5"  formControlName="haveToilet"  (change)="handleFilters()"> </label>
                         </div>
                         <div class="flex flex-col w-full">
                             <div class="ntt-custom-content-filter">
                                 <div>Vệ sinh riêng</div>
-                                <span>12</span>
+                                <span>{{listMotelFiltered.convenientCounts['Vệ sinh riêng'] ? listMotelFiltered.convenientCounts['Vệ sinh riêng'] : 0}}</span>
                             </div>
                         </div>
                     </div>
                     <div class="ntt-custom-filter-field">
                         <div>
-                           <input class="w-5 h-5" type="checkbox" formControlName="havePlaceToCook">
+                           <label nz-checkbox [nzDisabled]="listMotelFiltered.convenientCounts['Nơi nấu ăn'] ? false : true"  class="w-5 h-5"  formControlName="havePlaceToCook" (change)="handleFilters()"></label>    
                         </div>
                         <div class="flex flex-col w-full">
                             <div class="ntt-custom-content-filter">
-                                <div>Chỗ nấu ăn</div>
-                                <span>12</span>
+                                <div>Nơi nấu ăn</div>
+                                <span>{{listMotelFiltered.convenientCounts['Nơi nấu ăn'] ? listMotelFiltered.convenientCounts['Nơi nấu ăn'] : 0}}</span>
                             </div>
                         </div>
                     </div>
-                    <div class="ntt-custom-filter-field">
+                    <div class="ntt-custom-filter-field ">
                         <div>
-                           <input class="w-5 h-5" type="checkbox" formControlName="haveAirConditioner" >
+                           <label nz-checkbox [nzDisabled]="listMotelFiltered.convenientCounts['Điều hoà'] ? false : true" class="w-5 h-5"  formControlName="haveAirConditioner" (change)="handleFilters()" ></label>    
                         </div>
                         <div class="flex flex-col w-full">
                             <div class="ntt-custom-content-filter">
                                 <div>Điều hoà</div>
-                                <span>12</span>
+                                <span>{{listMotelFiltered.convenientCounts['Điều hoà'] ? listMotelFiltered.convenientCounts['Điều hoà'] : 0}}</span>
                             </div>
                         </div>
                     </div>
                 </div>
             </form><!--End filters motels-->
         </div> <!--End filters area motels-->
-        <div class="result w-[calc(100%-280px)] pl-4">
+        <div class="result w-[calc(100%-280px)] pl-4 relative">
             <div class="w-full">
-                <h1 class="h-[28px] text-[20px] text-custom-color-black font-sans font-bold"><span class="capitalize">Ngô mây:</span> tìm thấy 20 nhà trọ</h1>
+                <h1 class="h-[28px] text-[20px] text-custom-color-black font-sans font-bold"><span class="capitalize">{{fieldSearch.wardCommune ? fieldSearch.wardCommune + ':' : ''}}</span> tìm thấy {{listMotels.length}} nhà trọ</h1>
             </div>
             <div class="w-full pt-3">
                 <ul class="w-full flex flex-col gap-4">
-                    <li class="w-full min-w-[712px] p-4 flex border border-[#e7e7e7] rounded-md ">
-                       <div class="image_motel w-[250px] h-[250px] relative">
+                    <li *ngFor="let motel of listMotels" class="w-full min-w-[712px] p-4 flex border border-[#e7e7e7] rounded-md ">
+                        <ngx-skeleton-loader  *ngIf="isLoading" appearance="line" [theme]="{height: '250px', width: '250px', 'margin-bottom': '0'}"></ngx-skeleton-loader>
+                        <div *ngIf="!isLoading" class="image_motel w-[250px] h-[250px] relative">
                             <a href="">
-                                <img class="w-full h-full object-cover rounded-md" src="assets/images/img-motel.jpg" alt="">
+                                <img class="w-full h-full object-cover rounded-md" src="http://localhost:3000/resources/img-motels/{{motel.ListImages[0].LinkImage}}" alt="">
                             </a>
                             <div title="Lưu">
                                 <button class="w-9 h-9 favorite-motel absolute top-3 right-3 flex justify-center items-center rounded-full bg-white hover:bg-[#f2f2f2] group">
@@ -132,30 +169,36 @@
                        <div class="info_motel w-[calc(100%-250px)] pl-4 flex flex-col justify-between">
                             <div class="flex justify-between">
                                 <div>
-                                    <div class="mb-2 text-[21px] font-sans font-bold text-custom-color-blue ">Tên nhà trọ</div>
+                                    <ngx-skeleton-loader  *ngIf="isLoading" appearance="line" [theme]="{height: '30px', width: '300px','margin-bottom': '5px' }"></ngx-skeleton-loader>
+                                    <div *ngIf="!isLoading"  class="mb-2 text-[21px] font-sans font-bold text-custom-color-blue ">{{motel.NameMotel ? motel.NameMotel : 'Nhà trọ' }}</div>
                                     <div class=" text-custom-color-blue flex flex-col" >
-                                        <div class="mr-2 flex items-center flex-wrap">
-                                            <span class="capitalize text-[14px] font-semibold">79 Biên cương, Ngô Mây</span>
+                                        <ngx-skeleton-loader  *ngIf="isLoading" appearance="line" [theme]="{height: '25px', width: '100%' ,'margin-bottom': '5px'}"></ngx-skeleton-loader>
+                                        <div *ngIf="!isLoading" class="mr-2 flex items-center flex-wrap">
+                                            <span class="capitalize text-[14px] font-semibold">{{motel.Address}}, {{motel.WardCommune}}</span>
                                             <span class="mx-2"> - </span>
                                             <span class="text-[14px] font-semibold underline cursor-pointer"> Xem trên bản đồ </span>
                                         </div>
-                                        <span class="text-[12px] font-normal text-custom-color-black">Khoảng cách tới trường 1km</span>
+                                        <ngx-skeleton-loader  *ngIf="isLoading" appearance="line" [theme]="{height: '20px', width: '200px' ,'margin-bottom': '5px'}"></ngx-skeleton-loader>
+                                        <span *ngIf="!isLoading" class="text-[12px] font-normal text-custom-color-black">Khoảng cách tới trường {{motel.Distance}} km</span>
                                     </div>
                                 </div>
-                                <div class="flex gap-2 h-9">
+                                <ngx-skeleton-loader  *ngIf="isLoading" appearance="line" [theme]="{height: '40px', width: '100px'}"></ngx-skeleton-loader>
+                                <div *ngIf="!isLoading" class="flex gap-2 h-9">
                                     <div class="w-[70px] flex justify-end items-end">
-                                        <span class="text-[14px] font-normal text-custom-color-black"> 8 đánh giá</span>
+                                        <span class="text-[14px] font-normal text-custom-color-black"> {{motel.ListRatings.length ? motel.ListRatings.length : '0'}} đánh giá</span>
                                     </div>
                                     <div class="w-8 h-8 flex justify-center items-center bg-[#003B95] rounded-[5px] rounded-bl-none">
-                                        <span class="text-[17px] font-semibold text-white">5.0</span>
+                                        <span class="text-[17px] font-semibold text-white">{{motel.TotalStar}}</span>
                                     </div>
                                 </div>
                             </div>
                             <div class="h-[calc(100%-80px)] flex justify-between w-full">
                                 <div class="w-[calc(100%-170px)]">12</div>
                                 <div class="w-[170px] flex flex-col justify-end items-end">
-                                    <div class="text-[20px] font-medium text-custom-color-black ">1.000.000 VND</div>
-                                    <div class="mt-2 w-fit text-center">
+                                    <ngx-skeleton-loader  *ngIf="isLoading" appearance="line" [theme]="{height: '30px', width: '130px','margin-bottom': '5px'}"></ngx-skeleton-loader>
+                                    <div *ngIf="!isLoading" class="text-[20px] font-medium text-custom-color-black ">{{motel.Price}} VND</div>
+                                    <ngx-skeleton-loader  *ngIf="isLoading" appearance="line" [theme]="{height: '40px', width: '130px','margin-bottom': '0'}"></ngx-skeleton-loader>
+                                    <div *ngIf="!isLoading" class="mt-2 w-fit text-center">
                                         <a href="" class="px-3 py-[5px] bg-custom-color-blue flex justify-center items-center rounded-md cursor-pointer
                                             hover:bg-custom-bg-hover-blue" >
                                             <span class="pb-[2px] text-[15px] text-white font-semibold text-center ">Xem nhà trọ </span>           
@@ -166,54 +209,6 @@
                             </div>
                        </div><!--End info motel-->
                     </li>
-                    <li class="w-full min-w-[712px] p-4 flex border border-[#e7e7e7] rounded-md ">
-                        <div class="image_motel w-[250px] h-[250px] relative">
-                             <a href="">
-                                 <img class="w-full h-full object-cover rounded-md" src="assets/images/img-motel.jpg" alt="">
-                             </a>
-                             <div title="Lưu">
-                                 <button class="w-9 h-9 favorite-motel absolute top-3 right-3 flex justify-center items-center rounded-full bg-white hover:bg-[#f2f2f2] group">
-                                     <i class="bx bx-heart text-[20px] text-custom-color-black-light group-hover:text-[red]"></i>
-                                 </button>
-                             </div>
-                        </div> <!--End image motel-->
-                        <div class="info_motel w-[calc(100%-250px)] pl-4 flex flex-col justify-between">
-                             <div class="flex justify-between">
-                                 <div>
-                                     <div class="mb-2 text-[21px] font-sans font-bold text-custom-color-blue line-clamp-1">Tên nhà trọ</div>
-                                     <div class=" text-custom-color-blue flex items-center flex-wrap" >
-                                         <div class="mr-2 flex items-center flex-wrap">
-                                             <span class="capitalize text-[14px] font-semibold">79 Biên cương, Ngô Mây</span>
-                                             <span class="mx-2"> - </span>
-                                             <span class="text-[14px] font-semibold underline cursor-pointer"> Xem trên bản đồ </span>
-                                         </div>
-                                         <span class="text-[12px] font-normal text-custom-color-black">Khoảng cách tới trường 1km</span>
-                                     </div>
-                                 </div>
-                                 <div class="flex gap-2 h-9">
-                                     <div class="w-[70px] flex justify-end items-end">
-                                         <span class="text-[14px] font-normal text-custom-color-black"> 8 đánh giá</span>
-                                     </div>
-                                     <div class="w-8 h-8 flex justify-center items-center bg-[#003B95] rounded-[5px] rounded-bl-none">
-                                         <span class="text-[17px] font-semibold text-white">5.0</span>
-                                     </div>
-                                 </div>
-                             </div>
-                             <div class="h-[calc(100%-80px)] flex justify-between w-full">
-                                 <div class="w-[calc(100%-170px)]">12</div>
-                                 <div class="w-[170px] flex flex-col justify-end items-end">
-                                     <div class="text-[20px] font-medium text-custom-color-black ">1.000.000 VND</div>
-                                     <div class="mt-2 w-fit text-center">
-                                         <a href="" class="px-3 py-[5px] bg-custom-color-blue flex justify-center items-center rounded-md cursor-pointer
-                                             hover:bg-custom-bg-hover-blue" >
-                                             <span class="pb-[2px] text-[15px] text-white font-semibold text-center ">Xem nhà trọ </span>           
-                                             <i class='bx bx-chevron-right text-[20px] text-white '></i>
-                                         </a>
-                                     </div>
-                                 </div>
-                             </div>
-                        </div><!--End info motel-->
-                     </li>
                 </ul>
             </div>
         </div> <!--End result motels-->

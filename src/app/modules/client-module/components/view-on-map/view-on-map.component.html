@@ -6,7 +6,7 @@
                 <div class="text-[14px] text-custom-color-black font-bold">Dùng các bộ lọc</div>
                 <div class="ntt-custom-filter-field">
                     <div>
-                       <label nz-checkbox [nzDisabled]="listMotels.length ? false : true" class="w-5 h-5"  formControlName="motelHasRoomAvailable" (ngModelChange)="handleFilters()"></label>
+                       <label nz-checkbox [nzDisabled]="listMotels.length ? false : true" class="w-5 h-5"  formControlName="motelHasRoomAvailable" (change)="handleFilters()"></label>
                     </div>
                     <div class="flex flex-col w-full">
                         <div class="ntt-custom-content-filter">
@@ -16,7 +16,7 @@
                 </div>
                 <div class="ntt-custom-filter-field">
                     <div>
-                       <label nz-checkbox [nzDisabled]="listMotelFiltered.motelsWithoutLandlord.length ? false : true" class="w-5 h-5"  formControlName="noLiveWithLandlord" (ngModelChange)="handleFilters()"></label>
+                       <label nz-checkbox [nzDisabled]="listMotelFiltered.motelsWithoutLandlord.length ? false : true" class="w-5 h-5"  formControlName="noLiveWithLandlord" (change)="handleFilters()"></label>
                     </div>
                     <div class="flex flex-col w-full">
                         <div class="ntt-custom-content-filter">
@@ -27,7 +27,7 @@
                 </div>
                 <div class="ntt-custom-filter-field">
                     <div>
-                       <label nz-checkbox [nzDisabled]="listMotelFiltered.motelsWithin1km.length ? false : true" class="w-5 h-5"  formControlName="distanceLess1Km" (ngModelChange)="handleFilters();"></label>
+                       <label nz-checkbox [nzDisabled]="listMotelFiltered.motelsWithin1km.length ? false : true" class="w-5 h-5"  formControlName="distanceLess1Km" (change)="handleFilters();"></label>
                     </div>
                     <div class="flex flex-col w-full" title="Đại học Quy Nhơn">
                         <div class="ntt-custom-content-filter">
@@ -55,7 +55,7 @@
                     </apx-chart>
                 </div>
                 <div class="mb-4 relative z-10 top-[-83px] left-[-2px]">
-                    <input id="desiredDistance" type="range" #price class="w-full " min="0.0" max="7.0" step="0.1" (ngModelChange)="onChangeDesiredDistance()"
+                    <input id="desiredDistanceMap" type="range" #price class="w-full " min="0.0" max="7.0" step="0.1" (change)="onChangeDesiredDistance()"
                      formControlName="desiredDistance"  title="Khoảng cách mong muốn">
                     <div class="text-[12px] text-custom-color-black-light flex justify-between">
                         <span>0 km</span>
@@ -80,7 +80,7 @@
                     </apx-chart>
                 </div>
                 <div class="mb-4 relative z-10 top-[-83px]">
-                    <input id="desiredPrice" type="range" #price class="w-full " min="500000" max="5000000" step="100000" formControlName="desiredPrice" (ngModelChange)="onChangeDesiredPrice()" title="Giá tiền mong muốn">
+                    <input id="desiredPriceMap" type="range" #price class="w-full " min="500000" max="5000000" step="100000" formControlName="desiredPrice" (change)="onChangeDesiredPrice()" title="Giá tiền mong muốn">
                     <div class="text-[12px] text-custom-color-black-light flex justify-between ">
                         <span>500.000 VND</span>
                         <span>5.000.000 VND</span>
@@ -91,7 +91,7 @@
                 <div class="text-[14px] text-custom-color-black font-bold">Tiện nghi</div>
                 <div class="ntt-custom-filter-field">
                     <div>
-                       <label nz-checkbox [nzDisabled]="listMotelFiltered.convenientCounts['Gác lửng'] ? false : true"  class="w-5 h-5"  formControlName="haveMezzanine" (ngModelChange)="handleFilters()"></label>
+                       <label nz-checkbox [nzDisabled]="listMotelFiltered.convenientCounts['Gác lửng'] ? false : true"  class="w-5 h-5"  formControlName="haveMezzanine" (change)="handleFilters()"></label>
                     </div>
                     <div class="flex flex-col w-full">
                         <div class="ntt-custom-content-filter">
@@ -102,7 +102,7 @@
                 </div>
                 <div class="ntt-custom-filter-field">
                     <div>
-                       <label nz-checkbox [nzDisabled]="listMotelFiltered.convenientCounts['Vệ sinh riêng'] ? false : true" class="w-5 h-5"  formControlName="haveToilet"  (ngModelChange)="handleFilters()"> </label>
+                       <label nz-checkbox [nzDisabled]="listMotelFiltered.convenientCounts['Vệ sinh riêng'] ? false : true" class="w-5 h-5"  formControlName="haveToilet"  (change)="handleFilters()"> </label>
                     </div>
                     <div class="flex flex-col w-full">
                         <div class="ntt-custom-content-filter">
@@ -113,7 +113,7 @@
                 </div>
                 <div class="ntt-custom-filter-field">
                     <div>
-                       <label nz-checkbox [nzDisabled]="listMotelFiltered.convenientCounts['Nơi nấu ăn'] ? false : true"  class="w-5 h-5"  formControlName="havePlaceToCook" (ngModelChange)="handleFilters()"></label>    
+                       <label nz-checkbox [nzDisabled]="listMotelFiltered.convenientCounts['Nơi nấu ăn'] ? false : true"  class="w-5 h-5"  formControlName="havePlaceToCook" (change)="handleFilters()"></label>    
                     </div>
                     <div class="flex flex-col w-full">
                         <div class="ntt-custom-content-filter">
@@ -124,7 +124,7 @@
                 </div>
                 <div class="ntt-custom-filter-field">
                     <div>
-                       <label nz-checkbox [nzDisabled]="listMotelFiltered.convenientCounts['Điều hoà'] ? false : true" class="w-5 h-5"  formControlName="haveAirConditioner" (ngModelChange)="handleFilters()" ></label>    
+                       <label nz-checkbox [nzDisabled]="listMotelFiltered.convenientCounts['Điều hoà'] ? false : true" class="w-5 h-5"  formControlName="haveAirConditioner" (change)="handleFilters()" ></label>    
                     </div>
                     <div class="flex flex-col w-full">
                         <div class="ntt-custom-content-filter">
@@ -138,32 +138,42 @@
     </div>
     <div class="w-[calc(100%-300px)] h-full relative ">
         <ngx-spinner bdColor = "rgba(0, 0, 0, 0.2)" size ="medium" color ="#fff" type ="ball-clip-rotate" [fullScreen] ="false"><p style="color: white" > Đang tải nhà trọ... </p></ngx-spinner>
-        <div class="absolute z-10 top-3 left-[30px] ">
-            <div class="w-[320px] h-[40px] px-2 flex justify-center items-center bg-white  rounded-[5px] relative z-10 ntt-shadow-input-search focus-within:ntt-shadow-input-search-focus" >
-                <i class='bx bx-search text-[20px]'></i>
-                <input type="search" spellcheck="false" id="input_address_search"
-                autocomplete="off"
-                [formControl]="addressSearch"
-                (click)="showDropdownSuggestWardCommune = true"
-                 class="w-full px-2 focus:outline-none text-[15px] placeholder:text-custom-color-black-light text-custom-color-black-light "
-                placeholder="Tìm kiếm trên bản đồ">
+        <div class="absolute z-10 top-[10px] px-[30px] w-full flex justify-between gap-3 ">
+            <div>
+                <div class="w-[320px] h-[40px] px-2 flex justify-center items-center bg-white  rounded-[5px] relative z-10 ntt-shadow-input-search focus-within:ntt-shadow-input-search-focus" >
+                    <i class='bx bx-search text-[20px]'></i>
+                    <input type="search" spellcheck="false" id="input_address_search"
+                    autocomplete="off"
+                    [formControl]="addressSearch"
+                    (click)="showDropdownSuggestWardCommune = true"
+                     class="w-full px-2 focus:outline-none text-[15px] placeholder:text-custom-color-black-light text-custom-color-black-light "
+                    placeholder="Tìm kiếm trên bản đồ">
+                </div>
+                <div id="suggest_ward_commune_popup"
+                    appClickOutsideSuggestWardCommune
+                    (clickOutsideSuggestWardCommune)="showDropdownSuggestWardCommune = false" 
+                    *ngIf="showDropdownSuggestWardCommune"
+                    class="relative w-full bg-white top-[-4px] left-0 rounded-bl-md rounded-br-md  ntt-shadow-input-suggest z-1 overflow-hidden" >
+                    <ul class="w-full pt-2">
+                        <li *ngFor="let wardCommune of listWardCommune"
+                             (click)="handleChooseWardCommune($event)"
+                             class="p-2 flex border-b hover:bg-[#f2f2f2] cursor-pointer">
+                            <i class='bx bx-map text-[24px] pr-2 text-custom-color-black-light'></i>
+                            <p class="w-full text-[15px] text-custom-color-black-light">{{wardCommune}}</p>
+                        </li>
+                        
+                    </ul>
+                </div> <!-- End dropdown suggest ward/commune -->
             </div>
-            <div id="suggest_ward_commune_popup"
-                appClickOutsideSuggestWardCommune
-                (clickOutsideSuggestWardCommune)="showDropdownSuggestWardCommune = false" 
-                *ngIf="showDropdownSuggestWardCommune"
-                class="relative w-full bg-white top-[-4px] left-0 rounded-bl-md rounded-br-md  ntt-shadow-input-suggest z-1 overflow-hidden" >
-                <ul class="w-full pt-2">
-                    <li *ngFor="let wardCommune of listWardCommune"
-                         (click)="handleChooseWardCommune($event)"
-                         class="p-2 flex border-b hover:bg-[#f2f2f2] cursor-pointer">
-                        <i class='bx bx-map text-[24px] pr-2 text-custom-color-black-light'></i>
-                        <p class="w-full text-[15px] text-custom-color-black-light">{{wardCommune}}</p>
-                    </li>
-                    
-                </ul>
-            </div> <!-- End dropdown suggest ward/commune -->
+            <div>
+                <button (click)="goBack()"
+                    class="min-w-[114px] h-[40px] bg-white px-4  rounded-[5px] ntt-shadow-input-search flex justify-center items-center gap-1 text-custom-color-black-light hover:bg-custom-hv-color-blue">
+                    <i class='bx bxs-arrow-to-left text-[24px]'></i>
+                    <span class="text-[15px]">Quay lại</span>
+                </button>
+            </div>
         </div>
+
         <app-view-motel-on-map *ngIf="showPopupMotelOnMap" 
             appClickOutsidePopupMotelOnMap
             (clickOutsidePopupMotelOnMap)="showPopupMotelOnMap = false"
