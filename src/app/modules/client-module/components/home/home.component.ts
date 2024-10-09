@@ -139,7 +139,7 @@ export class HomeComponent {
   //tìm kiếm 
   handleSearch(){
     this.router.navigate(['/client/home/search']);
-    this.setFieldSearch.setFieldSearch(this.formSearch.value)
+    this.setFieldSearch.setFieldSearch(this.formSearch.value);
   }
 
   // ẩn các element không sử dung ở các component khác nhau

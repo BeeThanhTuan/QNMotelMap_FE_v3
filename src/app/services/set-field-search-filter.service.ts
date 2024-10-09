@@ -11,6 +11,7 @@ export class SetFieldSearchFilterService {
   fieldSearch$ = this.fieldSearchSubject.asObservable();
 
   setFieldSearch(data: any): void {
-    this.fieldSearchSubject.next(data);
+    this.fieldSearchSubject.next(null);  
+    this.fieldSearchSubject.next(data);  
   }
 }

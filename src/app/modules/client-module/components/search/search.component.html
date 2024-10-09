@@ -57,7 +57,7 @@
                         <div *ngIf="desiredDistanceChanged === true"
                             class="flex justify-center items-center cursor-pointer pointer-events-auto relative z-10"
                             (click)="handleResetDesiredDistance()">
-                            <i class='bx bx-reset text-[25px] text-custom-color-black-light hover:text-[#1392ff]' title="Đặt lại khoảng cách"></i>
+                            <i class='bx bx-reset text-[23px] text-custom-color-black-light hover:text-[#1392ff]' title="Đặt lại khoảng cách"></i>
                         </div>
                     </div>
                     <div id="chart1" class="w-[280px] p-0 relative left-[-20px] top-[-20px] ">
@@ -67,7 +67,7 @@
                         </apx-chart>
                     </div>
                     <div class="mb-4 relative z-10 top-[-83px] ">
-                        <nz-slider class="w-full" [nzMarks]="marksDistance" [nzMin]="0" [nzMax]="7"  [nzStep]="0.1"  [nzTooltipVisible]="'never'"  (change)="onChangeDesiredDistance()"
+                        <nz-slider class="w-full" [nzMarks]="marksDistance" [nzMin]="0" [nzMax]="7"  [nzStep]="0.1"  [nzTooltipVisible]="'never'" (ngModelChange)="onChangeDesiredDistance()"
                          formControlName="desiredDistance"  title="Khoảng cách mong muốn"></nz-slider>    
                     </div>
                 </div>
@@ -78,7 +78,7 @@
                         <div *ngIf="desiredPriceChanged === true"
                             class="flex justify-center items-center cursor-pointer pointer-events-auto relative z-10"
                             (click)="handleResetDesiredPrice()">
-                            <i class='bx bx-reset text-[25px] text-custom-color-black-light hover:text-[#1392ff]' title="Đặt lại giá "></i>
+                            <i class='bx bx-reset text-[23px] text-custom-color-black-light hover:text-[#1392ff]' title="Đặt lại giá "></i>
                         </div>
                     </div>
                     <div id="chart2" class="w-[280px]  p-0 relative left-[-20px] top-[-20px] ">
@@ -89,7 +89,7 @@
                     </div>
                     <div class="mb-4 relative z-10 top-[-83px]">
                         <nz-slider class="w-full" [nzMarks]="marksPrice" [nzMin]="500000" [nzMax]="5000000"  [nzStep]="100000"  [nzTooltipVisible]="'never'" 
-                         formControlName="desiredPrice" (change)="onChangeDesiredPrice()" title="Giá tiền mong muốn"> </nz-slider>
+                         formControlName="desiredPrice" (ngModelChange)="onChangeDesiredPrice()" title="Giá tiền mong muốn"> </nz-slider>
                     </div>
                 </div>
                 <div class="pt-3 pr-4 pb-5 pl-3 ">
@@ -143,7 +143,7 @@
         </div> <!--End filters area motels-->
         <div class="result w-[calc(100%-280px)] pl-4 relative">
             <div class="w-full">
-                <h1 class="h-[28px] text-[20px] text-custom-color-black font-sans font-bold"><span class="capitalize">{{fieldSearch.wardCommune ? fieldSearch.wardCommune + ':' : ''}}</span> tìm thấy {{listMotels.length}} nhà trọ</h1>
+                <h1 class="h-[28px] text-[20px] text-custom-color-black font-sans font-bold"><span class="capitalize"><span *ngIf="fieldSearch.wardCommune && fieldSearch.wardCommune !== ' '">{{fieldSearch.wardCommune }}:</span></span> tìm thấy {{listMotels.length}} nhà trọ</h1>
             </div>
             <div class="w-full pt-3">
                 <ul class="w-full flex flex-col gap-4">
