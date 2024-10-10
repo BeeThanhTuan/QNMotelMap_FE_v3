@@ -1,11 +1,11 @@
 import { Directive, ElementRef, HostListener, Output, EventEmitter } from '@angular/core';
 
 @Directive({
-  selector: '[appClickOutsideSuggestWardCommune]'
+  selector: '[appClickOutsideSuggestAddress]'
 })
-export class ClickOutsideSuggestWardCommuneDirective {
+export class ClickOutsideSuggestAddressDirective {
 
-  @Output() clickOutsideSuggestWardCommune = new EventEmitter<void>();
+  @Output() clickOutsideSuggestAddress = new EventEmitter<void>();
 
   private elements: HTMLElement[] = [];
 
@@ -33,7 +33,7 @@ export class ClickOutsideSuggestWardCommuneDirective {
     );
 
     if (!clickedInside) {
-      this.clickOutsideSuggestWardCommune.emit();
+      this.clickOutsideSuggestAddress.emit();
     }
   }
 }

@@ -48,7 +48,8 @@ export class ViewOnMapComponent {
   desiredPriceChanged: boolean = false;
   desiredDistanceChanged: boolean = false;
   //list ward commune
-  listWardCommune = [];
+  listAddress = [];
+  listAddressSuggest = []
   //filters
   filters: any
 
@@ -97,27 +98,27 @@ export class ViewOnMapComponent {
     private location: Location,  private spinner: NgxSpinnerService ) {
     this.titleService.setTitle('QNMoteMap | Tìm kiếm');
     this.initializeForm();
+    this.initializeListWardCommune();
   }
 
   ngOnInit(): void {
     this.initializeDataMotels();
     this.initializeDataPriceChart();
     this.initializeDataDistanceChart();
-    this.initializeListWardCommune();
   }
 
   ngAfterViewInit(): void {
     this.initializeMap();
     this.handHiddenControlZoom();
     this.handleChangeStyleCheckbox();
-    this.formFilters.get('desiredDistance')!.valueChanges.pipe(debounceTime(500)).subscribe(() => {
+    this.formFilters.get('desiredDistance')!.valueChanges.pipe(debounceTime(700)).subscribe(() => {
       this.handleFiltersDistance();
     });
-    this.formFilters.get('desiredPrice')!.valueChanges.pipe(debounceTime(500)).subscribe(() => {
+    this.formFilters.get('desiredPrice')!.valueChanges.pipe(debounceTime(700)).subscribe(() => {
       this.handleFiltersPrice();
     });
-    this.addressSearch.valueChanges.pipe(debounceTime(500)).subscribe(() => {
-      this.handleFilters();
+    this.addressSearch.valueChanges.pipe(debounceTime(700)).subscribe(() => {
+      this.handleSuggestSearchAddress();
     });
   }
 
@@ -437,8 +438,9 @@ export class ViewOnMapComponent {
 
   //Initialize list ward commune
   initializeListWardCommune(): void{
-    this.motelService.getListWardCommune().subscribe((response)=>{
-      this.listWardCommune = response
+    this.motelService.getListAddress().subscribe((response)=>{
+      this.listAddress = response
+      this.listAddressSuggest = response
     })
   }
 
@@ -459,6 +461,7 @@ export class ViewOnMapComponent {
     const lastChild = target.lastElementChild as HTMLElement;
     this.addressSearch.setValue(lastChild.textContent);
     this.showDropdownSuggestWardCommune = false;
+    this.handleFilters();
   }
 
   getFilters() :void{
@@ -638,10 +641,21 @@ export class ViewOnMapComponent {
     })
   }
 
-
-
   goBack(): void {
     this.location.back();
+  }
+
+  // handle bỏ dấu
+  removeAccents(text: string): string {
+    return text.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  }
+
+  //handle gợi ý tìm kiếm địa chỉ
+  handleSuggestSearchAddress():void{
+    let searchInput = this.addressSearch.value.trim();
+    this.listAddressSuggest = this.listAddress.filter((address: string) => {
+      return this.removeAccents(address.toLowerCase()).includes(this.removeAccents(searchInput.toLowerCase()));
+    });
   }
 
 

@@ -28,30 +28,34 @@
                         <div class="ntt-field-search">
                             <div class="h-full w-full flex items-center"
                                  id="input_address_search"
-                                 (click)="wardCommuneInput.focus(); showDropdownSuggestWardCommune = true">
+                                 (click)="addressInput.focus(); showDropdownSuggestAddress = true">
                                 <i class='bx bx-map ntt-custom-icon'></i>
                                 <input 
                                     class="w-full h-[36px] px-2 py-1 text-[14px] text-custom-color-black-light font-semibold focus:outline-none placeholder:text-custom-color-black-light"
                                     type="search" 
                                     spellcheck="false"
-                                    #wardCommuneInput
-                                    formControlName = "wardCommune"
+                                    #addressInput
+                                    formControlName = "address"
                                     placeholder="Bạn muốn tìm ở đâu?">
+                                <i *ngIf="addressInput.value" (click)="formSearch.get('address')?.setValue('')" class='bx bx-x text-[22px] p-1 cursor-pointer'></i>
                             </div>
                             <div id="suggest_ward_commune_popup"
-                                appClickOutsideSuggestWardCommune
-                                (clickOutsideSuggestWardCommune)="showDropdownSuggestWardCommune = false" 
-                                *ngIf="showDropdownSuggestWardCommune"
+                                appClickOutsideSuggestAddress
+                                (clickOutsideSuggestAddress)="showDropdownSuggestAddress = false" 
+                                *ngIf="showDropdownSuggestAddress"
                                 class="absolute w-[380px] bg-white translate-y-4 left-0 rounded-lg ntt-shadow-input-suggest z-10 overflow-hidden" >
                                 <div class="pt-3 pb-1 px-3 text-[14px] font-bold text-custom-color-black">
                                     Phường/xã được gợi ý
                                 </div>
                                 <ul class="w-full ">
-                                    <li *ngFor="let wardCommune of listWardCommune"
-                                        (click)= "handleChooseWardCommune($event)"
+                                    <li *ngFor="let address of listAddressSuggest.slice(0, 4)"
+                                        (click)= "handleChooseAddress($event)"
                                         class="w-full p-3 flex border-b hover:bg-[#f2f2f2] cursor-pointer ">
                                         <i class='bx bx-map text-[24px] pr-2 text-custom-color-black-light'></i>
-                                        <p class="w-full text-[14px] font-medium text-custom-color-black">{{wardCommune}}</p>
+                                        <p class="w-full text-[14px] font-normal text-custom-color-black capitalize">{{address}}</p>
+                                    </li>
+                                    <li *ngIf="listAddressSuggest.length === 0" class="w-full p-3 flex border-b  cursor-pointer ">
+                                        <p class="w-full text-[14px] font-normal text-custom-color-black">Không tìm thấy địa chỉ phù hợp!</p>
                                     </li>
                                     
                                 </ul>
@@ -72,8 +76,8 @@
                                 <div class="pt-3 pb-1 px-3 text-[14px] font-bold text-custom-color-black">
                                     Chọn số tiềm bạn mong muốn
                                 </div>
-                                <div class="p-3 ">
-                                    <nz-slider class="w-full" [nzMin]="500000" [nzMax]="5000000"  [nzStep]="100000" [nzMarks]="marks" [nzTooltipVisible]="'never'" formControlName="desiredPrice"></nz-slider>
+                                <div class="px-3 pb-3 ">
+                                    <nz-slider class="w-full" [nzMin]="500000" [nzMax]="5000000"  [nzStep]="100000" [nzMarks]="marksPrice" [nzTooltipVisible]="'never'" formControlName="desiredPrice"></nz-slider>
                                 </div>
                                 <div *ngIf="formSearch.get('desiredPrice')?.value" class="w-full p-3 pb-5">
                                     <button type="button"
@@ -109,21 +113,9 @@
                                 class="absolute w-[380px] bg-white translate-y-4 left-0 ml:left-auto ml:right-0 rounded-lg ntt-shadow-input-suggest z-10">
                                 <div class="w-full px-4 pb-2 pt-6 flex justify-between items-center">
                                    <span class=" text-[14px] font-semibold text-custom-color-black-light">Khoảng cách tới trường dưới:</span>
-                                   <div class="flex justify-center items-center">
-                                        <button type="button" 
-                                            (click)="onClickDecreaseDistance()"
-                                            (mousedown)="decreaseDistance()"
-                                            (mouseleave)="stopDecreaseDistance()"
-                                            (mouseup)="stopDecreaseDistance()"
-                                             class="hover:bg-custom-hv-color-blue"><i class='bx bx-minus p-2'></i></button>
-                                        <span class="text-[15px] w-[50px] font-semibold text-center">{{ formSearch.get('desiredDistance')?.value }} km</span>
-                                        <button type="button"
-                                            (click)="onClickIncreaseDistance()"
-                                            (mousedown)="increaseDistance()" 
-                                            (mouseleave)="stopIncreaseDistance()"
-                                            (mouseup)="stopIncreaseDistance()"
-                                            class=" hover:bg-custom-hv-color-blue"><i class='bx bx-plus p-2' ></i></button>
-                                   </div>
+                                </div>
+                                <div class="px-3">
+                                    <nz-slider class="w-full" [nzMin]="0" [nzMax]="7"  [nzStep]="0.1" [nzMarks]="marksDistance" [nzTooltipVisible]="'never'" formControlName="desiredDistance"></nz-slider>
                                 </div>
                                 <div class="w-full px-4 py-2 flex justify-between items-center">
                                     <span class=" text-[14px] font-semibold text-custom-color-black-light">Không chung với chủ</span>

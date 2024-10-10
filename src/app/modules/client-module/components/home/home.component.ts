@@ -5,6 +5,18 @@ import { Router, NavigationEnd } from '@angular/router';
 import { MotelService } from 'src/app/services/motel.service';
 import { NzMarks } from 'ng-zorro-antd/slider';
 import { SetFieldSearchFilterService } from 'src/app/services/set-field-search-filter.service';
+import { debounceTime } from 'rxjs';
+
+interface FiltersLocal {
+  desiredPrice: number,
+  distanceLess1Km: boolean,
+  desiredDistance: number,
+  noLiveWithLandlord:	boolean,
+  haveMezzanine: boolean,
+  haveToilet:	boolean,
+  haveAirConditioner: boolean,
+}
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -14,15 +26,16 @@ export class HomeComponent {
   showBannerWrapper = true;
   showFormSearch = true;
   showHeader = true;
-  showDropdownSuggestWardCommune = false;
+  showDropdownSuggestAddress = false;
   showDesiredPricePopup = false;
   showOtherChoosePopup = false;
   isChecked: boolean = false;
   intervalDecreaseDistance:any;
   intervalIncreaseDistance:any;
   formSearch! : FormGroup;
-  listWardCommune = [];
-  marks: NzMarks = {
+  listAddress = [];
+  listAddressSuggest = [];
+  marksPrice: NzMarks = {
     500000: {
       style: {
         color: 'black',
@@ -42,16 +55,37 @@ export class HomeComponent {
       label: '<p>5.000.000 VND</p>'
     },
   };
+  marksDistance: NzMarks = {
+    0: {
+      style: {
+        color: '#535353',
+        position: 'relative',
+        left: '15px',
+        'font-size': '13px'
+      },
+      label: '<p>0 km</p>'
+    },
+    7: {
+      style: {
+        color: '#535353',
+        position: 'relative',
+        left: '89%',
+        'font-size': '13px'
+      },
+      label: '<p>7 km</p>'
+    },
+  };
 
   constructor(private titleService: Title, private formBuilder: FormBuilder, private router: Router,
      private motelService: MotelService, private setFieldSearch: SetFieldSearchFilterService) { 
     this.titleService.setTitle('QNMoteMap | Trang chủ ');
     this.initializeFormFilters();
+    this.setDataFormLocal();
   }
 
   initializeFormFilters():void{
     this.formSearch = this.formBuilder.group({
-      wardCommune: [''],
+      address: [''],
       desiredPrice: [5000000],
       desiredDistance: [7],
       noLiveWithLandlord:[false],
@@ -63,7 +97,7 @@ export class HomeComponent {
 
   ngOnInit(): void {
     this.handleHiddenElement(this.router.url);
-    this.initializeListWardCommune();
+    this.initializeListAddress();
     // Lắng nghe sự kiện NavigationEnd khi có thay đổi router
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
@@ -71,60 +105,23 @@ export class HomeComponent {
       }
     });
   }
+  ngAfterViewInit(): void {
+    this.formSearch.get('address')!.valueChanges.pipe(debounceTime(700)).subscribe(() => {
+      this.handleSuggestSearchAddress();
+    });
+  }
   
  //Initialize list ward commune
-  initializeListWardCommune(): void{
-    this.motelService.getListWardCommune().subscribe((response)=>{
-      this.listWardCommune = response
+  initializeListAddress(): void{
+    this.motelService.getListAddress().subscribe((response)=>{
+      this.listAddress = response;
+      this.listAddressSuggest = response;
     })
   }
 
   // đặt lại giá muốn chọn
   resetToDefaultDesiredPrice(){
     this.formSearch.get('desiredPrice')?.setValue(5000000);
-  }
-
-  // giảm khoảng cách
-  onClickDecreaseDistance(){
-    const distance = this.formSearch.get('desiredDistance')?.value;
-    if (distance >  0) {
-      this.formSearch.get('desiredDistance')?.setValue(parseFloat((distance - 0.1).toFixed(1)));
-    }
-  }
-
-  decreaseDistance(){
-    this.intervalDecreaseDistance = setInterval(() => {
-      const distance = this.formSearch.get('desiredDistance')?.value;
-      if (distance > 0) {
-        this.formSearch.get('desiredDistance')?.setValue(parseFloat((distance - 0.1).toFixed(1)));
-      }
-    },100)
-
-  }
-  
-  stopDecreaseDistance(){
-    clearInterval(this.intervalDecreaseDistance);
-  }
-
-  // tăng khoảng cách
-  onClickIncreaseDistance(){
-    const distance = this.formSearch.get('desiredDistance')?.value;
-    if (distance < 7) {
-      this.formSearch.get('desiredDistance')?.setValue(parseFloat((distance + 0.1).toFixed(1)));
-    }
-  }
-
-  increaseDistance(){
-    this.intervalIncreaseDistance = setInterval(() => {
-      const distance = this.formSearch.get('desiredDistance')?.value;
-      if (distance < 7) {
-        this.formSearch.get('desiredDistance')?.setValue(parseFloat((distance + 0.1).toFixed(1)));
-      }
-    },100)
-  }
-
-  stopIncreaseDistance(){
-    clearInterval(this.intervalIncreaseDistance);
   }
 
   // đặt lại các lựa chọn
@@ -140,6 +137,21 @@ export class HomeComponent {
   handleSearch(){
     this.router.navigate(['/client/home/search']);
     this.setFieldSearch.setFieldSearch(this.formSearch.value);
+  }
+
+  setDataFormLocal() {
+    let filtersLocal: FiltersLocal = JSON.parse(localStorage.getItem('filtersLocal')!)
+    let addressLocal = JSON.parse(localStorage.getItem('addressLocal')!)
+    if(addressLocal !== ' ' && addressLocal){
+      this.formSearch.get('address')?.setValue(addressLocal);
+    }
+    this.formSearch.get('desiredPrice')?.setValue(filtersLocal.desiredPrice);
+    this.formSearch.get('desiredDistance')?.setValue(filtersLocal.desiredDistance);
+    this.formSearch.get('haveMezzanine')?.setValue(filtersLocal.haveMezzanine);
+    this.formSearch.get('haveToilet')?.setValue(filtersLocal.haveToilet);
+    this.formSearch.get('haveAirConditioner')?.setValue(filtersLocal.haveAirConditioner);
+    this.formSearch.get('noLiveWithLandlord')?.setValue(filtersLocal.noLiveWithLandlord);
+    
   }
 
   // ẩn các element không sử dung ở các component khác nhau
@@ -166,11 +178,24 @@ export class HomeComponent {
   }
 
   //Handle choose ward commune
-  handleChooseWardCommune(event: Event) :void{
+  handleChooseAddress(event: Event) :void{
     const target = event.currentTarget as HTMLElement;
     const lastChild = target.lastElementChild as HTMLElement;
-    this.formSearch.get('wardCommune')!.setValue(lastChild.textContent);
-    this.showDropdownSuggestWardCommune = false;
+    this.formSearch.get('address')!.setValue(lastChild.textContent);
+    this.showDropdownSuggestAddress = false;
+  }
+
+  // handle bỏ dấu
+  removeAccents(text: string): string {
+    return text.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  }
+
+  //handle gợi ý tìm kiếm địa chỉ
+  handleSuggestSearchAddress():void{
+    let searchInput = this.formSearch.get('address')!.value.trim();
+    this.listAddressSuggest = this.listAddress.filter((address: string) => {
+      return this.removeAccents(address.toLowerCase()).includes(this.removeAccents(searchInput.toLowerCase()));
+    });
   }
 
 

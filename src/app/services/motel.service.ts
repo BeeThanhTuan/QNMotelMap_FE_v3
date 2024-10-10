@@ -34,7 +34,7 @@ export class MotelService {
     return this.httpClient.get<any>(url, { params: filters })
   }
 
-  public getListWardCommune(): Observable<any> {
+  public getListAddress(): Observable<any> {
     const url = `${this.REST_API_SERVER}/api/list-ward-commune`;
     return this.httpClient.get<any>(url).pipe(
       map((response:any) => response.data) 

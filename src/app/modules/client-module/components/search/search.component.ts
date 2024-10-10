@@ -13,8 +13,9 @@ import { NzMarks } from 'ng-zorro-antd/slider';
 
 
 interface FieldSearch {
-  wardCommune: string,
+  address: string,
   desiredPrice: number,
+  distanceLess1Km: boolean,
   desiredDistance: number,
   noLiveWithLandlord:	boolean,
   haveMezzanine: boolean,
@@ -53,8 +54,9 @@ export class SearchComponent {
   desiredDistanceChanged: boolean = false;
   //data navigation search
   fieldSearch: FieldSearch ={
-    wardCommune: '',
+    address: '',
     desiredPrice: 5000000,
+    distanceLess1Km: false,
     desiredDistance: 7,
     noLiveWithLandlord: false,
     haveMezzanine: false,
@@ -120,7 +122,7 @@ export class SearchComponent {
   }
 
   ngAfterViewInit(): void {
-    this.handleChangeStyleCheckbox()
+    this.handleChangeStyleCheckbox();
     this.formFilters.get('desiredDistance')!.valueChanges.pipe(debounceTime(500)).subscribe(() => {
       this.handleFiltersDistance();
     });
@@ -146,41 +148,24 @@ export class SearchComponent {
   }
   
   async setDataFormLocal() {
-    let listMotelLocal = await JSON.parse(localStorage.getItem('listMotelLocal')!) || []
     let filtersLocal = await JSON.parse(localStorage.getItem('filtersLocal')!)
     let wardCommuneLocal = await JSON.parse(localStorage.getItem('wardCommuneLocal')!)
-    let motelFilteredLocal = await JSON.parse(localStorage.getItem('motelFilteredLocal')!)
-    
-    if(listMotelLocal.length > 0){
-      this.listMotels = listMotelLocal;
-      this.rentalDistances= [];
-      this.listMotels.map((motel: any)=>{
-        this.rentalDistances.push(motel.Distance);
-      })
-      this.initializeDataDistanceChart();
-      this.rentalPrices= [];
-      this.listMotels.map((motel: any)=>{
-        this.rentalPrices.push(motel.Price);
-      })
-      this.initializeDataPriceChart();
-    }
     if(filtersLocal){
       this.fieldSearch = filtersLocal;
       this.handleSetFieldForm();
     }
-    if(motelFilteredLocal){
-      this.listMotelFiltered = motelFilteredLocal;
-    }
     if(wardCommuneLocal){
-      this.fieldSearch.wardCommune = wardCommuneLocal ;
+      this.fieldSearch.address = wardCommuneLocal ;
     }
+    this.handleFilters();
 
   }
 
   async handleSetFieldForm(): Promise<void> {
       this.formFilters.patchValue({
-        wardCommune: this.fieldSearch.wardCommune,
+        wardCommune: this.fieldSearch.address,
         desiredPrice: this.fieldSearch.desiredPrice,
+        distanceLess1Km: this.fieldSearch.distanceLess1Km,
         desiredDistance: this.fieldSearch.desiredDistance,
         noLiveWithLandlord: this.fieldSearch.noLiveWithLandlord,
         haveMezzanine: this.fieldSearch.haveMezzanine,
@@ -259,7 +244,7 @@ export class SearchComponent {
 
   getFilters() :void{
     this.filters = {
-      addressSearch: this.fieldSearch.wardCommune,
+      addressSearch: this.fieldSearch.address,
       motelHasRoomAvailable: this.formFilters.get('motelHasRoomAvailable')!.value,
       noLiveWithLandlord: this.formFilters.get('noLiveWithLandlord')!.value,
       distanceLess1Km: this.formFilters.get('distanceLess1Km')!.value,
@@ -273,17 +258,14 @@ export class SearchComponent {
   }
 
   setDataIntoLocalStorage():void{
-    localStorage.setItem('listMotelLocal', JSON.stringify(this.listMotels)); 
     localStorage.setItem('filtersLocal', JSON.stringify(this.formFilters.value));  
-    localStorage.setItem('motelFilteredLocal', JSON.stringify(this.listMotelFiltered));  
-    localStorage.setItem('wardCommuneLocal', JSON.stringify(this.fieldSearch.wardCommune ? this.fieldSearch.wardCommune : ' '));  
+    localStorage.setItem('wardCommuneLocal', JSON.stringify(this.fieldSearch.address ? this.fieldSearch.address : ' '));  
   }
 
   // Handle the form filter values
   async handleFilters(): Promise<void> {
     this.isLoading = true;
     this.getFilters();
-    console.log(this.filters);
     this.motelService.getMotelsFiltered(this.filters).subscribe((response)=>{
       this.listMotels = response.data;
       this.rentalDistances= [];
@@ -301,6 +283,7 @@ export class SearchComponent {
         this.isLoading = false;
       }, 1000);
     }); 
+    this.setDataIntoLocalStorage();
   }
 
    // Handle the form filter values
@@ -319,6 +302,8 @@ export class SearchComponent {
         this.isLoading = false;
       }, 1000);
     });
+    this.setDataIntoLocalStorage();
+
   }
 
   // Handle the form filter values
@@ -336,7 +321,7 @@ export class SearchComponent {
       setTimeout(() => {
         this.isLoading = false;
       }, 1000);
-
+      this.setDataIntoLocalStorage();
     });
   }
 

@@ -4,7 +4,7 @@ import { ClientModuleRoutingModule } from './client-module-routing.module';
 import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
-import { ClickOutsideSuggestWardCommuneDirective } from './directives/click-outside-ward-commune-suggest.directive';
+import { ClickOutsideSuggestAddressDirective } from './directives/click-outside-address-suggest.directive';
 import { ClickOutsideDesiredPriceDirective } from './directives/click-outside-desired-price.directive';
 import { ClickOutsideOtherChooseFieldsDirective } from './directives/click-outside-other-choose-fields.directive';
 import { MoneyPipe } from './pipes/money.pipe';
@@ -40,7 +40,7 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
     HomeComponent,
     LoginComponent,
     RegisterComponent,
-    ClickOutsideSuggestWardCommuneDirective,
+    ClickOutsideSuggestAddressDirective,
     ClickOutsideDesiredPriceDirective,
     ClickOutsideOtherChooseFieldsDirective,
     MoneyPipe,
