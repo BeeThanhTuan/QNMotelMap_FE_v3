@@ -6,10 +6,24 @@ import * as L from 'leaflet';
 import { MotelService } from 'src/app/services/motel.service';
 import { NgxSpinnerService } from "ngx-spinner";
 import { MotelFiltered} from 'src/app/interfaces/motelFiltered';
-import { debounceTime } from 'rxjs/operators';
+import { debounceTime} from 'rxjs/operators';
 import { Motel } from 'src/app/interfaces/motel';
 import { Location } from '@angular/common';
 import { NzMarks } from 'ng-zorro-antd/slider';
+import { ActivatedRoute,  Router } from '@angular/router';
+
+
+interface Filters {
+  addressSearch: string,
+  desiredPrice: number,
+  distanceLess1Km: boolean,
+  desiredDistance: number,
+  noLiveWithLandlord:	boolean,
+  haveMezzanine: boolean,
+  haveToilet:	boolean,
+  haveAirConditioner: boolean,
+
+}
 
 @Component({
   selector: 'app-view-on-map',
@@ -53,6 +67,11 @@ export class ViewOnMapComponent {
   //filters
   filters: any
 
+  // navigation
+  previousUrl: string | undefined;
+  currentUrl: string | undefined;
+
+  //marks slider
   marksPrice: NzMarks = {
     500000: {
       style: {
@@ -95,31 +114,82 @@ export class ViewOnMapComponent {
   };
   
   constructor(private titleService: Title, private formBuilder: FormBuilder, private motelService: MotelService,
-    private location: Location,  private spinner: NgxSpinnerService ) {
+    private location: Location,  private spinner: NgxSpinnerService, private router: Router, private route: ActivatedRoute ) {
     this.titleService.setTitle('QNMoteMap | Tìm kiếm');
     this.initializeForm();
     this.initializeListWardCommune();
   }
 
-  ngOnInit(): void {
-    this.initializeDataMotels();
+  async ngOnInit():  Promise<void> {
     this.initializeDataPriceChart();
     this.initializeDataDistanceChart();
+    this.initializeMap();
+    this.setDataBeforeNavigation();
   }
 
   ngAfterViewInit(): void {
-    this.initializeMap();
     this.handHiddenControlZoom();
     this.handleChangeStyleCheckbox();
-    this.formFilters.get('desiredDistance')!.valueChanges.pipe(debounceTime(700)).subscribe(() => {
+    this.formFilters.get('desiredDistance')!.valueChanges.pipe(debounceTime(500)).subscribe(() => {
       this.handleFiltersDistance();
     });
-    this.formFilters.get('desiredPrice')!.valueChanges.pipe(debounceTime(700)).subscribe(() => {
+    this.formFilters.get('desiredPrice')!.valueChanges.pipe(debounceTime(500)).subscribe(() => {
       this.handleFiltersPrice();
     });
-    this.addressSearch.valueChanges.pipe(debounceTime(700)).subscribe(() => {
+    this.addressSearch.valueChanges.pipe(debounceTime(500)).subscribe(() => {
       this.handleSuggestSearchAddress();
     });
+  }
+
+  setDataBeforeNavigation(): void {
+    this.route.queryParams.subscribe(params => {
+      if (params['listMotels']) {
+        let listMotels = JSON.parse(params['listMotels']);
+        this.listMotels = this.filterMotelData(listMotels);
+        if(params['index']){
+          let index = parseInt(params['index'])
+          this.addMarkersSpecial(this.listMotels, index );
+          this.handleChangeStyleMarker(); 
+        }
+        else{
+          this.addMarkers(this.listMotels);
+          this.handleChangeStyleMarker();
+        }
+        this.rentalDistances= [];
+        listMotels.map((motel: any)=>{
+          this.rentalDistances.push(motel.Distance);
+        })
+        this.initializeDataDistanceChart();
+        this.rentalPrices= [];
+        listMotels.map((motel: any)=>{
+          this.rentalPrices.push(motel.Price);
+        })
+        this.initializeDataPriceChart();
+      }
+      else{
+        this.initializeDataMotels();
+      }
+      if (params['filters']) {
+        let filters : Filters = JSON.parse(params['filters']);
+        this.setValueFilters(filters);
+      }
+      if (params['listMotelFiltered']) {
+        this.listMotelFiltered = JSON.parse(params['listMotelFiltered']); 
+      }
+    });
+  }
+
+  setValueFilters(filters : Filters) :void {
+    this.addressSearch.setValue(filters.addressSearch && filters.addressSearch !== ' ' ? filters.addressSearch : '')
+    this.formFilters.get('noLiveWithLandlord')?.setValue(filters.noLiveWithLandlord);
+    this.formFilters.get('distanceLess1Km')?.setValue(filters.distanceLess1Km);
+    this.formFilters.get('desiredDistance')?.setValue(filters.desiredDistance);
+    this.formFilters.get('desiredPrice')?.setValue(filters.desiredPrice);
+    this.formFilters.get('haveMezzanine')?.setValue(filters.haveMezzanine);
+    this.formFilters.get('haveToilet')?.setValue(filters.haveToilet);
+    this.formFilters.get('haveAirConditioner')?.setValue(filters.haveAirConditioner);
+    this.desiredPriceChanged = filters.desiredPrice !== 5000000 ? true : false;
+    this.desiredDistanceChanged = filters.desiredDistance !== 7 ? true : false;
   }
 
   // Setup the chart options with dynamic data
@@ -209,7 +279,7 @@ export class ViewOnMapComponent {
 
 
   //add markers into map 
-  addMarkers(markerData: { _id: string; Locations: string; Price: number }[]): void {
+  addMarkers(markerData: { _id: string; Locations: string; Price: number }[]): void { 
     const normalIcon = this.createNormalIcon();
     const hoverIcon = this.createHoverIcon();
     const normalBg = '#00358f';
@@ -217,7 +287,7 @@ export class ViewOnMapComponent {
   
     markerData.forEach((marker) => {
       const [lat, lng] = marker.Locations.split(',').map(location => parseFloat(location.trim()));
-  
+      
       // Tạo marker với icon bình thường
       const leafletMarker = L.marker([lat, lng], { icon: normalIcon }).addTo(this.map);
   
@@ -228,7 +298,7 @@ export class ViewOnMapComponent {
         iconSize: [110, 30],
         iconAnchor: [45, 27],
       });
-  
+
       // Tạo một marker cho giá
       const priceMarker = L.marker([lat, lng], { icon: priceLabelDiv }).addTo(this.map);
   
@@ -374,7 +444,8 @@ export class ViewOnMapComponent {
   }
   
   //Delete all markers from the map
-  clearMarkers(): void {
+  clearMarkers(): void { 
+    console.log('clear marker');  
     this.markersArray.forEach(marker => marker.remove()); 
     this.markersArray = []; 
   }
@@ -419,12 +490,12 @@ export class ViewOnMapComponent {
   }
 
   // Initialize data motels
-  initializeDataMotels(): void{
+  initializeDataMotels():  void{
     this.motelService.getAllMotels().subscribe((response)=>{
       this.listMotelFiltered = response.dataFiltered;
       this.listMotels = this.filterMotelData(response.data);
       this.addMarkers(this.listMotels);
-      this.handleChangeStyle();
+      this.handleChangeStyleMarker();
       response.data.map((motel: Motel)=>{
         this.rentalDistances.push(motel.Distance);
       })
@@ -497,7 +568,7 @@ export class ViewOnMapComponent {
         this.initializeDataPriceChart();
         this.clearMarkers();
         this.addMarkers(this.listMotels);
-        this.handleChangeStyle();
+        this.handleChangeStyleMarker();
         this.listMotelFiltered = response.dataFiltered;
         this.spinner.hide();
       }, 500);
@@ -519,7 +590,7 @@ export class ViewOnMapComponent {
         this.initializeDataPriceChart();
         this.clearMarkers();
         this.addMarkers(this.listMotels);
-        this.handleChangeStyle();
+        this.handleChangeStyleMarker();
         this.listMotelFiltered = response.dataFiltered;
         this.spinner.hide();
       }, 700);
@@ -540,7 +611,7 @@ export class ViewOnMapComponent {
         this.initializeDataDistanceChart();
         this.clearMarkers();
         this.addMarkers(this.listMotels);
-        this.handleChangeStyle();
+        this.handleChangeStyleMarker();
         this.listMotelFiltered = response.dataFiltered;
         this.spinner.hide();
       }, 700);
@@ -617,7 +688,7 @@ export class ViewOnMapComponent {
   }
 
   //handle change style price label marker
-  handleChangeStyle() :void {
+  handleChangeStyleMarker() :void {
     const popups = document.querySelectorAll('.custom-price-icon'); 
     popups.forEach(popup => {
       (popup as HTMLElement).style.pointerEvents = 'none';

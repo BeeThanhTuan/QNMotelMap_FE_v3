@@ -79,7 +79,7 @@
                                 <div class="px-3 pb-3 ">
                                     <nz-slider class="w-full" [nzMin]="500000" [nzMax]="5000000"  [nzStep]="100000" [nzMarks]="marksPrice" [nzTooltipVisible]="'never'" formControlName="desiredPrice"></nz-slider>
                                 </div>
-                                <div *ngIf="formSearch.get('desiredPrice')?.value" class="w-full p-3 pb-5">
+                                <div class="w-full p-3 pb-5">
                                     <button type="button"
                                         (click)="resetToDefaultDesiredPrice()"
                                         class="w-full px-3 py-2 border-2 rounded-[4px] text-[15px] text-custom-color-black-light font-semibold
@@ -98,7 +98,7 @@
                                     <p class="pr-2">Các lựa chọn khác:</p>
                                     <p>
                                         <span *ngIf="formSearch.get('desiredDistance')?.value">{{formSearch.get('desiredDistance')?.value }} km</span>
-                                        <span *ngIf="formSearch.get('noLiveWithLandlord')?.value" > - chung chủ</span>
+                                        <span *ngIf="formSearch.get('noLiveWithLandlord')?.value" > - không chung chủ</span>
                                         <span *ngIf="formSearch.get('haveMezzanine')?.value"> - gác lững</span>
                                         <span *ngIf="formSearch.get('haveToilet')?.value" > - nhà vệ sinh riêng</span>
                                         <span *ngIf="formSearch.get('haveAirConditioner')?.value" > - điều hoà </span>
@@ -119,25 +119,25 @@
                                 </div>
                                 <div class="w-full px-4 py-2 flex justify-between items-center">
                                     <span class=" text-[14px] font-semibold text-custom-color-black-light">Không chung với chủ</span>
-                                    <div class="w-[100px] flex justify-center items-center">
+                                    <div class=" flex justify-center items-center">
                                         <nz-switch formControlName="noLiveWithLandlord" ></nz-switch>
                                     </div>
                                 </div>
                                 <div class="w-full px-4 py-2 flex justify-between items-center">
                                     <span class=" text-[14px] font-semibold text-custom-color-black-light">Có gác lửng</span>
-                                    <div class="w-[100px] flex justify-center items-center">
+                                    <div class=" flex justify-center items-center">
                                         <nz-switch formControlName="haveMezzanine" class=""></nz-switch>
                                     </div>
                                 </div>
                                 <div class="w-full px-4 py-2 flex justify-between items-center">
                                     <span class="text-[14px] font-semibold text-custom-color-black-light">Có nhà vệ sinh riêng</span>
-                                    <div class="w-[100px] flex justify-center items-center">
+                                    <div class="flex justify-center items-center">
                                         <nz-switch formControlName="haveToilet" class=""></nz-switch>
                                     </div>
                                 </div>
                                 <div class="w-full px-4 py-2 flex justify-between items-center">
                                     <span class="text-[14px] font-semibold text-custom-color-black-light">Có điều hoà</span>
-                                    <div class="w-[100px] flex justify-center items-center">
+                                    <div class="flex justify-center items-center">
                                         <nz-switch formControlName="haveAirConditioner"></nz-switch>
                                     </div>
                                 </div>

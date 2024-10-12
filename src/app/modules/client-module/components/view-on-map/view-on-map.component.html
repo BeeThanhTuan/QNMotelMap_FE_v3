@@ -151,7 +151,7 @@
                     *ngIf="showDropdownSuggestWardCommune"
                     class="relative w-full bg-white top-[-4px] left-0 rounded-bl-md rounded-br-md  ntt-shadow-input-suggest z-1 overflow-hidden" >
                     <ul class="w-full pt-2">
-                        <li *ngFor="let address of listAddressSuggest.slice(0, 5)"
+                        <li *ngFor="let address of listAddressSuggest.slice(0, 4)"
                              (click)="handleChooseWardCommune($event)"
                              class="p-2 flex border-b hover:bg-[#f2f2f2] cursor-pointer">
                             <i class='bx bx-map text-[24px] pr-2 text-custom-color-black-light'></i>

@@ -7,7 +7,8 @@
                     <i class='bx bxs-map text-custom-bg-blue-light text-[54px] hover:text-custom-bg-hover-blue'></i>
                 </div>
                 <div class="w-full flex justify-center">
-                    <button class="h-9 px-3 py-1 bg-custom-bg-blue-light rounded-md hover:bg-custom-bg-hover-blue">
+                    <button (click)="handleViewOnMap()"
+                     class="h-9 px-3 py-1 bg-custom-bg-blue-light rounded-md hover:bg-custom-bg-hover-blue">
                         <span class="text-[14px] text-white font-medium ">Hiển thị trên bản đồ</span>
                     </button>
                 </div>
@@ -147,7 +148,7 @@
             </div>
             <div class="w-full pt-3">
                 <ul class="w-full flex flex-col gap-4">
-                    <li *ngFor="let motel of listMotels" class="w-full min-w-[712px] p-4 flex border border-[#e7e7e7] rounded-md ">
+                    <li *ngFor="let motel of listMotels,let i = index" class="w-full min-w-[712px] p-4 flex border border-[#e7e7e7] rounded-md ">
                         <ngx-skeleton-loader  *ngIf="isLoading" appearance="line" [theme]="{height: '250px', width: '250px', 'margin-bottom': '0'}"></ngx-skeleton-loader>
                         <div *ngIf="!isLoading" class="image_motel w-[250px] h-[250px] relative">
                             <a href="/client/home/detail-motel/{{motel._id}}">
@@ -169,7 +170,7 @@
                                         <div *ngIf="!isLoading" class="mr-2 flex items-center flex-wrap">
                                             <span class="capitalize text-[14px] font-semibold">{{motel.Address}}, {{motel.WardCommune}}</span>
                                             <span class="mx-2"> - </span>
-                                            <span class="text-[14px] font-semibold underline cursor-pointer"> Xem trên bản đồ </span>
+                                            <span class="text-[14px] font-semibold underline cursor-pointer" (click)="handleViewOnMapSpecificallyMotel(i)"> Xem trên bản đồ </span>
                                         </div>
                                         <ngx-skeleton-loader  *ngIf="isLoading" appearance="line" [theme]="{height: '20px', width: '200px' ,'margin-bottom': '5px'}"></ngx-skeleton-loader>
                                         <span *ngIf="!isLoading" class="text-[12px] font-normal text-custom-color-black">Khoảng cách tới trường {{motel.Distance}} km</span>

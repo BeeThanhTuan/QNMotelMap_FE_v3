@@ -43,6 +43,7 @@ export class SearchComponent {
   rentalDataDistance: { distance: number; count: number }[] = [];
 
   listMotels: Motel[]= [];
+  indexMotel!: number;
   //form filter
   listMotelFiltered: MotelFiltered = {
     motelsWithoutLandlord: [],
@@ -131,6 +132,29 @@ export class SearchComponent {
     });
   }
 
+  //handle view motels on map
+  handleViewOnMap():void {
+    this.router.navigate(['/client/home/map'], { 
+      queryParams: { 
+        listMotels: JSON.stringify(this.listMotels), 
+        filters: JSON.stringify(this.filters),
+        listMotelFiltered: JSON.stringify(this.listMotelFiltered)
+      }
+    });
+  }
+
+  //handle view motels on map with specifically motel
+  handleViewOnMapSpecificallyMotel(index: number):void {
+    this.router.navigate(['/client/home/map'], { 
+      queryParams: { 
+        listMotels: JSON.stringify(this.listMotels), 
+        filters: JSON.stringify(this.filters),
+        listMotelFiltered: JSON.stringify(this.listMotelFiltered),
+        index: index,
+      }
+    });
+  }
+
   async setFieldSearchIntoFormFilter(){
     this.setFieldSearch.fieldSearch$
       .pipe(distinctUntilChanged())  // Chỉ phát khi dữ liệu thay đổi
@@ -147,18 +171,17 @@ export class SearchComponent {
       });
   }
   
-  async setDataFormLocal() {
-    let filtersLocal = await JSON.parse(localStorage.getItem('filtersLocal')!)
-    let wardCommuneLocal = await JSON.parse(localStorage.getItem('wardCommuneLocal')!)
+  setDataFormLocal() :void {
+    let filtersLocal = JSON.parse(localStorage.getItem('filtersLocal')!)
+    let addressLocal =  JSON.parse(localStorage.getItem('addressLocal')!)
     if(filtersLocal){
       this.fieldSearch = filtersLocal;
       this.handleSetFieldForm();
     }
-    if(wardCommuneLocal){
-      this.fieldSearch.address = wardCommuneLocal ;
+    if(addressLocal){
+      this.fieldSearch.address = addressLocal ;
     }
     this.handleFilters();
-
   }
 
   async handleSetFieldForm(): Promise<void> {
@@ -259,7 +282,7 @@ export class SearchComponent {
 
   setDataIntoLocalStorage():void{
     localStorage.setItem('filtersLocal', JSON.stringify(this.formFilters.value));  
-    localStorage.setItem('wardCommuneLocal', JSON.stringify(this.fieldSearch.address ? this.fieldSearch.address : ' '));  
+    localStorage.setItem('addressLocal', JSON.stringify(this.fieldSearch.address ? this.fieldSearch.address : ' '));  
   }
 
   // Handle the form filter values

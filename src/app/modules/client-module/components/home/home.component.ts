@@ -106,7 +106,7 @@ export class HomeComponent {
     });
   }
   ngAfterViewInit(): void {
-    this.formSearch.get('address')!.valueChanges.pipe(debounceTime(700)).subscribe(() => {
+    this.formSearch.get('address')!.valueChanges.pipe(debounceTime(500)).subscribe(() => {
       this.handleSuggestSearchAddress();
     });
   }
@@ -142,6 +142,7 @@ export class HomeComponent {
   setDataFormLocal() {
     let filtersLocal: FiltersLocal = JSON.parse(localStorage.getItem('filtersLocal')!)
     let addressLocal = JSON.parse(localStorage.getItem('addressLocal')!)
+    
     if(addressLocal !== ' ' && addressLocal){
       this.formSearch.get('address')?.setValue(addressLocal);
     }
