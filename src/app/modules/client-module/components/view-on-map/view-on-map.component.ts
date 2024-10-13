@@ -277,6 +277,34 @@ export class ViewOnMapComponent {
     });
   }
 
+  // Hàm animateMarker với callback
+  animateMarker(marker: L.Marker, lat: number, lng: number, duration: number, onComplete: () => void): void {
+    const startLat = lat + 0.05; // Vị trí bắt đầu (cao hơn vị trí thật)
+    const startTime = performance.now();
+    // Bắt đầu với độ trong suốt là 0
+    marker.setOpacity(0); 
+    const animate = (currentTime: number) => {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1); // Tính phần trăm của animation
+      // Tính toán vị trí hiện tại dựa trên tỷ lệ tiến độ
+      const currentLat = startLat - (startLat - lat) * progress;
+      // Cập nhật vị trí marker
+      marker.setLatLng([currentLat, lng]);
+      // Tăng độ trong suốt từ 0 lên 1
+      marker.setOpacity(progress); // Tăng từ 0 đến 1
+      // Nếu chưa hoàn thành animation, tiếp tục
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      } else {
+        // Gọi callback khi animation hoàn tất
+        onComplete();
+      }
+    };
+    // Bắt đầu animation
+    requestAnimationFrame(animate);
+  }
+
+
 
   //add markers into map 
   addMarkers(markerData: { _id: string; Locations: string; Price: number }[]): void { 
@@ -285,12 +313,11 @@ export class ViewOnMapComponent {
     const normalBg = '#00358f';
     const hoverBg = '#3A8FFE'
   
-    markerData.forEach((marker) => {
+    markerData.forEach((marker, index) => {
       const [lat, lng] = marker.Locations.split(',').map(location => parseFloat(location.trim()));
-      
       // Tạo marker với icon bình thường
       const leafletMarker = L.marker([lat, lng], { icon: normalIcon }).addTo(this.map);
-  
+      leafletMarker.setOpacity(0); // Đặt opacity ban đầu là 0
       // Tạo một div để hiển thị giá (sẽ xuất hiện phía trên marker)
       const priceLabelDiv = L.divIcon({
         html: `<div class="price-label w-fit px-2 py-1 font-bold bg-[#00358f] text-white pointer-events-none rounded-[5px] absolute top-[-40px]">${marker.Price.toLocaleString()} VND</div>`,
@@ -298,9 +325,21 @@ export class ViewOnMapComponent {
         iconSize: [110, 30],
         iconAnchor: [45, 27],
       });
-
+      // Tính toán delay cho mỗi marker
+      const delay = index * 100; // Thay đổi giá trị 200 để điều chỉnh độ trễ
+      // Gọi hàm animateMarker với delay
+      setTimeout(() => {
+        this.animateMarker(leafletMarker, lat, lng, 300, () => {
+        });
+      }, delay);
+      
       // Tạo một marker cho giá
       const priceMarker = L.marker([lat, lng], { icon: priceLabelDiv }).addTo(this.map);
+      priceMarker.setOpacity(0);
+      setTimeout(()=>{
+        priceMarker.setOpacity(1);
+      },markerData.length * 100 + 400)
+
   
       // Thêm sự kiện hover cho marker
       leafletMarker.on('mouseover', () => {
@@ -326,7 +365,6 @@ export class ViewOnMapComponent {
       // Thêm sự kiện click để cố định trạng thái hover
       leafletMarker.on('click', (event) => {
         event.originalEvent.stopPropagation();
-
         if (this.selectedMarker) {
           // Đặt marker được chọn trước đó về trạng thái bình thường
           this.selectedMarker.setIcon(normalIcon);
@@ -335,7 +373,6 @@ export class ViewOnMapComponent {
             prevPriceLabel.style.backgroundColor = normalBg; // Trả về màu ban đầu cho giá của marker cũ
           }
         }
-  
         // Cập nhật marker được chọn mới
         this.selectedMarker = leafletMarker;
         this.selectedPriceMarker = priceMarker;
@@ -373,7 +410,7 @@ export class ViewOnMapComponent {
   
       // Tạo marker với icon tương ứng
       const leafletMarker = L.marker([lat, lng], { icon: iconToUse }).addTo(this.map);
-  
+      leafletMarker.setOpacity(0); // Đặt opacity ban đầu là 0
       // Tạo div hiển thị giá với màu khác cho marker đặc biệt
       const priceLabelDiv = L.divIcon({
         html: `<div class="price-label w-fit px-2 py-1 font-bold text-white pointer-events-none rounded-[5px] absolute top-[-40px]" style="background-color: ${defaultColor}">${marker.Price.toLocaleString()} VND</div>`,
@@ -382,9 +419,21 @@ export class ViewOnMapComponent {
         iconAnchor: [45, 27],
       });
   
+      // Tính toán delay cho mỗi marker
+      const delay = index * 100; // Thay đổi giá trị 200 để điều chỉnh độ trễ
+      // Gọi hàm animateMarker với delay
+      setTimeout(() => {
+        this.animateMarker(leafletMarker, lat, lng, 300, () => {
+        });
+      }, delay);
+
       // Tạo marker cho giá
       const priceMarker = L.marker([lat, lng], { icon: priceLabelDiv }).addTo(this.map);
-  
+      priceMarker.setOpacity(0);
+      setTimeout(()=>{
+        priceMarker.setOpacity(1);
+      },markerData.length * 100 + 400)
+
       // Nếu là specialMarker, gán làm selectedMarker và set trạng thái ngay từ đầu
       if (isSpecialMarker) {
         this.selectedMarker = leafletMarker;
