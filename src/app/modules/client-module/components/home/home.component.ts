@@ -4,7 +4,6 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router, NavigationEnd } from '@angular/router';
 import { MotelService } from 'src/app/services/motel.service';
 import { NzMarks } from 'ng-zorro-antd/slider';
-import { SetFieldSearchFilterService } from 'src/app/services/set-field-search-filter.service';
 import { debounceTime } from 'rxjs';
 
 interface FiltersLocal {
@@ -77,7 +76,7 @@ export class HomeComponent {
   };
 
   constructor(private titleService: Title, private formBuilder: FormBuilder, private router: Router,
-     private motelService: MotelService, private setFieldSearch: SetFieldSearchFilterService) { 
+     private motelService: MotelService) { 
     this.titleService.setTitle('QNMoteMap | Trang chủ ');
     this.initializeFormFilters();
     this.setDataFormLocal();
@@ -135,8 +134,11 @@ export class HomeComponent {
 
   //tìm kiếm 
   handleSearch(){
-    this.router.navigate(['/client/home/search']);
-    this.setFieldSearch.setFieldSearch(this.formSearch.value);
+    this.router.navigate(['/client/home/search'], { 
+      queryParams: { 
+        filters: JSON.stringify(this.formSearch.value),
+      }
+    });
   }
 
   setDataFormLocal() {

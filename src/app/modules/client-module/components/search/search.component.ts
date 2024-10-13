@@ -2,9 +2,8 @@ import { ChangeDetectorRef, Component, HostListener } from '@angular/core';
 import { chartOptions } from '../../config-charts/chart-bar-options';
 import { Title } from '@angular/platform-browser';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Router, NavigationEnd } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { MotelFiltered} from 'src/app/interfaces/motelFiltered';
-import { SetFieldSearchFilterService } from 'src/app/services/set-field-search-filter.service';
 import { MotelService } from 'src/app/services/motel.service';
 import { Motel } from 'src/app/interfaces/motel';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
@@ -109,8 +108,7 @@ export class SearchComponent {
   };
 
   constructor(private titleService: Title, private formBuilder: FormBuilder, private router: Router,
-    private setFieldSearch: SetFieldSearchFilterService, private cdr: ChangeDetectorRef,
-    private motelService: MotelService) {
+    private route: ActivatedRoute, private motelService: MotelService) {
     this.titleService.setTitle('QNMoteMap | Tìm kiếm ');
     this.initializeForm();
     this.setDataFormLocal();
@@ -155,20 +153,15 @@ export class SearchComponent {
     });
   }
 
-  async setFieldSearchIntoFormFilter(){
-    this.setFieldSearch.fieldSearch$
-      .pipe(distinctUntilChanged())  // Chỉ phát khi dữ liệu thay đổi
-      .subscribe(async (data) => {
-        if (data) {
-          this.fieldSearch = data;
-          try {
-            await this.handleSetFieldForm(); 
-            await this.handleFilters();
-          } catch (error) {
-            console.error('Lỗi khi xử lý form hoặc bộ lọc:', error);
-          }
-        }
-      });
+ setFieldSearchIntoFormFilter(){
+    this.route.queryParams.subscribe(params => {
+      if(params['filters']){
+        let filters = JSON.parse(params['filters']);
+        this.fieldSearch = filters;
+        this.handleSetFieldForm(); 
+        this.handleFilters();
+      }
+    })
   }
   
   setDataFormLocal() :void {
@@ -184,7 +177,7 @@ export class SearchComponent {
     this.handleFilters();
   }
 
-  async handleSetFieldForm(): Promise<void> {
+   handleSetFieldForm(): void {
       this.formFilters.patchValue({
         wardCommune: this.fieldSearch.address,
         desiredPrice: this.fieldSearch.desiredPrice,
@@ -286,7 +279,7 @@ export class SearchComponent {
   }
 
   // Handle the form filter values
-  async handleFilters(): Promise<void> {
+  handleFilters(): void {
     this.isLoading = true;
     this.getFilters();
     this.motelService.getMotelsFiltered(this.filters).subscribe((response)=>{
