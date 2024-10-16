@@ -392,26 +392,25 @@ export class ViewOnMapComponent {
     });
   }
 
-  //add markers into map with special marker
   addMarkersSpecial(markerData: { _id: string; Locations: string; Price: number }[], specialMarkerIndex: number): void {
     const normalIcon = this.createNormalIcon();
     const hoverIcon = this.createHoverIcon();
     const normalBg = '#00358f';
-    const hoverBg = '#3A8FFE'
+    const hoverBg = '#3A8FFE';
+  
+    const markerPromises: Promise<void>[] = [];
   
     markerData.forEach((marker, index) => {
       const [lat, lng] = marker.Locations.split(',').map(location => parseFloat(location.trim()));
   
-      // Kiểm tra nếu marker hiện tại là đặc biệt
       const isSpecialMarker = index === specialMarkerIndex;
-      const iconToUse = isSpecialMarker ? hoverIcon : normalIcon; // Nếu là special thì dùng hoverIcon
-      const hoverColor = '#3A8FFE'; // Màu hover khác cho marker đặc biệt
-      const defaultColor = isSpecialMarker ? hoverBg : normalBg; // Màu nền mặc định khác cho marker đặc biệt
+      const iconToUse = isSpecialMarker ? hoverIcon : normalIcon;
+      const hoverColor = '#3A8FFE';
+      const defaultColor = isSpecialMarker ? hoverBg : normalBg;
   
-      // Tạo marker với icon tương ứng
       const leafletMarker = L.marker([lat, lng], { icon: iconToUse }).addTo(this.map);
-      leafletMarker.setOpacity(0); // Đặt opacity ban đầu là 0
-      // Tạo div hiển thị giá với màu khác cho marker đặc biệt
+      leafletMarker.setOpacity(0);  // Ban đầu marker ẩn
+  
       const priceLabelDiv = L.divIcon({
         html: `<div class="price-label w-fit px-2 py-1 font-bold text-white pointer-events-none rounded-[5px] absolute top-[-40px]" style="background-color: ${defaultColor}">${marker.Price.toLocaleString()} VND</div>`,
         className: 'custom-price-icon',
@@ -419,82 +418,92 @@ export class ViewOnMapComponent {
         iconAnchor: [45, 27],
       });
   
-      // Tính toán delay cho mỗi marker
-      const delay = index * 100; // Thay đổi giá trị 200 để điều chỉnh độ trễ
-      // Gọi hàm animateMarker với delay
-      setTimeout(() => {
-        this.animateMarker(leafletMarker, lat, lng, 300, () => {
-        });
-      }, delay);
-
-      // Tạo marker cho giá
       const priceMarker = L.marker([lat, lng], { icon: priceLabelDiv }).addTo(this.map);
-      priceMarker.setOpacity(0);
-      setTimeout(()=>{
-        priceMarker.setOpacity(1);
-      },markerData.length * 100 + 400)
-
-      // Nếu là specialMarker, gán làm selectedMarker và set trạng thái ngay từ đầu
+      priceMarker.setOpacity(0);  // Ban đầu price marker ẩn
+  
+      // Mỗi lần animate marker sẽ được lưu vào Promise để đảm bảo trình tự
+      const animationPromise = new Promise<void>((resolve) => {
+        const delay = index * 100;
+        setTimeout(() => {
+          this.animateMarker(leafletMarker, lat, lng, 300, () => {
+            leafletMarker.setOpacity(1); // Marker xuất hiện
+          });
+        }, delay);
+         // Sau khi marker hoàn tất, animate price marker
+         setTimeout(() => {
+          priceMarker.setOpacity(1); // Price marker xuất hiện
+          resolve();  // Animation của cả marker và price marker hoàn tất
+        }, this.listMotels.length * 100 + 400);  // Delay giữa marker và price marker (có thể điều chỉnh)
+      });
+  
+      markerPromises.push(animationPromise); // Lưu vào mảng Promise
+  
       if (isSpecialMarker) {
         this.selectedMarker = leafletMarker;
         this.selectedPriceMarker = priceMarker;
       }
   
-      // Thêm sự kiện hover cho marker
+      // Sự kiện hover và click giống như trước
       leafletMarker.on('mouseover', () => {
         if (this.selectedMarker !== leafletMarker) {
-          leafletMarker.setIcon(hoverIcon); // Đổi icon khi hover nếu chưa được chọn
+          leafletMarker.setIcon(hoverIcon);
           const priceLabel = priceMarker.getElement()?.querySelector('.price-label') as HTMLElement;
           if (priceLabel) {
-            priceLabel.style.backgroundColor = hoverColor; // Thay đổi màu khi hover
+            priceLabel.style.backgroundColor = hoverColor;
           }
         }
       });
   
       leafletMarker.on('mouseout', () => {
         if (this.selectedMarker !== leafletMarker) {
-          leafletMarker.setIcon(normalIcon); // Trả về icon ban đầu nếu chưa được chọn
+          leafletMarker.setIcon(normalIcon);
           const priceLabel = priceMarker.getElement()?.querySelector('.price-label') as HTMLElement;
           if (priceLabel) {
-            priceLabel.style.backgroundColor = normalBg; // Trả về màu ban đầu
+            priceLabel.style.backgroundColor = normalBg;
           }
         }
       });
   
-      // Thêm sự kiện click để cố định trạng thái hover
       leafletMarker.on('click', (event) => {
         event.originalEvent.stopPropagation();
         if (this.selectedMarker) {
-          // Đặt marker được chọn trước đó về trạng thái bình thường
           this.selectedMarker.setIcon(normalIcon);
           const prevPriceLabel = this.selectedPriceMarker?.getElement()?.querySelector('.price-label') as HTMLElement;
           if (prevPriceLabel) {
-            prevPriceLabel.style.backgroundColor = normalBg; 
+            prevPriceLabel.style.backgroundColor = normalBg;
           }
         }
   
-        // Cập nhật marker được chọn mới
         this.selectedMarker = leafletMarker;
         this.selectedPriceMarker = priceMarker;
-        leafletMarker.setIcon(hoverIcon); // Đổi icon thành trạng thái hover khi click
+        leafletMarker.setIcon(hoverIcon);
         const priceLabel = priceMarker.getElement()?.querySelector('.price-label') as HTMLElement;
         if (priceLabel) {
-          priceLabel.style.backgroundColor = hoverColor; // Cố định màu khi click
+          priceLabel.style.backgroundColor = hoverColor;
         }
-        
+  
         this.idMotel = marker._id;
-        //hiện thị popup motel trên map
         this.handleShowPopupMotelOnMap();
       });
   
       this.markersArray.push(leafletMarker);
       this.markersArray.push(priceMarker);
     });
+  
+    // Đợi tất cả các animation (cả marker và price marker) hoàn tất trước khi thực hiện zoom
+    Promise.all(markerPromises).then(() => {
+      const specialMarker = markerData[specialMarkerIndex];
+      const [specialLat, specialLng] = specialMarker.Locations.split(',').map(location => parseFloat(location.trim()));
+  
+      // Zoom vào marker đặc biệt sau khi tất cả các animation hoàn tất
+      this.map.flyTo([specialLat, specialLng], 15.5, { duration: 1});  // Thực hiện zoom với animation
+    });
   }
+  
+  
   
   //Delete all markers from the map
   clearMarkers(): void { 
-    console.log('clear marker');  
     this.markersArray.forEach(marker => marker.remove()); 
     this.markersArray = []; 
   }
