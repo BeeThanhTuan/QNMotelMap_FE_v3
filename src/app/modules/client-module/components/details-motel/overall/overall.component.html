@@ -113,7 +113,8 @@
 <div class="w-full h-[100vh] fixed top-0 left-0 overflow-hidden z-20 flex justify-center items-center" *ngIf="isCollectionImageOpen" >
     <div class="absolute w-full h-full bg-[rgba(0,0,0,0.6)] backdrop-blur-[1.5px]" (click)="handleCloseCollectionImage()"></div>
     <div class="pb-5 mx-auto relative w-[95%] h-[95%] bg-white z-10 rounded-xl flex flex-col justify-between overflow-hidden ">
-        <div class="w-full flex justify-end border-b">
+        <div class="w-full flex justify-between items-center border-b">
+            <div><span class="ml-5 text-[18px] font-semibold">Ảnh của nhà trọ</span></div>
             <button class="px-4 py-2 flex justify-center items-center text-custom-color-black-light hover:text-custom-color-blue"
                 (click)="handleCloseCollectionImage()">
                 <span class="font-medium text-[14px]">Đóng</span>

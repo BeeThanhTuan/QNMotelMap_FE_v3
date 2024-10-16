@@ -1,3 +1,4 @@
+import { Convenient } from "./convenient";
 import { Images } from "./images";
 import { Motel } from "./motel";
 import { User } from "./user";
@@ -9,10 +10,10 @@ export interface Room {
     Floor: number;
     Status: boolean;
     Description: string;
-    ListConvenient: object[];
+    ListConvenient: Convenient[];
     Price: number;
     CreateAt: string;
-    CreateBy: object | User | null;
+    CreateBy: string;
     UpdateAt: string;
-    UpdateBy: object | User | null;
+    UpdateBy: string;
   }

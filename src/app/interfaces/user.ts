@@ -8,5 +8,5 @@ export interface User {
   PhoneNumber: string;
   CreateAt: string;
   UpdateAt: string | null;
-  UpdateBy: object | User | null;
+  UpdateBy: string;
 }

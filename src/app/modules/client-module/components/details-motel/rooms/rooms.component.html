@@ -2,190 +2,23 @@
     <div class="max-w-custom mx-auto ">
         <div class="w-full p-3 mt-5 relative min-w-[700px] ">
             <ul class="mt-5 w-full grid ml:grid-cols-4 md:grid-cols-3 grid-cols-3 gap-3 ">
-                <li class="flex-1  rounded-xl mb-2 cursor-pointer">
+                <li class="flex-1  rounded-xl mb-2 cursor-pointer" *ngFor="let room of listRooms">
                     <div class="w-full relative " >
-                        <a routerLink="/client/home/detail-motel/:id/room/:id" class="w-full group">
+                        <a routerLink="/client/home/detail-motel/{{idMotel}}/room/{{room._id}}" class="w-full group">
                             <div class="w-full aspect-[4/3.2]"> <!-- Giữ tỷ lệ 4:3 -->
-                                <img class="w-full h-full rounded-tl-xl rounded-tr-xl object-cover" src="assets/images/img-motel.jpg" alt="Hình ảnh về nhà trọ">
+                                <img class="w-full h-full rounded-tl-xl rounded-tr-xl object-cover" src="http://localhost:3000/resources/img-rooms/{{room.ListImages[0].LinkImage}}" alt="Hình ảnh về nhà trọ">
                             </div>
                             <div class="info p-3 ntt-shadow-motel-card rounded-bl-xl rounded-br-xl flex flex-col gap-2 group-hover:ntt-shadow-motel-card-hover transition-shadow duration-200">
                                 <div>
-                                    <div class=" text-[15px] font-medium">Tầng 1</div>
+                                    <div class=" text-[15px] font-medium">Tầng {{room.Floor}}</div>
                                     <ul class="mt-2 flex flex-wrap gap-3 line-clamp-2">
-                                        <li>
-                                            <img class="min-w-[30px] h-[30px] object-cover " title="Vệ sinh riêng" src="assets/images/bathroom.png" alt="">
-                                        </li>
-                                        <li>
-                                            <img class="min-w-[30px] h-[30px] object-cover " title="Gác lửng" src="assets/images/mezzanine.png" alt="">
-                                        </li>
-                                        <li>
-                                            <img class="min-w-[30px] h-[30px] object-cover " title="Tủ lạnh" src="assets/images/fridge.png" alt="">
-                                        </li>
-                                        <li>
-                                            <img class="min-w-[30px] h-[30px] object-cover " title="Nơi nấu ăn" src="assets/images/place-cook.png" alt="">
-                                        </li>
-                                        <li>
-                                            <img class="min-w-[30px] h-[30px] object-cover " title="Máy nước nóng" src="assets/images/water-heater.png" alt="">
-                                        </li>
-                                        <li>
-                                            <img class="min-w-[30px] h-[30px] object-cover " title="Máy giặt" src="assets/images/whasing-machine.png" alt="">
+                                        <li *ngFor="let convenient of room.ListConvenient" >
+                                            <img class="min-w-[30px] h-[30px] object-cover " title="{{convenient.NameConvenient}}" src="http://localhost:3000/resources/img-convenients/{{convenient.LinkImage}}" alt="">
                                         </li>
                                     </ul>       
                                 </div>
                                 <div class="p-2">
-                                    <div class="text-[16px] font-semibold text-custom-color-black text-right"> 1.123.333 VND</div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                </li>
-                <li class="flex-1  rounded-xl mb-2 cursor-pointer">
-                    <div class="w-full relative " >
-                        <a routerLink="/client/home/detail-motel/:id/overall" class="w-full">
-                            <div class="w-full aspect-[4/3.2]"> <!-- Giữ tỷ lệ 4:3 -->
-                                <img class="w-full h-full rounded-tl-xl rounded-tr-xl object-cover" src="assets/images/img-motel.jpg" alt="Hình ảnh về nhà trọ">
-                            </div>
-                            <div class="info p-3 ntt-shadow-motel-card rounded-bl-xl rounded-br-xl flex flex-col gap-2">
-                                <div>
-                                    <div class=" text-[15px] font-medium">Tầng 1</div>
-                                    <ul class="mt-2 flex gap-3 line-clamp-1">
-                                        <li>
-                                            <img class="w-[30px] h-[30px] object-cover " title="Vệ sinh riêng" src="assets/images/bathroom.png" alt="">
-                                        </li>
-                                        <li>
-                                            <img class="w-[30px] h-[30px] object-cover " title="Gác lửng" src="assets/images/mezzanine.png" alt="">
-                                        </li>
-                                        <li>
-                                            <img class="w-[30px] h-[30px] object-cover " title="Tủ lạnh" src="assets/images/fridge.png" alt="">
-                                        </li>
-                                        <li>
-                                            <img class="w-[30px] h-[30px] object-cover " title="Nơi nấu ăn" src="assets/images/place-cook.png" alt="">
-                                        </li>
-                                        <li>
-                                            <img class="w-[30px] h-[30px] object-cover " title="Máy nước nóng" src="assets/images/water-heater.png" alt="">
-                                        </li>
-                                        <li>
-                                            <img class="w-[30px] h-[30px] object-cover " title="Máy giặt" src="assets/images/whasing-machine.png" alt="">
-                                        </li>
-                                    </ul>
-                                    
-                                </div>
-                                <div class="p-2">
-                                    <div class="text-[16px] font-semibold text-custom-color-black text-right"> 1.123.333 VND</div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                </li>
-                <li class="flex-1 rounded-xl mb-2 cursor-pointer">
-                    <div class="w-full relative " >
-                        <a routerLink="/client/home/detail-motel/:id/overall" class="w-full">
-                            <div class="w-full aspect-[4/3.2]"> <!-- Giữ tỷ lệ 4:3 -->
-                                <img class="w-full h-full rounded-tl-xl rounded-tr-xl object-cover" src="assets/images/img-motel.jpg" alt="Hình ảnh về nhà trọ">
-                            </div>
-                            <div class="info p-3 ntt-shadow-motel-card rounded-bl-xl rounded-br-xl flex flex-col gap-2">
-                                <div>
-                                    <div class=" text-[15px] font-medium">Tầng 1</div>
-                                    <ul class="mt-2 flex gap-3 line-clamp-1">
-                                        <li>
-                                            <img class="w-[30px] h-[30px] object-cover " title="Vệ sinh riêng" src="assets/images/bathroom.png" alt="">
-                                        </li>
-                                        <li>
-                                            <img class="w-[30px] h-[30px] object-cover " title="Gác lửng" src="assets/images/mezzanine.png" alt="">
-                                        </li>
-                                        <li>
-                                            <img class="w-[30px] h-[30px] object-cover " title="Tủ lạnh" src="assets/images/fridge.png" alt="">
-                                        </li>
-                                        <li>
-                                            <img class="w-[30px] h-[30px] object-cover " title="Nơi nấu ăn" src="assets/images/place-cook.png" alt="">
-                                        </li>
-                                        <li>
-                                            <img class="w-[30px] h-[30px] object-cover " title="Máy nước nóng" src="assets/images/water-heater.png" alt="">
-                                        </li>
-                                        <li>
-                                            <img class="w-[30px] h-[30px] object-cover " title="Máy giặt" src="assets/images/whasing-machine.png" alt="">
-                                        </li>
-                                    </ul>
-                                    
-                                </div>
-                                <div class="p-2">
-                                    <div class="text-[16px] font-semibold text-custom-color-black text-right"> 1.123.333 VND</div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                </li>
-                <li class="flex-1  rounded-xl mb-2 cursor-pointer">
-                    <div class="w-full relative " >
-                        <a routerLink="/client/home/detail-motel/:id/overall" class="w-full">
-                            <div class="w-full aspect-[4/3.2]"> <!-- Giữ tỷ lệ 4:3 -->
-                                <img class="w-full h-full rounded-tl-xl rounded-tr-xl object-cover" src="assets/images/img-motel.jpg" alt="Hình ảnh về nhà trọ">
-                            </div>
-                            <div class="info p-3 ntt-shadow-motel-card rounded-bl-xl rounded-br-xl flex flex-col gap-2">
-                                <div>
-                                    <div class=" text-[15px] font-medium">Tầng 1</div>
-                                    <ul class="mt-2 flex gap-3 line-clamp-1">
-                                        <li>
-                                            <img class="w-[30px] h-[30px] object-cover " title="Vệ sinh riêng" src="assets/images/bathroom.png" alt="">
-                                        </li>
-                                        <li>
-                                            <img class="w-[30px] h-[30px] object-cover " title="Gác lửng" src="assets/images/mezzanine.png" alt="">
-                                        </li>
-                                        <li>
-                                            <img class="w-[30px] h-[30px] object-cover " title="Tủ lạnh" src="assets/images/fridge.png" alt="">
-                                        </li>
-                                        <li>
-                                            <img class="w-[30px] h-[30px] object-cover " title="Nơi nấu ăn" src="assets/images/place-cook.png" alt="">
-                                        </li>
-                                        <li>
-                                            <img class="w-[30px] h-[30px] object-cover " title="Máy nước nóng" src="assets/images/water-heater.png" alt="">
-                                        </li>
-                                        <li>
-                                            <img class="w-[30px] h-[30px] object-cover " title="Máy giặt" src="assets/images/whasing-machine.png" alt="">
-                                        </li>
-                                    </ul>
-                                    
-                                </div>
-                                <div class="p-2">
-                                    <div class="text-[16px] font-semibold text-custom-color-black text-right"> 1.123.333 VND</div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                </li>
-                <li class="flex-1 rounded-xl mb-2 cursor-pointer">
-                    <div class="w-full relative " >
-                        <a routerLink="/client/home/detail-motel/:id/overall" class="w-full">
-                            <div class="w-full aspect-[4/3.2]"> <!-- Giữ tỷ lệ 4:3 -->
-                                <img class="w-full h-full rounded-tl-xl rounded-tr-xl object-cover" src="assets/images/img-motel.jpg" alt="Hình ảnh về nhà trọ">
-                            </div>
-                            <div class="info p-3 ntt-shadow-motel-card rounded-bl-xl rounded-br-xl flex flex-col gap-2">
-                                <div>
-                                    <div class=" text-[15px] font-medium">Tầng 1</div>
-                                    <ul class="mt-2 flex gap-3 line-clamp-1">
-                                        <li>
-                                            <img class="w-[30px] h-[30px] object-cover " title="Vệ sinh riêng" src="assets/images/bathroom.png" alt="">
-                                        </li>
-                                        <li>
-                                            <img class="w-[30px] h-[30px] object-cover " title="Gác lửng" src="assets/images/mezzanine.png" alt="">
-                                        </li>
-                                        <li>
-                                            <img class="w-[30px] h-[30px] object-cover " title="Tủ lạnh" src="assets/images/fridge.png" alt="">
-                                        </li>
-                                        <li>
-                                            <img class="w-[30px] h-[30px] object-cover " title="Nơi nấu ăn" src="assets/images/place-cook.png" alt="">
-                                        </li>
-                                        <li>
-                                            <img class="w-[30px] h-[30px] object-cover " title="Máy nước nóng" src="assets/images/water-heater.png" alt="">
-                                        </li>
-                                        <li>
-                                            <img class="w-[30px] h-[30px] object-cover " title="Máy giặt" src="assets/images/whasing-machine.png" alt="">
-                                        </li>
-                                    </ul>
-                                    
-                                </div>
-                                <div class="p-2">
-                                    <div class="text-[16px] font-semibold text-custom-color-black text-right"> 1.123.333 VND</div>
+                                    <div class="text-[16px] font-semibold text-custom-color-black text-right"> {{room.Price | money}} VND</div>
                                 </div>
                             </div>
                         </a>
