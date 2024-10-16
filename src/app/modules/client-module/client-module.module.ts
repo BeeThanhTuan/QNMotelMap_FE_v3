@@ -34,6 +34,7 @@ import { NzSliderModule } from 'ng-zorro-antd/slider';
 //loading
 import { NgxSpinnerModule } from "ngx-spinner";
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { PhonePipe } from './pipes/phone.pipe';
 
 @NgModule({
   declarations: [
@@ -56,6 +57,7 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
     RoomDetailComponent,
     ViewOnMapComponent,
     ViewMotelOnMapComponent,
+    PhonePipe,
     
   ],
   imports: [

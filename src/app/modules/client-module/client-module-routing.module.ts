@@ -29,7 +29,7 @@ const routes: Routes = [
           { path: 'rooms', component: RoomsComponent},
           { path: 'rating', component: RatingComponent },
           { path: 'rooms', component: RoomsComponent},
-          { path: 'room/:id', component: RoomDetailComponent},
+          { path: 'room/:roomId', component: RoomDetailComponent},
         ],
       },
     ],

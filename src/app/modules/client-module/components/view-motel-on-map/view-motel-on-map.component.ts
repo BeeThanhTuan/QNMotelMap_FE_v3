@@ -14,7 +14,7 @@ export class ViewMotelOnMapComponent {
     _id: '',
     NameMotel: '',
     Location: '',
-    LandlordID: {},
+    LandlordID: '',
     ListImages: [], 
     Address: '',
     WardCommune: '',

@@ -3,12 +3,12 @@
     <div class="info w-full text-custom-color-black px-2 flex justify-between">
         <div>
             <div class="motel_name mt-5">
-                <h2 class="mt-1 text-[26px] font-sans font-bold">Nhà trọ</h2>
+                <h2 class="mt-1 text-[26px] font-sans font-bold">{{motel.NameMotel ? motel.NameMotel : 'Nhà trọ'}}</h2>
             </div>
             <div class="address_motel flex mt-2 gap-2">
                 <span><i class='fa-solid fa-location-dot text-[23px] text-custom-color-blue'></i></span>
-                <span class="capitalize text-[18px] font-normal">79 Biên cương, Ngô mây</span>
-                <span class="text-[16px] font-normal">- khoảng cách tới trường 1km.</span>
+                <span class="capitalize text-[18px] font-normal">{{motel.Address}}, {{motel.WardCommune}}</span>
+                <span class="text-[16px] font-normal">- khoảng cách tới trường {{motel.Distance}} km.</span>
             </div>
         </div>
         <div title="Lưu" class="w-[78px] flex justify-start items-center mt-5">
@@ -18,33 +18,16 @@
         </div>
     </div>
     <div class="flex mt-3 ">
-        <div class="w-[850px] pt-4 pl-2 pr-3">     
-            <div class="grid grid-cols-3 grid-rows-6 gap-3 h-[350px]">
-                <div class="col-span-2 row-span-6 col-start-2 row-start-1">
-                    <img src="assets/images/img-motel.jpg" alt="" class="img-motel w-full h-full object-cover">
+        <div class="w-[830px] pt-4 pl-2 pr-3">     
+            <div class="h-[500px] relative" [ngClass]="getLayoutImageClass(motel.ListImages.slice(0,3).length)">
+                <div class="image" *ngFor="let image of motel.ListImages.slice(0,3), let i = index">
+                    <img src="http://localhost:3000/resources/img-motels/{{image.LinkImage}}" alt="" class="img-motel w-full h-full object-cover" (click)="handleOpenCollectionImage(i)">
                 </div>
-                <div class="row-span-3 col-start-1 row-start-1">
-                    <img src="assets/images/img-motel.jpg" alt="" class="img-motel w-full h-full object-cover ">     
-                </div>
-                <div class="row-span-3 row-start-4">
-                    <img src="assets/images/img-motel.jpg" alt="" class="img-motel w-full h-full object-cover">
-                </div>
-            </div>
-            <div class="flex h-[155px] mt-3 gap-3">
-                <div>
-                    <img src="assets/images/img-motel-2.jpg" alt="" class="img-motel w-full h-full object-cover">
-                </div>
-                <div>
-                    <img src="assets/images/img-motel.jpg" alt="" class="img-motel w-full h-full object-cover">
-                </div>
-                <div>
-                    <img src="assets/images/img-motel-2.jpg" alt="" class="img-motel w-full h-full object-cover">
-                </div>
-                <div>
-                    <img src="assets/images/img-motel.jpg" alt="" class="img-motel w-full h-full object-cover">
-                </div>
-                <div>
-                    <img src="assets/images/img-motel-2.jpg" alt="" class="img-motel w-full h-full object-cover">
+                <div class="flex mt-3 gap-3 absolute z-10 bottom-2 right-2" *ngIf="motel.ListImages.length >= 4" >
+                    <div *ngFor="let image of motel.ListImages.slice(3,4)" class="md:w-[150px] md:h-[180px] w-[100px] h-[130px] border-4 border-[white] relative">
+                        <img src="http://localhost:3000/resources/img-motels/{{image.LinkImage}}" alt="" class="img-motel w-full h-full object-cover" (click)="handleOpenCollectionImage(3)">
+                        <div *ngIf="motel.ListImages.length >= 4" class="absolute top-2 right-2"><span class="text-[25px] text-white font-medium">+{{(motel.ListImages.slice(4).length) + 1}}</span></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -53,30 +36,30 @@
                 <div class="h-[calc(100%-180px-16px)] border border-[#e7e7e7] rounded-md mb-4">
                     <div class="flex gap-2 w-full justify-end border-b border-[#e7e7e7] p-4">
                         <div class="w-full flex justify-end items-end">
-                            <span class="text-[15px] font-normal text-custom-color-black">8 đánh giá</span>
+                            <span class="text-[15px] font-normal text-custom-color-black">{{motel.ListRatings.length}} đánh giá</span>
                         </div>
                         <div class="min-w-8 h-8 flex justify-center items-center bg-[#003B95] rounded-[5px] rounded-bl-none">
-                            <span class="text-[17px] font-semibold text-white">5.0</span>
+                            <span class="text-[17px] font-semibold text-white">{{motel.TotalStar}}</span>
                         </div>
                     </div>
                     <div class="w-full p-4 pt-3 text-custom-color-black flex justify-between items-center border-b border-[#e7e7e7]">
                         <div class="text-[17px] font-medium text-end">Giá:</div>
-                        <div class="text-[21px] font-semibold " title="Giá nhà trọ">1.000.000 VND</div>
+                        <div class="text-[21px] font-semibold " title="Giá nhà trọ">{{motel.Price | money}} VND</div>
                     </div>
                     <div class="w-full p-4 pt-3 text-custom-color-black">
                         <div class="text-[17px] font-medium">Thông tin liên hệ:</div>
                         <div class="mt-3 flex flex-col gap-3">
                             <div class="w-full flex justify-start items-center gap-2 ">
                                 <i class="fa-solid fa-user text-[18px] text-custom-color-blue"></i>
-                                <span class="text-[15px] font-normal capitalize">Nguyễn Đăng Đức</span> 
+                                <span class="text-[15px] font-normal capitalize">{{landlord.LandlordName}}</span> 
                             </div>
                             <div class="w-full flex justify-start items-center gap-2">
                                 <i class="fa-solid fa-phone text-[18px] text-custom-color-blue"></i>
-                                <span class="text-[15px] font-normal">0923 728 234</span>
+                                <span class="text-[15px] font-normal">{{landlord.PhoneNumber | phone}}</span>
                             </div>
                             <div class="w-full flex justify-start items-center gap-2">
                                 <i class="fa-solid fa-location-dot text-[18px] text-custom-color-blue"></i>
-                                <span class="text-[15px] font-normal capitalize">79 Biên Cương, ngô mây </span>
+                                <span class="text-[15px] font-normal capitalize">{{landlord.Address}}</span>
                             </div>
                         </div>
                     </div>
@@ -97,87 +80,67 @@
 
         </div>
     </div>
-    <div class="convenient w-full mt-10 px-2">
+    <div class="convenient w-full mt-10 px-2 ">
        <div class="ntt-shadow-box w-full rounded-md">
             <div class="w-full border-b border-[#e7e7e7]">
                 <h3 class="p-4 text-[20px] text-custom-color-black font-sans font-semibold">Tiện nghi của nhà trọ</h3>
             </div>
             <div class="w-full">
                 <ul class="flex flex-wrap p-4 gap-4 text-custom-color-black">
-                    <li class="ntt-li-convenient">
+                    <li class="ntt-li-convenient" *ngFor="let convenient of motel.ListConvenient">
                         <div class="flex justify-center items-center gap-4 px-4">
-                            <img class="w-[35px] h-[35px] object-cover  " src="assets/images/bathroom.png" alt="">
-                            <span class="text-[16px]">Nhà vệ sinh riêng</span>
-                        </div>
-                    </li>
-                    <li class="ntt-li-convenient">
-                        <div class="flex justify-center items-center gap-4 px-4">
-                            <img class="w-[35px] h-[35px] object-cover" src="assets/images/mezzanine.png" alt="">
-                            <span class="text-[16px]">Gác lửng</span>
-                        </div>
-                    </li>
-                    <li class="ntt-li-convenient ">
-                        <div class="flex justify-center items-center gap-4 px-4">
-                            <img class="w-[35px] h-[35px] object-cover " src="assets/images/air-conditioner.png" alt="">
-                            <span class="text-[16px]">Điều hoà</span>
-                        </div>
-                    </li>
-                    <li class="ntt-li-convenient">
-                        <div class="flex justify-center items-center gap-4 px-4">
-                            <img class="w-[35px] h-[35px] object-cover" src="assets/images/wifi.png" alt="">
-                            <span class="text-[16px]">Wifi miễn phí</span>
-                        </div>
-                    </li>
-                    <li class="ntt-li-convenient">
-                        <div class="flex justify-center items-center gap-4 px-4">
-                            <img class="w-[35px] h-[35px] object-cover" src="assets/images/water-heater.png" alt="">
-                            <span class="text-[16px]">Máy nước nóng </span>
-                        </div>
-                    </li>
-                    <li class="ntt-li-convenient">
-                        <div class="flex justify-center items-center gap-4 px-4">
-                            <img class="w-[35px] h-[35px] object-cover " src="assets/images/place-cook.png" alt="">
-                            <span class="text-[16px]">Nơi nấu ăn</span>
-                        </div>
-                    </li>
-                    <li class="ntt-li-convenient">
-                        <div class="flex justify-center items-center gap-4 px-4">
-                            <img class="w-[35px] h-[35px] object-cover " src="assets/images/fridge.png" alt="">
-                            <span class="text-[16px]">Tủ lạnh</span>
-                        </div>
-                    </li>
-                    <li class="ntt-li-convenient">
-                        <div class="flex justify-center items-center gap-4 px-4">
-                            <img class="w-[35px] h-[35px] object-cover" src="assets/images/whasing-machine.png" alt="">
-                            <span class="text-[16px]">Máy giặt</span>
-                        </div>
-                    </li>
-                    <li class="ntt-li-convenient">
-                        <div class="flex justify-center items-center gap-4 px-4">
-                            <img class="w-[35px] h-[35px] object-cover" src="assets/images/clothes.png" alt="">
-                            <span class="text-[16px]">Nơi phơi đồ</span>
-                        </div>
-                    </li>
-                    <li class="ntt-li-convenient">
-                        <div class="flex justify-center items-center gap-4 px-4">
-                            <img class="w-[35px] h-[35px] object-cover " src="assets/images/camera.png" alt="">
-                            <span class="text-[16px]">An ninh</span>
+                            <img class="w-[35px] h-[35px] object-cover " src="http://localhost:3000/resources/img-convenients/{{convenient.LinkImage}}" alt="">
+                            <span class="text-[16px]">{{convenient.NameConvenient}}</span>
                         </div>
                     </li>
                 </ul>
             </div>
        </div>
     </div> <!--End convenient-->
-    <div class="description w-full mt-8 px-2">
+    <div class="description w-full mt-8 px-2 pb-10">
         <div class="ntt-shadow-box w-full rounded-md">
              <div class="w-full border-b border-[#e7e7e7]">
                  <h3 class="p-4 text-[20px] text-custom-color-black font-sans font-semibold">Mô tả về nhà trọ</h3>
              </div>
              <div class="w-full p-4">
                  <span class="text-[16px]">
-                    Nhà trọ đẹp đầy đủ tiện nghi
+                    {{motel.Description}}
                  </span>         
              </div>
         </div>
      </div> <!--End description-->
 </div>
+<div class="w-full h-[100vh] fixed top-0 left-0 overflow-hidden z-20 flex justify-center items-center" *ngIf="isCollectionImageOpen" >
+    <div class="absolute w-full h-full bg-[rgba(0,0,0,0.6)] backdrop-blur-[1.5px]" (click)="handleCloseCollectionImage()"></div>
+    <div class="pb-5 mx-auto relative w-[95%] h-[95%] bg-white z-10 rounded-xl flex flex-col justify-between overflow-hidden ">
+        <div class="w-full flex justify-end border-b">
+            <button class="px-4 py-2 flex justify-center items-center text-custom-color-black-light hover:text-custom-color-blue"
+                (click)="handleCloseCollectionImage()">
+                <span class="font-medium text-[14px]">Đóng</span>
+                <i class='bx bx-x text-[35px]'></i>
+            </button>
+        </div>
+        <div class="w-full flex flex-col">
+            <div class="w-full flex justify-between items-center py-10 px-3 ">
+                <button (click)="prevImage()" class=" text-custom-color-black-light hover:text-custom-color-blue"><i class='bx bx-chevron-left text-[70px]'></i></button>
+                <div class="w-[60%] h-[600px] flex justify-center items-center">
+                    <img src="http://localhost:3000/resources/img-motels/{{motel.ListImages[currentIndex].LinkImage}}" alt="" class=" w-fit h-full object-contain rounded-md " >
+                </div>
+                <button (click)="nextImage()" class=" text-custom-color-black-light hover:text-custom-color-blue"><i class='bx bx-chevron-right text-[70px]'></i></button>
+            </div>
+            <div class="w-full flex justify-center"><span>{{currentIndex + 1}}/{{motel.ListImages.length}}</span></div>
+        </div>
+        <div class="w-full flex justify-center gap-3 p-3 overflow-y-auto " >
+            <img *ngFor="let image of motel.ListImages, let i = index" src="http://localhost:3000/resources/img-motels/{{image.LinkImage}}" alt="" tabindex="0"
+            (click)="currentIndex = i"
+            [ngClass]="{
+                'ntt-shadow-image': currentIndex === i, 
+                'opacity-100': currentIndex === i,
+                'opacity-50': currentIndex !== i,
+            }"
+            class="cursor-pointer w-fit md:h-[100px] h-[80px] object-contain focus:ntt-shadow-image 
+            focus:outline-none rounded-sm focus:opacity-100 hover:opacity-100 opacity-50 transition-opacity duration-100 delay-55">
+        </div>
+    </div>
+</div>
+

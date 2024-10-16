@@ -8,7 +8,7 @@ export interface Motel {
     _id: string;
     NameMotel: string,
     Location: string;
-    LandlordID: object;
+    LandlordID: string;
     ListImages: Images[];
     Address: string;
     WardCommune: string;
