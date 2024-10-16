@@ -22,7 +22,12 @@ interface Filters {
   haveMezzanine: boolean,
   haveToilet:	boolean,
   haveAirConditioner: boolean,
+}
 
+interface listMotels{
+  _id: string,
+  Locations: string,
+  Price: number;
 }
 
 @Component({
@@ -48,7 +53,7 @@ export class ViewOnMapComponent {
   selectedMarker: L.Marker | null = null; // Lưu trữ marker được chọn
   selectedPriceMarker: L.Marker | null = null; // Lưu trữ marker giá được chọn
   //data motel
-  listMotels = [];
+  listMotels: listMotels[] = [];
   //form filter
   listMotelFiltered: MotelFiltered = {
     motelsWithoutLandlord: [],
@@ -485,7 +490,7 @@ export class ViewOnMapComponent {
     // Đợi tất cả các animation (cả marker và price marker) hoàn tất trước khi thực hiện zoom
     Promise.all(markerPromises).then(() => {
       // Zoom vào marker đặc biệt sau khi tất cả các animation hoàn tất
-      this.map.flyTo([specialLat, specialLng], 15.5, { duration: 1});  // Thực hiện zoom với animation
+      this.map.flyTo([specialLat, specialLng], 15.5, { duration: 0.8});  // Thực hiện zoom với animation
     });
   }
   
@@ -616,6 +621,27 @@ export class ViewOnMapComponent {
     }
   }
 
+  //handle reset location map 
+  handleSetLocationMap(location: string): void {
+    const [lat, lng] = location.split(',').map(location => parseFloat(location.trim()));
+    // Lấy vị trí hiện tại của map
+    const currentCenter = this.map.getCenter();
+    const currentLat = currentCenter.lat;
+    const currentLng = currentCenter.lng;
+    // Kiểm tra nếu vị trí hiện tại trùng với vị trí muốn di chuyển
+    const latDiff = Math.abs(currentLat - lat);
+    const lngDiff = Math.abs(currentLng - lng);
+    // Nếu tọa độ không quá khác biệt (dưới ngưỡng cho phép) thì không di chuyển
+    const threshold = 0.0001; // Ngưỡng sai lệch cho phép
+    if (latDiff < threshold && lngDiff < threshold) {
+      console.log('Vị trí hiện tại đã trùng với vị trí cần di chuyển. Không cần di chuyển.');
+      return;
+    }
+    // Nếu khác, thực hiện việc di chuyển đến vị trí mới
+    this.map.flyTo([lat, lng], 15.5, { duration: 0.8 });
+  }
+  
+
   // Handle the form filter values
   handleFilters() :void {
     this.getFilters();
@@ -638,8 +664,10 @@ export class ViewOnMapComponent {
         this.handleChangeStyleMarker();
         this.listMotelFiltered = response.dataFiltered;
         this.spinner.hide();
+        this.handleSetLocationMap(this.listMotels[0].Locations);
       }, 500);
-    }); 
+    });
+
   }
 
    // Handle the form filter values
@@ -664,6 +692,7 @@ export class ViewOnMapComponent {
         this.handleChangeStyleMarker();
         this.listMotelFiltered = response.dataFiltered;
         this.spinner.hide();
+        this.handleSetLocationMap(this.listMotels[0].Locations);
       }, 500);
     }); 
 
@@ -686,6 +715,7 @@ export class ViewOnMapComponent {
         this.handleChangeStyleMarker();
         this.listMotelFiltered = response.dataFiltered;
         this.spinner.hide();
+        this.handleSetLocationMap(this.listMotels[0].Locations);
       }, 700);
     });
   }
@@ -707,6 +737,7 @@ export class ViewOnMapComponent {
         this.handleChangeStyleMarker();
         this.listMotelFiltered = response.dataFiltered;
         this.spinner.hide();
+        this.handleSetLocationMap(this.listMotels[0].Locations);
       }, 700);
     });
   }
