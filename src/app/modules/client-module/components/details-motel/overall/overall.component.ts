@@ -87,6 +87,14 @@ export class OverallComponent {
     })
   }
 
+  handleViewOnMapSpecificallyMotel(location: string):void {
+    this.router.navigate(['/client/home/map'], { 
+      queryParams: { 
+        locationSpecial: location,
+      }
+    });
+  }
+
   getLayoutImageClass(imagesLength: number): string {
     if (imagesLength === 1) return 'one-image';
     if (imagesLength === 2) return 'two-images';

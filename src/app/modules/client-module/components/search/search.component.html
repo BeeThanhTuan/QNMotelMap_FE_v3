@@ -170,7 +170,7 @@
                                         <div *ngIf="!isLoading" class="mr-2 flex items-center flex-wrap">
                                             <span class="capitalize text-[14px] font-semibold">{{motel.Address}}, {{motel.WardCommune}}</span>
                                             <span class="mx-2"> - </span>
-                                            <span class="text-[14px] font-semibold underline cursor-pointer" (click)="handleViewOnMapSpecificallyMotel(i)"> Xem trên bản đồ </span>
+                                            <span class="text-[14px] font-semibold underline cursor-pointer" (click)="handleViewOnMapSpecificallyMotel(motel.Location)"> Xem trên bản đồ </span>
                                         </div>
                                         <ngx-skeleton-loader  *ngIf="isLoading" appearance="line" [theme]="{height: '20px', width: '200px' ,'margin-bottom': '5px'}"></ngx-skeleton-loader>
                                         <span *ngIf="!isLoading" class="text-[12px] font-normal text-custom-color-black">Khoảng cách tới trường {{motel.Distance}} km</span>

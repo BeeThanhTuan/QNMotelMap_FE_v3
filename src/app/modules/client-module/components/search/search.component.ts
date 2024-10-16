@@ -134,21 +134,17 @@ export class SearchComponent {
   handleViewOnMap():void {
     this.router.navigate(['/client/home/map'], { 
       queryParams: { 
-        listMotels: JSON.stringify(this.listMotels), 
         filters: JSON.stringify(this.filters),
-        listMotelFiltered: JSON.stringify(this.listMotelFiltered)
       }
     });
   }
 
   //handle view motels on map with specifically motel
-  handleViewOnMapSpecificallyMotel(index: number):void {
+  handleViewOnMapSpecificallyMotel(location: string):void {
     this.router.navigate(['/client/home/map'], { 
       queryParams: { 
-        listMotels: JSON.stringify(this.listMotels), 
         filters: JSON.stringify(this.filters),
-        listMotelFiltered: JSON.stringify(this.listMotelFiltered),
-        index: index,
+        location: location,
       }
     });
   }

@@ -143,38 +143,25 @@ export class ViewOnMapComponent {
 
   setDataBeforeNavigation(): void {
     this.route.queryParams.subscribe(params => {
-      if (params['listMotels']) {
-        let listMotels = JSON.parse(params['listMotels']);
-        this.listMotels = this.filterMotelData(listMotels);
-        if(params['index']){
-          let index = parseInt(params['index'])
-          this.addMarkersSpecial(this.listMotels, index );
-          this.handleChangeStyleMarker(); 
-        }
-        else{
-          this.addMarkers(this.listMotels);
-          this.handleChangeStyleMarker();
-        }
-        this.rentalDistances= [];
-        listMotels.map((motel: any)=>{
-          this.rentalDistances.push(motel.Distance);
-        })
-        this.initializeDataDistanceChart();
-        this.rentalPrices= [];
-        listMotels.map((motel: any)=>{
-          this.rentalPrices.push(motel.Price);
-        })
-        this.initializeDataPriceChart();
-      }
-      else{
-        this.initializeDataMotels();
+      if(params['locationSpecial']){
+        let location = params['locationSpecial'];
+        this.initializeDataMotelsWithSpecialMarker(location);
+        return 
       }
       if (params['filters']) {
         let filters : Filters = JSON.parse(params['filters']);
         this.setValueFilters(filters);
+        let location = params['location'];
+        if(location){
+          this.handleFiltersWithSpecialMarker(location);
+          return
+        }
+        else{
+          this.handleFilters();
+        }
       }
-      if (params['listMotelFiltered']) {
-        this.listMotelFiltered = JSON.parse(params['listMotelFiltered']); 
+      else{
+        this.initializeDataMotels();
       }
     });
   }
@@ -392,7 +379,7 @@ export class ViewOnMapComponent {
     });
   }
 
-  addMarkersSpecial(markerData: { _id: string; Locations: string; Price: number }[], specialMarkerIndex: number): void {
+  addMarkersSpecial(markerData: { _id: string; Locations: string; Price: number }[], specialMarkerLocation: string): void {
     const normalIcon = this.createNormalIcon();
     const hoverIcon = this.createHoverIcon();
     const normalBg = '#00358f';
@@ -400,10 +387,14 @@ export class ViewOnMapComponent {
   
     const markerPromises: Promise<void>[] = [];
   
-    markerData.forEach((marker, index) => {
+    // Tách tọa độ từ chuỗi location của special marker
+    const [specialLat, specialLng] = specialMarkerLocation.split(',').map(location => parseFloat(location.trim()));
+  
+    markerData.forEach((marker) => {
       const [lat, lng] = marker.Locations.split(',').map(location => parseFloat(location.trim()));
   
-      const isSpecialMarker = index === specialMarkerIndex;
+      // So sánh tọa độ để kiểm tra xem có phải marker đặc biệt không
+      const isSpecialMarker = lat === specialLat && lng === specialLng;
       const iconToUse = isSpecialMarker ? hoverIcon : normalIcon;
       const hoverColor = '#3A8FFE';
       const defaultColor = isSpecialMarker ? hoverBg : normalBg;
@@ -423,17 +414,18 @@ export class ViewOnMapComponent {
   
       // Mỗi lần animate marker sẽ được lưu vào Promise để đảm bảo trình tự
       const animationPromise = new Promise<void>((resolve) => {
-        const delay = index * 100;
+        const delay = markerData.indexOf(marker) * 100;
         setTimeout(() => {
           this.animateMarker(leafletMarker, lat, lng, 300, () => {
             leafletMarker.setOpacity(1); // Marker xuất hiện
           });
         }, delay);
-         // Sau khi marker hoàn tất, animate price marker
-         setTimeout(() => {
+  
+        // Sau khi marker hoàn tất, animate price marker
+        setTimeout(() => {
           priceMarker.setOpacity(1); // Price marker xuất hiện
           resolve();  // Animation của cả marker và price marker hoàn tất
-        }, this.listMotels.length * 100 + 400);  // Delay giữa marker và price marker (có thể điều chỉnh)
+        }, markerData.length * 100 + 400);  // Delay giữa marker và price marker (có thể điều chỉnh)
       });
   
       markerPromises.push(animationPromise); // Lưu vào mảng Promise
@@ -492,13 +484,11 @@ export class ViewOnMapComponent {
   
     // Đợi tất cả các animation (cả marker và price marker) hoàn tất trước khi thực hiện zoom
     Promise.all(markerPromises).then(() => {
-      const specialMarker = markerData[specialMarkerIndex];
-      const [specialLat, specialLng] = specialMarker.Locations.split(',').map(location => parseFloat(location.trim()));
-  
       // Zoom vào marker đặc biệt sau khi tất cả các animation hoàn tất
       this.map.flyTo([specialLat, specialLng], 15.5, { duration: 1});  // Thực hiện zoom với animation
     });
   }
+  
   
   
   
@@ -565,6 +555,24 @@ export class ViewOnMapComponent {
     })
   }
 
+  // Initialize data motels
+  initializeDataMotelsWithSpecialMarker(location: string):  void{
+    this.motelService.getAllMotels().subscribe((response)=>{
+      this.listMotelFiltered = response.dataFiltered;
+      this.listMotels = this.filterMotelData(response.data);
+      this.addMarkersSpecial(this.listMotels, location);
+      this.handleChangeStyleMarker();
+      response.data.map((motel: Motel)=>{
+        this.rentalDistances.push(motel.Distance);
+      })
+      this.initializeDataDistanceChart();
+      response.data.map((motel: Motel)=>{
+        this.rentalPrices.push(motel.Price);
+      })
+      this.initializeDataPriceChart();
+    })
+  }
+
   //Initialize list ward commune
   initializeListWardCommune(): void{
     this.motelService.getListAddress().subscribe((response)=>{
@@ -607,6 +615,7 @@ export class ViewOnMapComponent {
       haveAirConditioner: this.formFilters.get('haveAirConditioner')!.value,
     }
   }
+
   // Handle the form filter values
   handleFilters() :void {
     this.getFilters();
@@ -626,6 +635,32 @@ export class ViewOnMapComponent {
         this.initializeDataPriceChart();
         this.clearMarkers();
         this.addMarkers(this.listMotels);
+        this.handleChangeStyleMarker();
+        this.listMotelFiltered = response.dataFiltered;
+        this.spinner.hide();
+      }, 500);
+    }); 
+  }
+
+   // Handle the form filter values
+   handleFiltersWithSpecialMarker(location: string  ) :void {
+    this.getFilters();
+    this.motelService.getMotelsFiltered(this.filters).subscribe((response)=>{
+      this.spinner.show();
+      setTimeout(() => {
+        this.listMotels = this.filterMotelData(response.data);
+        this.rentalDistances= [];
+        response.data.map((motel: any)=>{
+          this.rentalDistances.push(motel.Distance);
+        })
+        this.initializeDataDistanceChart();
+        this.rentalPrices= [];
+        response.data.map((motel: any)=>{
+          this.rentalPrices.push(motel.Price);
+        })
+        this.initializeDataPriceChart();
+        this.clearMarkers();
+        this.addMarkersSpecial(this.listMotels, location);
         this.handleChangeStyleMarker();
         this.listMotelFiltered = response.dataFiltered;
         this.spinner.hide();
