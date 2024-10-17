@@ -21,7 +21,6 @@ import { NgApexchartsModule } from 'ng-apexcharts';
 import { DetailMotelComponent } from './components/details-motel/detail-motel/detail-motel.component';
 import { OverallComponent } from './components/details-motel/overall/overall.component';
 import { RoomsComponent } from './components/details-motel/rooms/rooms.component';
-import { RatingComponent } from './components/details-motel/rating/rating.component';
 import { RoomDetailComponent } from './components/details-motel/room-detail/room-detail.component';
 import { ViewOnMapComponent } from './components/view-on-map/view-on-map.component';
 import { ViewMotelOnMapComponent } from './components/view-motel-on-map/view-motel-on-map.component';
@@ -35,6 +34,7 @@ import { NzSliderModule } from 'ng-zorro-antd/slider';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { PhonePipe } from './pipes/phone.pipe';
+import { RatingsComponent } from './components/details-motel/ratings/ratings.component';
 
 @NgModule({
   declarations: [
@@ -52,12 +52,12 @@ import { PhonePipe } from './pipes/phone.pipe';
     SearchComponent,
     DetailMotelComponent,
     OverallComponent,
-    RoomsComponent,
-    RatingComponent,
     RoomDetailComponent,
     ViewOnMapComponent,
     ViewMotelOnMapComponent,
     PhonePipe,
+    RatingsComponent,
+    RoomsComponent
     
   ],
   imports: [

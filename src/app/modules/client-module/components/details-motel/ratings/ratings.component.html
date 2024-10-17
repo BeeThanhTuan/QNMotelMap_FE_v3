@@ -1,0 +1,44 @@
+<div class="content_wrapper w-full text-base text-custom-color-black">
+    <div class="max-w-custom mx-auto px-2">
+        <div class="w-full py-3 relative min-w-[700px]">
+            <div class="mt-5 flex justify-between pb-5 border-b border-[#e7e7e7]">
+                <div class="flex gap-2">
+                    <div class="w-10 h-10 flex justify-center items-center bg-[#003B95] rounded-md rounded-bl-none">
+                        <span class="text-[18px] font-semibold text-white">{{motel.TotalStar.toFixed(1)}}</span>
+                    </div>
+                    <div class="text-[15px] font-normal text-custom-color-black-light flex items-end gap-1">
+                        <span>{{motel.ListRatings.length}}</span> 
+                        <span>đánh giá</span>
+                    </div>
+                </div>
+                <div>
+                    <button type="button" class="mr-4 px-3 py-1 border border-custom-bg-hover-blue rounded-[5px] text-[14px] font-semibold text-custom-color-blue hover:bg-custom-hv-color-blue">
+                        Viết đánh giá
+                    </button>
+                </div>
+            </div>
+            <div class="mt-5 w-full">
+                <ul class="w-full flex flex-col gap-3 text-custom-color-black">
+                    <li class="py-3 border-b border-[#e7e7e7]" *ngFor="let rating of ListRatings">
+                        <div class="flex ">
+                            <div class="flex gap-1 w-[250px]">
+                                <img src="http://localhost:3000/resources/img-users/{{rating.UserAvatar}}" alt="" class="w-[50px] h-[50px] object-cover">
+                                <div><span class="text-[15px] font-semibold "> {{rating.UserName}}</span></div>
+                            </div>
+                            <div class="flex justify-between w-[calc(100%-250px)] pr-5">
+                                <div>
+                                    <span class="text-[13px] text-custom-color-black-light">Ngày đánh giá: {{rating.CreateAt}}</span>
+                                    <p class="text-[15px]">{{rating.Comment}}</p>
+                                </div>
+                                <div class="w-9 h-9 flex justify-center items-center bg-[#003B95] rounded-md rounded-bl-none">
+                                    <span class="text-[15px] font-semibold text-white">{{rating.Star | number:'1.1-1'}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
