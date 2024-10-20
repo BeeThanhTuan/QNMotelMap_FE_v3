@@ -25,16 +25,17 @@ import { RoomDetailComponent } from './components/details-motel/room-detail/room
 import { ViewOnMapComponent } from './components/view-on-map/view-on-map.component';
 import { ViewMotelOnMapComponent } from './components/view-motel-on-map/view-motel-on-map.component';
 import { ClickOutsidePopupMotelOnMapDirective } from './directives/click-outside-popup-motel-on-map.directive';
+import { PhonePipe } from './pipes/phone.pipe';
+import { RatingsComponent } from './components/details-motel/ratings/ratings.component';
 //ant design
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzSliderModule } from 'ng-zorro-antd/slider';
+import { NzRateModule } from 'ng-zorro-antd/rate';
 //loading
 import { NgxSpinnerModule } from "ngx-spinner";
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
-import { PhonePipe } from './pipes/phone.pipe';
-import { RatingsComponent } from './components/details-motel/ratings/ratings.component';
 
 @NgModule({
   declarations: [
@@ -72,6 +73,7 @@ import { RatingsComponent } from './components/details-motel/ratings/ratings.com
     NzSwitchModule,
     NzCheckboxModule,
     NzSliderModule,
+    NzRateModule,
     NgxSpinnerModule,
     NgxSkeletonLoaderModule
   ]

@@ -143,8 +143,37 @@
             </form><!--End filters motels-->
         </div> <!--End filters area motels-->
         <div class="result w-[calc(100%-280px)] pl-4 relative">
-            <div class="w-full">
-                <h1 class="h-[28px] text-[20px] text-custom-color-black font-sans font-bold"><span class="capitalize"><span *ngIf="fieldSearch.address && fieldSearch.address !== ' '">{{fieldSearch.address }}:</span></span> tìm thấy {{listMotels.length}} nhà trọ</h1>
+            <div class="w-full ">
+                <ngx-skeleton-loader *ngIf="isLoading" appearance="line" [theme]="{height: '30px', width: '300px', 'margin-bottom': '0'}"></ngx-skeleton-loader>
+                <h1 *ngIf="!isLoading" class="h-[28px] text-[20px] text-custom-color-black font-sans font-bold">
+                    <span class="capitalize">
+                        <span *ngIf="fieldSearch.address && fieldSearch.address !== ' '">{{fieldSearch.address }}:</span>
+                        <span *ngIf="!(fieldSearch.address && fieldSearch.address !== ' ')">T.p Quy Nhơn:</span>
+                    </span> tìm thấy {{listMotels.length}} nhà trọ
+                </h1>
+                <div class="flex gap-3">
+                    <div class="relative z-10">
+                        <div (click)="isShowDropdownSort = true"
+                        class="flex gap-1 w-fit mt-1 px-3 py-1 bg-custom-hv-color-blue  justify-center items-center border active:scale-[1.01] border-custom-bg-hover-blue rounded-2xl text-custom-bg-blue-light cursor-pointer">
+                            <i class='bx bx-transfer rotate-90'></i>
+                            <span class="text-[14px] font-medium">Sắp xếp theo: {{selectedSortLabel}}</span>
+                            <i class='bx bx-code rotate-90'></i>
+                        </div>
+                        <div *ngIf="isShowDropdownSort" class="absolute w-full top-[115%] bg-white ntt-shadow-box rounded-md text-custom-color-black-light z-10 ">
+                            <ul class="text-[14px] py-1">
+                                <li (click)="handleSort('default', 'Mặc định')" class="py-2 px-4 hover:bg-[#f2f2f2] cursor-pointer">Mặc định</li>
+                                <li (click)="handleSort('price-lowest', 'Giá (ưu tiên thấp nhất)')" class="py-2 px-4 hover:bg-[#f2f2f2] cursor-pointer">Giá (ưu tiên thấp nhất)</li>
+                                <li (click)="handleSort('distance-closest', 'Khoảng cách tới trường (ưu tiên gần nhất)')" class="py-2 px-4 hover:bg-[#f2f2f2] cursor-pointer">Khoảng cách tới trường (ưu tiên gần nhất)</li>
+                                <li (click)="handleSort('rating-highest', 'Xếp hạng (ưu tiên cao nhất)')" class="py-2 px-4 hover:bg-[#f2f2f2] cursor-pointer">Xếp hạng (ưu tiên cao nhất)</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div *ngIf="fieldSearch.address && !isLoading" (click)="fieldSearch.address = ''; handleFilters()"
+                    class="flex gap-1 w-fit mt-1 px-3 py-1 justify-center items-center border border-custom-bg-hover-blue rounded-2xl text-custom-bg-blue-light cursor-pointer bg-custom-hv-color-blue" >
+                        <span class="text-[14px] font-medium">{{fieldSearch.address}}</span>
+                        <i class='bx bx-x text-[22px] font-thin'></i>
+                    </div>
+                </div>
             </div>
             <div class="w-full pt-3">
                 <ul class="w-full flex flex-col gap-4">

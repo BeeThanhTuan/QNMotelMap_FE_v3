@@ -42,6 +42,7 @@ export class SearchComponent {
   rentalDataDistance: { distance: number; count: number }[] = [];
 
   listMotels: Motel[]= [];
+  originalMotels: Motel[] = []
   indexMotel!: number;
   //form filter
   listMotelFiltered: MotelFiltered = {
@@ -107,6 +108,10 @@ export class SearchComponent {
     },
   };
 
+  isShowDropdownSort = false;
+  selectedSortLabel = 'Mặc định';
+  selectedSort = 'default';
+
   constructor(private titleService: Title, private formBuilder: FormBuilder, private router: Router,
     private route: ActivatedRoute, private motelService: MotelService) {
     this.titleService.setTitle('QNMoteMap | Tìm kiếm ');
@@ -151,6 +156,12 @@ export class SearchComponent {
 
  setFieldSearchIntoFormFilter(){
     this.route.queryParams.subscribe(params => {
+      if(params['wardCommune']){
+        const wardCommune = params['wardCommune'].replace(/"/g, '');
+        this.fieldSearch.address = wardCommune;
+        this.handleFilters();
+        return
+      }
       if(params['filters']){
         let filters = JSON.parse(params['filters']);
         this.fieldSearch = filters;
@@ -280,6 +291,7 @@ export class SearchComponent {
     this.getFilters();
     this.motelService.getMotelsFiltered(this.filters).subscribe((response)=>{
       this.listMotels = response.data;
+      this.originalMotels = response.data;
       this.rentalDistances= [];
       response.data.map((motel: any)=>{
         this.rentalDistances.push(motel.Distance);
@@ -304,6 +316,7 @@ export class SearchComponent {
     this.getFilters();
     this.motelService.getMotelsFiltered(this.filters).subscribe((response)=>{
       this.listMotels = response.data;    
+      this.originalMotels = response.data;
       this.rentalPrices= [];
       response.data.map((motel: any)=>{
         this.rentalPrices.push(motel.Price);
@@ -324,6 +337,7 @@ export class SearchComponent {
     this.getFilters();
     this.motelService.getMotelsFiltered(this.filters).subscribe((response)=>{
       this.listMotels = response.data;    
+      this.originalMotels = response.data;
       this.rentalDistances= [];
       response.data.map((motel: any)=>{
         this.rentalDistances.push(motel.Distance);
@@ -369,6 +383,36 @@ export class SearchComponent {
     this.handleFilters();
   }
 
+
+  handleSort(sortValue: string, sortLabel: string) {
+    this.selectedSort = sortValue;
+    this.selectedSortLabel = sortLabel;
+    this.isShowDropdownSort = false
+    this.performSort(sortValue);  // Perform the sorting logic
+  }
+
+  performSort(sortOption: string) {
+    switch (sortOption) {
+      case 'price-lowest':
+        this.listMotels = [...this.listMotels].sort((a: Motel, b: Motel) => (a.Price ?? 0) - (b.Price ?? 0));
+        break;
+      case 'distance-closest':
+        this.listMotels = [...this.listMotels].sort((a: Motel, b: Motel) => (a.Distance ?? 0) - (b.Distance ?? 0));
+        break;
+      case 'rating-highest':
+        this.listMotels = [...this.listMotels].sort((a: Motel, b: Motel) => (b.TotalStar ?? 0) - (a.TotalStar ?? 0));
+        break;
+      case 'default':
+        this.listMotels = [...this.originalMotels]; 
+        break;
+      default:
+      
+    }
+  }
+
+  stopPropagation(event: Event) {
+    event.stopPropagation();
+  }
 
   // Get the house count by price for the chart
   getHouseCountByPrice(prices: number[]): { price: number; count: number }[] {

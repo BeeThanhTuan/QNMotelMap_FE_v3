@@ -1,6 +1,7 @@
 <div class="content_wrapper w-full text-base">
     <div class="max-w-custom mx-auto ">
         <div class="w-full p-3 mt-5 relative min-w-[700px] ">
+            <div *ngIf="listRooms.length === 0" class="text-[25px] font-semibold">Chưa có phòng trọ</div>
             <ul class="mt-5 w-full grid ml:grid-cols-4 md:grid-cols-3 grid-cols-3 gap-3 ">
                 <li class="flex-1  rounded-xl mb-2 cursor-pointer" *ngFor="let room of listRooms">
                     <div class="w-full relative " >

@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Rating } from 'src/app/interfaces/rating';
+import { RatingService } from 'src/app/services/rating.service';
 
 @Component({
   selector: 'app-detail-motel',
@@ -8,13 +10,22 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class DetailMotelComponent {
   motelId!: string;
-
-  constructor(private route: ActivatedRoute) {}
+  ListRatings : Rating[] = []
+  constructor(private route: ActivatedRoute, private ratingService: RatingService) {}
 
   ngOnInit(): void {
     // Lấy id từ route
     this.route.params.subscribe(params => {
       this.motelId = params['id'];  // 'id' là tên tham số trong rout
+    });
+    
+    this.getListRatings(this.motelId);
+  }
+
+
+  getListRatings(id: string): void {
+    this.ratingService.getRatingsByIDMotel(id).subscribe((data) => {
+      this.ListRatings = data;
     });
   }
 }

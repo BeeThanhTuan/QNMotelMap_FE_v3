@@ -133,11 +133,13 @@ export class HomeComponent {
   }
 
   //tìm kiếm 
-  handleSearch(){
-    this.router.navigate(['/client/home/search'], { 
-      queryParams: { 
-        filters: JSON.stringify(this.formSearch.value),
-      }
+  handleSearch() {
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate(['/client/home/search'], { 
+        queryParams: { 
+          filters: JSON.stringify(this.formSearch.value),
+        }
+      });
     });
   }
 

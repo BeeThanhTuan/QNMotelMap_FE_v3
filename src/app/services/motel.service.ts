@@ -38,4 +38,11 @@ export class MotelService {
       map((response:any) => response.data) 
     )
   }
+
+  public countMotelsByWardCommune(): Observable<any> {
+    const url = `${this.REST_API_SERVER}/api/count-motels-by-ward-commune`;
+    return this.httpClient.get<any>(url).pipe(
+      map((response:any) => response.data) 
+    )
+  }
 }
