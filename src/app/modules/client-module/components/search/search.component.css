@@ -53,3 +53,7 @@ input[type="range"]:focus::-moz-range-thumb {
 ngx-skeleton-loader {
   margin-bottom: 0 !important;
 }
+
+.sort:hover{
+  background-color: #f2f2f2 !important;
+}

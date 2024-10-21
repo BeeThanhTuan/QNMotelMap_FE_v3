@@ -179,7 +179,7 @@ export class SearchComponent {
       this.handleSetFieldForm();
     }
     if(addressLocal){
-      this.fieldSearch.address = addressLocal ;
+      this.fieldSearch.address = addressLocal ;   
     }
     this.handleFilters();
   }
@@ -292,6 +292,7 @@ export class SearchComponent {
     this.motelService.getMotelsFiltered(this.filters).subscribe((response)=>{
       this.listMotels = response.data;
       this.originalMotels = response.data;
+      this.handleSort(this.selectedSort, this.selectedSortLabel);
       this.rentalDistances= [];
       response.data.map((motel: any)=>{
         this.rentalDistances.push(motel.Distance);
@@ -306,7 +307,7 @@ export class SearchComponent {
       setTimeout(() => {
         this.isLoading = false;
       }, 1000);
-    }); 
+    });
     this.setDataIntoLocalStorage();
   }
 
@@ -317,6 +318,7 @@ export class SearchComponent {
     this.motelService.getMotelsFiltered(this.filters).subscribe((response)=>{
       this.listMotels = response.data;    
       this.originalMotels = response.data;
+      this.handleSort(this.selectedSort, this.selectedSortLabel);
       this.rentalPrices= [];
       response.data.map((motel: any)=>{
         this.rentalPrices.push(motel.Price);
@@ -338,6 +340,7 @@ export class SearchComponent {
     this.motelService.getMotelsFiltered(this.filters).subscribe((response)=>{
       this.listMotels = response.data;    
       this.originalMotels = response.data;
+      this.handleSort(this.selectedSort, this.selectedSortLabel);
       this.rentalDistances= [];
       response.data.map((motel: any)=>{
         this.rentalDistances.push(motel.Distance);
@@ -383,6 +386,10 @@ export class SearchComponent {
     this.handleFilters();
   }
 
+  removeFilterAddress(): void{
+    this.fieldSearch.address = '';
+    this.handleFilters();
+  }
 
   handleSort(sortValue: string, sortLabel: string) {
     this.selectedSort = sortValue;

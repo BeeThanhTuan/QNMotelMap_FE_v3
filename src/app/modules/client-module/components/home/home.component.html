@@ -1,20 +1,7 @@
 <div class="root">
     <div class="content_wrappper w-full text-base">
         <header *ngIf="showHeader" class="w-full bg-custom-bg-blue pt-2">
-            <div class="header_bar max-w-custom mx-auto px-4 pt-1 pb-2 h-[60px] flex justify-between bg-custom-bg-blue ">
-                <div class="header_main flex justify-center items-center">
-                    <div class="header_logo ">
-                        <a routerLink="/client/home/content" class="text-2xl font-bold text-white">QNMotelMap</a>
-                    </div>
-                </div><!-- End header main-->
-                <div class="header_control flex items-center gap-3 pl-4 min-w-[378px]">
-                    <a routerLink="/client/home/map" class="font-semibold px-3 py-3 hover:bg-[#1a4f9f] rounded-[3px] text-white">Xem trên bảng đồ</a>
-                    <div class="flex items-center gap-3">
-                        <a href="" class="ntt-custom-button"><span>Đăng ký</span></a>
-                        <a href="" class="ntt-custom-button"><span>Đăng nhập</span></a>
-                    </div>
-                </div><!-- End header control -->
-            </div><!-- End header bar -->
+            <app-header-bar/>
             <div class="search_wrapper w-full ">
                 <div *ngIf="showBannerWrapper" class="banner_wrapper h-[150px] max-w-custom mx-auto flex justify-start items-center bg-custom-bg-blue px-2">
                     <div>
@@ -43,7 +30,7 @@
                                 appClickOutsideSuggestAddress
                                 (clickOutsideSuggestAddress)="showDropdownSuggestAddress = false" 
                                 *ngIf="showDropdownSuggestAddress"
-                                class="absolute w-[380px] bg-white translate-y-4 left-0 rounded-lg ntt-shadow-input-suggest z-10 overflow-hidden" >
+                                class="absolute w-[380px] bg-white translate-y-4 left-0 rounded-lg ntt-shadow-input-suggest z-30 overflow-hidden" >
                                 <div class="pt-3 pb-1 px-3 text-[14px] font-bold text-custom-color-black">
                                     Phường/xã được gợi ý
                                 </div>

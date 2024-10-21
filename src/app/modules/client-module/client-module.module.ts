@@ -2,8 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ClientModuleRoutingModule } from './client-module-routing.module';
 import { HomeComponent } from './components/home/home.component';
-import { LoginComponent } from './components/login/login.component';
-import { RegisterComponent } from './components/register/register.component';
 import { ClickOutsideSuggestAddressDirective } from './directives/click-outside-address-suggest.directive';
 import { ClickOutsideDesiredPriceDirective } from './directives/click-outside-desired-price.directive';
 import { ClickOutsideOtherChooseFieldsDirective } from './directives/click-outside-other-choose-fields.directive';
@@ -27,6 +25,7 @@ import { ViewMotelOnMapComponent } from './components/view-motel-on-map/view-mot
 import { ClickOutsidePopupMotelOnMapDirective } from './directives/click-outside-popup-motel-on-map.directive';
 import { PhonePipe } from './pipes/phone.pipe';
 import { RatingsComponent } from './components/details-motel/ratings/ratings.component';
+import { ShareModule } from '../share/share.module';
 //ant design
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
@@ -40,8 +39,7 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 @NgModule({
   declarations: [
     HomeComponent,
-    LoginComponent,
-    RegisterComponent,
+
     ClickOutsideSuggestAddressDirective,
     ClickOutsideDesiredPriceDirective,
     ClickOutsideOtherChooseFieldsDirective,
@@ -58,7 +56,7 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
     ViewMotelOnMapComponent,
     PhonePipe,
     RatingsComponent,
-    RoomsComponent
+    RoomsComponent,
     
   ],
   imports: [
@@ -67,6 +65,7 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
     NgxSliderModule,
     MatSlideToggleModule,
     FormsModule,
+    ShareModule,
     ReactiveFormsModule,
     NgApexchartsModule,
     NzInputModule,

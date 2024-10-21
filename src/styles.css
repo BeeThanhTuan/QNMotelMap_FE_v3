@@ -57,6 +57,12 @@
         -webkit-box-orient: vertical;
         overflow: hidden;
     }
+    .ntt-custom-description{
+        -webkit-line-clamp: 5;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
     .ntt-shadow-button{
         box-shadow: 0px 2px 8px 0px rgba(26,26,26,.16);
     }
