@@ -2,12 +2,12 @@
     <div class="info w-full text-custom-color-black px-2 flex justify-between">
         <div>
             <div class="motel_name mt-5">
-                <h2 class="mt-1 text-[26px] font-sans font-bold">{{motel.NameMotel ? motel.NameMotel : 'Nhà trọ'}}</h2>
+                <h2 class="mt-1 text-[26px] font-sans font-bold capitalize">Nhà trọ {{motel.NameMotel ? motel.NameMotel : (motel.Address + ', ' + motel.WardCommune)}}</h2>
             </div>
             <div class="address_motel flex mt-2 gap-2">
                 <span><i class='fa-solid fa-location-dot text-[23px] text-custom-color-blue'></i></span>
                 <span class="capitalize text-[18px] font-normal">{{motel.Address}}, {{motel.WardCommune}}</span>
-                <span class="text-[16px] font-normal">- khoảng cách tới trường {{motel.Distance}} km.</span>
+                <span class="text-[18px] font-normal">- khoảng cách tới trường {{motel.Distance}} km.</span>
             </div>
         </div>
         <div title="Lưu" class="w-[78px] flex justify-start items-center mt-5">
@@ -24,13 +24,13 @@
                 </div>
                 <div class="flex mt-3 gap-3 absolute z-10 bottom-2 right-2" *ngIf="motel.ListImages.length >= 4" >
                     <div *ngFor="let image of motel.ListImages.slice(3,4)" class="md:w-[150px] md:h-[180px] w-[100px] h-[130px] border-4 border-[white] relative">
-                        <img src="http://localhost:3000/resources/img-motels/{{image.LinkImage}}" alt="" class="img-motel w-full h-full object-cover" (click)="handleOpenCollectionImage(3)">
-                        <div *ngIf="motel.ListImages.length >= 4" class="absolute top-2 right-2"><span class="text-[25px] text-white font-medium">+{{(motel.ListImages.slice(4).length) + 1}}</span></div>
+                        <img src="http://localhost:3000/resources/img-motels/{{image.LinkImage}}" alt="" class="img-motel w-full h-full object-cover brightness-50" (click)="handleOpenCollectionImage(3)">
+                        <div *ngIf="motel.ListImages.length >= 4" class="absolute top-0 w-full h-full flex justify-center items-center pointer-events-none"><span class="text-[35px] text-white font-medium">+{{(motel.ListImages.slice(4).length) + 1}}</span></div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="w-[calc(100%-850px)] min-w-[250px] pt-4 px-2">
+        <div class="w-[calc(100%-850px)] min-w-[275px] pt-4 px-2">
             <div class="h-full flex flex-col justify-between">
                 <div class="h-[calc(100%-180px-16px)] border border-[#e7e7e7] rounded-md mb-4">
                     <div class="flex gap-2 w-full justify-end border-b border-[#e7e7e7] p-4">
@@ -41,12 +41,12 @@
                             <span class="text-[17px] font-semibold text-white">{{motel.TotalStar.toFixed(1)}}</span>
                         </div>
                     </div>
-                    <div class="w-full p-4 pt-3 text-custom-color-black flex justify-between items-center border-b border-[#e7e7e7]">
-                        <div class="text-[17px] font-medium text-end">Giá:</div>
-                        <div class="text-[21px] font-semibold " title="Giá nhà trọ">{{motel.Price | money}} VND</div>
+                    <div class="w-full p-4 pt-3 flex flex-col border-b border-[#e7e7e7]">
+                        <div class="text-end flex  text-custom-color-black-light"><span class="text-[13px] h-[17px]">Giá chỉ từ:</span></div>
+                        <div class="mt-2 text-[22px] font-semibold text-custom-color-blue " title="Giá nhà trọ">{{motel.Price | money}} VND/tháng</div>
                     </div>
-                    <div class="w-full p-4 pt-3 text-custom-color-black">
-                        <div class="text-[17px] font-medium">Thông tin liên hệ:</div>
+                    <div class="w-full p-4 pt-3 font-medium text-custom-color-black-light">
+                        <div class="text-[17px] ">Thông tin liên hệ:</div>
                         <div class="mt-3 flex flex-col gap-3">
                             <div class="w-full flex justify-start items-center gap-2 ">
                                 <i class="fa-solid fa-user text-[18px] text-custom-color-blue"></i>
@@ -101,10 +101,12 @@
              <div class="w-full border-b border-[#e7e7e7]">
                  <h3 class="p-4 text-[20px] text-custom-color-black font-sans font-semibold">Mô tả về nhà trọ</h3>
              </div>
-             <div class="w-full p-4">
-                 <span class="text-[16px]">
-                    {{motel.Description}}
-                 </span>         
+             <div class="w-full p-4 text-[16px]">
+                <p>
+                    <span>Tiền điện: {{motel.ElectricityBill | money}}/kwh.</span>
+                    <span> Tiền nước: {{motel.WaterBill | money}}/m³.</span>
+                </p>
+                <div [innerHTML]="motel.Description | lineBreak" ></div>         
              </div>
         </div>
      </div> <!--End description-->

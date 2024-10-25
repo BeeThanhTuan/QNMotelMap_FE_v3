@@ -9,6 +9,7 @@ export interface Room {
     ListImages: Images[];
     Floor: number;
     Status: boolean;
+    Area: number;
     Description: string;
     ListConvenient: Convenient[];
     Price: number;

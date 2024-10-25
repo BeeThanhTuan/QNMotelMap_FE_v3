@@ -1,0 +1,360 @@
+<div id="loginPopup" (click)="hiddenPopupLoginRegister()" class="overlay w-full min-w-[310px] h-[100vh] fixed top-0 left-0 flex justify-center items-center bg-[rgba(34,34,34,0.7)] z-50 " style="display: none;">
+    <div class="container w-[450px] max-w-[450px]  bg-white sm:p-[30px] p-[15px] rounded-none relative h-[100vh] sm:h-fit sm:rounded-md  flex flex-col justify-center items-center animate-appear" (click)="stopPropagation($event)">
+        <div (click)="hiddenPopupLoginRegister()" class="sm:w-[30px] sm:h-[30px] h-[50px] w-[50px] bg-[#f4f4f4] sm:bg-white absolute top-1 sm:right-1 right-2 hover:bg-[#f4f4f4] sm:rounded-full rounded-md flex justify-center items-center cursor-pointer">
+            <i class='bx bx-x sm:text-[22px] text-[40px] text-[#b4b4b4] sm:text-custom-color-black '></i>
+        </div>
+        <!-- form login -->
+        <form [formGroup]="loginForm" class="w-full" *ngIf="isShowLogin">
+            <div class="w-full text-center text-[20px] uppercase font-bold mb-[30px]">
+                <h4 class="text-[#0045a8]">Đăng nhập</h4>
+            </div>
+            <div class="relative w-full mb-5 ">
+                <div>
+                    <input type="email" id="emailLogin" formControlName="email" class="ntt-custom-input peer" [ngClass]="{'input-invalid': emailControlLogin?.invalid && isLoginSubmitted && firstInvalidControl === 'email'}" placeholder=" " />
+                    <label for="emailLogin" class="absolute text-gray-500 text-[14px] transition-all duration-300 transform 
+                           scale-100 origin-top-left bg-white 
+                           sm:peer-placeholder-shown:top-4
+                           peer-placeholder-shown:top-3
+                           peer-placeholder-shown:left-5
+                           peer-placeholder-shown:text-gray-500 
+                           peer-focus:top-0 
+                           peer-focus:-translate-y-0 
+                           peer-focus:-translate-x-[6px]
+                           peer-focus:text-gray-500 
+                           peer:not-placeholder-shown:top-0 
+                           peer:not-placeholder-shown:-translate-y-[16px] 
+                           peer:not-placeholder-shown:text-gray-400" [ngClass]="{'label-invalid': (emailControlLogin?.invalid && isLoginSubmitted && firstInvalidControl === 'email')}">
+                        Email
+                    </label>
+                </div>
+                <div *ngIf="isLoginSubmitted && firstInvalidControl === 'email' && emailControlLogin?.invalid">
+                    <small class="masseage-error " *ngIf="emailControlLogin?.hasError('required')"> <i class="fa-solid fa-circle-info"></i> Email là bắt buộc.</small>
+                    <small class="masseage-error" *ngIf="emailControlLogin?.hasError('email')"><i class="fa-solid fa-circle-info"></i> Email không hợp lệ.</small>
+                </div>
+            </div>
+            <div class="relative w-full mb-5 ">
+                <div class="sm:h-[54px] h-[48px] relative">
+                    <input [type]="passwordLoginVisible ? 'text' : 'password'" id="passwordLogin" formControlName="password" class="ntt-custom-input pr-[60px!important] peer" [ngClass]="{'input-invalid': passwordControlLogin?.invalid && isLoginSubmitted && firstInvalidControl === 'password'}"
+                        placeholder=" " />
+                    <label for="passwordLogin" class="absolute text-[14px] text-gray-500 transition-all duration-300 transform 
+                           scale-100 origin-top-left bg-white 
+                           sm:peer-placeholder-shown:top-4
+                           peer-placeholder-shown:top-3
+                           peer-placeholder-shown:left-5
+                           peer-placeholder-shown:text-gray-500 
+                           peer-focus:top-0 
+                           peer-focus:-translate-y-0 
+                           peer-focus:-translate-x-[6px]
+                           peer-focus:text-gray-500 
+                           peer:not-placeholder-shown:top-0 
+                           peer:not-placeholder-shown:-translate-y-[12px] 
+                           peer:not-placeholder-shown:text-gray-400" [ngClass]="{'label-invalid': (passwordControlLogin?.invalid && isLoginSubmitted && firstInvalidControl === 'password')}">
+                        Mật khẩu
+                    </label>
+                    <button type="button" class="absolute h-full w-[54px] right-1 top-0 cursor-pointer" (click)="togglePasswordLoginVisibility()">
+                        <i [ngClass]="passwordLoginVisible ? 'fas fa-eye-slash' : 'fas fa-eye'" class="text-gray-500"></i>
+                    </button>
+                </div>
+                <div *ngIf="isLoginSubmitted  && firstInvalidControl === 'password' && passwordControlLogin?.invalid">
+                    <small class="masseage-error " *ngIf="passwordControlLogin?.hasError('required')"> <i class="fa-solid fa-circle-info"></i> Mật khẩu là bắt buộc.</small>
+                    <small class="masseage-error" *ngIf="passwordControlLogin?.hasError('minlength')"><i class="fa-solid fa-circle-info"></i> Mật khẩu phải có ít nhất 6 ký tự.</small>
+                </div>
+            </div>
+            <div class="w-full flex justify-end">
+                <button type="button" class="text-[13px] mb-[10px] font-medium text-[#0045a8]">Quên mật khẩu?</button>
+            </div>
+            <div class="w-full">
+                <button type="submit" (click)="handleLogin()" class="w-full text-[13px] font-medium text-white bg-[#0045a8] px-5 py-[14px] rounded-md hover:bg-[#336ab9] hover:ntt-shadow-button-login">Đăng nhập</button>
+            </div>
+            <div class="w-full text-center py-3 ">
+                <div id="open-register" (click)="isShowLogin = false; isShowRegister = true" class="sm:text-[15px] text-[13px] text-[#0045a8] font-medium cursor-pointer hover:text-[#00b7ff]">Đăng ký tài khoản mới</div>
+            </div>
+        </form>
+
+        <div class="w-full" *ngIf="isShowRegister">
+            <!-- form register -->
+            <div class="w-full text-center text-[20px] uppercase font-bold mb-[10px]">
+                <h4 class="text-[#0045a8]">Đăng ký tài khoản</h4>
+            </div>
+            <div class="w-full flex mb-[20px] uppercase text-[17px] text-custom-color-black-light font-bold">
+                <div class="w-1/2 text-center py-2 border-b-2  cursor-pointer" [ngClass]="{ 'border-[#0045a8]': selectedTab === 'user' ,'text-[#0045a8]': selectedTab === 'user' }" (click)="selectTab('user',  this.registerUserForm  )">
+                    Người dùng
+                </div>
+                <div class="w-1/2 text-center py-2 border-b-2  cursor-pointer" [ngClass]="{ 'border-[#0045a8]': selectedTab === 'landlord', 'text-[#0045a8]': selectedTab === 'landlord' }" (click)="selectTab('landlord', this.registerLandlordForm)">
+                    Chủ trọ
+                </div>
+            </div>
+            <form [formGroup]="registerUserForm" class="w-full" *ngIf="selectedTab === 'user'">
+                <div class="relative w-full mb-5 ">
+                    <div>
+                        <input type="text" id="usernameReisterUser" formControlName="username" appCapitalize class="ntt-custom-input peer" [ngClass]="{'input-invalid': usernameControlRegisterUser?.invalid && isRegisterUserSubmitted && firstInvalidControl === 'username'}" placeholder=" "
+                        />
+                        <label for="usernameReisterUser" class="absolute text-gray-500 text-[14px] transition-all duration-300 transform 
+                           scale-100 origin-top-left bg-white 
+                           sm:peer-placeholder-shown:top-4
+                           peer-placeholder-shown:top-3
+                           peer-placeholder-shown:left-5
+                           peer-placeholder-shown:text-gray-500 
+                           peer-focus:top-0 
+                           peer-focus:-translate-y-0 
+                           peer-focus:-translate-x-[6px]
+                           peer-focus:text-gray-500 
+                           peer:not-placeholder-shown:top-0 
+                           peer:not-placeholder-shown:-translate-y-[16px] 
+                           peer:not-placeholder-shown:text-gray-400" [ngClass]="{'label-invalid': (usernameControlRegisterUser?.invalid && isRegisterUserSubmitted && firstInvalidControl === 'username')}">
+                        Họ và tên
+                    </label>
+                    </div>
+                    <div *ngIf="isRegisterUserSubmitted && usernameControlRegisterUser?.invalid && firstInvalidControl === 'username'">
+                        <small class="masseage-error " *ngIf="usernameControlRegisterUser?.hasError('required')"> <i class="fa-solid fa-circle-info"></i> Họ và tên là bắt buộc.</small>
+                    </div>
+                </div>
+                <div class="relative w-full mb-5 ">
+                    <div>
+                        <input type="email" id="emailRegisterUser" formControlName="email" class="ntt-custom-input peer" [ngClass]="{'input-invalid': emailControlRegisterUser?.invalid && isRegisterUserSubmitted && firstInvalidControl === 'email'}" placeholder=" " />
+                        <label for="emailRegisterUser" class="absolute text-gray-500 text-[14px] transition-all duration-300 transform 
+                           scale-100 origin-top-left bg-white 
+                           sm:peer-placeholder-shown:top-4
+                           peer-placeholder-shown:top-3
+                           peer-placeholder-shown:left-5
+                           peer-placeholder-shown:text-gray-500 
+                           peer-focus:top-0 
+                           peer-focus:-translate-y-0 
+                           peer-focus:-translate-x-[6px]
+                           peer-focus:text-gray-500 
+                           peer:not-placeholder-shown:top-0 
+                           peer:not-placeholder-shown:-translate-y-[16px] 
+                           peer:not-placeholder-shown:text-gray-400" [ngClass]="{'label-invalid': (emailControlRegisterUser?.invalid && isRegisterUserSubmitted && firstInvalidControl === 'email')}">
+                        Email
+                    </label>
+                    </div>
+                    <div *ngIf="isRegisterUserSubmitted && emailControlRegisterUser?.invalid && firstInvalidControl === 'email'">
+                        <small class="masseage-error " *ngIf="emailControlRegisterUser?.hasError('required')"> <i class="fa-solid fa-circle-info"></i> Email là bắt buộc.</small>
+                        <small class="masseage-error" *ngIf="emailControlRegisterUser?.hasError('email')"><i class="fa-solid fa-circle-info"></i> Email không hợp lệ.</small>
+                    </div>
+                </div>
+                <div class="relative w-full mb-5 ">
+                    <div class="sm:h-[54px] h-[48px] relative">
+                        <input [type]="passwordRegisterUserVisible ? 'text' : 'password'" id="passwordRegisterUser" formControlName="password" class="ntt-custom-input pr-[60px!important] peer" [ngClass]="{'input-invalid': passwordControlRegisterUser?.invalid && isRegisterUserSubmitted && firstInvalidControl === 'password'}"
+                            placeholder=" " />
+                        <label for="passwordRegisterUser" class="absolute text-[14px] text-gray-500 transition-all duration-300 transform 
+                           scale-100 origin-top-left bg-white 
+                           sm:peer-placeholder-shown:top-4
+                           peer-placeholder-shown:top-3
+                           peer-placeholder-shown:left-5
+                           peer-placeholder-shown:text-gray-500 
+                           peer-focus:top-0 
+                           peer-focus:-translate-y-0 
+                           peer-focus:-translate-x-[6px]
+                           peer-focus:text-gray-500 
+                           peer:not-placeholder-shown:top-0 
+                           peer:not-placeholder-shown:-translate-y-[12px] 
+                           peer:not-placeholder-shown:text-gray-400" [ngClass]="{'label-invalid': (passwordControlRegisterUser?.invalid && isRegisterUserSubmitted && firstInvalidControl === 'password')}">
+                        Mật khẩu
+                    </label>
+                        <button type="button" class="absolute h-full w-[54px] right-1 top-0 cursor-pointer" (click)="togglePasswordRegisterUserVisibility()">
+                        <i [ngClass]="passwordRegisterUserVisible ? 'fas fa-eye-slash' : 'fas fa-eye'" class="text-gray-500"></i>
+                    </button>
+                    </div>
+                    <div *ngIf="isRegisterUserSubmitted && passwordControlRegisterUser?.invalid && firstInvalidControl === 'password'">
+                        <small class="masseage-error " *ngIf="passwordControlRegisterUser?.hasError('required')"> <i class="fa-solid fa-circle-info"></i> Mật khẩu là bắt buộc.</small>
+                        <small class="masseage-error" *ngIf="passwordControlRegisterUser?.hasError('minlength')"><i class="fa-solid fa-circle-info"></i> Mật khẩu phải có ít nhất 6 ký tự.</small>
+                    </div>
+                </div>
+                <div class="relative w-full mb-5 ">
+                    <div class="sm:h-[54px] h-[48px] relative">
+                        <input [type]="confirmPasswordRegisterUserVisible ? 'text' : 'password'" id="confirmPasswordRegisterUser" formControlName="confirmPassword" class="ntt-custom-input pr-[60px!important] peer" [ngClass]="{'input-invalid': confirmPasswordControlRegisterUser?.invalid && isRegisterUserSubmitted && firstInvalidControl === 'confirmPassword'}"
+                            placeholder=" " />
+                        <label for="confirmPasswordRegisterUser" class="absolute text-[14px] text-gray-500 transition-all duration-300 transform 
+                           scale-100 origin-top-left bg-white 
+                           sm:peer-placeholder-shown:top-4
+                           peer-placeholder-shown:top-3
+                           peer-placeholder-shown:left-5
+                           peer-placeholder-shown:text-gray-500 
+                           peer-focus:top-0 
+                           peer-focus:-translate-y-0 
+                           peer-focus:-translate-x-[6px]
+                           peer-focus:text-gray-500 
+                           peer:not-placeholder-shown:top-0 
+                           peer:not-placeholder-shown:-translate-y-[12px] 
+                           peer:not-placeholder-shown:text-gray-400" [ngClass]="{'label-invalid': (confirmPasswordControlRegisterUser?.invalid && isRegisterUserSubmitted && firstInvalidControl === 'confirmPassword')}">
+                        Xác nhận mật khẩu
+                    </label>
+                        <button type="button" class="absolute h-full w-[54px] right-1 top-0 cursor-pointer" (click)="toggleConfirmPasswordRegisterUserVisibility()">
+                        <i [ngClass]="confirmPasswordRegisterUserVisible ? 'fas fa-eye-slash' : 'fas fa-eye'" class="text-gray-500"></i>
+                    </button>
+                    </div>
+                    <div *ngIf="isRegisterUserSubmitted && confirmPasswordControlRegisterUser?.invalid && firstInvalidControl === 'confirmPassword'">
+                        <small class="masseage-error " *ngIf="confirmPasswordControlRegisterUser?.hasError('required')"> <i class="fa-solid fa-circle-info"></i>Xác nhận mật khẩu là bắt buộc.</small>
+                        <small class="masseage-error" *ngIf="confirmPasswordControlRegisterUser?.hasError('minlength')"><i class="fa-solid fa-circle-info"></i>Xác nhận mật khẩu phải có ít nhất 6 ký tự.</small>
+                    </div>
+                </div>
+                <div class="w-full">
+                    <button type="submit" (click)="handleRegisterUser()" class="w-full text-[13px] font-medium text-white bg-[#0045a8] px-5 py-[14px] rounded-md hover:bg-[#336ab9] hover:ntt-shadow-button-login">Đăng ký</button>
+                </div>
+            </form>
+            <form [formGroup]="registerLandlordForm" class="w-full" *ngIf="selectedTab === 'landlord'">
+                <div class="relative w-full mb-5 ">
+                    <div>
+                        <input type="text" id="usernameReisterLandlord" formControlName="username" appCapitalize class="ntt-custom-input peer" [ngClass]="{'input-invalid': usernameControlRegisterLandlord?.invalid && isRegisterLandlordSubmitted && firstInvalidControl === 'username'}"
+                            placeholder=" " />
+                        <label for="usernameReisterLandlord" class="absolute text-gray-500 text-[14px] transition-all duration-300 transform 
+                           scale-100 origin-top-left bg-white 
+                           sm:peer-placeholder-shown:top-4
+                           peer-placeholder-shown:top-3
+                           peer-placeholder-shown:left-5
+                           peer-placeholder-shown:text-gray-500 
+                           peer-focus:top-0 
+                           peer-focus:-translate-y-0 
+                           peer-focus:-translate-x-[6px]
+                           peer-focus:text-gray-500 
+                           peer:not-placeholder-shown:top-0 
+                           peer:not-placeholder-shown:-translate-y-[16px] 
+                           peer:not-placeholder-shown:text-gray-400" [ngClass]="{'label-invalid': (usernameControlRegisterLandlord?.invalid && isRegisterLandlordSubmitted && firstInvalidControl === 'username')}">
+                        Họ và tên
+                    </label>
+                    </div>
+                    <div *ngIf="isRegisterLandlordSubmitted && usernameControlRegisterLandlord?.invalid && firstInvalidControl === 'username'">
+                        <small class="masseage-error " *ngIf="usernameControlRegisterLandlord?.hasError('required')"> <i class="fa-solid fa-circle-info"></i> Họ và tên là bắt buộc.</small>
+                    </div>
+                </div>
+                <div class="relative w-full mb-5 ">
+                    <div>
+                        <input type="email" id="emailRegisterLandlord" formControlName="email" class="ntt-custom-input peer" [ngClass]="{'input-invalid': emailControlRegisterLandlord?.invalid && isRegisterLandlordSubmitted && firstInvalidControl === 'email'}" placeholder=" "
+                        />
+                        <label for="emailRegisterLandlord" class="absolute text-gray-500 text-[14px] transition-all duration-300 transform 
+                           scale-100 origin-top-left bg-white 
+                           sm:peer-placeholder-shown:top-4
+                           peer-placeholder-shown:top-3
+                           peer-placeholder-shown:left-5
+                           peer-placeholder-shown:text-gray-500 
+                           peer-focus:top-0 
+                           peer-focus:-translate-y-0 
+                           peer-focus:-translate-x-[6px]
+                           peer-focus:text-gray-500 
+                           peer:not-placeholder-shown:top-0 
+                           peer:not-placeholder-shown:-translate-y-[16px] 
+                           peer:not-placeholder-shown:text-gray-400" [ngClass]="{'label-invalid': (emailControlRegisterLandlord?.invalid && isRegisterLandlordSubmitted && firstInvalidControl === 'email')}">
+                        Email
+                    </label>
+                    </div>
+                    <div *ngIf="isRegisterLandlordSubmitted && emailControlRegisterLandlord?.invalid && firstInvalidControl === 'email'">
+                        <small class="masseage-error " *ngIf="emailControlRegisterLandlord?.hasError('required')"> <i class="fa-solid fa-circle-info"></i> Email là bắt buộc.</small>
+                        <small class="masseage-error" *ngIf="emailControlRegisterLandlord?.hasError('email')"><i class="fa-solid fa-circle-info"></i> Email không hợp lệ.</small>
+                    </div>
+                </div>
+                <div class="relative w-full mb-5 ">
+                    <div class="sm:h-[54px] h-[48px] relative">
+                        <input [type]="passwordRegisterLandlordVisible ? 'text' : 'password'" id="passwordRegisterLandlord" formControlName="password" class="ntt-custom-input pr-[60px!important] peer" [ngClass]="{'input-invalid': passwordControlRegisterLandlord?.invalid && isRegisterLandlordSubmitted && firstInvalidControl === 'password'}"
+                            placeholder=" " />
+                        <label for="passwordRegisterLandlord" class="absolute text-[14px] text-gray-500 transition-all duration-300 transform 
+                           scale-100 origin-top-left bg-white 
+                           sm:peer-placeholder-shown:top-4
+                           peer-placeholder-shown:top-3
+                           peer-placeholder-shown:left-5
+                           peer-placeholder-shown:text-gray-500 
+                           peer-focus:top-0 
+                           peer-focus:-translate-y-0 
+                           peer-focus:-translate-x-[6px]
+                           peer-focus:text-gray-500 
+                           peer:not-placeholder-shown:top-0 
+                           peer:not-placeholder-shown:-translate-y-[12px] 
+                           peer:not-placeholder-shown:text-gray-400" [ngClass]="{'label-invalid': (passwordControlRegisterLandlord?.invalid && isRegisterLandlordSubmitted && firstInvalidControl === 'password')}">
+                        Mật khẩu
+                    </label>
+                        <button type="button" class="absolute h-full w-[54px] right-1 top-0 cursor-pointer" (click)="togglePasswordRegisterLandlordVisibility()">
+                        <i [ngClass]="passwordRegisterLandlordVisible ? 'fas fa-eye-slash' : 'fas fa-eye'" class="text-gray-500"></i>
+                    </button>
+                    </div>
+                    <div *ngIf="isRegisterLandlordSubmitted && passwordControlRegisterLandlord?.invalid && firstInvalidControl === 'password'">
+                        <small class="masseage-error " *ngIf="passwordControlRegisterLandlord?.hasError('required')"> <i class="fa-solid fa-circle-info"></i> Mật khẩu là bắt buộc.</small>
+                        <small class="masseage-error" *ngIf="passwordControlRegisterLandlord?.hasError('minlength')"><i class="fa-solid fa-circle-info"></i> Mật khẩu phải có ít nhất 6 ký tự.</small>
+                    </div>
+                </div>
+                <div class="relative w-full mb-5 ">
+                    <div class="sm:h-[54px] h-[48px] relative">
+                        <input [type]="confirmPasswordRegisterLandlordVisible ? 'text' : 'password'" id="confirmPasswordRegisterLandlord" formControlName="confirmPassword" class="ntt-custom-input pr-[60px!important] peer" [ngClass]="{'input-invalid': confirmPasswordControlRegisterLandlord?.invalid && isRegisterLandlordSubmitted && firstInvalidControl === 'confirmPassword'}"
+                            placeholder=" " />
+                        <label for="confirmPasswordRegisterLandlord" class="absolute text-[14px] text-gray-500 transition-all duration-300 transform 
+                           scale-100 origin-top-left bg-white 
+                           sm:peer-placeholder-shown:top-4
+                           peer-placeholder-shown:top-3
+                           peer-placeholder-shown:left-5
+                           peer-placeholder-shown:text-gray-500 
+                           peer-focus:top-0 
+                           peer-focus:-translate-y-0 
+                           peer-focus:-translate-x-[6px]
+                           peer-focus:text-gray-500 
+                           peer:not-placeholder-shown:top-0 
+                           peer:not-placeholder-shown:-translate-y-[12px] 
+                           peer:not-placeholder-shown:text-gray-400" [ngClass]="{'label-invalid': (confirmPasswordControlRegisterLandlord?.invalid && isRegisterLandlordSubmitted && firstInvalidControl === 'confirmPassword')}">
+                        Xác nhận mật khẩu
+                    </label>
+                        <button type="button" class="absolute h-full w-[54px] right-1 top-0 cursor-pointer" (click)="toggleConfirmPasswordRegisterLandlordVisibility()">
+                        <i [ngClass]="confirmPasswordRegisterLandlordVisible ? 'fas fa-eye-slash' : 'fas fa-eye'" class="text-gray-500"></i>
+                    </button>
+                    </div>
+                    <div *ngIf="isRegisterLandlordSubmitted && confirmPasswordControlRegisterLandlord?.invalid && firstInvalidControl === 'confirmPassword'">
+                        <small class="masseage-error " *ngIf="confirmPasswordControlRegisterLandlord?.hasError('required')"> <i class="fa-solid fa-circle-info"></i>Xác nhận mật khẩu là bắt buộc.</small>
+                        <small class="masseage-error" *ngIf="confirmPasswordControlRegisterLandlord?.hasError('minlength')"><i class="fa-solid fa-circle-info"></i>Xác nhận mật khẩu phải có ít nhất 6 ký tự.</small>
+                    </div>
+                </div>
+                <div class="relative w-full mb-5 ">
+                    <div>
+                        <input type="text" id="phoneNumberReisterLandlord" formControlName="phoneNumber" appCapitalize class="ntt-custom-input peer" [ngClass]="{'input-invalid': phoneNumberControlRegisterLandlord?.invalid && isRegisterLandlordSubmitted && firstInvalidControl === 'username'}"
+                            placeholder=" " />
+                        <label for="phoneNumberReisterLandlord" class="absolute text-gray-500 text-[14px] transition-all duration-300 transform 
+                           scale-100 origin-top-left bg-white
+                           sm:peer-placeholder-shown:top-4
+                           peer-placeholder-shown:top-3
+                           peer-placeholder-shown:left-5
+                           peer-placeholder-shown:text-gray-500 
+                           peer-focus:top-0 
+                           peer-focus:-translate-y-0 
+                           peer-focus:-translate-x-[6px]
+                           peer-focus:text-gray-500 
+                           peer:not-placeholder-shown:top-0 
+                           peer:not-placeholder-shown:-translate-y-[16px] 
+                           peer:not-placeholder-shown:text-gray-400" [ngClass]="{'label-invalid': (phoneNumberControlRegisterLandlord?.invalid && isRegisterLandlordSubmitted && firstInvalidControl === 'username')}">
+                        Số điện thoại
+                    </label>
+                    </div>
+                    <div *ngIf="isRegisterLandlordSubmitted && phoneNumberControlRegisterLandlord?.invalid && firstInvalidControl === 'phoneNumber'">
+                        <small class="masseage-error " *ngIf="phoneNumberControlRegisterLandlord?.hasError('required')"> <i class="fa-solid fa-circle-info"></i> Số điện thoại là bắt buộc.</small>
+                    </div>
+                </div>
+                <div class="relative w-full mb-5 ">
+                    <div>
+                        <input type="text" id="addressReisterLandlord" formControlName="address" appCapitalize class="ntt-custom-input peer" [ngClass]="{'input-invalid': addressControlRegisterLandlord?.invalid && isRegisterLandlordSubmitted && firstInvalidControl === 'username'}"
+                            placeholder=" " />
+                        <label for="addressReisterLandlord" class="absolute text-gray-500 text-[14px] transition-all duration-300 transform 
+                           scale-100 origin-top-left bg-white 
+                           sm:peer-placeholder-shown:top-4
+                           peer-placeholder-shown:top-3
+                           peer-placeholder-shown:left-5
+                           peer-placeholder-shown:text-gray-500 
+                           peer-focus:top-0 
+                           peer-focus:-translate-y-0 
+                           peer-focus:-translate-x-[6px]
+                           peer-focus:text-gray-500 
+                           peer:not-placeholder-shown:top-0 
+                           peer:not-placeholder-shown:-translate-y-[16px] 
+                           peer:not-placeholder-shown:text-gray-400" [ngClass]="{'label-invalid': (addressControlRegisterLandlord?.invalid && isRegisterLandlordSubmitted && firstInvalidControl === 'address')}">
+                        Địa chỉ
+                    </label>
+                    </div>
+                    <div *ngIf="isRegisterLandlordSubmitted && addressControlRegisterLandlord?.invalid && firstInvalidControl === 'address'">
+                        <small class="masseage-error " *ngIf="addressControlRegisterLandlord?.hasError('required')"> <i class="fa-solid fa-circle-info"></i> Họ và tên là bắt buộc.</small>
+                    </div>
+                </div>
+                <div class="w-full">
+                    <button type="submit" (click)="handleRegisterLandlord()" class="w-full text-[13px] font-medium text-white bg-[#0045a8] px-5 py-[14px] rounded-md hover:bg-[#336ab9] hover:ntt-shadow-button-login">Đăng ký</button>
+                </div>
+            </form>
+            <div class="w-full text-center py-3 flex justify-center gap-1">
+                <div class="sm:text-[15px] text-[13px] font-light">Hoặc bạn đã có tài khoản?</div>
+                <div id="open-login" (click)="isShowLogin = true; isShowRegister = false" class="sm:text-[15px] text-[13px] text-[#0045a8] font-medium cursor-pointer hover:text-[#00b7ff]"> Đăng nhập</div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -198,13 +198,14 @@
                             <div class="flex justify-between">
                                 <div>
                                     <ngx-skeleton-loader  *ngIf="isLoading" appearance="line" [theme]="{height: '30px', width: '300px','margin-bottom': '0' }"></ngx-skeleton-loader>
-                                    <div *ngIf="!isLoading"  class="mb-2 text-[21px] font-sans font-bold text-custom-color-blue ">{{motel.NameMotel ? motel.NameMotel : 'Nhà trọ' }}</div>
+                                    <div *ngIf="!isLoading"  class="mb-1 h-[26px] text-[18px] font-sans font-semibold text-custom-color-blue capitalize line-clamp-1">Nhà trọ {{motel.NameMotel ? motel.NameMotel : (motel.Address + ', ' + motel.WardCommune) }}</div>
                                     <div class=" text-custom-color-blue flex flex-col" >
                                         <ngx-skeleton-loader  *ngIf="isLoading" appearance="line" [theme]="{height: '25px', width: '100%' ,'margin-bottom': '0'}"></ngx-skeleton-loader>
                                         <div *ngIf="!isLoading" class="mr-2 flex items-center flex-wrap">
-                                            <span class="capitalize text-[14px] font-semibold">{{motel.Address}}, {{motel.WardCommune}}</span>
-                                            <span class="mx-2"> - </span>
-                                            <span class="text-[14px] font-semibold underline cursor-pointer" (click)="handleViewOnMapSpecificallyMotel(motel.Location)"> Xem trên bản đồ </span>
+                                            <i class='bx bxs-map'></i>
+                                            <span class="capitalize text-[13px] font-semibold underline">{{motel.Address}}, {{motel.WardCommune}}</span>
+                                            <span class="mx-1"> - </span>
+                                            <span class="text-[13px] font-semibold underline cursor-pointer" (click)="handleViewOnMapSpecificallyMotel(motel.Location)"> Xem trên bản đồ </span>
                                         </div>
                                         <ngx-skeleton-loader  *ngIf="isLoading" appearance="line" [theme]="{height: '20px', width: '200px' ,'margin-bottom': '0'}"></ngx-skeleton-loader>
                                         <span *ngIf="!isLoading" class="text-[12px] font-normal text-custom-color-black">Khoảng cách tới trường {{motel.Distance}} km</span>
@@ -221,17 +222,18 @@
                                 </div>
                             </div>
                             <div class="h-[calc(100%-80px)] flex justify-between w-full">
-                                <ngx-skeleton-loader  *ngIf="isLoading && motel.Description" appearance="line" [theme]="{height: '146px', width: '250px'}"></ngx-skeleton-loader>
+                                <ngx-skeleton-loader  *ngIf="isLoading && motel.Description" appearance="line" [theme]="{height: '146px', width: '300px'}"></ngx-skeleton-loader>
                                 <div *ngIf="!isLoading && motel.Description"  class="w-[calc(100%-170px)] pt-2 flex flex-col">
-                                    <div >
-                                        <ul class="flex gap-2 line-clamp-1">
+                                    <div class="w-full">
+                                        <ul class="w-fit flex gap-2 line-clamp-1 bg-[#f7f7f7] p-1 rounded-sm">
                                             <li *ngFor="let convenient of motel.ListConvenient" >
                                                 <img class="w-[26px] h-[26px] object-cover" title="{{convenient.NameConvenient}}" src="http://localhost:3000/resources/img-convenients/{{convenient.LinkImage}}" alt="">
                                             </li>
                                         </ul>
                                     </div>
                                     <div class="mt-2 flex">
-                                        <span class="text-[12px] font-normal text-custom-color-black ntt-custom-description "><span class="font-medium">Mô tả:</span> {{motel.Description}}</span>
+                                        <span class="text-[12px] font-normal text-custom-color-black ntt-custom-description " >
+                                            <span class="font-medium">Mô tả:</span> {{motel.Description}}</span>
                                     </div>
                                 </div>
                                 <div class="w-[170px] flex flex-col justify-end items-end">

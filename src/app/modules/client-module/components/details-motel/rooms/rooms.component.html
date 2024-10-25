@@ -11,7 +11,10 @@
                             </div>
                             <div class="info p-3 ntt-shadow-motel-card rounded-bl-xl rounded-br-xl flex flex-col gap-2 group-hover:ntt-shadow-motel-card-hover transition-shadow duration-200">
                                 <div>
-                                    <div class=" text-[15px] font-medium">Tầng {{room.Floor}}</div>
+                                    <div class=" text-[15px] text-custom-color-black-light font-medium flex gap-2">
+                                        <div class="bg-[#f7f7f7] px-2 rounded-sm">Tầng {{room.Floor}}</div>
+                                        <div title="Diện tích phòng" class="bg-[#f7f7f7] px-2 rounded-sm">{{room.Area}}m²</div>
+                                    </div>
                                     <ul class="mt-2 flex flex-wrap gap-3 line-clamp-2">
                                         <li *ngFor="let convenient of room.ListConvenient" >
                                             <img class="min-w-[30px] h-[30px] object-cover " title="{{convenient.NameConvenient}}" src="http://localhost:3000/resources/img-convenients/{{convenient.LinkImage}}" alt="">

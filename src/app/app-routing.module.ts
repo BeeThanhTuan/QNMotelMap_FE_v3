@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   { path: '', redirectTo: '/client/home/content', pathMatch: 'full' },
+  { path: '', loadChildren: () => import('./modules/share-module/share-module.module').then(m => m.ShareModuleModule) },
   { path: 'landlord', loadChildren: () => import('./modules/landlord-module/landlord-module.module').then(m => m.LandlordModuleModule) },
   { path: 'admin', loadChildren: () => import('./modules/admin-module/admin-module.module').then(m => m.AdminModuleModule) },
   { path: 'client', loadChildren: () => import('./modules/client-module/client-module.module').then(m => m.ClientModuleModule) },

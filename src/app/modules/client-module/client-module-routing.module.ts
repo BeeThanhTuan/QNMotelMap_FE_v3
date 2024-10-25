@@ -6,7 +6,6 @@ import { DetailMotelComponent } from './components/details-motel/detail-motel/de
 import { OverallComponent } from './components/details-motel/overall/overall.component';
 import { RoomsComponent } from './components/details-motel/rooms/rooms.component';
 import { SearchComponent } from './components/search/search.component';
-import { RatingsComponent } from './components/details-motel/ratings/ratings.component';
 import { RoomDetailComponent } from './components/details-motel/room-detail/room-detail.component';
 import { ViewOnMapComponent } from './components/view-on-map/view-on-map.component';
 
@@ -27,7 +26,6 @@ const routes: Routes = [
           { path: '', redirectTo: 'overall', pathMatch: 'full' },
           { path: 'overall', component: OverallComponent },
           { path: 'rooms', component: RoomsComponent},
-          { path: 'ratings', component: RatingsComponent },
           { path: 'rooms', component: RoomsComponent},
           { path: 'room/:roomId', component: RoomDetailComponent},
         ],

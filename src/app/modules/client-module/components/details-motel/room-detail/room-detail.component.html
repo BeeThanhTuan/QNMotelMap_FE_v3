@@ -7,25 +7,25 @@
         <div class="w-[850px] pt-4 pl-2 pr-3">     
             <div class="h-[500px] relative" [ngClass]="getLayoutImageClass(room.ListImages.slice(0,3).length)">
                 <div class="image" *ngFor="let image of room.ListImages.slice(0,3), let i = index">
-                    <img src="http://localhost:3000/resources/img-rooms/{{image.LinkImage}}" alt="" class="img-motel w-full h-full object-cover" (click)="handleOpenCollectionImage(i)">
+                    <img src="http://localhost:3000/resources/img-rooms/{{image.LinkImage}}" alt="" class="img-motel w-full h-full object-cover cursor-pointer" (click)="handleOpenCollectionImage(i)">
                 </div>
                 <div class="flex mt-3 gap-3 absolute z-10 bottom-2 right-2" *ngIf="room.ListImages.length >= 4" >
                     <div *ngFor="let image of room.ListImages.slice(3,4)" class="md:w-[150px] md:h-[180px] w-[100px] h-[130px] border-4 border-[white] relative">
-                        <img src="http://localhost:3000/resources/img-rooms/{{image.LinkImage}}" alt="" class="img-motel w-full h-full object-cover" (click)="handleOpenCollectionImage(3)">
-                        <div *ngIf="room.ListImages.length >= 4" class="absolute top-2 right-2"><span class="text-[25px] text-white font-medium">+{{(room.ListImages.slice(4).length) + 1}}</span></div>
+                        <img src="http://localhost:3000/resources/img-rooms/{{image.LinkImage}}" alt="" class="img-motel w-full h-full object-cover brightness-50 cursor-pointer" (click)="handleOpenCollectionImage(3)">
+                        <div *ngIf="room.ListImages.length >= 4" class="absolute w-full h-full top-0 flex justify-center items-center pointer-events-none"><span class="text-[35px] text-white font-medium">+{{(room.ListImages.slice(4).length) + 1}}</span></div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="w-[calc(100%-850px)] min-w-[250px] pt-4 px-2">
+        <div class="w-[calc(100%-850px)] min-w-[275px] pt-4 px-2">
             <div class="h-full flex flex-col justify-between">
                 <div class="h-full border border-[#e7e7e7] rounded-md ">
-                    <div class="flex gap-2 w-full justify-end border-b border-[#e7e7e7] p-4">
+                    <div class="flex gap-2 w-full justify-start border-b border-[#e7e7e7] p-4">
                        <span class="text-[18px] font-semibold">Tầng {{room.Floor}}</span>
                     </div>
-                    <div class="w-full p-4 pt-3 text-custom-color-black flex justify-between items-center border-b border-[#e7e7e7]">
-                        <div class="text-[17px] font-medium text-end">Giá:</div>
-                        <div class="text-[21px] font-semibold " title="Giá nhà trọ">{{room.Price | money}} VND</div>
+                    <div class="w-full p-4 pt-3 flex flex-col border-b border-[#e7e7e7]">
+                        <div class="text-end flex  text-custom-color-black-light"><span class="text-[13px] h-[17px]">Giá chỉ từ:</span></div>
+                        <div class="mt-2 text-[22px] font-semibold text-custom-color-blue " title="Giá nhà trọ">{{room.Price | money}} VND/tháng</div>
                     </div>
                     <div class="w-full p-4 pt-3 text-custom-color-black">
                         <div class="text-[17px] font-medium">Thông tin liên hệ:</div>
@@ -43,12 +43,9 @@
                                 <span class="text-[15px] font-normal capitalize">{{landlord.Address}} </span>
                             </div>
                         </div>
-                    </div>
-                    
-                </div>
-               
+                    </div>   
+                </div> 
             </div>
-
         </div>
     </div>
     <div class="convenient w-full mt-10 px-2">
@@ -73,10 +70,9 @@
              <div class="w-full border-b border-[#e7e7e7]">
                  <h3 class="p-4 text-[20px] text-custom-color-black font-sans font-semibold">Mô tả về phòng trọ</h3>
              </div>
-             <div class="w-full p-4">
-                 <span class="text-[16px]">
-                   {{room.Description}}
-                 </span>         
+             <div class="w-full p-4 text-[16px] ">
+                <p>Diện tích khoảng: {{room.Area}}m²</p>
+                <div [innerHTML]="room.Description | lineBreak" ></div>           
              </div>
         </div>
      </div> <!--End description-->

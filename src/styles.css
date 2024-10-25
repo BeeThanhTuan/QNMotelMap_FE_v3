@@ -5,6 +5,7 @@
     font-family:  BlinkMacSystemFont, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     box-sizing: border-box;
 }
+
 @layer utilities {
     .ntt-bg-custom-gradient {
       background-image: linear-gradient(to bottom, #003B95 3% 60%, 18%, #FFFFFF 60% 100%);
@@ -69,6 +70,9 @@
     .ntt-shadow-box{
         box-shadow: 0 1px 2px 1px #dae1ec;
     }
+    .ntt-shadow-button-login{
+        box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.2);
+    }
     .ntt-shadow-image{
         box-shadow: 0 0px 0px 3px #299ffa;
     }
@@ -106,5 +110,10 @@
 .ntt-li-convenient{
     @apply border border-[#e7e7e7] p-2 rounded-md flex justify-center items-center
 }
+
+.ntt-custom-input{
+    @apply sm:h-[54px] h-[48px] w-full border border-[#aaa] text-[16px] outline-none rounded-md px-5 py-2 focus:border-custom-bg-hover-blue focus:ring-0 
+}
+
 
 

@@ -1,3 +1,5 @@
+const { transform } = require('typescript');
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
@@ -22,6 +24,21 @@ module.exports = {
       },
       fontFamily: {
         sans: ['"Blue Sans"', 'BlinkMacSystemFont', '-apple-system', 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'],
+      },
+      animation: {
+        appear: 'appearInOut 0.3s ease-out forwards',
+      },
+      keyframes: {
+        appearInOut: {
+          '0%': { 
+            opacity: 0,
+            transform: 'translateY(500px)' 
+          },
+          '100%': { 
+            opacity: 1,
+            transform: 'translateY(0)'
+          },
+        },
       },
       
     },

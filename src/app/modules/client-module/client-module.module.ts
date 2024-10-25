@@ -24,17 +24,18 @@ import { ViewOnMapComponent } from './components/view-on-map/view-on-map.compone
 import { ViewMotelOnMapComponent } from './components/view-motel-on-map/view-motel-on-map.component';
 import { ClickOutsidePopupMotelOnMapDirective } from './directives/click-outside-popup-motel-on-map.directive';
 import { PhonePipe } from './pipes/phone.pipe';
-import { RatingsComponent } from './components/details-motel/ratings/ratings.component';
-import { ShareModule } from '../share/share.module';
+import { ShareModuleModule } from '../share-module/share-module.module';
 //ant design
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzSliderModule } from 'ng-zorro-antd/slider';
 import { NzRateModule } from 'ng-zorro-antd/rate';
+import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 //loading
 import { NgxSpinnerModule } from "ngx-spinner";
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { LineBreakPipe } from './pipes/line-break.pipe';
 
 @NgModule({
   declarations: [
@@ -55,8 +56,8 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
     ViewOnMapComponent,
     ViewMotelOnMapComponent,
     PhonePipe,
-    RatingsComponent,
     RoomsComponent,
+    LineBreakPipe,
     
   ],
   imports: [
@@ -65,7 +66,7 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
     NgxSliderModule,
     MatSlideToggleModule,
     FormsModule,
-    ShareModule,
+    ShareModuleModule,
     ReactiveFormsModule,
     NgApexchartsModule,
     NzInputModule,
@@ -73,6 +74,7 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
     NzCheckboxModule,
     NzSliderModule,
     NzRateModule,
+    NzDrawerModule,
     NgxSpinnerModule,
     NgxSkeletonLoaderModule
   ]
