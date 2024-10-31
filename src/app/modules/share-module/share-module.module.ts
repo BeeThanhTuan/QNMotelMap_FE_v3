@@ -6,6 +6,7 @@ import { LoginComponent } from './components/login/login.component';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
 import { NzIconModule, NZ_ICONS } from 'ng-zorro-antd/icon';
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CapitalizePipe } from './pipes/capitalize.pipe';
@@ -28,6 +29,7 @@ import { CapitalizeDirective } from './directives/capitalize.directive';
     NzInputModule, // Module cho input
     NzIconModule,  // Module cho icon
     NzTabsModule,
+    NzToolTipModule,
     FormsModule,
     ReactiveFormsModule
   ],

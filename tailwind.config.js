@@ -8,6 +8,7 @@ module.exports = {
   theme: {
     extend: {
       screens: {
+        'mb': '440px', //màn hình mobile
         'ml': '900px', // Thay đổi breakpoint cho màn hình nhỏ hơn 900px
       },
       maxWidth: {

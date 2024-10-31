@@ -4,7 +4,8 @@ import { ManageComponent } from './components/manage/manage.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'manage', pathMatch: 'full' },
-  {path: 'manage', component:ManageComponent}
+  {path: 'manage', component:ManageComponent},
+
 ];
 
 @NgModule({

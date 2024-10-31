@@ -68,7 +68,7 @@
         box-shadow: 0px 2px 8px 0px rgba(26,26,26,.16);
     }
     .ntt-shadow-box{
-        box-shadow: 0 1px 2px 1px #dae1ec;
+        box-shadow: 0 2px 8px 0 rgba(26,26,26,0.16)
     }
     .ntt-shadow-button-login{
         box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.2);
@@ -113,6 +113,13 @@
 
 .ntt-custom-input{
     @apply sm:h-[54px] h-[48px] w-full border border-[#aaa] text-[16px] outline-none rounded-md px-5 py-2 focus:border-custom-bg-hover-blue focus:ring-0 
+}
+
+.ntt-custom-input-sm{
+    @apply h-[48px] w-full border border-[#aaa] text-[16px] outline-none rounded-md px-5 py-2 focus:border-custom-bg-hover-blue focus:ring-0 
+}
+.ntt-custom-textarea{
+    @apply h-[96px] w-full border border-[#aaa] text-[16px] outline-none rounded-md px-5 py-2 focus:border-custom-bg-hover-blue focus:ring-0 
 }
 
 
