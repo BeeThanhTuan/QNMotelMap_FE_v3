@@ -119,12 +119,12 @@
                     </div>
                     <div class="ntt-custom-filter-field">
                         <div>
-                           <label nz-checkbox [nzDisabled]="listMotelFiltered.convenientCounts['Nơi nấu ăn'] ? false : true"  class="w-5 h-5"  formControlName="havePlaceToCook" (change)="handleFilters()"></label>    
+                           <label nz-checkbox [nzDisabled]="listMotelFiltered.convenientCounts['Kệ bếp'] ? false : true"  class="w-5 h-5"  formControlName="havePlaceToCook" (change)="handleFilters()"></label>    
                         </div>
                         <div class="flex flex-col w-full">
                             <div class="ntt-custom-content-filter">
-                                <div>Nơi nấu ăn</div>
-                                <span>{{listMotelFiltered.convenientCounts['Nơi nấu ăn'] ? listMotelFiltered.convenientCounts['Nơi nấu ăn'] : 0}}</span>
+                                <div>Kệ bếp</div>
+                                <span>{{listMotelFiltered.convenientCounts['Kệ bếp'] ? listMotelFiltered.convenientCounts['Kệ bếp'] : 0}}</span>
                             </div>
                         </div>
                     </div>
