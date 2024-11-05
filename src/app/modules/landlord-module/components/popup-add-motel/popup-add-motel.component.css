@@ -64,3 +64,56 @@ input:-moz-autofill {
   box-shadow: 0 0 0 30px white inset !important;
   color: #000 !important;
 }
+
+:host ::ng-deep .ant-upload-list-picture-card-container {
+  width: 45px !important;
+  height: 45px !important;
+}
+
+:host ::ng-deep .ant-upload.ant-upload-select-picture-card {
+  min-width: 100px !important;
+  max-width: 100px !important;
+  min-height: 96px !important;
+  max-height: 96px !important;
+  margin-right:20px;
+}
+
+:host ::ng-deep .ant-upload-list-picture-card .ant-upload-list-item {
+  padding: 2px;
+}
+
+:host ::ng-deep .ant-upload-list-picture-card .ant-upload-list-item-info::before {
+  background-color: rgb(0 0 0 / 30%);
+}
+:host ::ng-deep nz-checkbox-group.ant-checkbox-group{
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 cột với kích thước bằng nhau */
+  row-gap: 10px; /* Khoảng cách giữa các ô */
+}
+
+@media (max-width: 950px) {
+  :host ::ng-deep nz-checkbox-group.ant-checkbox-group {
+    grid-template-columns: repeat(3, 1fr); /* Chuyển thành 3 cột */
+  }
+}
+
+:host ::ng-deep span {
+  max-width: 100% !important; /* Giới hạn chiều rộng tối đa của span */
+  white-space: nowrap; /* Không cho nội dung xuống dòng */
+  overflow-x: height; /* Ẩn phần nội dung vượt quá chiều rộng */
+  text-overflow: ellipsis; /* Thêm dấu ba chấm (...) khi vượt quá */
+  padding-right: 0; /* Bỏ padding bên phải */
+}
+
+:host ::ng-deep span.ant-checkbox-inner{
+  border: 1px solid #a7a7a7;
+}
+
+:host ::ng-deep .leaflet-control-zoom.leaflet-bar.leaflet-control,
+:host ::ng-deep .leaflet-control-attribution.leaflet-control{
+  display: none;
+}
+
+:host ::ng-deep label{
+  color:#1A1A1A
+}

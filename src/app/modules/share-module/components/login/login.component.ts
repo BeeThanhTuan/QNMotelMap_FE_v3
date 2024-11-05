@@ -181,7 +181,6 @@ export class LoginComponent {
     }
   }
 
-
   // Hàm để chọn tab
   selectTab(tab: string, formGroup: FormGroup) {
     this.selectedTab = tab;

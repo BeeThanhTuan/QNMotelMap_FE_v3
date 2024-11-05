@@ -95,7 +95,7 @@
 }
 /*filter field */
 .ntt-custom-filter-field{
-    @apply w-full flex gap-2 py-[5px] 
+    @apply w-full flex gap-2 py-[5px]  items-center
 }
 .ntt-custom-content-filter{
     @apply h-[20px] flex justify-between text-[14px] text-custom-color-black 

@@ -57,3 +57,21 @@ ngx-skeleton-loader {
 .sort:hover{
   background-color: #f2f2f2 !important;
 }
+
+:host ::ng-deep span.ant-checkbox-inner{
+  border: 1px solid #a7a7a7;
+  height:20px;
+  width:20px;
+}
+
+:host ::ng-deep .ant-slider-track {
+  background-color: #0095f1;
+}
+:host ::ng-deep .ant-slider-track:hover {
+  background-color: #0095f1;
+}
+
+:host ::ng-deep .ant-slider-handle {
+  border: 2px solid #0095f1;
+
+}

@@ -133,8 +133,6 @@ export class ViewOnMapComponent {
   }
 
   ngAfterViewInit(): void {
-    this.handHiddenControlZoom();
-    this.handleChangeStyleCheckbox();
     this.formFilters.get('desiredDistance')!.valueChanges.pipe(debounceTime(500)).subscribe(() => {
       this.handleFiltersDistance();
     });
@@ -548,7 +546,7 @@ export class ViewOnMapComponent {
       this.listMotelFiltered = response.dataFiltered;
       this.listMotels = this.filterMotelData(response.data);
       this.addMarkers(this.listMotels);
-      this.handleChangeStyleMarker();
+
       response.data.map((motel: Motel)=>{
         this.rentalDistances.push(motel.Distance);
       })
@@ -566,7 +564,7 @@ export class ViewOnMapComponent {
       this.listMotelFiltered = response.dataFiltered;
       this.listMotels = this.filterMotelData(response.data);
       this.addMarkersSpecial(this.listMotels, location);
-      this.handleChangeStyleMarker();
+
       response.data.map((motel: Motel)=>{
         this.rentalDistances.push(motel.Distance);
       })
@@ -661,7 +659,7 @@ export class ViewOnMapComponent {
         this.initializeDataPriceChart();
         this.clearMarkers();
         this.addMarkers(this.listMotels);
-        this.handleChangeStyleMarker();
+  
         this.listMotelFiltered = response.dataFiltered;
         this.spinner.hide();
         this.handleSetLocationMap(this.listMotels[0].Locations);
@@ -689,7 +687,7 @@ export class ViewOnMapComponent {
         this.initializeDataPriceChart();
         this.clearMarkers();
         this.addMarkersSpecial(this.listMotels, location);
-        this.handleChangeStyleMarker();
+  
         this.listMotelFiltered = response.dataFiltered;
         this.spinner.hide();
         this.handleSetLocationMap(this.listMotels[0].Locations);
@@ -712,7 +710,7 @@ export class ViewOnMapComponent {
         this.initializeDataPriceChart();
         this.clearMarkers();
         this.addMarkers(this.listMotels);
-        this.handleChangeStyleMarker();
+  
         this.listMotelFiltered = response.dataFiltered;
         this.spinner.hide();
         this.handleSetLocationMap(this.listMotels[0].Locations);
@@ -734,7 +732,6 @@ export class ViewOnMapComponent {
         this.initializeDataDistanceChart();
         this.clearMarkers();
         this.addMarkers(this.listMotels);
-        this.handleChangeStyleMarker();
         this.listMotelFiltered = response.dataFiltered;
         this.spinner.hide();
         this.handleSetLocationMap(this.listMotels[0].Locations);
@@ -805,36 +802,6 @@ export class ViewOnMapComponent {
     return { categories, counts };
   }
 
-  //handle hidden control zoom 
-  handHiddenControlZoom() :void {
-    const div = document.querySelector('.leaflet-control-zoom.leaflet-bar.leaflet-control') as HTMLElement;
-    div.style.display = 'none';
-  }
-
-  //handle change style price label marker
-  handleChangeStyleMarker() :void {
-    const popups = document.querySelectorAll('.custom-price-icon'); 
-    popups.forEach(popup => {
-      (popup as HTMLElement).style.pointerEvents = 'none';
-      (popup as HTMLElement).style.position = 'absolute';
-      (popup as HTMLElement).style.left = '-10px';
-      (popup as HTMLElement).style.display = 'flex';
-      (popup as HTMLElement).style.justifyContent = 'center';
-      (popup as HTMLElement).style.alignItems= 'center';
-    });
-  }
-
-  //handle change style price label marker
-  handleChangeStyleCheckbox() :void {
-    const checkboxs = document.querySelectorAll('.ant-checkbox-inner'); 
-    checkboxs .forEach(checkbox => {
-      (checkbox as HTMLElement).style.width = '20px';
-      (checkbox as HTMLElement).style.height = '20px';
-      (checkbox as HTMLElement).style.borderRadius = '3px';
-      (checkbox as HTMLElement).style.borderColor = '#999999';
-
-    })
-  }
 
   goBack(): void {
     this.location.back();

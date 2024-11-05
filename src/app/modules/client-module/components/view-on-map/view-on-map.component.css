@@ -48,3 +48,34 @@ input[type="range"]::-moz-range-thumb {
 input[type="range"]:focus::-moz-range-thumb {
   box-shadow: 0px 0px 0px 6px #90c2fc91;
 } 
+
+:host ::ng-deep span.ant-checkbox-inner{
+  border: 1px solid #a7a7a7;
+  height:20px;
+  width:20px;
+}
+
+:host ::ng-deep .custom-price-icon {
+  pointer-events: none;
+  position: absolute;
+  left: -10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+:host ::ng-deep .ant-slider-track {
+  background-color: #0095f1;
+}
+:host ::ng-deep .ant-slider-track:hover {
+  background-color: #0095f1;
+}
+
+:host ::ng-deep .ant-slider-handle {
+  border: 2px solid #0095f1;
+
+}
+:host ::ng-deep .leaflet-control-zoom.leaflet-bar.leaflet-control,
+:host ::ng-deep .leaflet-control-attribution.leaflet-control{
+  display: none;
+}

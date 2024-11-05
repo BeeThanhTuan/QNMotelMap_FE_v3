@@ -126,7 +126,6 @@ export class SearchComponent {
   }
 
   ngAfterViewInit(): void {
-    this.handleChangeStyleCheckbox();
     this.formFilters.get('desiredDistance')!.valueChanges.pipe(debounceTime(500)).subscribe(() => {
       this.handleFiltersDistance();
     });
@@ -483,16 +482,7 @@ export class SearchComponent {
     return { categories, counts };
   }
 
-  //handle change style price label marker
-  handleChangeStyleCheckbox() :void {
-    const checkboxs = document.querySelectorAll('.ant-checkbox-inner'); 
-    checkboxs .forEach(checkbox => {
-      (checkbox as HTMLElement).style.width = '20px';
-      (checkbox as HTMLElement).style.height = '20px';
-      (checkbox as HTMLElement).style.borderRadius = '3px';
-      (checkbox as HTMLElement).style.borderColor = '#999999';
-    })
-  }
+
 
   @HostListener('window:beforeunload', ['$event'])
   unloadNotification($event: BeforeUnloadEvent): void {
