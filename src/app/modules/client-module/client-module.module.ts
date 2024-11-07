@@ -8,7 +8,6 @@ import { ClickOutsideOtherChooseFieldsDirective } from './directives/click-outsi
 import { MoneyPipe } from './pipes/money.pipe';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
 // Import MatSlideToggleModule
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ContentMainComponent } from './components/content-main/content-main.component';
@@ -64,7 +63,6 @@ import { LineBreakPipe } from './pipes/line-break.pipe';
     CommonModule,
     ClientModuleRoutingModule,
     NgxSliderModule,
-    MatSlideToggleModule,
     FormsModule,
     ShareModuleModule,
     ReactiveFormsModule,

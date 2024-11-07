@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, NgZone } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -10,11 +10,13 @@ import { NzUploadModule } from 'ng-zorro-antd/upload';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { PopupAddMotelComponent } from './components/popup-add-motel/popup-add-motel.component';
-
+import { NgxSpinnerModule } from "ngx-spinner";
+import { UpdateProfileLandlordComponent } from './components/update-profile-landlord/update-profile-landlord.component';
 @NgModule({
   declarations: [
     ManageComponent,
     PopupAddMotelComponent,
+    UpdateProfileLandlordComponent,
   ],
   imports: [
     CommonModule,
@@ -26,6 +28,7 @@ import { PopupAddMotelComponent } from './components/popup-add-motel/popup-add-m
     NzUploadModule,
     NzDropDownModule,
     NzCheckboxModule,
+    NgxSpinnerModule
   ]
 })
 export class LandlordModuleModule { }

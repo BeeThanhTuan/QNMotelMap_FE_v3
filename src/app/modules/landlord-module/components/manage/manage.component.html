@@ -32,8 +32,8 @@
                     <div><span class="font-medium md:text-[18px] text-[16px] ">Nhà trọ của bạn</span></div>
                     <button class="md:h-[36px] h-[32px] md:px-3 px-2 py-[6px] bg-custom-color-blue rounded-md text-[15px] text-white flex items-center justify-center hover:bg-custom-bg-hover-blue">
                         <i class='bx bx-plus-circle text-[18px]'></i>
-                        <span class="flex sm:hidden font-medium text-[13px] ml-1">Thêm mới</span>
-                        <span class="sm:flex hidden font-medium ml-1">Thêm nhà trọ mới</span>
+                        <span class="flex sm:hidden font-medium text-[13px] ml-1" (click)="showPopupAddMotel()">Thêm mới</span>
+                        <span class="sm:flex hidden font-medium ml-1" (click)="showPopupAddMotel()">Thêm nhà trọ mới</span>
                     </button>
                 </div>
                 <div class="w-full">
@@ -164,4 +164,5 @@
     <!-- End content wrapper -->
 </div>
 <!-- End root -->
- <app-popup-add-motel></app-popup-add-motel>
+ <app-popup-add-motel *ngIf="isShowPopupAddMotel"></app-popup-add-motel>
+ <app-update-profile-landlord *ngIf="true"></app-update-profile-landlord>

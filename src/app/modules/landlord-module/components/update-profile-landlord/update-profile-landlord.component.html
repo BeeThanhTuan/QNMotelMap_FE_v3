@@ -1,0 +1,77 @@
+<div id="popupUpdateProfileLandlord" class="overlay w-full min-w-[310px] h-[100vh] fixed top-0 left-0 justify-center items-center bg-[rgba(209,209,209,0.7)] z-40 flex">
+    <div id="containerUpdateProfileLandlord" class="container  max-w-custom w-[450px] sm:h-fit h-[100vh] ntt-shadow-popup bg-white relative sm:rounded-xl rounded-none animate-appear" (click)="stopPropagation($event)">
+        <div class="w-full p-2 relative flex mb:flex-row-reverse flex-row mb:justify-between items-center border-b">
+            <div class="w-[35px] h-[35px] mb:bg-white hover:bg-[#f4f4f4] text-custom-color-black mb:rounded-full rounded-md flex justify-center items-center cursor-pointer">
+                <i class='bx bx-x text-[30px] hidden mb:flex'></i>
+                <i class='bx bx-chevron-left text-[40px] mb:hidden flex'></i>
+            </div>
+            <div class="font-semibold mb:ml-3 ml-2 mb:text-[20px] text-[18px] mb:text-custom-color-black">Cập nhật thông tin cá nhân</div>
+        </div>
+        <!-- Apply overflow-y-auto here for form scrolling -->
+        <div class="w-full p-4 pt-3  overflow-y-auto ">
+            <div class="flex flex-col">
+                <div class="relative w-full mb-2">
+                    <div class="w-full">
+                        <div class="w-full flex justify-between">
+                            <span class="font-semibold mb:text-[19px] text-[18px]">Ảnh đại diện</span>
+                            <button type="button" class="text-custom-bg-blue-light text-[16px] px-3 py-[6px] rounded-md  hover:bg-[#eeeeee]">Chỉnh sửa</button>
+                        </div>
+                        <div class="w-full flex items-center justify-center py-5">
+                            <img src="assets/images/img-motel.jpg" alt="" class="w-[168px] h-[168px] rounded-full">
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="w-full">
+                        <div class="w-full flex justify-between">
+                            <span class="font-semibold mb:text-[19px] text-[18px]">Thông tin cá nhân</span>
+                            <button type="button" class="text-custom-bg-blue-light text-[16px] px-3 py-[6px] rounded-md  hover:bg-[#eeeeee]">Chỉnh sửa</button>
+                        </div>
+                        <div class="w-full flex flex-col gap-3 mt-3  text-custom-color-black-light">
+                            <div class="flex items-center gap-2">
+                                <i class='bx bxs-user text-[22px] text-[#839abe]'></i>
+                                <div class="text-[15px] font-normal flex">Họ và tên: <span class="ml-1 capitalize font-medium"> Nguyễn Thanh Tuấn</span></div>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <i class='bx bxs-map text-[22px] text-[#839abe]'></i>
+                                <div class="text-[15px] font-normal flex">Địa chỉ: <span class="ml-1 capitalize font-medium"> 79 Biên cương, Bình định</span></div>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <i class='bx bxs-phone text-[22px] text-[#839abe]'></i>
+                                <div class="text-[15px] font-normal flex">Số điện thoại: <span class="ml-1 capitalize font-medium"> 0392 323 923</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="z-50 w-full min-w-[310px] h-[100vh] fixed top-0 left-0 flex justify-center items-center bg-[rgba(209,209,209,0.7)] ">
+    <div class="w-[450px] min-h-[200px] h-fit bg-white ntt-shadow-popup  rounded-none mb:rounded-2xl">
+        <div class="w-full p-2 relative flex ustify-between items-center border-b">
+            <div class="font-semibold text-[16px] mb:text-[18px] text-custom-color-black w-full text-center">Chọn ảnh đại diện</div>
+            <div class="absolute top-1 right-1 w-[35px] h-[35px] hover:bg-[#f4f4f4] text-custom-color-black rounded-full  flex justify-center items-center cursor-pointer">
+                <i class='bx bx-x text-[25px] mb:text-[30px]'></i>
+            </div>
+        </div>
+        <div>
+            <div class="px-3" *ngIf="false">
+                <button (click)="triggerFileInput()" class="mt-3 px-10 py-2 bg-[#ebf5ff] hover:bg-[#e1eefc] text-[#0064d1] flex items-center justify-center rounded-md gap-2 relative">
+                    <i class='bx bx-plus text-[20px]'></i>
+                    <span class="text-[15px] font-semibold">Tải ảnh lên</span>
+                </button>
+                <input type="file" id="fileInput" class="absolute w-full opacity-0 cursor-pointer" #fileInput>
+            </div>
+            <div class="w-full" *ngIf="true">
+                <div class="w-full flex items-center justify-center py-5">
+                    <img src="assets/images/img-motel.jpg" alt="" class="w-[150px] h-[150px] rounded-full">
+                </div>
+                <div class="flex justify-end px-3 text-[14px] font-medium gap-2 border-t py-3">
+                    <button type="button" class="h-[32px] px-5 rounded-md text-[#0866FF]  hover:bg-[#f7f7f7]">Huỷ</button>
+                    <button type="button" class="h-[32px] px-8 rounded-md bg-[#0866FF] text-white ">Lưu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

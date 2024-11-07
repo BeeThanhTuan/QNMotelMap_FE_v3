@@ -1,11 +1,11 @@
-<div class="overlay w-full min-w-[310px] h-[100vh] fixed top-0 left-0 justify-center items-center bg-[rgba(34,34,34,0.7)] z-50 flex">
-    <div class="container max-w-custom sm:h-[80vh] h-[100vh] bg-white relative sm:rounded-xl rounded-none ">
+<div id="popupAddMotel" class="overlay w-full min-w-[310px] h-[100vh] fixed top-0 left-0 justify-center items-center bg-[rgba(34,34,34,0.7)] z-50 flex">
+    <div id="containerAddMotel" class="container max-w-custom sm:h-[80vh] h-[100vh] bg-white relative sm:rounded-xl rounded-none animate-appear" (click)="stopPropagation($event)">
         <div class="w-full p-2 relative flex mb:flex-row-reverse flex-row mb:justify-between items-center border-b">
-            <div class="w-[35px] h-[35px] mb:bg-white hover:bg-[#f4f4f4] text-custom-color-black mb:rounded-full rounded-md flex justify-center items-center cursor-pointer">
+            <div class="w-[35px] h-[35px] mb:bg-white hover:bg-[#f4f4f4] text-custom-color-black mb:rounded-full rounded-md flex justify-center items-center cursor-pointer" (click)="hiddenPopupAddMotel()">
                 <i class='bx bx-x text-[30px] hidden mb:flex'></i>
                 <i class='bx bx-chevron-left text-[40px] mb:hidden flex'></i>
             </div>
-            <div class="font-semibold mb:ml-3 ml-2 mb:text-[20px] text-[18px] mb:text-custom-color-black-light">Thêm nhà trọ mới</div>
+            <div class="font-semibold mb:ml-3 ml-2 mb:text-[20px] text-[18px] mb:text-custom-color-black">Thêm nhà trọ mới</div>
         </div>
         <!-- Apply overflow-y-auto here for form scrolling -->
         <div class="w-full p-4 pt-6  overflow-y-auto h-[calc(100%-52px)]">
@@ -104,7 +104,14 @@
                         <small class="masseage-error " *ngIf="wardCommuneControl?.hasError('required')"> <i class="fa-solid fa-circle-info"></i> Vui lòng chọn phường/xã.</small>
                     </div>
                 </div>
-                <div id="map" class=" mb:h-[210px] h-[160px] w-full mb-3 bg-slate-50 rounded-md"></div>
+                <div class="mb:h-[210px] h-[180px] w-full mb-3 relative">
+                    <ngx-spinner bdColor = "rgba(0, 0, 0, 0.2)" size ="medium" color ="#fff" type ="ball-clip-rotate" [fullScreen] ="false"></ngx-spinner>
+                    <div id="mapAddMotel" class=" w-full h-full rounded-md">
+                    </div>
+                    <div *ngIf="location===''">
+                        <small class="masseage-error "> <i class="fa-solid fa-circle-info"></i>Không tìm thấy địa chỉ.</small>
+                    </div>
+                </div>
                 <div class="h-fit w-full mb-3 ">
                     <div>Tiện nghi</div>
                     <nz-checkbox-group class="py-2"  [(ngModel)]="checkConvenient" [ngModelOptions]="{standalone: true}" (ngModelChange)="handleChangeCheckConvenient()"></nz-checkbox-group>
@@ -112,7 +119,7 @@
                 </div>
                 <div class="relative w-full mb-2 ">
                     <div class="">
-                        <textarea type="text" id="description" formControlName="description" class="ntt-custom-textarea h-auto peer " autocomplete="off" placeholder=" "
+                        <textarea type="text" id="description" formControlName="description" class="ntt-custom-textarea h-auto peer " autocomplete="off" spellcheck="false" placeholder=" "
                         [ngClass]="{'input-invalid': descriptionControl?.invalid && firstInvalidControl === 'description'}"></textarea>
                         <label for="description" class="absolute text-gray-500 text-[14px] transition-all duration-300 transform 
                                scale-100 origin-top-left bg-white 

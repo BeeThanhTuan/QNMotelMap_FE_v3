@@ -11,10 +11,7 @@ import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CapitalizePipe } from './pipes/capitalize.pipe';
 import { CapitalizeDirective } from './directives/capitalize.directive';
-// import { EyeOutline, EyeInvisibleOutline } from '@ant-design/icons-angular/icons';
 
-// Đăng ký các biểu tượng
-// const icons: IconDefinition[] = [ EyeOutline, EyeInvisibleOutline ];
 
 @NgModule({
   declarations: [

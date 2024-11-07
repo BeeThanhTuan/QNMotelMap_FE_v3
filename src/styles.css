@@ -6,6 +6,7 @@
     box-sizing: border-box;
 }
 
+
 @layer utilities {
     .ntt-bg-custom-gradient {
       background-image: linear-gradient(to bottom, #003B95 3% 60%, 18%, #FFFFFF 60% 100%);
@@ -75,6 +76,9 @@
     }
     .ntt-shadow-image{
         box-shadow: 0 0px 0px 3px #299ffa;
+    }
+    .ntt-shadow-popup{
+        box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
     }
 }
 
