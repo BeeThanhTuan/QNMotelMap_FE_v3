@@ -1,14 +1,15 @@
 import { Convenient } from "./convenient";
 import { Images } from "./images";
 import { Motel } from "./motel";
-import { User } from "./user";
 
-export interface Room {
+
+export interface RoomType {
     _id: string;
     MotelID: string | Motel;
     ListImages: Images[];
     Floor: number;
-    Status: boolean;
+    Amount: number;
+    Available: number;
     Area: number;
     Description: string;
     ListConvenient: Convenient[];

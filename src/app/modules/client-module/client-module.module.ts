@@ -17,8 +17,8 @@ import { SearchComponent } from './components/search/search.component';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { DetailMotelComponent } from './components/details-motel/detail-motel/detail-motel.component';
 import { OverallComponent } from './components/details-motel/overall/overall.component';
-import { RoomsComponent } from './components/details-motel/rooms/rooms.component';
-import { RoomDetailComponent } from './components/details-motel/room-detail/room-detail.component';
+import { RoomTypesComponent } from './components/details-motel/room-types/room-types.component';
+import { RoomTypeDetailComponent } from './components/details-motel/room-type-detail/room-type-detail.component';
 import { ViewOnMapComponent } from './components/view-on-map/view-on-map.component';
 import { ViewMotelOnMapComponent } from './components/view-motel-on-map/view-motel-on-map.component';
 import { ClickOutsidePopupMotelOnMapDirective } from './directives/click-outside-popup-motel-on-map.directive';
@@ -31,6 +31,7 @@ import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzSliderModule } from 'ng-zorro-antd/slider';
 import { NzRateModule } from 'ng-zorro-antd/rate';
 import { NzDrawerModule } from 'ng-zorro-antd/drawer';
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 //loading
 import { NgxSpinnerModule } from "ngx-spinner";
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
@@ -39,7 +40,6 @@ import { LineBreakPipe } from './pipes/line-break.pipe';
 @NgModule({
   declarations: [
     HomeComponent,
-
     ClickOutsideSuggestAddressDirective,
     ClickOutsideDesiredPriceDirective,
     ClickOutsideOtherChooseFieldsDirective,
@@ -51,11 +51,11 @@ import { LineBreakPipe } from './pipes/line-break.pipe';
     SearchComponent,
     DetailMotelComponent,
     OverallComponent,
-    RoomDetailComponent,
+    RoomTypeDetailComponent,
     ViewOnMapComponent,
     ViewMotelOnMapComponent,
     PhonePipe,
-    RoomsComponent,
+    RoomTypesComponent,
     LineBreakPipe,
     
   ],
@@ -73,6 +73,7 @@ import { LineBreakPipe } from './pipes/line-break.pipe';
     NzSliderModule,
     NzRateModule,
     NzDrawerModule,
+    NzDropDownModule,
     NgxSpinnerModule,
     NgxSkeletonLoaderModule
   ]

@@ -19,7 +19,7 @@
                     </div>
                 </div>
                 <div class="flex justify-center items-center">
-                    <button class="md:h-[36px] h-[32px] md:px-3 px-2 py-[6px] flex items-center justify-center gap-1 text-[15px] bg-[#e4e6eb] hover:bg-[#d5d6d8] rounded-md cursor-pointer">
+                    <button class="md:h-[36px] h-[32px] md:px-3 px-2 py-[6px] flex items-center justify-center gap-1 text-[15px] bg-[#e4e6eb] hover:bg-[#d5d6d8] rounded-md cursor-pointer" (click)="showPopupUpdateProfile()">
                         <i class='bx bxs-pencil md:text-[20px] text-[17px]'></i>
                         <span class="md:flex hidden font-medium">Chỉnh sửa thông tin</span>
                     </button>
@@ -165,4 +165,4 @@
 </div>
 <!-- End root -->
  <app-popup-add-motel *ngIf="isShowPopupAddMotel"></app-popup-add-motel>
- <app-update-profile-landlord *ngIf="true"></app-update-profile-landlord>
+ <app-update-profile-landlord *ngIf="isShowPopupUpdateProfile"></app-update-profile-landlord>

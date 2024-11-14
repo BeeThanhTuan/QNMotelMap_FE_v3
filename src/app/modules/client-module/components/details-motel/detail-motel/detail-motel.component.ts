@@ -41,7 +41,7 @@ export class DetailMotelComponent {
       ElectricityBill: 0,
       WaterBill: 0,
       WifiBill: 0,
-      ListRooms: null,
+      ListRoomTypes: null,
       ListRatings: [],
       Distance: 0,
       TotalStar: 0,

@@ -1,16 +1,16 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { Room } from 'src/app/interfaces/room';
+import { RoomType } from 'src/app/interfaces/roomType';
 import { RoomService } from 'src/app/services/room.service';
 
 @Component({
-  selector: 'app-rooms',
-  templateUrl: './rooms.component.html',
-  styleUrls: ['./rooms.component.css']
+  selector: 'app-room-types',
+  templateUrl: './room-types.component.html',
+  styleUrls: ['./room-types.component.css']
 })
-export class RoomsComponent {
+export class RoomTypesComponent {
   idMotel!: string;
-  listRooms : Room[] = [] ;
+  listRooms : RoomType[] = [] ;
   constructor(private router: Router, private roomService: RoomService) {}
 
   ngOnInit(): void {

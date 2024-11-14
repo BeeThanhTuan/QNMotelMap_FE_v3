@@ -1,20 +1,20 @@
 import { Component } from '@angular/core';
 import { Router} from '@angular/router';
 import { Landlord } from 'src/app/interfaces/landlord';
-import { Room } from 'src/app/interfaces/room';
+import { RoomType } from 'src/app/interfaces/roomType';
 import { LandlordService } from 'src/app/services/landlord.service';
 import { MotelService } from 'src/app/services/motel.service';
 import { RoomService } from 'src/app/services/room.service';
 
 @Component({
-  selector: 'app-room-detail',
-  templateUrl: './room-detail.component.html',
-  styleUrls: ['./room-detail.component.css']
+  selector: 'app-room-type-detail',
+  templateUrl: './room-type-detail.component.html',
+  styleUrls: ['./room-type-detail.component.css']
 })
-export class RoomDetailComponent {
+export class RoomTypeDetailComponent {
   idRoom!: string;
   idMotel!: string;
-  room!: Room;
+  roomType!: RoomType;
   landlord!: Landlord;
   //collection image
   isCollectionImageOpen = false;
@@ -27,6 +27,7 @@ export class RoomDetailComponent {
       Image: '',
       PhoneNumber: '',
       Address: '',
+      ListMotels: [],
       CreateAt: '',
       UpdateAt: '',
       UpdateBy:  null,
@@ -59,8 +60,8 @@ export class RoomDetailComponent {
  
   getListRoomFormIDMotel(id: string): void {
     this.roomService.getRoomByIDRRoom(id).subscribe((data)=>{
-      this.room = data  
-      console.log(this.room);
+      this.roomType = data  
+      console.log(this.roomType);
       
     }) 
   }
@@ -88,10 +89,10 @@ export class RoomDetailComponent {
   }
 
   nextImage(): void {
-    this.currentIndex = (this.currentIndex + 1) % this.room.ListImages.length;
+    this.currentIndex = (this.currentIndex + 1) % this.roomType.ListImages.length;
   }
 
   prevImage(): void {
-    this.currentIndex = (this.currentIndex - 1 + this.room.ListImages.length) % this.room.ListImages.length;
+    this.currentIndex = (this.currentIndex - 1 + this.roomType.ListImages.length) % this.roomType.ListImages.length;
   }
 }

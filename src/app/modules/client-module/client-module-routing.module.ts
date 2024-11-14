@@ -4,9 +4,9 @@ import { HomeComponent } from './components/home/home.component';
 import { ContentMainComponent } from './components/content-main/content-main.component';
 import { DetailMotelComponent } from './components/details-motel/detail-motel/detail-motel.component';
 import { OverallComponent } from './components/details-motel/overall/overall.component';
-import { RoomsComponent } from './components/details-motel/rooms/rooms.component';
+import { RoomTypesComponent } from './components/details-motel/room-types/room-types.component';
 import { SearchComponent } from './components/search/search.component';
-import { RoomDetailComponent } from './components/details-motel/room-detail/room-detail.component';
+import { RoomTypeDetailComponent } from './components/details-motel/room-type-detail/room-type-detail.component';
 import { ViewOnMapComponent } from './components/view-on-map/view-on-map.component';
 
 const routes: Routes = [
@@ -25,9 +25,8 @@ const routes: Routes = [
         children: [
           { path: '', redirectTo: 'overall', pathMatch: 'full' },
           { path: 'overall', component: OverallComponent },
-          { path: 'rooms', component: RoomsComponent},
-          { path: 'rooms', component: RoomsComponent},
-          { path: 'room/:roomId', component: RoomDetailComponent},
+          { path: 'roomTypes', component: RoomTypesComponent},
+          { path: 'roomType/:roomTypeId', component: RoomTypeDetailComponent},
         ],
       },
     ],

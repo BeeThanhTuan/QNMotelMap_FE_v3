@@ -5,7 +5,7 @@
             <ul class="mt-5 w-full grid ml:grid-cols-4 md:grid-cols-3 grid-cols-3 gap-3 ">
                 <li class="flex-1  rounded-xl mb-2 cursor-pointer" *ngFor="let room of listRooms">
                     <div class="w-full relative " >
-                        <a routerLink="/client/home/detail-motel/{{idMotel}}/room/{{room._id}}" class="w-full group">
+                        <a routerLink="/client/home/detail-motel/{{idMotel}}/roomType/{{room._id}}" class="w-full group">
                             <div class="w-full aspect-[4/3.2]"> <!-- Giữ tỷ lệ 4:3 -->
                                 <img class="w-full h-full rounded-tl-xl rounded-tr-xl object-cover" src="http://localhost:3000/resources/img-rooms/{{room.ListImages[0].LinkImage}}" alt="Hình ảnh về nhà trọ">
                             </div>

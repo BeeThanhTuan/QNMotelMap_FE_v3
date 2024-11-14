@@ -5,6 +5,7 @@ export const listWardCommune = [
   'Hải Cảng',
   'Lê Lợi',
   'Lý Thường Kiệt',
+  'Lê Hồng Phong',
   'Nhơn Bình',
   'Nhơn Châu',
   'Nhơn Hải',

@@ -75,3 +75,7 @@ ngx-skeleton-loader {
   border: 2px solid #0095f1;
 
 }
+
+:host ::ng-deep nz-dropdown-menu{
+  width: 100%;
+}

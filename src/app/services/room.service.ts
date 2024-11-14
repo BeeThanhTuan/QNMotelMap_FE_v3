@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
-import { Room } from '../interfaces/room';
+import { RoomType } from '../interfaces/roomType';
 @Injectable({
   providedIn: 'root'
 })
@@ -14,16 +14,16 @@ export class RoomService {
   };
   constructor(private httpClient: HttpClient) {}
 
-  public getRoomsByIDMotel(id: string): Observable<Room[]> {
-    const url = `${this.REST_API_SERVER}/api/rooms/${id}`;
-    return this.httpClient.get<Room[]>(url).pipe(
+  public getRoomsByIDMotel(id: string): Observable<RoomType[]> {
+    const url = `${this.REST_API_SERVER}/api/roomTypes/${id}`;
+    return this.httpClient.get<RoomType[]>(url).pipe(
       map((response:any) => response.data) 
     )
   }
 
-  public getRoomByIDRRoom(id: string): Observable<Room> {
-    const url = `${this.REST_API_SERVER}/api/room/${id}`;
-    return this.httpClient.get<Room>(url).pipe(
+  public getRoomByIDRRoom(id: string): Observable<RoomType> {
+    const url = `${this.REST_API_SERVER}/api/roomType/${id}`;
+    return this.httpClient.get<RoomType>(url).pipe(
       map((response:any) => response.data) 
     )
   }

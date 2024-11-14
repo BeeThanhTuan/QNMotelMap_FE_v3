@@ -108,7 +108,6 @@ export class SearchComponent {
     },
   };
 
-  isShowDropdownSort = false;
   selectedSortLabel = 'Mặc định';
   selectedSort = 'default';
 
@@ -305,7 +304,7 @@ export class SearchComponent {
       this.listMotelFiltered = response.dataFiltered;
       setTimeout(() => {
         this.isLoading = false;
-      }, 1000);
+      }, 400);
     });
     this.setDataIntoLocalStorage();
   }
@@ -326,7 +325,7 @@ export class SearchComponent {
       this.listMotelFiltered = response.dataFiltered;
       setTimeout(() => {
         this.isLoading = false;
-      }, 1000);
+      }, 400);
     });
     this.setDataIntoLocalStorage();
 
@@ -348,7 +347,7 @@ export class SearchComponent {
       this.listMotelFiltered = response.dataFiltered;
       setTimeout(() => {
         this.isLoading = false;
-      }, 1000);
+      }, 400);
       this.setDataIntoLocalStorage();
     });
   }
@@ -393,7 +392,6 @@ export class SearchComponent {
   handleSort(sortValue: string, sortLabel: string) {
     this.selectedSort = sortValue;
     this.selectedSortLabel = sortLabel;
-    this.isShowDropdownSort = false
     this.performSort(sortValue);  // Perform the sorting logic
   }
 

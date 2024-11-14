@@ -1,7 +1,7 @@
-<div id="popupUpdateProfileLandlord" class="overlay w-full min-w-[310px] h-[100vh] fixed top-0 left-0 justify-center items-center bg-[rgba(209,209,209,0.7)] z-40 flex">
-    <div id="containerUpdateProfileLandlord" class="container  max-w-custom w-[450px] sm:h-fit h-[100vh] ntt-shadow-popup bg-white relative sm:rounded-xl rounded-none animate-appear" (click)="stopPropagation($event)">
+<div id="popupUpdateProfileLandlord" class="overlay w-full min-w-[310px] h-[100vh] fixed top-0 left-0 justify-center items-center bg-[rgba(209,209,209,0.7)] z-40 flex" (click)="hiddenPopupUpdateProfileLandlord()">
+    <div id="containerUpdateProfileLandlord" class="container pb-5 max-w-custom w-[450px] sm:h-fit h-[100vh] ntt-shadow-popup bg-white relative sm:rounded-xl rounded-none animate-appear" (click)="stopPropagation($event)">
         <div class="w-full p-2 relative flex mb:flex-row-reverse flex-row mb:justify-between items-center border-b">
-            <div class="w-[35px] h-[35px] mb:bg-white hover:bg-[#f4f4f4] text-custom-color-black mb:rounded-full rounded-md flex justify-center items-center cursor-pointer">
+            <div class="w-[35px] h-[35px] mb:bg-white hover:bg-[#f4f4f4] text-custom-color-black mb:rounded-full rounded-md flex justify-center items-center cursor-pointer" (click)="hiddenPopupUpdateProfileLandlord()">
                 <i class='bx bx-x text-[30px] hidden mb:flex'></i>
                 <i class='bx bx-chevron-left text-[40px] mb:hidden flex'></i>
             </div>
@@ -14,7 +14,7 @@
                     <div class="w-full">
                         <div class="w-full flex justify-between">
                             <span class="font-semibold mb:text-[19px] text-[18px]">Ảnh đại diện</span>
-                            <button type="button" class="text-custom-bg-blue-light text-[16px] px-3 py-[6px] rounded-md  hover:bg-[#eeeeee]">Chỉnh sửa</button>
+                            <button type="button" class="text-custom-bg-blue-light text-[16px] px-3 py-[6px] rounded-md  hover:bg-[#eeeeee]" (click)="showPopupUpdateAvatar()">Chỉnh sửa</button>
                         </div>
                         <div class="w-full flex items-center justify-center py-5">
                             <img src="assets/images/img-motel.jpg" alt="" class="w-[168px] h-[168px] rounded-full">
@@ -25,7 +25,7 @@
                     <div class="w-full">
                         <div class="w-full flex justify-between">
                             <span class="font-semibold mb:text-[19px] text-[18px]">Thông tin cá nhân</span>
-                            <button type="button" class="text-custom-bg-blue-light text-[16px] px-3 py-[6px] rounded-md  hover:bg-[#eeeeee]">Chỉnh sửa</button>
+                            <button type="button" class="text-custom-bg-blue-light text-[16px] px-3 py-[6px] rounded-md  hover:bg-[#eeeeee]" (click)="showPopupUpdateInfo()" >Chỉnh sửa</button>
                         </div>
                         <div class="w-full flex flex-col gap-3 mt-3  text-custom-color-black-light">
                             <div class="flex items-center gap-2">
@@ -47,11 +47,12 @@
         </div>
     </div>
 </div>
-<div class="z-50 w-full min-w-[310px] h-[100vh] fixed top-0 left-0 flex justify-center items-center bg-[rgba(209,209,209,0.7)] ">
-    <div class="w-[450px] min-h-[200px] h-fit bg-white ntt-shadow-popup  rounded-none mb:rounded-2xl">
+<!-- popup edit avatar -->
+<div class="z-50 w-full min-w-[310px] h-[100vh] fixed top-0 left-0 flex justify-center items-center bg-[rgba(209,209,209,0.7)]" *ngIf="isShowPopupUpdateAvatar" (click)="hiddenPopupUpdateAvatar()">
+    <div class="w-[450px] min-h-[200px] h-fit bg-white ntt-shadow-popup  rounded-none mb:rounded-2xl animate-appear" (click)="stopPropagation($event)">
         <div class="w-full p-2 relative flex ustify-between items-center border-b">
             <div class="font-semibold text-[16px] mb:text-[18px] text-custom-color-black w-full text-center">Chọn ảnh đại diện</div>
-            <div class="absolute top-1 right-1 w-[35px] h-[35px] hover:bg-[#f4f4f4] text-custom-color-black rounded-full  flex justify-center items-center cursor-pointer">
+            <div class="absolute top-1 right-1 w-[35px] h-[35px] hover:bg-[#f4f4f4] text-custom-color-black rounded-full  flex justify-center items-center cursor-pointer" (click)="hiddenPopupUpdateAvatar()">
                 <i class='bx bx-x text-[25px] mb:text-[30px]'></i>
             </div>
         </div>
@@ -69,6 +70,84 @@
                 </div>
                 <div class="flex justify-end px-3 text-[14px] font-medium gap-2 border-t py-3">
                     <button type="button" class="h-[32px] px-5 rounded-md text-[#0866FF]  hover:bg-[#f7f7f7]">Huỷ</button>
+                    <button type="button" class="h-[32px] px-8 rounded-md bg-[#0866FF] text-white ">Lưu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- popup edit info -->
+<div class="z-50 w-full min-w-[310px] h-[100vh] fixed top-0 left-0 flex justify-center items-center bg-[rgba(209,209,209,0.7)]" *ngIf="isShowPopupUpdateInfo" (click)="hiddenPopupUpdateInfo()">
+    <div class="w-[450px] min-h-[200px] h-fit bg-white ntt-shadow-popup  rounded-none mb:rounded-2xl animate-appear" (click)="stopPropagation($event)">
+        <div class="w-full p-2 relative flex ustify-between items-center border-b">
+            <div class="font-semibold text-[16px] mb:text-[18px] text-custom-color-black w-full text-center">Thông tin cá nhân</div>
+            <div class="absolute top-1 right-1 w-[35px] h-[35px] hover:bg-[#f4f4f4] text-custom-color-black rounded-full  flex justify-center items-center cursor-pointer" (click)="hiddenPopupUpdateInfo()">
+                <i class='bx bx-x text-[25px] mb:text-[30px]'></i>
+            </div>
+        </div>
+        <div>
+            <div class="w-full" *ngIf="true">
+                <form [formGroup]="updateInfoLandlordForm" class="p-5 flex flex-col gap-5">
+                    <div class="relative w-full mb-2 ">
+                        <div>
+                            <input type="text" id="nameLandlord" formControlName="nameLandlord" class="ntt-custom-input-sm peer" placeholder=" " />
+                            <label for="nameLandlord" class="absolute text-gray-500 text-[14px] transition-all duration-300 transform 
+                                   scale-100 origin-top-left bg-white 
+                                   peer-placeholder-shown:top-3
+                                   peer-placeholder-shown:left-5
+                                   peer-placeholder-shown:text-gray-500 
+                                   peer-focus:top-0 
+                                   peer-focus:-translate-y-0 
+                                   peer-focus:-translate-x-[6px]
+                                   peer-focus:text-gray-500 
+                                   peer:not-placeholder-shown:top-0 
+                                   peer:not-placeholder-shown:-translate-y-[16px] 
+                                   peer:not-placeholder-shown:text-gray-400">
+                                Họ và tên
+                            </label>
+                        </div>
+                    </div>
+                    <div class="relative w-full mb-2 ">
+                        <div>
+                            <input type="text" id="address" formControlName="address" class="ntt-custom-input-sm peer" placeholder=" " />
+                            <label for="address" class="absolute text-gray-500 text-[14px] transition-all duration-300 transform 
+                                   scale-100 origin-top-left bg-white 
+                                   peer-placeholder-shown:top-3
+                                   peer-placeholder-shown:left-5
+                                   peer-placeholder-shown:text-gray-500 
+                                   peer-focus:top-0 
+                                   peer-focus:-translate-y-0 
+                                   peer-focus:-translate-x-[6px]
+                                   peer-focus:text-gray-500 
+                                   peer:not-placeholder-shown:top-0 
+                                   peer:not-placeholder-shown:-translate-y-[16px] 
+                                   peer:not-placeholder-shown:text-gray-400">
+                                Địa chỉ liên hệ
+                            </label>
+                        </div>
+                    </div>
+                    <div class="relative w-full mb-2 ">
+                        <div>
+                            <input type="text" id="phoneNumber" formControlName="phoneNumber" class="ntt-custom-input-sm peer" placeholder=" " />
+                            <label for="phoneNumber" class="absolute text-gray-500 text-[14px] transition-all duration-300 transform 
+                                   scale-100 origin-top-left bg-white 
+                                   peer-placeholder-shown:top-3
+                                   peer-placeholder-shown:left-5
+                                   peer-placeholder-shown:text-gray-500 
+                                   peer-focus:top-0 
+                                   peer-focus:-translate-y-0 
+                                   peer-focus:-translate-x-[6px]
+                                   peer-focus:text-gray-500 
+                                   peer:not-placeholder-shown:top-0 
+                                   peer:not-placeholder-shown:-translate-y-[16px] 
+                                   peer:not-placeholder-shown:text-gray-400">
+                                Số điện thoại liên hệ
+                            </label>
+                        </div>
+                    </div>
+                </form>
+                <div class="flex justify-end px-3 text-[14px] font-medium gap-2 border-t py-3">
+                    <button type="button" class="h-[32px] px-5 rounded-md text-[#0866FF]  hover:bg-[#f7f7f7]" (click)="hiddenPopupUpdateInfo()">Huỷ</button>
                     <button type="button" class="h-[32px] px-8 rounded-md bg-[#0866FF] text-white ">Lưu</button>
                 </div>
             </div>

@@ -22,12 +22,14 @@ module.exports = {
         'custom-bg-hover-blue': '#0157b6', // background color blue khi hover
         'custom-color-blue': '#006CE4', // color đăng nhập đăng kí
         'custom-hv-color-blue': '#f3fbff', // background color đăng nhập đăng kí khi hover
+        'custom-color-admin': '#4453A3',
+        'custom-color-admin-light': '#A3AECD'
       },
       fontFamily: {
         sans: ['"Blue Sans"', 'BlinkMacSystemFont', '-apple-system', 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'],
       },
       animation: {
-        appear: 'appearInOut 0.3s ease-out forwards',
+        appear: 'appearInOut 0.25s ease-out forwards',
       },
       keyframes: {
         appearInOut: {

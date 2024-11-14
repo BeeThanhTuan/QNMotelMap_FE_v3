@@ -1,7 +1,7 @@
 import { Convenient } from "./convenient";
 import { Images } from "./images";
 import { Rating } from "./rating";
-import { Room } from "./room";
+import { RoomType } from "./roomType";
 
 
 export interface Motel {
@@ -19,7 +19,7 @@ export interface Motel {
     ElectricityBill: number;
     WaterBill: number;
     WifiBill: number;
-    ListRooms: Room[] | null;
+    ListRoomTypes: RoomType[] | null;
     ListRatings: Rating[];
     Distance: number;
     TotalStar:number;
