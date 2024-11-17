@@ -79,41 +79,17 @@ export class ViewOnMapComponent {
   //marks slider
   marksPrice: NzMarks = {
     500000: {
-      style: {
-        color: '#535353',
-        position: 'relative',
-        left: '35px',
-        'font-size': '13px'
-      },
       label: '<p>500.000 VND</p>'
     },
     5000000: {
-      style: {
-        color: '#535353',
-        position: 'relative',
-        left: '55%',
-        'font-size': '13px'
-      },
       label: '<p>5.000.000 VND</p>'
     },
   };
   marksDistance: NzMarks = {
     0: {
-      style: {
-        color: '#535353',
-        position: 'relative',
-        left: '15px',
-        'font-size': '13px'
-      },
       label: '<p>0 km</p>'
     },
     7: {
-      style: {
-        color: '#535353',
-        position: 'relative',
-        left: '86%',
-        'font-size': '13px'
-      },
       label: '<p>7 km</p>'
     },
   };

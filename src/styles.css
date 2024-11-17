@@ -80,9 +80,6 @@
     .ntt-shadow-popup{
         box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
     }
-    .ntt-show-bottom{
-        box-shadow: 0 2px 8px 0 rgba(26,26,26,0.16)
-    }
 }
 
 .ntt-custom-button {

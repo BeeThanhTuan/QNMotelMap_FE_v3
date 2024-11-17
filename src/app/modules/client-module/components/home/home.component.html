@@ -9,9 +9,9 @@
                         <p class="text-2xl text-white font-sans mt-3">Nhà trọ đa dạng và nhiều hơn nữa...</p>
                     </div>
                 </div>
-                <div *ngIf="showFormSearch" class="banner_searchbox w-full ntt-bg-custom-gradient pt-3 px-2 mb-[35px] mt-4">
-                    <form [formGroup]="formSearch" (ngSubmit)="handleSearch()"
-                         class="max-w-custom mx-auto bg-[#ffb700] flex rounded-lg p-1 gap-1 ntt-shadow-searchbox flex-col ml:flex-row">
+                <div *ngIf="showFormSearch" class="banner_searchbox w-full ntt-bg-custom-gradient pt-3 px-2 mb:mb-[35px] mb-[15px] mt-4 ">
+                    <form [formGroup]="formSearch" (ngSubmit)="handleSearch() "
+                         class="max-w-custom mx-auto bg-[#ffb700] flex rounded-lg p-1 gap-1 ntt-shadow-popup flex-col ml:flex-row">
                         <div class="ntt-field-search">
                             <div class="h-full w-full flex items-center"
                                  id="input_address_search"
@@ -30,8 +30,8 @@
                                 appClickOutsideSuggestAddress
                                 (clickOutsideSuggestAddress)="showDropdownSuggestAddress = false" 
                                 *ngIf="showDropdownSuggestAddress"
-                                class="absolute w-[380px] bg-white translate-y-4 left-0 rounded-lg ntt-shadow-input-suggest z-50 overflow-hidden" >
-                                <div class="pt-3 pb-1 px-3 text-[14px] font-bold text-custom-color-black">
+                                class="absolute mb:w-[380px] w-full bg-white translate-y-3 left-0 rounded-lg ntt-shadow-input-suggest z-50 overflow-hidden" >
+                                <div class="pt-5 pb-1 px-3 text-[14px] font-bold text-custom-color-black">
                                     Phường/xã được gợi ý
                                 </div>
                                 <ul class="w-full ">
@@ -59,8 +59,8 @@
                                 *ngIf="showDesiredPricePopup"
                                 appClickOutsideDesiredPrice
                                 (clickOutsideDesiredPrice)="showDesiredPricePopup = false"
-                                class="absolute w-[380px] bg-white translate-y-4 left-0 rounded-lg ntt-shadow-input-suggest z-50 ">
-                                <div class="pt-3 pb-1 px-3 text-[14px] font-bold text-custom-color-black">
+                                class="absolute mb:w-[380px] w-full bg-white translate-y-3 left-0 rounded-lg ntt-shadow-input-suggest z-50 ">
+                                <div class="pt-5 pb-1 px-3 text-[14px] font-bold text-custom-color-black">
                                     Chọn số tiềm bạn mong muốn
                                 </div>
                                 <div class="px-3 pb-3 ">
@@ -97,8 +97,8 @@
                                 *ngIf="showOtherChoosePopup"
                                 appClickOutsideOtherChooseFields
                                 (clickOutsideOtherChooseFields)="showOtherChoosePopup = false"
-                                class="absolute w-[380px] bg-white translate-y-4 left-0 ml:left-auto ml:right-0 rounded-lg ntt-shadow-input-suggest z-50">
-                                <div class="w-full px-4 pb-2 pt-6 flex justify-between items-center">
+                                class="absolute mb:w-[380px] w-full bg-white translate-y-3 left-0 ml:left-auto ml:right-0 rounded-lg ntt-shadow-input-suggest z-50">
+                                <div class="w-full px-4 pb-2 pt-5 flex justify-between items-center">
                                    <span class=" text-[14px] font-semibold text-custom-color-black-light">Khoảng cách tới trường dưới:</span>
                                 </div>
                                 <div class="px-3">

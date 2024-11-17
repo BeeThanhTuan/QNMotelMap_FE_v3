@@ -79,3 +79,33 @@ ngx-skeleton-loader {
 :host ::ng-deep nz-dropdown-menu{
   width: 100%;
 }
+
+:host ::ng-deep .ant-slider-mark {
+  display: flex;
+  justify-content: space-between;
+}
+
+:host ::ng-deep .ant-slider-mark-text.ant-slider-mark-active.ng-star-inserted {
+  all: unset; /* Loại bỏ tất cả các CSS hiện tại */
+  transform:translate3d(0px, 0px, 0px) !important;
+  color: '#535353' !important;
+  font-size: 13px !important;
+}
+
+:host ::ng-deep .ant-radio-inner {
+  width: 20px;
+  height: 20px;
+  border-color: #797a7e !important;
+}
+
+:host ::ng-deep .ant-radio-checked .ant-radio-inner {
+  border-color: #1890ff !important;
+  border-width: 2px;
+}
+
+:host ::ng-deep .ant-radio-inner::after {
+  width: 20px;
+  height: 20px;
+  margin-top: -10px;
+  margin-left: -10px;
+}

@@ -45,7 +45,6 @@ export class SearchComponent {
   originalMotels: Motel[] = []
   indexMotel!: number;
   //form filter
-  isShowFormFilters = true;
   listMotelFiltered: MotelFiltered = {
     motelsWithoutLandlord: [],
     motelsWithin1km: [],
@@ -70,41 +69,17 @@ export class SearchComponent {
 
   marksPrice: NzMarks = {
     500000: {
-      style: {
-        color: '#535353',
-        position: 'relative',
-        left: '35px',
-        'font-size': '13px'
-      },
       label: '<p>500.000 VND</p>'
     },
     5000000: {
-      style: {
-        color: '#535353',
-        position: 'relative',
-        left: '55%',
-        'font-size': '13px'
-      },
       label: '<p>5.000.000 VND</p>'
     },
   };
   marksDistance: NzMarks = {
     0: {
-      style: {
-        color: '#535353',
-        position: 'relative',
-        left: '15px',
-        'font-size': '13px'
-      },
       label: '<p>0 km</p>'
     },
     7: {
-      style: {
-        color: '#535353',
-        position: 'relative',
-        left: '86%',
-        'font-size': '13px'
-      },
       label: '<p>7 km</p>'
     },
   };
@@ -255,6 +230,21 @@ export class SearchComponent {
     });
   }
 
+  //reset form
+  resetForm(): void {
+    this.formFilters.reset({
+      motelHasRoomAvailable: false,
+      noLiveWithLandlord: false,
+      distanceLess1Km: false,
+      desiredPrice: 5000000, // Giá trị mặc định bạn muốn
+      desiredDistance: 7.0,  // Giá trị mặc định bạn muốn
+      haveMezzanine: false,
+      haveToilet: false,
+      havePlaceToCook: false,
+      haveAirConditioner: false,
+    });
+  }
+
   // Hàm để lọc dữ liệu từ listMotel
   filterMotelData(listMotel: any) {
    return listMotel.map((motel :any)=> ({
@@ -291,7 +281,7 @@ export class SearchComponent {
     this.motelService.getMotelsFiltered(this.filters).subscribe((response)=>{
       this.listMotels = response.data;
       this.originalMotels = response.data;
-      this.handleSort(this.selectedSort, this.selectedSortLabel);
+      this.handleSort(this.selectedSort);
       this.rentalDistances= [];
       response.data.map((motel: any)=>{
         this.rentalDistances.push(motel.Distance);
@@ -317,7 +307,7 @@ export class SearchComponent {
     this.motelService.getMotelsFiltered(this.filters).subscribe((response)=>{
       this.listMotels = response.data;    
       this.originalMotels = response.data;
-      this.handleSort(this.selectedSort, this.selectedSortLabel);
+      this.handleSort(this.selectedSort);
       this.rentalPrices= [];
       response.data.map((motel: any)=>{
         this.rentalPrices.push(motel.Price);
@@ -339,7 +329,7 @@ export class SearchComponent {
     this.motelService.getMotelsFiltered(this.filters).subscribe((response)=>{
       this.listMotels = response.data;    
       this.originalMotels = response.data;
-      this.handleSort(this.selectedSort, this.selectedSortLabel);
+      this.handleSort(this.selectedSort);
       this.rentalDistances= [];
       response.data.map((motel: any)=>{
         this.rentalDistances.push(motel.Distance);
@@ -390,11 +380,21 @@ export class SearchComponent {
     this.handleFilters();
   }
 
-  handleSort(sortValue: string, sortLabel: string) {
+  handleSort(sortValue: string): void {
     this.selectedSort = sortValue;
-    this.selectedSortLabel = sortLabel;
-    this.performSort(sortValue);  // Perform the sorting logic
+    const sortLabels: { [key: string]: string } = {
+      'default': 'Mặc định',
+      'price-lowest': 'Giá (ưu tiên thấp nhất)',
+      'distance-closest': 'Khoảng cách tới trường (ưu tiên gần nhất)',
+      'rating-highest': 'Xếp hạng (ưu tiên cao nhất)'
+    };
+  
+    this.selectedSortLabel = sortLabels[this.selectedSort] || '';
+    console.log(this.selectedSort);
+    console.log(this.selectedSortLabel);
+    this.performSort(sortValue);
   }
+  
 
   performSort(sortOption: string) {
     switch (sortOption) {
@@ -501,12 +501,52 @@ export class SearchComponent {
     }
   }
 
+
   handleHiddenFormFilter(){
-    this.isShowFormFilters = false;
+    const filtersArea = document.getElementById('filtersArea') as HTMLElement;
+    if(!filtersArea.classList.contains('max-w-[300px]')){
+      filtersArea.classList.add('max-w-[300px]')
+    }
+    if(!filtersArea.classList.contains('w-[100vw]')){
+      filtersArea.classList.remove('w-[100vw]')
+    }
+    if(filtersArea.classList.contains('flex')){
+      filtersArea.classList.remove('flex')
+      filtersArea.classList.add('hidden')
+    }
   }
 
   handleShowFormFilter(){
-    this.isShowFormFilters = true;
+    const filtersArea = document.getElementById('filtersArea') as HTMLElement;
+    if(filtersArea.classList.contains('max-w-[300px]')){
+      filtersArea.classList.remove('max-w-[300px]')
+    }
+    filtersArea.classList.add('w-[100vw]')
+    if(filtersArea.classList.contains('hidden')){
+      filtersArea.classList.remove('hidden')
+      filtersArea.classList.add('flex')
+    }
+    this.initializeDataPriceChart();
+    this.initializeDataDistanceChart();
   }
 
+  handleHiddenSort(){
+    const body = document.querySelector('body') as HTMLElement;
+    body.style.overflow ='auto'
+    const sortArea = document.getElementById('sortArea') as HTMLElement;
+    if(sortArea.classList.contains('flex')){
+      sortArea.classList.remove('flex')
+      sortArea.classList.add('hidden')
+    }
+  }
+
+  handleShowSort(){
+    const body = document.querySelector('body') as HTMLElement;
+    body.style.overflow ='hidden'
+    const sortArea = document.getElementById('sortArea') as HTMLElement;
+    if(sortArea.classList.contains('hidden')){
+      sortArea.classList.remove('hidden')
+      sortArea.classList.add('flex')
+    }
+  }
 }
