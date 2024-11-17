@@ -816,6 +816,8 @@ export class ViewOnMapComponent {
   }
 
   handleHiddenFormFilter(){
+    const body = document.querySelector('body') as HTMLElement;
+    body.style.overflow ='auto'
     const filtersArea = document.getElementById('filtersArea') as HTMLElement;
     if(!filtersArea.classList.contains('max-w-[300px]')){
       filtersArea.classList.add('max-w-[300px]')
@@ -830,6 +832,8 @@ export class ViewOnMapComponent {
   }
 
   handleShowFormFilter(){
+    const body = document.querySelector('body') as HTMLElement;
+    body.style.overflow ='hidden'
     const filtersArea = document.getElementById('filtersArea') as HTMLElement;
     if(filtersArea.classList.contains('max-w-[300px]')){
       filtersArea.classList.remove('max-w-[300px]')

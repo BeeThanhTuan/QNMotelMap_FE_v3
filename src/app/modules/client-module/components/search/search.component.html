@@ -14,7 +14,7 @@
                 <span class="text-[14px] font-medium">Bản đồ</span>
             </div>
         </div>
-        <div id="filtersArea" class="filters_area min-w-[300px] max-w-[300px] mb:flex flex-col hidden mb:p-2 mb:pr-0 p-0 h-full mb:relative fixed top-0 z-50 animate-appear mb:animate-none ">
+        <div id="filtersArea" class="filters_area min-w-[300px] max-w-[300px] mb:flex flex-col hidden mb:p-2 mb:pr-0 p-0 h-full mb:relative fixed top-0 z-30 animate-appear mb:animate-none ">
             <div class="view_on_map w-full h-[150px] bg-cover bg-center bg-no-repeat rounded-lg mb:flex hidden flex-col justify-center gap-2" style="background-image: url('/assets/images/map-entry-point.png');">
                 <div class="w-full flex justify-center">
                     <i class='bx bxs-map c text-[54px] hover:text-custom-bg-hover-blue text-custom-color-blue'></i>
@@ -159,10 +159,10 @@
         </div>
         <!--End filters area motels-->
 
-        <div id="sortArea" class="sort_area w-[100vw] mb:p-2 mb:pr-0 p-0 h-[100vh] fixed top-0 left-0 z-50 bg-[rgba(26,26,26,0.5)] mb:hidden hidden items-end " (click)="handleHiddenSort()">
+        <div id="sortArea" class="sort_area w-[100vw] mb:p-2 mb:pr-0 p-0 h-[100vh] fixed top-0 left-0 z-30 bg-[rgba(26,26,26,0.5)] mb:hidden hidden items-end " (click)="handleHiddenSort()">
             <div class="bg-white w-full h-2/3 rounded-tl-2xl rounded-tr-2xl animate-appear" (click)="stopPropagation($event)">
-               <div class="w-full px-4 pt-4 flex justify-between items-center">
-                    <span class="text-[22px] font-bold">Sắp xếp theo</span>
+               <div class="w-full px-4 pt-4 pb-2 flex justify-between items-center">
+                    <span class="text-[22px] font-bold text-custom-color-black">Sắp xếp theo</span>
                     <i class='bx bx-x text-[25px] p-1' (click)="handleHiddenSort()"></i>
                </div>
                <nz-radio-group [(ngModel)]="selectedSort" (ngModelChange)="handleSort(selectedSort); handleHiddenSort()" class="w-full flex flex-col">

@@ -31,8 +31,9 @@
                                 (clickOutsideSuggestAddress)="showDropdownSuggestAddress = false" 
                                 *ngIf="showDropdownSuggestAddress"
                                 class="absolute mb:w-[380px] w-full bg-white translate-y-3 left-0 rounded-lg ntt-shadow-input-suggest z-50 overflow-hidden" >
-                                <div class="pt-5 pb-1 px-3 text-[14px] font-bold text-custom-color-black">
-                                    Phường/xã được gợi ý
+                                <div class="pt-4 pb-1 px-3 text-[14px] font-bold text-custom-color-black flex justify-between items-center">
+                                   <span> Phường/xã được gợi ý</span>
+                                   <i class='bx bx-x text-[25px] mb:hidden flex' (click)="showDropdownSuggestAddress = false" ></i>
                                 </div>
                                 <ul class="w-full ">
                                     <li *ngFor="let address of listAddressSuggest.slice(0, 4)"
@@ -60,8 +61,9 @@
                                 appClickOutsideDesiredPrice
                                 (clickOutsideDesiredPrice)="showDesiredPricePopup = false"
                                 class="absolute mb:w-[380px] w-full bg-white translate-y-3 left-0 rounded-lg ntt-shadow-input-suggest z-50 ">
-                                <div class="pt-5 pb-1 px-3 text-[14px] font-bold text-custom-color-black">
-                                    Chọn số tiềm bạn mong muốn
+                                <div class="pt-4 pb-1 px-3 text-[14px] font-bold text-custom-color-black flex justify-between items-center">
+                                    <span>Chọn số tiền bạn muốn</span>
+                                    <i class='bx bx-x text-[25px] mb:hidden flex' (click)="showDesiredPricePopup = false" ></i>
                                 </div>
                                 <div class="px-3 pb-3 ">
                                     <nz-slider class="w-full" [nzMin]="500000" [nzMax]="5000000"  [nzStep]="100000" [nzMarks]="marksPrice" [nzTooltipVisible]="'never'" formControlName="desiredPrice"></nz-slider>
@@ -99,31 +101,32 @@
                                 (clickOutsideOtherChooseFields)="showOtherChoosePopup = false"
                                 class="absolute mb:w-[380px] w-full bg-white translate-y-3 left-0 ml:left-auto ml:right-0 rounded-lg ntt-shadow-input-suggest z-50">
                                 <div class="w-full px-4 pb-2 pt-5 flex justify-between items-center">
-                                   <span class=" text-[14px] font-semibold text-custom-color-black-light">Khoảng cách tới trường dưới:</span>
+                                   <span class=" text-[14px] font-semibold text-custom-color-black">Khoảng cách tới trường dưới:</span>
+                                   <i class='bx bx-x text-[25px] mb:hidden flex' (click)="showOtherChoosePopup = false" ></i>
                                 </div>
                                 <div class="px-3">
                                     <nz-slider class="w-full" [nzMin]="0" [nzMax]="7"  [nzStep]="0.1" [nzMarks]="marksDistance" [nzTooltipVisible]="'never'" formControlName="desiredDistance"></nz-slider>
                                 </div>
                                 <div class="w-full px-4 py-2 flex justify-between items-center">
-                                    <span class=" text-[14px] font-semibold text-custom-color-black-light">Không chung với chủ</span>
+                                    <span class=" text-[14px] font-semibold text-custom-color-black">Không chung với chủ</span>
                                     <div class=" flex justify-center items-center">
                                         <nz-switch formControlName="noLiveWithLandlord" ></nz-switch>
                                     </div>
                                 </div>
                                 <div class="w-full px-4 py-2 flex justify-between items-center">
-                                    <span class=" text-[14px] font-semibold text-custom-color-black-light">Có gác lửng</span>
+                                    <span class=" text-[14px] font-semibold text-custom-color-black">Có gác lửng</span>
                                     <div class=" flex justify-center items-center">
                                         <nz-switch formControlName="haveMezzanine" class=""></nz-switch>
                                     </div>
                                 </div>
                                 <div class="w-full px-4 py-2 flex justify-between items-center">
-                                    <span class="text-[14px] font-semibold text-custom-color-black-light">Có nhà vệ sinh riêng</span>
+                                    <span class="text-[14px] font-semibold text-custom-color-black">Có nhà vệ sinh riêng</span>
                                     <div class="flex justify-center items-center">
                                         <nz-switch formControlName="haveToilet" class=""></nz-switch>
                                     </div>
                                 </div>
                                 <div class="w-full px-4 py-2 flex justify-between items-center">
-                                    <span class="text-[14px] font-semibold text-custom-color-black-light">Có điều hoà</span>
+                                    <span class="text-[14px] font-semibold text-custom-color-black">Có điều hoà</span>
                                     <div class="flex justify-center items-center">
                                         <nz-switch formControlName="haveAirConditioner"></nz-switch>
                                     </div>
