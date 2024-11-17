@@ -241,8 +241,27 @@ export class ViewOnMapComponent {
     });
   }
 
+  //reset form
+  resetForm(): void {
+    this.formFilters.reset({
+      motelHasRoomAvailable: false,
+      noLiveWithLandlord: false,
+      distanceLess1Km: false,
+      desiredPrice: 5000000, // Giá trị mặc định bạn muốn
+      desiredDistance: 7.0,  // Giá trị mặc định bạn muốn
+      haveMezzanine: false,
+      haveToilet: false,
+      havePlaceToCook: false,
+      haveAirConditioner: false,
+    });
+  }
+
   // Initialize map
   initializeMap(): void {
+    if (this.map) {
+      // Nếu bản đồ đã tồn tại, tránh khởi tạo lại
+      return;
+    }
     this.map = L.map('map').setView([13.7624, 109.21801], 15);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
@@ -488,7 +507,7 @@ export class ViewOnMapComponent {
     // Đợi tất cả các animation (cả marker và price marker) hoàn tất trước khi thực hiện zoom
     Promise.all(markerPromises).then(() => {
       // Zoom vào marker đặc biệt sau khi tất cả các animation hoàn tất
-      this.map.flyTo([specialLat, specialLng], 15.5, { duration: 0.8});  // Thực hiện zoom với animation
+      this.map.flyTo([specialLat, specialLng], 15, { duration: 0.8});  // Thực hiện zoom với animation
     });
   }
   
@@ -636,7 +655,7 @@ export class ViewOnMapComponent {
       return;
     }
     // Nếu khác, thực hiện việc di chuyển đến vị trí mới
-    this.map.flyTo([lat, lng], 15.5, { duration: 0.8 });
+    this.map.flyTo([lat, lng], 15, { duration: 0.8 });
   }
   
 
@@ -819,6 +838,35 @@ export class ViewOnMapComponent {
       return this.removeAccents(address.toLowerCase()).includes(this.removeAccents(searchInput.toLowerCase()));
     });
   }
+
+  handleHiddenFormFilter(){
+    const filtersArea = document.getElementById('filtersArea') as HTMLElement;
+    if(!filtersArea.classList.contains('max-w-[300px]')){
+      filtersArea.classList.add('max-w-[300px]')
+    }
+    if(!filtersArea.classList.contains('w-[100vw]')){
+      filtersArea.classList.remove('w-[100vw]')
+    }
+    if(filtersArea.classList.contains('flex')){
+      filtersArea.classList.remove('flex')
+      filtersArea.classList.add('hidden')
+    }
+  }
+
+  handleShowFormFilter(){
+    const filtersArea = document.getElementById('filtersArea') as HTMLElement;
+    if(filtersArea.classList.contains('max-w-[300px]')){
+      filtersArea.classList.remove('max-w-[300px]')
+    }
+    filtersArea.classList.add('w-[100vw]')
+    if(filtersArea.classList.contains('hidden')){
+      filtersArea.classList.remove('hidden')
+      filtersArea.classList.add('flex')
+    }
+    this.initializeDataPriceChart();
+    this.initializeDataDistanceChart();
+  }
+
 
 
   

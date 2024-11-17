@@ -45,6 +45,7 @@ export class SearchComponent {
   originalMotels: Motel[] = []
   indexMotel!: number;
   //form filter
+  isShowFormFilters = true;
   listMotelFiltered: MotelFiltered = {
     motelsWithoutLandlord: [],
     motelsWithin1km: [],
@@ -498,6 +499,14 @@ export class SearchComponent {
     if (event.ctrlKey && event.key === 'r') {
       this.setDataIntoLocalStorage();
     }
+  }
+
+  handleHiddenFormFilter(){
+    this.isShowFormFilters = false;
+  }
+
+  handleShowFormFilter(){
+    this.isShowFormFilters = true;
   }
 
 }

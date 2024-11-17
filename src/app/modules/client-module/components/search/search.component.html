@@ -1,147 +1,149 @@
 <div class="content_wrapper w-full text-base px-3">
     <div class="flex max-w-custom mx-auto scroll-smooth">
-        <div class="filters_area min-w-[280px] max-w-[280px] ">
-            <div class="view_on_map w-full h-[150px] bg-cover bg-center bg-no-repeat rounded-lg flex flex-col justify-center gap-2"
-                 style="background-image: url('/assets/images/map-entry-point.png');">
-                <div class="w-full flex justify-center">
-                    <i class='bx bxs-map text-custom-bg-blue-light text-[54px] hover:text-custom-bg-hover-blue'></i>
-                </div>
-                <div class="w-full flex justify-center">
-                    <button (click)="handleViewOnMap()"
-                     class="h-9 px-3 py-1 bg-custom-bg-blue-light rounded-md hover:bg-custom-bg-hover-blue">
-                        <span class="text-[14px] text-white font-medium ">Hiển thị trên bản đồ</span>
-                    </button>
-                </div>
-            </div> <!--End view on map-->
-            <form [formGroup]="formFilters" class="filters min-w-[280px] max-w-[280px] mx-auto my-3 border rounded-md border-[#e7e7e7] bg-white ">
-                <div class="p-2 text-[16px] text-custom-color-black font-bold border-b border-[#e7e7e7] ">Chọn lọc theo:</div>
-                <div class="pt-3 pr-4 pb-2 pl-3 border-b border-[#e7e7e7]">
-                    <div class="text-[14px] text-custom-color-black font-bold">Dùng các bộ lọc</div>
-                    <div class="ntt-custom-filter-field">
-                        <div>
-                           <nz-checkbox  nz-checkbox  class="w-5 h-5"  formControlName="motelHasRoomAvailable" (change)="handleFilters()"></nz-checkbox>
+        <div class="hidden">
+            <div class="filters_area min-w-[300px] mb:p-2 mb:pr-0 p-2 h-full  ">
+                <div class="view_on_map w-full h-[150px] bg-cover bg-center bg-no-repeat rounded-lg flex flex-col justify-center gap-2"
+                    style="background-image: url('/assets/images/map-entry-point.png');">
+                    <div class="w-full flex justify-center">
+                        <i class='bx bxs-map text-custom-bg-blue-light text-[54px] hover:text-custom-bg-hover-blue'></i>
+                    </div>
+                    <div class="w-full flex justify-center">
+                        <button (click)="handleViewOnMap()"
+                        class="h-9 px-3 py-1 bg-custom-bg-blue-light rounded-md hover:bg-custom-bg-hover-blue">
+                            <span class="text-[14px] text-white font-medium ">Hiển thị trên bản đồ</span>
+                        </button>
+                    </div>
+                </div> <!--End view on map-->
+                <form [formGroup]="formFilters" class="filters w-full mx-auto my-3 border rounded-md border-[#e7e7e7] bg-white ">
+                    <div class="p-2 text-[16px] text-custom-color-black font-bold border-b border-[#e7e7e7] ">Chọn lọc theo:</div>
+                    <div class="pt-3 pr-4 pb-2 pl-3 border-b border-[#e7e7e7]">
+                        <div class="text-[14px] text-custom-color-black font-bold">Dùng các bộ lọc</div>
+                        <div class="ntt-custom-filter-field">
+                            <div>
+                            <nz-checkbox  nz-checkbox  class="w-5 h-5"  formControlName="motelHasRoomAvailable" (change)="handleFilters()"></nz-checkbox>
+                            </div>
+                            <div class="flex flex-col w-full">
+                                <div class="ntt-custom-content-filter">
+                                    <div>Chỉ hiển thị nhà trọ còn trống</div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="flex flex-col w-full">
-                            <div class="ntt-custom-content-filter">
-                                <div>Chỉ hiển thị nhà trọ còn trống</div>
+                        <div class="ntt-custom-filter-field">
+                            <div>
+                            <nz-checkbox  nz-checkbox [nzDisabled]="listMotelFiltered.motelsWithoutLandlord.length ? false : true" class="w-5 h-5"  formControlName="noLiveWithLandlord" (change)="handleFilters()"></nz-checkbox>
+                            </div>
+                            <div class="flex flex-col w-full">
+                                <div class="ntt-custom-content-filter">
+                                    <div>Không chung chủ</div>
+                                    <span>{{listMotelFiltered.motelsWithoutLandlord.length}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ntt-custom-filter-field">
+                            <div>
+                            <nz-checkbox  nz-checkbox [nzDisabled]="listMotelFiltered.motelsWithin1km.length ? false : true" class="w-5 h-5"  formControlName="distanceLess1Km" (change)="handleFilters();"></nz-checkbox>
+                            </div>
+                            <div class="flex flex-col w-full" title="Đại học Quy Nhơn">
+                                <div class="ntt-custom-content-filter">
+                                    <div>Dưới 1 km</div>
+                                    <span>{{listMotelFiltered.motelsWithin1km.length}}</span>
+                                </div>
+                                <div class="h-[20px] text-[12px] text-custom-color-black-light">Khoảng cách từ địa chỉ tới trường </div>
+                            </div>
+                        </div> 
+                    </div>
+                    <div  class=" h-[160px] pt-3 pr-4 pb-4 pl-3 border-b border-[#e7e7e7] relative flex-col" [style.display]="formFilters.get('distanceLess1Km')?.value ? 'none' : 'flex'">
+                        <div class="text-[14px] font-bold ">Khoảng cách mong muốn</div>
+                        <div class="flex justify-between text-custom-color-black ">
+                            <div class="text-[14px] ">{{formFilters.get('desiredDistance')?.value }} km</div>
+                            <div *ngIf="desiredDistanceChanged === true"
+                                class="flex justify-center items-center cursor-pointer pointer-events-auto relative z-10"
+                                (click)="handleResetDesiredDistance()">
+                                <i class='bx bx-reset text-[23px] text-custom-color-black-light hover:text-[#1392ff]' title="Đặt lại khoảng cách"></i>
+                            </div>
+                        </div>
+                        <div id="chart1" class="w-[280px] p-0 relative left-[-20px] top-[-20px] ">
+                            <apx-chart [series]="chartOptionsDistance.series" [chart]="chartOptionsDistance.chart" [grid]="chartOptionsPrice.grid"
+                                        [xaxis]="chartOptionsDistance.xaxis" [yaxis]="chartOptionsDistance.yaxis" [fill]="chartOptionsPrice.fill"
+                                        [dataLabels]="chartOptionsDistance.dataLabels" [tooltip]="chartOptionsDistance.tooltip">
+                            </apx-chart>
+                        </div>
+                        <div class="mb-4 relative z-10 top-[-83px] ">
+                            <nz-slider class="w-full" [nzMarks]="marksDistance" [nzMin]="0" [nzMax]="7"  [nzStep]="0.1"  [nzTooltipVisible]="'never'" (ngModelChange)="onChangeDesiredDistance()"
+                            formControlName="desiredDistance"  title="Khoảng cách mong muốn"></nz-slider>    
+                        </div>
+                    </div>
+                    <div class="h-[160px] pt-3 pr-4 pb-4 pl-3 border-b border-[#e7e7e7] relative">
+                        <div class="text-[14px] text-custom-color-black font-bold">Ngân sách của bạn</div>
+                        <div class="flex justify-between">
+                            <div class="text-[14px] text-custom-color-black-light font-normal">{{formFilters.get('desiredPrice')?.value | money}} VND</div>
+                            <div *ngIf="desiredPriceChanged === true"
+                                class="flex justify-center items-center cursor-pointer pointer-events-auto relative z-10"
+                                (click)="handleResetDesiredPrice()">
+                                <i class='bx bx-reset text-[23px] text-custom-color-black-light hover:text-[#1392ff]' title="Đặt lại giá "></i>
+                            </div>
+                        </div>
+                        <div id="chart2" class="w-[280px]  p-0 relative left-[-20px] top-[-20px] ">
+                            <apx-chart [series]="chartOptionsPrice.series" [chart]="chartOptionsPrice.chart" [grid]="chartOptionsPrice.grid"
+                                        [xaxis]="chartOptionsPrice.xaxis" [yaxis]="chartOptionsPrice.yaxis" [fill]="chartOptionsPrice.fill"
+                                        [dataLabels]="chartOptionsPrice.dataLabels" [tooltip]="chartOptionsPrice.tooltip">
+                            </apx-chart>
+                        </div>
+                        <div class="mb-4 relative z-10 top-[-83px]">
+                            <nz-slider class="w-full" [nzMarks]="marksPrice" [nzMin]="500000" [nzMax]="5000000"  [nzStep]="100000"  [nzTooltipVisible]="'never'" 
+                            formControlName="desiredPrice" (ngModelChange)="onChangeDesiredPrice()" title="Giá tiền mong muốn"> </nz-slider>
+                        </div>
+                    </div>
+                    <div class="pt-3 pr-4 pb-5 pl-3 ">
+                        <div class="text-[14px] text-custom-color-black font-bold">Tiện nghi</div>
+                        <div class="ntt-custom-filter-field">
+                            <div>
+                            <nz-checkbox  nz-checkbox [nzDisabled]="listMotelFiltered.convenientCounts['Gác lửng'] ? false : true"  class="w-5 h-5"  formControlName="haveMezzanine" (change)="handleFilters()"></nz-checkbox>
+                            </div>
+                            <div class="flex flex-col w-full">
+                                <div class="ntt-custom-content-filter">
+                                    <div>Gác lửng</div>
+                                    <span>{{listMotelFiltered.convenientCounts['Gác lửng'] ? listMotelFiltered.convenientCounts['Gác lửng'] : 0}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ntt-custom-filter-field">
+                            <div>
+                            <nz-checkbox  nz-checkbox [nzDisabled]="listMotelFiltered.convenientCounts['Vệ sinh riêng'] ? false : true" class="w-5 h-5"  formControlName="haveToilet"  (change)="handleFilters()"> </nz-checkbox>
+                            </div>
+                            <div class="flex flex-col w-full">
+                                <div class="ntt-custom-content-filter">
+                                    <div>Vệ sinh riêng</div>
+                                    <span>{{listMotelFiltered.convenientCounts['Vệ sinh riêng'] ? listMotelFiltered.convenientCounts['Vệ sinh riêng'] : 0}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ntt-custom-filter-field">
+                            <div>
+                            <nz-checkbox  nz-checkbox [nzDisabled]="listMotelFiltered.convenientCounts['Kệ bếp'] ? false : true"  class="w-5 h-5"  formControlName="havePlaceToCook" (change)="handleFilters()"></nz-checkbox>    
+                            </div>
+                            <div class="flex flex-col w-full">
+                                <div class="ntt-custom-content-filter">
+                                    <div>Kệ bếp</div>
+                                    <span>{{listMotelFiltered.convenientCounts['Kệ bếp'] ? listMotelFiltered.convenientCounts['Kệ bếp'] : 0}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ntt-custom-filter-field ">
+                            <div>
+                            <nz-checkbox  nz-checkbox [nzDisabled]="listMotelFiltered.convenientCounts['Điều hoà'] ? false : true" class="w-5 h-5"  formControlName="haveAirConditioner" (change)="handleFilters()" ></nz-checkbox>    
+                            </div>
+                            <div class="flex flex-col w-full">
+                                <div class="ntt-custom-content-filter">
+                                    <div>Điều hoà</div>
+                                    <span>{{listMotelFiltered.convenientCounts['Điều hoà'] ? listMotelFiltered.convenientCounts['Điều hoà'] : 0}}</span>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="ntt-custom-filter-field">
-                        <div>
-                           <nz-checkbox  nz-checkbox [nzDisabled]="listMotelFiltered.motelsWithoutLandlord.length ? false : true" class="w-5 h-5"  formControlName="noLiveWithLandlord" (change)="handleFilters()"></nz-checkbox>
-                        </div>
-                        <div class="flex flex-col w-full">
-                            <div class="ntt-custom-content-filter">
-                                <div>Không chung chủ</div>
-                                <span>{{listMotelFiltered.motelsWithoutLandlord.length}}</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="ntt-custom-filter-field">
-                        <div>
-                           <nz-checkbox  nz-checkbox [nzDisabled]="listMotelFiltered.motelsWithin1km.length ? false : true" class="w-5 h-5"  formControlName="distanceLess1Km" (change)="handleFilters();"></nz-checkbox>
-                        </div>
-                        <div class="flex flex-col w-full" title="Đại học Quy Nhơn">
-                            <div class="ntt-custom-content-filter">
-                                <div>Dưới 1 km</div>
-                                <span>{{listMotelFiltered.motelsWithin1km.length}}</span>
-                            </div>
-                            <div class="h-[20px] text-[12px] text-custom-color-black-light">Khoảng cách từ địa chỉ tới trường </div>
-                        </div>
-                    </div> 
-                </div>
-                <div  class=" h-[160px] pt-3 pr-4 pb-4 pl-3 border-b border-[#e7e7e7] relative flex-col" [style.display]="formFilters.get('distanceLess1Km')?.value ? 'none' : 'flex'">
-                    <div class="text-[14px] font-bold ">Khoảng cách mong muốn</div>
-                    <div class="flex justify-between text-custom-color-black ">
-                        <div class="text-[14px] ">{{formFilters.get('desiredDistance')?.value }} km</div>
-                        <div *ngIf="desiredDistanceChanged === true"
-                            class="flex justify-center items-center cursor-pointer pointer-events-auto relative z-10"
-                            (click)="handleResetDesiredDistance()">
-                            <i class='bx bx-reset text-[23px] text-custom-color-black-light hover:text-[#1392ff]' title="Đặt lại khoảng cách"></i>
-                        </div>
-                    </div>
-                    <div id="chart1" class="w-[280px] p-0 relative left-[-20px] top-[-20px] ">
-                        <apx-chart [series]="chartOptionsDistance.series" [chart]="chartOptionsDistance.chart" [grid]="chartOptionsPrice.grid"
-                                    [xaxis]="chartOptionsDistance.xaxis" [yaxis]="chartOptionsDistance.yaxis" [fill]="chartOptionsPrice.fill"
-                                    [dataLabels]="chartOptionsDistance.dataLabels" [tooltip]="chartOptionsDistance.tooltip">
-                        </apx-chart>
-                    </div>
-                    <div class="mb-4 relative z-10 top-[-83px] ">
-                        <nz-slider class="w-full" [nzMarks]="marksDistance" [nzMin]="0" [nzMax]="7"  [nzStep]="0.1"  [nzTooltipVisible]="'never'" (ngModelChange)="onChangeDesiredDistance()"
-                         formControlName="desiredDistance"  title="Khoảng cách mong muốn"></nz-slider>    
-                    </div>
-                </div>
-                <div class="h-[160px] pt-3 pr-4 pb-4 pl-3 border-b border-[#e7e7e7] relative">
-                    <div class="text-[14px] text-custom-color-black font-bold">Ngân sách của bạn</div>
-                    <div class="flex justify-between">
-                        <div class="text-[14px] text-custom-color-black-light font-normal">{{formFilters.get('desiredPrice')?.value | money}} VND</div>
-                        <div *ngIf="desiredPriceChanged === true"
-                            class="flex justify-center items-center cursor-pointer pointer-events-auto relative z-10"
-                            (click)="handleResetDesiredPrice()">
-                            <i class='bx bx-reset text-[23px] text-custom-color-black-light hover:text-[#1392ff]' title="Đặt lại giá "></i>
-                        </div>
-                    </div>
-                    <div id="chart2" class="w-[280px]  p-0 relative left-[-20px] top-[-20px] ">
-                        <apx-chart [series]="chartOptionsPrice.series" [chart]="chartOptionsPrice.chart" [grid]="chartOptionsPrice.grid"
-                                    [xaxis]="chartOptionsPrice.xaxis" [yaxis]="chartOptionsPrice.yaxis" [fill]="chartOptionsPrice.fill"
-                                    [dataLabels]="chartOptionsPrice.dataLabels" [tooltip]="chartOptionsPrice.tooltip">
-                        </apx-chart>
-                    </div>
-                    <div class="mb-4 relative z-10 top-[-83px]">
-                        <nz-slider class="w-full" [nzMarks]="marksPrice" [nzMin]="500000" [nzMax]="5000000"  [nzStep]="100000"  [nzTooltipVisible]="'never'" 
-                         formControlName="desiredPrice" (ngModelChange)="onChangeDesiredPrice()" title="Giá tiền mong muốn"> </nz-slider>
-                    </div>
-                </div>
-                <div class="pt-3 pr-4 pb-5 pl-3 ">
-                    <div class="text-[14px] text-custom-color-black font-bold">Tiện nghi</div>
-                    <div class="ntt-custom-filter-field">
-                        <div>
-                           <nz-checkbox  nz-checkbox [nzDisabled]="listMotelFiltered.convenientCounts['Gác lửng'] ? false : true"  class="w-5 h-5"  formControlName="haveMezzanine" (change)="handleFilters()"></nz-checkbox>
-                        </div>
-                        <div class="flex flex-col w-full">
-                            <div class="ntt-custom-content-filter">
-                                <div>Gác lửng</div>
-                                <span>{{listMotelFiltered.convenientCounts['Gác lửng'] ? listMotelFiltered.convenientCounts['Gác lửng'] : 0}}</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="ntt-custom-filter-field">
-                        <div>
-                           <nz-checkbox  nz-checkbox [nzDisabled]="listMotelFiltered.convenientCounts['Vệ sinh riêng'] ? false : true" class="w-5 h-5"  formControlName="haveToilet"  (change)="handleFilters()"> </nz-checkbox>
-                        </div>
-                        <div class="flex flex-col w-full">
-                            <div class="ntt-custom-content-filter">
-                                <div>Vệ sinh riêng</div>
-                                <span>{{listMotelFiltered.convenientCounts['Vệ sinh riêng'] ? listMotelFiltered.convenientCounts['Vệ sinh riêng'] : 0}}</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="ntt-custom-filter-field">
-                        <div>
-                           <nz-checkbox  nz-checkbox [nzDisabled]="listMotelFiltered.convenientCounts['Kệ bếp'] ? false : true"  class="w-5 h-5"  formControlName="havePlaceToCook" (change)="handleFilters()"></nz-checkbox>    
-                        </div>
-                        <div class="flex flex-col w-full">
-                            <div class="ntt-custom-content-filter">
-                                <div>Kệ bếp</div>
-                                <span>{{listMotelFiltered.convenientCounts['Kệ bếp'] ? listMotelFiltered.convenientCounts['Kệ bếp'] : 0}}</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="ntt-custom-filter-field ">
-                        <div>
-                           <nz-checkbox  nz-checkbox [nzDisabled]="listMotelFiltered.convenientCounts['Điều hoà'] ? false : true" class="w-5 h-5"  formControlName="haveAirConditioner" (change)="handleFilters()" ></nz-checkbox>    
-                        </div>
-                        <div class="flex flex-col w-full">
-                            <div class="ntt-custom-content-filter">
-                                <div>Điều hoà</div>
-                                <span>{{listMotelFiltered.convenientCounts['Điều hoà'] ? listMotelFiltered.convenientCounts['Điều hoà'] : 0}}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </form><!--End filters motels-->
-        </div> <!--End filters area motels-->
+                </form><!--End filters motels-->
+            </div> <!--End filters area motels-->
+        </div>
         <div class="result w-[calc(100%-280px)] pl-4 relative">
             <div class="w-full ">
                 <h1 class="h-[28px] text-[20px] text-custom-color-black font-sans font-bold flex items-center gap-[5px]">
