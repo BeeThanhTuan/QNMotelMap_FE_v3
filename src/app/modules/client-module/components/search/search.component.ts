@@ -32,7 +32,7 @@ export class SearchComponent {
   isLoading = false;
   chartOptions: any;
   formFilters!: FormGroup;
-
+  initialFormValues: any = {};
   //chart properties 
   chartOptionsPrice: any;
   rentalPrices:number[]= [];
@@ -228,6 +228,12 @@ export class SearchComponent {
       havePlaceToCook: [false],
       haveAirConditioner: [false],
     });
+
+    this.initialFormValues = { ...this.formFilters.value };
+  }
+
+  hasFormChanged(): boolean {
+    return JSON.stringify(this.initialFormValues) !== JSON.stringify(this.formFilters.value);
   }
 
   //reset form
@@ -296,8 +302,10 @@ export class SearchComponent {
       setTimeout(() => {
         this.isLoading = false;
       }, 400);
+      this.updateURL(this.formFilters.value);
     });
     this.setDataIntoLocalStorage();
+
   }
 
    // Handle the form filter values
@@ -317,6 +325,7 @@ export class SearchComponent {
       setTimeout(() => {
         this.isLoading = false;
       }, 400);
+      this.updateURL(this.formFilters.value);
     });
     this.setDataIntoLocalStorage();
 
@@ -340,6 +349,7 @@ export class SearchComponent {
         this.isLoading = false;
       }, 400);
       this.setDataIntoLocalStorage();
+      this.updateURL(this.formFilters.value);
     });
   }
 
@@ -551,4 +561,30 @@ export class SearchComponent {
       sortArea.classList.add('flex')
     }
   }
+
+  updateURL(newFilters: any) {
+    // Làm sạch đối tượng filters, loại bỏ các giá trị undefined và null
+    const sanitizedFilters = Object.fromEntries(
+      Object.entries(newFilters)
+        .filter(([key, value]) => value !== undefined && value !== null ) // Chỉ giữ lại các thuộc tính trong allowedFilters
+    );
+
+    // Đặt 'address' ở đầu đối tượng, thay thế 'addressSearch' bằng 'address'
+    sanitizedFilters['address'] = this.fieldSearch.address
+
+    // Đảm bảo address luôn đứng đầu đối tượng
+    const sortedFilters = { address: sanitizedFilters['address'], ...sanitizedFilters };
+    
+    // Chuyển đối tượng thành JSON, mã hóa và giải mã URL
+    const jsonFilters = JSON.stringify(sortedFilters);
+    const encodedFilters = encodeURIComponent(jsonFilters);
+    const decodedFilters = decodeURIComponent(encodedFilters);
+
+    // Điều hướng với các tham số query, giữ nguyên các tham số còn lại
+    this.router.navigate([], {
+      queryParams: { filters: decodedFilters },
+     
+    });
+  }
+
 }

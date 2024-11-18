@@ -3,15 +3,15 @@
         <div class="sticky w-full md:hidden flex py-3 px-2 border-b text-[#006CE4] ">
             <div class="w-1/3 flex justify-center items-center gap-2 cursor-pointer" (click)="handleShowFormFilter()">
                 <i class='bx bx-slider-alt text-[20px]'></i>
-                <span class="text-[14px] font-medium">Lọc</span>
+                <span class="text-[14px] font-medium relative">Lọc <span class="absolute -top-2 -right-2 text-red-600 " *ngIf="hasFormChanged()">●</span></span>
             </div>
             <div class="w-1/3 flex justify-center items-center gap-2 cursor-pointer" (click)="handleShowSort()">
                 <i class='bx bx-sort-alt-2 text-[20px]'></i>
-                <span class="text-[14px] font-medium">Sắp xếp</span>
+                <span class="text-[14px] font-medium relative">Sắp xếp <span class="absolute -top-2 -right-2 text-red-600 "  *ngIf="selectedSort!=='default'">●</span></span>
             </div>
             <div class="w-1/3 flex justify-center items-center gap-2 cursor-pointer" (click)="handleViewOnMap()">
                 <i class='bx bx-map-alt text-[20px]'></i>
-                <span class="text-[14px] font-medium">Bản đồ</span>
+                <span class="text-[14px] font-medium ">Bản đồ</span>
             </div>
         </div>
         <div id="filtersArea" class="filters_area min-w-[300px] max-w-[300px] mb:flex flex-col hidden mb:p-2 mb:pr-0 p-0 h-full mb:relative fixed top-0 z-30 animate-appear mb:animate-none ">
@@ -30,7 +30,7 @@
                 <i class='bx bx-x text-[30px] text-custom-color-blue ' (click)="handleHiddenFormFilter()"></i>
                 <span>Bộ lọc</span>
                 <span class="text-[15px]" (click)="resetForm()" 
-                [ngStyle]="{ 'pointer-events': formFilters.pristine ? 'none' : 'auto', 'color': formFilters.pristine ? '#a2a2a2' : '#006ce4' }">Xoá</span>
+                [ngStyle]="{ 'pointer-events': hasFormChanged() ? 'auto' : 'none', 'color': hasFormChanged() ? '#006ce4' :'#a2a2a2' }">Xoá</span>
             </div>
             <form [formGroup]="formFilters" class="filters w-full h-full mx-auto mb:my-3 my-0 border mb:rounded-md rounded-none border-[#e7e7e7] bg-white ">
                 <div class="p-2 text-[16px] mb:flex hidden text-custom-color-black font-bold border-b border-[#e7e7e7] ">Chọn lọc theo:</div>
@@ -210,9 +210,9 @@
                     </div>
                 </div>
             </div>
-            <div *ngIf="selectedSortLabel === 'default' || (fieldSearch.address && fieldSearch.address !== ' ')" class="w-full mb:hidden flex">
-                <div class="w-full flex gap-3 pl-3 py-2 overflow-x-auto whitespace-nowrap scroll-smooth">
-                  <div *ngIf="selectedSort !== 'default'" (click)="selectedSort='default'; handleSort(selectedSort)"
+            <div *ngIf="selectedSort !== 'default' || (fieldSearch.address && fieldSearch.address !== ' ')" class="w-full mb:hidden flex">
+                <div class="w-full flex gap-3 px-3 py-2 overflow-x-auto whitespace-nowrap scroll-smooth">
+                  <div *ngIf="selectedSort !== 'default'" (click)="selectedSort = 'default'; handleSort(selectedSort)"
                      class="flex gap-1 w-fit px-3 py-1 justify-center items-center border border-custom-bg-hover-blue rounded-2xl text-custom-bg-blue-light cursor-pointer bg-custom-hv-color-blue">
                     <span class="text-[14px] font-medium">{{selectedSortLabel}}</span>
                     <i class='bx bx-x text-[22px] font-thin'></i>
@@ -226,7 +226,8 @@
             <div class="w-full mb:pt-3 pt-0 ">
                 <ul class="w-full flex flex-col mb:gap-4 gap-0">
                     <li *ngFor="let motel of listMotels,let i = index" class="w-full mb:min-w-[712px] min-w-none mb:p-4 px-2 py-3 flex mb:border border-b border-[#e7e7e7] mb:rounded-md rounded-none ">
-                        <ngx-skeleton-loader *ngIf="isLoading" appearance="line" [theme]="{height: '250px', width: '250px', 'margin-bottom': '0'}"></ngx-skeleton-loader>
+                        <ngx-skeleton-loader  class="mb:flex hidden" *ngIf="isLoading" appearance="line" [theme]="{height: '250px', width: '250px', 'margin-bottom': '0'}"></ngx-skeleton-loader>
+                        <ngx-skeleton-loader  class="flex mb:hidden" *ngIf="isLoading" appearance="line" [theme]="{height: 'auto', width: '130px', 'margin-bottom': '0'}"></ngx-skeleton-loader>
                         <div *ngIf="!isLoading" class="image_motel mb:w-[250px] mb:h-[250px] w-[130px] h-auto relative">
                             <a href="/client/home/detail-motel/{{motel._id}}">
                                 <img class="w-full h-full object-cover rounded-md" src="http://localhost:3000/resources/img-motels/{{motel.ListImages[0].LinkImage}}" alt="">
@@ -242,9 +243,11 @@
                             <div class="flex justify-between mb:flex-row flex-col">
                                 <div class="w-full">
                                     <div class="flex justify-between mb:flex-row flex-col w-full">
-                                        <ngx-skeleton-loader *ngIf="isLoading" appearance="line" [theme]="{height: '30px', width: '300px','margin-bottom': '0' }"></ngx-skeleton-loader>
+                                        <ngx-skeleton-loader class="mb:flex hidden w-full mr-5" *ngIf="isLoading" appearance="line" [theme]="{height: '30px', 'margin-bottom': '0' }"></ngx-skeleton-loader>
+                                        <ngx-skeleton-loader class="flex mb:hidden w-full mr-2" *ngIf="isLoading" appearance="line" [theme]="{height: '30px', 'margin-bottom': '10px' }"></ngx-skeleton-loader>
                                         <div *ngIf="!isLoading" class="w-full mb:mb-1 mb-0 mb:h-[26px] h-auto mb:text-[18px]  text-[16px] font-sans font-bold text-custom-color-blue capitalize mb:line-clamp-1 line-clamp-2">Nhà trọ {{motel.NameMotel ? motel.NameMotel : (motel.Address + ', ' + motel.WardCommune) }}</div>
-                                        <ngx-skeleton-loader *ngIf="isLoading" appearance="line" [theme]="{height: '40px', width: '100px'}"></ngx-skeleton-loader>
+                                        <ngx-skeleton-loader class="mb:flex hidden" *ngIf="isLoading" appearance="line" [theme]="{height: '40px', width: '100px'}"></ngx-skeleton-loader>
+                                        <ngx-skeleton-loader class="flex mb:hidden" *ngIf="isLoading" appearance="line" [theme]="{height: '30px', width: '100px'}"></ngx-skeleton-loader>
                                         <div *ngIf="!isLoading" class="flex w-fit mb:items-end items-center mb:flex-row flex-row-reverse justify-end mb:gap-2 gap-1 h-9">
                                             <div class="w-[70px] flex mb:justify-end items-end">
                                                 <span class="mb:text-[14px] text-[13px] font-normal text-custom-color-black"> {{motel.ListRatings.length ? motel.ListRatings.length : '0'}} đánh giá</span>
@@ -269,7 +272,9 @@
 
                             </div>
                             <div class="h-[calc(100%-80px)] flex mb:flex-row flex-col mb:justify-between  w-full">
-                                <ngx-skeleton-loader *ngIf="isLoading && motel.Description" appearance="line" [theme]="{height: '146px', width: '300px'}"></ngx-skeleton-loader>
+                                <ngx-skeleton-loader class="mb:flex hidden w-full mr-3" *ngIf="isLoading && motel.Description" appearance="line" [theme]="{height: '146px'}"></ngx-skeleton-loader>
+                                <ngx-skeleton-loader class="flex mb:hidden w-full" *ngIf="isLoading && motel.Description" appearance="line" [theme]="{height: '100px'}"></ngx-skeleton-loader>
+
                                 <div *ngIf="!isLoading && motel.Description" class="mb:w-[calc(100%-170px)] w-full pt-2 flex flex-col">
                                     <div class="w-full">
                                         <ul class="w-fit flex gap-2 line-clamp-1 bg-[#f7f7f7] p-1 rounded-sm">

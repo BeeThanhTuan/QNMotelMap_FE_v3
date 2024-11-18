@@ -483,7 +483,7 @@ export class ViewOnMapComponent {
     // Đợi tất cả các animation (cả marker và price marker) hoàn tất trước khi thực hiện zoom
     Promise.all(markerPromises).then(() => {
       // Zoom vào marker đặc biệt sau khi tất cả các animation hoàn tất
-      this.map.flyTo([specialLat, specialLng], 15, { duration: 0.8});  // Thực hiện zoom với animation
+      this.map.flyTo([specialLat, specialLng], 16, { duration: 0.8});  // Thực hiện zoom với animation
     });
   }
   
@@ -636,7 +636,7 @@ export class ViewOnMapComponent {
   
 
   // Handle the form filter values
-  handleFilters() :void {
+  handleFilters() :void { 
     this.getFilters();
     this.motelService.getMotelsFiltered(this.filters).subscribe((response)=>{
       this.spinner.show();
@@ -659,8 +659,10 @@ export class ViewOnMapComponent {
         this.spinner.hide();
         this.handleSetLocationMap(this.listMotels[0].Locations);
       }, 500);
+      
     });
-
+    console.log(123);
+    this.updateURL(this.formFilters.value);
   }
 
    // Handle the form filter values
@@ -688,6 +690,7 @@ export class ViewOnMapComponent {
         this.handleSetLocationMap(this.listMotels[0].Locations);
       }, 500);
     }); 
+    this.updateURL(this.formFilters.value);
 
   }
 
@@ -711,6 +714,7 @@ export class ViewOnMapComponent {
         this.handleSetLocationMap(this.listMotels[0].Locations);
       }, 700);
     });
+    this.updateURL(this.formFilters.value);
   }
 
   // Handle the form filter values
@@ -731,6 +735,7 @@ export class ViewOnMapComponent {
         this.spinner.hide();
         this.handleSetLocationMap(this.listMotels[0].Locations);
       }, 700);
+      this.updateURL(this.formFilters.value);
     });
   }
 
@@ -847,7 +852,30 @@ export class ViewOnMapComponent {
     this.initializeDataDistanceChart();
   }
 
+  updateURL(newFilters: any) {
+    // Làm sạch đối tượng filters, loại bỏ các giá trị undefined và null
+    const sanitizedFilters = Object.fromEntries(
+      Object.entries(newFilters)
+        .filter(([key, value]) => value !== undefined && value !== null) // Chỉ giữ lại các thuộc tính trong allowedFilters
+    );
 
+     delete sanitizedFilters['address'];
+     sanitizedFilters['addressSearch'] = this.addressSearch.value
+     console.log(sanitizedFilters);
+     
+     // Đảm bảo address luôn đứng đầu đối tượng
+     const sortedFilters = {addressSearch: sanitizedFilters['addressSearch'], ...sanitizedFilters };
+     console.log(sortedFilters);
 
-  
+    // Chuyển đối tượng thành JSON, mã hóa và giải mã URL
+    const jsonFilters = JSON.stringify(sortedFilters);
+    const encodedFilters = encodeURIComponent(jsonFilters);
+    const decodedFilters = decodeURIComponent(encodedFilters);
+    console.log(decodedFilters);
+    // Điều hướng với các tham số query, giữ nguyên các tham số còn lại
+    // this.router.navigate([], {
+    //   queryParams: { filters: decodedFilters },
+    // });
+  }
+
 }

@@ -1,17 +1,17 @@
 <div class="content_wrapper w-full text-base">
     <div class="recommend_motels max-w-custom mx-auto ">
         <div class="w-full px-1">
-            <div class="text-2xl font-sans font-bold text-custom-color-black ">Những nhà trọ gợi ý cho bạn</div>
+            <div class="mb:text-[24px] text-[20px] mb:pl-0 pl-2 font-sans font-bold text-custom-color-black ">Những nhà trọ gợi ý cho bạn</div>
         </div>
-        <div class="w-full p-3 mt-5 relative min-w-[700px] ">
-            <ul class="w-full flex flex-nowrap gap-4 ntt-custom-ul relative  ">
-                <li class="flex-1 max-w-[calc(25%-12px)] min-w-[calc(25%-12px)] rounded-xl mb-2 cursor-pointer">
+        <div class="w-full py-3 mb:mt-5 mt-2 relative mb:min-w-[700px] min-w-full overflow-x-auto scroll-smooth">
+            <ul class="mb:w-full w-fit flex flex-nowrap gap-4 ntt-custom-ul relative px-3  ">
+                <li class="flex-1 mb:max-w-[calc(25%-12px)] max-w-none min-w-[calc(25%-12px)] mb:w-auto w-[350px] rounded-xl mb-2 cursor-pointer " >
                     <div class="w-full relative " >
                         <a routerLink="/client/home/detail-motel/:id/overall" class="w-full">
                             <div class="w-full aspect-[4/3.2]"> <!-- Giữ tỷ lệ 4:3 -->
                                 <img class="w-full h-full rounded-tl-xl rounded-tr-xl object-cover" src="assets/images/img-motel.jpg" alt="Hình ảnh về nhà trọ">
                             </div>
-                            <div class="info p-2 ntt-shadow-motel-card rounded-bl-xl rounded-br-xl flex flex-col gap-2">
+                            <div class="info p-2 ntt-shadow-motel-card  rounded-bl-xl rounded-br-xl flex flex-col gap-2">
                                 <div>
                                     <div class="ntt-custom-name-motel text-[16px] font-semibold text-custom-color-black ">
                                         Tên nhà trọ
@@ -224,7 +224,7 @@
                 
                 
             </ul><!-- End list recommend motels  -->
-            <div class="w-full absolute z-10 top-[30%] left-0 flex justify-between pointer-events-none">
+            <div class="w-full absolute z-10 top-[30%] left-0 mb:flex hidden justify-between pointer-events-none">
                 <button class="ntt-custom-button-prev-next flex justify-center items-center" aria-label="Trước đó" appClickPrevRecommendMotel>
                     <i class='bx bx-chevron-left text-[20px] text-custom-color-black-light'></i>
                 </button>
@@ -236,10 +236,10 @@
     </div> <!-- End recommend motels area-->
     <div class="classify-ward-commune-wrapper max-w-custom mx-auto mt-5 pb-10">
         <div class="w-full px-1">
-            <div class="text-2xl font-sans font-bold text-custom-color-black ">Những nhà trọ theo phường xã</div>
+            <div class="mb:text-[24px] text-[20px] mb:px-0 px-2 font-sans font-bold text-custom-color-black ">Những nhà trọ theo phường xã</div>
         </div>
         <div class="w-full p-2 mt-4 relative mb-20">
-            <ul class="grid ml:grid-cols-5 md:grid-cols-4 sm:grid-cols-3 grid-cols-3  gap-4">
+            <ul class="grid ml:grid-cols-5 md:grid-cols-4 mb:px-0 px-2 sm:grid-cols-3 grid-cols-3  gap-4">
                 <li class="flex flex-col text-[14px] font-medium" *ngFor="let wardCommune of listMotelsByWardCommune">
                     <a class="h-[20px]  text-custom-color-black hover:underline" (click)="handleSearch(wardCommune.WardCommune)">{{wardCommune.WardCommune}}</a>
                     <span class="h-[17px] font-normal text-custom-color-black-light">{{wardCommune.Count}} nhà trọ</span>
