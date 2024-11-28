@@ -156,41 +156,52 @@ export class PopupAddMotelComponent implements OnInit {
   async getLocation(): Promise<void> {
     const street = this.addMotelForm.get('address')?.value;
     const wardCommune = this.addMotelForm.get('wardCommune')?.value;
+    const API_KEY = 'L8v4NrOC0ATKuzJoQA7ueDZqAVrsRVXLi0YJhXyG';
+  
     if (!street || !wardCommune) {
       console.log('Vui lòng nhập cả số nhà, tên đường và phường/xã.');
       return;
-  }
+    }
+  
     const address = `${street}, ${wardCommune}, Quy Nhơn, Bình Định, Việt Nam`;
-    const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}&addressdetails=1`;
-    this.spinner.show();
+    const url = `https://rsapi.goong.io/Geocode?address=${encodeURIComponent(address)}&api_key=${API_KEY}`;
+    
+    this.spinner.show(); // Hiển thị spinner trong khi gọi API
+  
     try {
-      // Fetch data with User-Agent header to comply with Nominatim requirements
       const response = await fetch(url);
-      // Check if the response is successful
+  
+      // Kiểm tra phản hồi API
       if (!response.ok) {
         throw new Error(`Error ${response.status}: ${response.statusText}`);
       }
+  
       const data = await response.json();
-      if (data.length > 0) {
-        this.location = `${data[0].lat},${data[0].lon}`;
+  
+      if (data.results.length > 0) {
+        const lat = data.results[0].geometry.location.lat;
+        const lng = data.results[0].geometry.location.lng;
+        this.location = `${lat},${lng}`;
         console.log('Location:', this.location);
-        this.addMarker(this.location)
+  
+        this.addMarker(this.location); // Thêm marker lên bản đồ
       } else {
         this.location = '';
         this.map.eachLayer((layer) => {
           if (layer instanceof L.Marker) {
-            this.map.removeLayer(layer); // Remove marker if the layer is a marker
+            this.map.removeLayer(layer); // Xóa marker nếu không tìm thấy kết quả
           }
         });
-        console.log('No results found for the address.');
+        console.log('Không tìm thấy kết quả cho địa chỉ này.');
       }
     } catch (error) {
-      console.error('Error fetching geolocation data:', error);
-      console.log('Please check your network connection or try again later.');
+      console.error('Lỗi khi gọi API Goong:', error);
+      console.log('Vui lòng kiểm tra kết nối mạng hoặc thử lại sau.');
     } finally {
-      this.spinner.hide();
+      this.spinner.hide(); // Ẩn spinner
     }
   }
+  
 
   addMarker(location: string): void {
     if (!location) {

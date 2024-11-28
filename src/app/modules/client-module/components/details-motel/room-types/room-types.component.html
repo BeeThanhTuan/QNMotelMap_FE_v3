@@ -1,15 +1,15 @@
 <div class="content_wrapper w-full text-base">
     <div class="max-w-custom mx-auto ">
-        <div class="w-full p-3 mt-5 relative min-w-[700px] ">
+        <div class="w-full mb:p-3 p-0 mt-2 relative">
             <div *ngIf="listRooms.length === 0" class="text-[25px] font-semibold">Chưa có phòng trọ</div>
-            <ul class="mt-5 w-full grid ml:grid-cols-4 md:grid-cols-3 grid-cols-3 gap-3 ">
-                <li class="flex-1  rounded-xl mb-2 cursor-pointer" *ngFor="let room of listRooms">
-                    <div class="w-full relative " >
-                        <a routerLink="/client/home/detail-motel/{{idMotel}}/roomType/{{room._id}}" class="w-full group">
-                            <div class="w-full aspect-[4/3.2]"> <!-- Giữ tỷ lệ 4:3 -->
-                                <img class="w-full h-full rounded-tl-xl rounded-tr-xl object-cover" src="http://localhost:3000/resources/img-rooms/{{room.ListImages[0].LinkImage}}" alt="Hình ảnh về nhà trọ">
+            <ul class="mb:mt-5 mt-0 w-full grid ml:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 mb:grid-cols-2 grid-cols-1 gap-3 ">
+                <li class="flex-1  mb:rounded-xl rounded-none mb:mb-2 mb-0 cursor-pointer " *ngFor="let room of listRooms">
+                    <div class="w-full mb:h-auto h-[200px] relative ntt-shadow-motel-card mb:shadow-none " >
+                        <a routerLink="/client/home/detail-motel/{{idMotel}}/roomType/{{room._id}}" class="w-full h-full group flex mb:flex-col flex-row">
+                            <div class="mb:w-full w-1/2 aspect-[4/3     .2] "> <!-- Giữ tỷ lệ 4:3 -->
+                                <img class="max-h-[250px] w-full h-full mb:rounded-tl-xl mb:rounded-tr-xl object-cover" src="http://localhost:3000/resources/img-rooms/{{room.ListImages[0].LinkImage}}" alt="Hình ảnh về nhà trọ">
                             </div>
-                            <div class="info p-3 ntt-shadow-motel-card rounded-bl-xl rounded-br-xl flex flex-col gap-2 group-hover:ntt-shadow-motel-card-hover transition-shadow duration-200">
+                            <div class="mb:w-full w-1/2 info p-3 mb:ntt-shadow-motel-card mb:rounded-bl-xl mb:rounded-br-xl flex flex-col gap-2 group-hover:ntt-shadow-motel-card-hover transition-shadow duration-200">
                                 <div>
                                     <div class=" text-[15px] text-custom-color-black-light font-medium flex gap-2">
                                         <div class="bg-[#f7f7f7] px-2 rounded-sm">Tầng {{room.Floor}}</div>

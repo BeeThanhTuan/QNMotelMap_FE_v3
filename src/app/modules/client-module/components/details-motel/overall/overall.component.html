@@ -2,23 +2,24 @@
     <div class="info w-full text-custom-color-black px-2 flex justify-between">
         <div>
             <div class="motel_name mt-5">
-                <h2 class="mt-1 text-[26px] font-sans font-bold capitalize">Nhà trọ {{motel.NameMotel ? motel.NameMotel : (motel.Address + ', ' + motel.WardCommune)}}</h2>
+                <h2 class="mt-1 mb:text-[26px] text-[20px] font-sans font-bold capitalize">Nhà trọ {{motel.NameMotel ? motel.NameMotel : (motel.Address + ', ' + motel.WardCommune)}}</h2>
             </div>
-            <div class="address_motel flex mt-2 gap-2">
-                <span><i class='fa-solid fa-location-dot text-[23px] text-custom-color-blue'></i></span>
-                <span class="capitalize text-[18px] font-normal">{{motel.Address}}, {{motel.WardCommune}}</span>
-                <span class="text-[18px] font-normal">- khoảng cách tới trường {{motel.Distance}} km.</span>
+            <div class="address_motel flex mb:flex-row flex-col mt-2 gap-2">
+                <span><i class='fa-solid fa-location-dot text-[23px] text-custom-color-blue mr-3'></i>
+                    <span class="capitalize mb:text-[18px] text-[15px]  font-normal">{{motel.Address}}, {{motel.WardCommune}}</span>
+                </span>
+                <span class="mb:text-[18px] text-[15px] font-normal"><span class="w-fit h-fit text-custom-color-black-light text-[10px] relative -top-[2px]">●</span> khoảng cách tới trường {{motel.Distance}} km.</span>
             </div>
         </div>
-        <div title="Lưu" class="w-[78px] flex justify-start items-center mt-5">
-            <button class="w-[55px] h-[55px] flex justify-center items-center rounded-full border-2 border-[#e7e7e7] bg-white hover:bg-[#f2f2f2] group">
-                <i class="bx bx-heart text-[35px] text-custom-color-black-light group-hover:text-[red]"></i>
+        <div title="Lưu" class="mb:w-[78px] w-fit flex justify-start mb:items-center items-end mt-5 mb:pb-0 pb-2">
+            <button class="mb:w-[55px] mb:h-[55px] w-[40px] h-[40px] flex justify-center items-center rounded-full border-2 border-[#e7e7e7] bg-white hover:bg-[#f2f2f2] group">
+                <i class="bx bx-heart mb:text-[35px] text-[25px] text-custom-color-black-light group-hover:text-[red]"></i>
             </button>
         </div>
     </div>
-    <div class="flex mt-3 ">
-        <div class="w-[830px] pt-4 pl-2 pr-3">     
-            <div class="h-[500px] relative" [ngClass]="getLayoutImageClass(motel.ListImages.slice(0,3).length)">
+    <div class="flex sm:flex-row flex-col mt-3 ">
+        <div class="sm:w-[830px] w-full pt-4 pl-2 pr-3">     
+            <div class="sm:h-[500px] h-[400px] relative" [ngClass]="getLayoutImageClass(motel.ListImages.slice(0,3).length)">
                 <div class="image" *ngFor="let image of motel.ListImages.slice(0,3), let i = index">
                     <img src="http://localhost:3000/resources/img-motels/{{image.LinkImage}}" alt="" class="img-motel w-full h-full object-cover" (click)="handleOpenCollectionImage(i)">
                 </div>
@@ -30,9 +31,9 @@
                 </div>
             </div>
         </div>
-        <div class="w-[calc(100%-850px)] min-w-[275px] pt-4 px-2">
+        <div class="sm:w-[calc(100%-850px)] w-full min-w-[275px] pt-4 mb:px-2 px-0">
             <div class="h-full flex flex-col justify-between">
-                <div class="h-[calc(100%-180px-16px)] border border-[#e7e7e7] rounded-md mb-4">
+                <div class="h-[calc(100%-180px-16px)] border border-[#e7e7e7] mb:rounded-md rounded-none mb:mb-4 mb-0">
                     <div class="flex gap-2 w-full justify-end border-b border-[#e7e7e7] p-4">
                         <div class="w-full flex justify-end items-end">
                             <span class="text-[15px] font-normal text-custom-color-black">{{motel.ListRatings.length}} đánh giá</span>
@@ -62,46 +63,46 @@
                             </div>
                         </div>
                     </div>
-                    
                 </div>
-                <div class="view_on_map w-full h-[180px] bg-cover bg-center bg-no-repeat rounded-md flex flex-col justify-center gap-2"
-                    style="background-image: url('/assets/images/map-entry-point.png');">
-                    <div class="w-full flex justify-center">
-                        <i class='bx bxs-map text-custom-bg-blue-light text-[54px] hover:text-custom-bg-hover-blue'></i>
-                    </div>
-                    <div class="w-full flex justify-center">
-                        <button class="h-9 px-3 py-1 bg-custom-bg-blue-light rounded-md hover:bg-custom-bg-hover-blue">
-                            <span class="text-[14px] text-white font-medium" (click)="handleViewOnMapSpecificallyMotel(motel.Location)">Hiển thị trên bản đồ</span>
-                        </button>
+                <div class="view_on_map w-full h-[180px] mb:p-0 p-3 ">
+                    <div class="w-full h-full bg-cover bg-center bg-no-repeat rounded-md flex flex-col justify-center gap-2 " style="background-image: url('/assets/images/map-entry-point.png');">
+                        <div class="w-full flex justify-center">
+                            <i class='bx bxs-map text-custom-bg-blue-light text-[54px] hover:text-custom-bg-hover-blue'></i>
+                        </div>
+                        <div class="w-full flex justify-center">
+                            <button class="h-9 px-3 py-1 bg-custom-bg-blue-light rounded-md hover:bg-custom-bg-hover-blue">
+                                <span class="text-[14px] text-white font-medium" (click)="handleViewOnMapSpecificallyMotel(motel.Location)">Hiển thị trên bản đồ</span>
+                            </button>
+                        </div>
                     </div>
                 </div> <!--End view on map-->
             </div>
 
         </div>
     </div>
-    <div class="convenient w-full mt-10 px-2 ">
-       <div class="ntt-shadow-box w-full rounded-md">
+    <div class="convenient w-full mb:mt-10 mt-0 mb:px-2 px-0 ">
+       <div class="mb:ntt-shadow-box mb:border-none border w-full mb:rounded-md rounded-none">
             <div class="w-full border-b border-[#e7e7e7]">
-                <h3 class="p-4 text-[20px] text-custom-color-black font-sans font-semibold">Tiện nghi của nhà trọ</h3>
+                <h3 class="p-4 mb:text-[20px] text-[17px] text-custom-color-black font-sans font-semibold">Tiện nghi của nhà trọ</h3>
             </div>
             <div class="w-full">
                 <ul class="flex flex-wrap p-4 gap-4 text-custom-color-black">
                     <li class="ntt-li-convenient" *ngFor="let convenient of motel.ListConvenient">
                         <div class="flex justify-center items-center gap-4 px-4">
-                            <img class="w-[35px] h-[35px] object-cover " src="http://localhost:3000/resources/img-convenients/{{convenient.LinkImage}}" alt="">
-                            <span class="text-[16px]">{{convenient.NameConvenient}}</span>
+                            <img class="mb:w-[35px] mb:h-[35px] w-[25px] h-[25px] object-cover " src="http://localhost:3000/resources/img-convenients/{{convenient.LinkImage}}" alt="">
+                            <span class="mb:text-[16px] text-[13px]">{{convenient.NameConvenient}}</span>
                         </div>
                     </li>
                 </ul>
             </div>
        </div>
     </div> <!--End convenient-->
-    <div class="description w-full mt-8 px-2 pb-10">
-        <div class="ntt-shadow-box w-full rounded-md">
+    <div class="description w-full mb:mt-8 mt-0 mb:px-2 px-0 pb-10">
+        <div class="mb:ntt-shadow-box w-full rounded-md">
              <div class="w-full border-b border-[#e7e7e7]">
-                 <h3 class="p-4 text-[20px] text-custom-color-black font-sans font-semibold">Mô tả về nhà trọ</h3>
+                 <h3 class="p-4 mb:text-[20px] text-[17px] text-custom-color-black font-sans font-semibold">Mô tả về nhà trọ</h3>
              </div>
-             <div class="w-full p-4 text-[16px]">
+             <div class="w-full p-4 mb:text-[16px] text-[15px]">
                 <p>
                     <span>Tiền điện: {{motel.ElectricityBill | money}}/kwh.</span>
                     <span> Tiền nước: {{motel.WaterBill | money}}/m³.</span>
@@ -111,28 +112,27 @@
         </div>
      </div> <!--End description-->
 </div>
-<div class="w-full h-[100vh] fixed top-0 left-0 overflow-hidden z-20 flex justify-center items-center" *ngIf="isCollectionImageOpen" >
+<div class="w-full h-[100vh] fixed top-0 left-0 overflow-hidden z-20 flex justify-center items-center animate-appear mb:animate-none" *ngIf="isCollectionImageOpen" >
     <div class="absolute w-full h-full bg-[rgba(0,0,0,0.6)] backdrop-blur-[1.5px]" (click)="handleCloseCollectionImage()"></div>
-    <div class="pb-5 mx-auto relative w-[95%] h-[95%] bg-white z-10 rounded-xl flex flex-col justify-between overflow-hidden ">
-        <div class="w-full flex justify-between items-center border-b">
+    <div class=" mx-auto relative mb:w-[95%] mb:h-[95%] w-full h-full bg-white z-10 mb:rounded-xl rounded-none flex flex-col overflow-hidden ">
+        <div class="w-full h-[7%] flex justify-between items-center border-b">
             <div><span class="ml-5 text-[18px] font-semibold">Ảnh của nhà trọ</span></div>
             <button class="px-4 py-2 flex justify-center items-center text-custom-color-black-light hover:text-custom-color-blue"
                 (click)="handleCloseCollectionImage()">
-                <span class="font-medium text-[14px]">Đóng</span>
                 <i class='bx bx-x text-[35px]'></i>
             </button>
         </div>
-        <div class="w-full flex flex-col">
-            <div class="w-full flex justify-between items-center py-10 px-3 ">
+        <div class="w-full h-[75%] flex flex-col">
+            <div class="w-full h-[95%] flex justify-between items-center  ">
                 <button (click)="prevImage()" class=" text-custom-color-black-light hover:text-custom-color-blue"><i class='bx bx-chevron-left text-[70px]'></i></button>
-                <div class="w-[60%] h-[600px] flex justify-center items-center">
+                <div class="w-[90%] h-[90%] flex justify-center items-center">
                     <img src="http://localhost:3000/resources/img-motels/{{motel.ListImages[currentIndex].LinkImage}}" alt="" class=" w-fit h-full object-contain rounded-md " >
                 </div>
                 <button (click)="nextImage()" class=" text-custom-color-black-light hover:text-custom-color-blue"><i class='bx bx-chevron-right text-[70px]'></i></button>
             </div>
-            <div class="w-full flex justify-center"><span>{{currentIndex + 1}}/{{motel.ListImages.length}}</span></div>
+            <div class="w-full h-[5%] flex justify-center"><span>{{currentIndex + 1}}/{{motel.ListImages.length}}</span></div>
         </div>
-        <div class="w-full flex justify-center gap-3 p-3 overflow-y-auto " >
+        <div class="w-full h-[18%] flex mb:justify-center justify-normal gap-3 p-3 overflow-x-auto px-3" >
             <img *ngFor="let image of motel.ListImages, let i = index" src="http://localhost:3000/resources/img-motels/{{image.LinkImage}}" alt="" tabindex="0"
             (click)="currentIndex = i"
             [ngClass]="{

@@ -6,3 +6,23 @@
 ::ng-deep .ant-rate-star-full {
     color: #1392ff; 
   }
+
+::ng-deep .ant-drawer-content-wrapper {
+    width: 700px !important;
+}
+
+@media (max-width: 450px) {
+    ::ng-deep .ant-drawer-content-wrapper {
+        width: 100% !important;
+    }
+
+    ::ng-deep.ant-drawer-body {
+        padding: 10px;
+    }
+}
+
+::ng-deep .ant-drawer-close {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
