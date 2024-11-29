@@ -90,7 +90,7 @@
                 <div class="h-[160px] pt-3 pr-4 pb-4 pl-3 border-b border-[#e7e7e7] relative">
                     <div class="text-[14px] text-custom-color-black font-bold">Ngân sách của bạn</div>
                     <div class="flex justify-between">
-                        <div class="text-[14px] text-custom-color-black-light font-normal">{{formFilters.get('desiredPrice')?.value | money}} VND</div>
+                        <div class="text-[14px] text-custom-color-black font-normal">{{formFilters.get('desiredPrice')?.value | money}} VND</div>
                         <div *ngIf="desiredPriceChanged === true" class="flex justify-center items-center cursor-pointer pointer-events-auto relative z-10" (click)="handleResetDesiredPrice()">
                             <i class='bx bx-reset text-[23px] text-custom-color-black-light hover:text-[#1392ff]' title="Đặt lại giá "></i>
                         </div>

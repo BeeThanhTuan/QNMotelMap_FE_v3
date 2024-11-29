@@ -71,16 +71,16 @@
             </div>
         </form>
 
+        <!-- form register -->
         <div class="w-full" *ngIf="isShowRegister">
-            <!-- form register -->
             <div class="w-full text-center text-[20px] uppercase font-bold mb-[10px]">
                 <h4 class="text-[#0045a8]">Đăng ký tài khoản</h4>
             </div>
             <div class="w-full flex mb-[20px] uppercase text-[17px] text-custom-color-black-light font-bold">
-                <div class="w-1/2 text-center py-2 border-b-2  cursor-pointer" [ngClass]="{ 'border-[#0045a8]': selectedTab === 'user' ,'text-[#0045a8]': selectedTab === 'user' }" (click)="selectTab('user',  this.registerUserForm  )">
+                <div class="w-1/2 text-center py-2 border-b-2  cursor-pointer" [ngClass]="{ 'border-[#0045a8]': selectedTab === 'user' ,'text-[#0045a8]': selectedTab === 'user' }" (click)="selectTab('user',  this.registerUserForm); getRoleIdByRoleName('Client')">
                     Người dùng
                 </div>
-                <div class="w-1/2 text-center py-2 border-b-2  cursor-pointer" [ngClass]="{ 'border-[#0045a8]': selectedTab === 'landlord', 'text-[#0045a8]': selectedTab === 'landlord' }" (click)="selectTab('landlord', this.registerLandlordForm)">
+                <div class="w-1/2 text-center py-2 border-b-2  cursor-pointer" [ngClass]="{ 'border-[#0045a8]': selectedTab === 'landlord', 'text-[#0045a8]': selectedTab === 'landlord' }" (click)="selectTab('landlord', this.registerLandlordForm); getRoleIdByRoleName('Landlord')">
                     Chủ trọ
                 </div>
             </div>
@@ -150,15 +150,17 @@
                            peer:not-placeholder-shown:top-0 
                            peer:not-placeholder-shown:-translate-y-[12px] 
                            peer:not-placeholder-shown:text-gray-400" [ngClass]="{'label-invalid': (passwordControlRegisterUser?.invalid && isRegisterUserSubmitted && firstInvalidControl === 'password')}">
-                        Mật khẩu
-                    </label>
+                            Mật khẩu
+                        </label>
                         <button type="button" class="absolute h-full w-[54px] right-1 top-0 cursor-pointer" (click)="togglePasswordRegisterUserVisibility()">
                         <i [ngClass]="passwordRegisterUserVisible ? 'fas fa-eye-slash' : 'fas fa-eye'" class="text-gray-500"></i>
                     </button>
                     </div>
                     <div *ngIf="isRegisterUserSubmitted && passwordControlRegisterUser?.invalid && firstInvalidControl === 'password'">
                         <small class="masseage-error " *ngIf="passwordControlRegisterUser?.hasError('required')"> <i class="fa-solid fa-circle-info"></i> Mật khẩu là bắt buộc.</small>
-                        <small class="masseage-error" *ngIf="passwordControlRegisterUser?.hasError('minlength')"><i class="fa-solid fa-circle-info"></i> Mật khẩu phải có ít nhất 6 ký tự.</small>
+                        <small class="masseage-error" *ngIf="passwordControlRegisterUser?.hasError('minlength')"><i class="fa-solid fa-circle-info"></i> Mật khẩu phải có ít nhất 8 ký tự.</small>
+                        <small class="masseage-error" *ngIf="passwordControlRegisterUser?.hasError('maxlength')"><i class="fa-solid fa-circle-info"></i> Mật khẩu không được vượt quá 16 ký tự.</small>
+
                     </div>
                 </div>
                 <div class="relative w-full mb-5 ">
@@ -186,7 +188,11 @@
                     </div>
                     <div *ngIf="isRegisterUserSubmitted && confirmPasswordControlRegisterUser?.invalid && firstInvalidControl === 'confirmPassword'">
                         <small class="masseage-error " *ngIf="confirmPasswordControlRegisterUser?.hasError('required')"> <i class="fa-solid fa-circle-info"></i>Xác nhận mật khẩu là bắt buộc.</small>
-                        <small class="masseage-error" *ngIf="confirmPasswordControlRegisterUser?.hasError('minlength')"><i class="fa-solid fa-circle-info"></i>Xác nhận mật khẩu phải có ít nhất 6 ký tự.</small>
+                        <small class="masseage-error" *ngIf="confirmPasswordControlRegisterUser?.hasError('minlength')"><i class="fa-solid fa-circle-info"></i>Xác nhận mật khẩu phải có ít nhất 8 ký tự.</small>
+                        <small class="masseage-error" *ngIf="confirmPasswordControlRegisterUser?.hasError('maxlength')"><i class="fa-solid fa-circle-info"></i>Xác nhận mật khẩu không được vượt quá 16 ký tự.</small>
+                        <small class="masseage-error" *ngIf="confirmPasswordControlRegisterUser?.hasError('mismatch')">
+                            <i class="fa-solid fa-circle-info"></i>Mật khẩu không khớp.
+                        </small>
                     </div>
                 </div>
                 <div class="w-full">
@@ -268,7 +274,9 @@
                     </div>
                     <div *ngIf="isRegisterLandlordSubmitted && passwordControlRegisterLandlord?.invalid && firstInvalidControl === 'password'">
                         <small class="masseage-error " *ngIf="passwordControlRegisterLandlord?.hasError('required')"> <i class="fa-solid fa-circle-info"></i> Mật khẩu là bắt buộc.</small>
-                        <small class="masseage-error" *ngIf="passwordControlRegisterLandlord?.hasError('minlength')"><i class="fa-solid fa-circle-info"></i> Mật khẩu phải có ít nhất 6 ký tự.</small>
+                        <small class="masseage-error" *ngIf="passwordControlRegisterLandlord?.hasError('minlength')"><i class="fa-solid fa-circle-info"></i> Mật khẩu phải có ít nhất 8 ký tự.</small>
+                        <small class="masseage-error" *ngIf="passwordControlRegisterLandlord?.hasError('maxlength')"><i class="fa-solid fa-circle-info"></i> Mật khẩu không được vượt quá 16 ký tự.</small>
+
                     </div>
                 </div>
                 <div class="relative w-full mb-5 ">
@@ -296,7 +304,11 @@
                     </div>
                     <div *ngIf="isRegisterLandlordSubmitted && confirmPasswordControlRegisterLandlord?.invalid && firstInvalidControl === 'confirmPassword'">
                         <small class="masseage-error " *ngIf="confirmPasswordControlRegisterLandlord?.hasError('required')"> <i class="fa-solid fa-circle-info"></i>Xác nhận mật khẩu là bắt buộc.</small>
-                        <small class="masseage-error" *ngIf="confirmPasswordControlRegisterLandlord?.hasError('minlength')"><i class="fa-solid fa-circle-info"></i>Xác nhận mật khẩu phải có ít nhất 6 ký tự.</small>
+                        <small class="masseage-error" *ngIf="confirmPasswordControlRegisterLandlord?.hasError('minlength')"><i class="fa-solid fa-circle-info"></i>Xác nhận mật khẩu phải có ít nhất 8 ký tự.</small>
+                        <small class="masseage-error" *ngIf="confirmPasswordControlRegisterLandlord?.hasError('maxlength')"><i class="fa-solid fa-circle-info"></i>Xác nhận mật khẩu không được vượt quá 16 ký tự.</small>
+                        <small class="masseage-error" *ngIf="confirmPasswordControlRegisterLandlord?.hasError('mismatch')">
+                            <i class="fa-solid fa-circle-info"></i>Mật khẩu không khớp.
+                        </small>
                     </div>
                 </div>
                 <div class="relative w-full mb-5 ">
@@ -321,6 +333,8 @@
                     </div>
                     <div *ngIf="isRegisterLandlordSubmitted && phoneNumberControlRegisterLandlord?.invalid && firstInvalidControl === 'phoneNumber'">
                         <small class="masseage-error " *ngIf="phoneNumberControlRegisterLandlord?.hasError('required')"> <i class="fa-solid fa-circle-info"></i> Số điện thoại là bắt buộc.</small>
+                        <small class="masseage-error " *ngIf="phoneNumberControlRegisterLandlord?.hasError('minlength') || phoneNumberControlRegisterLandlord?.hasError('maxlength')"> <i class="fa-solid fa-circle-info"></i> Số điện thoại không hợp lệ.</small>
+
                     </div>
                 </div>
                 <div class="relative w-full mb-5 ">

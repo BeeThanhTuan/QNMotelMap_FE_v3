@@ -1,5 +1,7 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { RoleService } from 'src/app/services/role.service';
+import { confirmPasswordValidator } from '../../validator-custom/confirmPasswordValidator'; 
 
 @Component({
   selector: 'app-login',
@@ -23,10 +25,15 @@ export class LoginComponent {
 
   firstInvalidControl: string | null = null;
   selectedTab: string = 'user'; 
-  constructor(private formBuilder: FormBuilder) {
+  roleID!: string;
+  constructor(private formBuilder: FormBuilder, private roleService: RoleService) {
     this.initializeFormLogin();
     this.initializeFormRegisterUser();
     this.initializeFormRegisterLandlord();
+  }
+
+  ngAfterViewInit(): void {
+    this.getRoleIdByRoleName('Client');
   }
 
   // Initialize form login
@@ -42,8 +49,8 @@ export class LoginComponent {
     this.registerUserForm = this.formBuilder.group({
       username: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
-      confirmPassword: ['', [Validators.required, Validators.minLength(6)]],
+      password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(16)]],
+      confirmPassword: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(16), confirmPasswordValidator]],
     });
   }
 
@@ -52,12 +59,13 @@ export class LoginComponent {
     this.registerLandlordForm = this.formBuilder.group({
       username: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
-      confirmPassword: ['', [Validators.required, Validators.minLength(6)]],
-      phoneNumber:['', [Validators.required]],
-      address:['', ],
+      password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(16)]],
+      confirmPassword: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(16), confirmPasswordValidator]],
+      phoneNumber:['', [Validators.required,Validators.minLength(10), Validators.maxLength(10),]],
+      address:['' ],
     });
   }
+
 
   get emailControlLogin() {
     return this.loginForm.get('email');
@@ -84,27 +92,27 @@ export class LoginComponent {
   }
 
   get usernameControlRegisterLandlord() {
-    return this.registerUserForm.get('username');
+    return this.registerLandlordForm.get('username');
   }
 
   get emailControlRegisterLandlord() {
-    return this.registerUserForm.get('email');
+    return this.registerLandlordForm.get('email');
   }
 
   get passwordControlRegisterLandlord() {
-    return this.registerUserForm.get('password');
+    return this.registerLandlordForm.get('password');
   }
 
   get confirmPasswordControlRegisterLandlord() {
-    return this.registerUserForm.get('confirmPassword');
+    return this.registerLandlordForm.get('confirmPassword');
   }
 
   get phoneNumberControlRegisterLandlord() {
-    return this.registerUserForm.get('phoneNumber');
+    return this.registerLandlordForm.get('phoneNumber');
   }
 
   get addressControlRegisterLandlord() {
-    return this.registerUserForm.get('address');
+    return this.registerLandlordForm.get('address');
   }
 
   hiddenPopupLoginRegister(): void{
@@ -146,21 +154,6 @@ export class LoginComponent {
     }
   }
 
-  handleRegisterUser(): void {
-    this.isRegisterUserSubmitted = true;
-    if (this.registerUserForm.invalid) {
-      this.focusFirstInvalidControl(this.registerUserForm); // Gọi hàm để tập trung vào trường đầu tiên không hợp lệ
-      return; // Dừng lại nếu form không hợp lệ
-    }
-  }
-
-  handleRegisterLandlord(): void {
-    this.isRegisterLandlordSubmitted = true;
-    if (this.registerLandlordForm.invalid) {
-      this.focusFirstInvalidControl(this.registerLandlordForm); // Gọi hàm để tập trung vào trường đầu tiên không hợp lệ
-      return; // Dừng lại nếu form không hợp lệ
-    }
-  }
 
   focusFirstInvalidControl(formGroup: FormGroup) {
     this.firstInvalidControl = null; // Reset giá trị trước khi kiểm tra
@@ -189,5 +182,28 @@ export class LoginComponent {
 
   stopPropagation(event: Event) {
     event.stopPropagation();
+  }
+
+  /// register 
+  getRoleIdByRoleName(roleName: string):void{
+    this.roleService.getRoleIDByRoleName(roleName).subscribe((response)=>{
+      this.roleID = response.RoleID;
+    })
+  }
+
+  handleRegisterUser(): void {
+    this.isRegisterUserSubmitted = true;
+    if (this.registerUserForm.invalid) {
+      this.focusFirstInvalidControl(this.registerUserForm); // Gọi hàm để tập trung vào trường đầu tiên không hợp lệ
+      return; // Dừng lại nếu form không hợp lệ
+    }
+  }
+
+  handleRegisterLandlord(): void {
+    this.isRegisterLandlordSubmitted = true;
+    if (this.registerLandlordForm.invalid) {
+      this.focusFirstInvalidControl(this.registerLandlordForm); // Gọi hàm để tập trung vào trường đầu tiên không hợp lệ
+      return; // Dừng lại nếu form không hợp lệ
+    }
   }
 }
