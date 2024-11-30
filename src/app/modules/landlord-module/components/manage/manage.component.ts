@@ -1,4 +1,8 @@
 import { Component } from '@angular/core';
+import { Landlord } from 'src/app/interfaces/landlord';
+import { AuthService } from 'src/app/services/auth.service';
+import { LandlordService } from 'src/app/services/landlord.service';
+
 
 @Component({
   selector: 'app-manage',
@@ -8,7 +12,40 @@ import { Component } from '@angular/core';
 export class ManageComponent {
   isShowPopupAddMotel = false;
   isShowPopupUpdateProfile = false
+  landlord: Landlord;
 
+  constructor(private authService: AuthService, private landlordService: LandlordService){
+    this.landlord = {
+      _id: '',
+      Email: '',
+      LandlordName: '',
+      Image: '',
+      PhoneNumber: '',
+      ListMotels: [],
+      Address: '',
+      CreateAt: '',
+      UpdateAt: '',
+      UpdateBy:  null,
+    };
+  }
+
+  ngOnInit(): void {
+    this.getInfoLandlord();
+  }
+
+  getInfoLandlord() :void{
+    const email = this.authService.getEmailFromToken();
+    this.landlordService.getLandlordByEmail(email).subscribe({
+      next: (response) => {
+        this.landlord= response 
+      },
+      error: (roleError) => {
+        console.log('Lỗi khi lấy thông tin!', roleError.error.message);
+      }
+    })
+  }
+
+  
   showPopupAddMotel(): void {
     this.isShowPopupAddMotel = true
     const popupAddMotel = document.getElementById('popupAddMotel') as HTMLElement;

@@ -13,19 +13,19 @@
             <a routerLink="/client/home/map" class="font-semibold px-3 py-3 hover:bg-[#1a4f9f] rounded-[3px] text-white md:flex hidden">Xem trên bảng đồ</a>
         </div>
         <div class="flex">
-            <div class="flex items-center gap-3" *ngIf="true">
+            <div class="flex items-center gap-3" *ngIf="!isLogin">
                 <div (click)="showPopupLoginRegister()" class="h-[48px] px-2 sm:px-3 py-2 rounded-sm cursor-pointer hover:bg-[#1a589f] md:hidden flex justify-center items-center " >
                     <img class="h-[32px] w-[32px] object-cover" src="/assets/images/user.png" alt="">
                 </div>
-                <button class="ntt-custom-button md:flex hidden" (click)="showPopupLoginRegister()"><span>Đăng ký/Đăng nhập</span></button>
+                <button  class="ntt-custom-button md:flex hidden" (click)="showPopupLoginRegister()"><span>Đăng ký/Đăng nhập</span></button>
             </div>
-            <div *ngIf="false" class="h-[48px] md:bg-[#1a4f9f] hover:md:bg-[#1a589f] hover:bg-[#1a4f9f] bg-[transparant] w-fit px-2 sm:px-3 py-[6px] text-white flex items-center md:gap-2 gap-0 rounded-sm cursor-pointer">
+            <div *ngIf="isLogin" class="h-[48px] md:bg-[#1a4f9f] hover:md:bg-[#1a589f] hover:bg-[#1a4f9f] bg-[transparant] w-fit px-2 sm:px-3 py-[6px] text-white flex items-center md:gap-2 gap-0 rounded-sm cursor-pointer">
                 <div class="h-[34px] w-[34px] rounded-full border-2 border-white overflow-hidden">
-                    <img class="w-full h-full object-cover" src="/assets/images/img-motel.jpg" alt="">
+                    <img class="w-full h-full object-cover" [src]="user.Image ? 'http://localhost:3000/resources/img-users/' + user.Image : '/assets/images/default-avatar.png'"  alt="">
                 </div>
                 <div class="md:flex hidden flex-col mr-3 ">
-                    <div class="text-[14px] h-[18px] flex items-center font-medium">Nguyễn Thanh Tuấn</div>
-                    <div class="text-[12px] h-[16px] flex items-center font-semibold">tuan@gmail.com</div>
+                    <div class="text-[14px] h-[18px] flex items-center font-medium">{{user.Username}}</div>
+                    <div class="text-[12px] h-[16px] flex items-center font-semibold">{{user.Email}}</div>
                 </div>
                 <i class='bx bxs-chevron-down md:flex hidden'></i>
             </div>

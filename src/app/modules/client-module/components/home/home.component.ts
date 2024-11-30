@@ -36,41 +36,17 @@ export class HomeComponent {
   listAddressSuggest = [];
   marksPrice: NzMarks = {
     500000: {
-      style: {
-        color: 'black',
-        position: 'relative',
-        left: '35px',
-        top: '5px'
-      },
       label: '<p>500.000 VND</p>'
     },
     5000000: {
-      style: {
-        color: 'black',
-        position: 'relative',
-        left: '65%',
-        top: '5px'
-      },
       label: '<p>5.000.000 VND</p>'
     },
   };
   marksDistance: NzMarks = {
     0: {
-      style: {
-        color: '#535353',
-        position: 'relative',
-        left: '15px',
-        'font-size': '13px'
-      },
       label: '<p>0 km</p>'
     },
     7: {
-      style: {
-        color: '#535353',
-        position: 'relative',
-        left: '89%',
-        'font-size': '13px'
-      },
       label: '<p>7 km</p>'
     },
   };
@@ -104,6 +80,7 @@ export class HomeComponent {
       }
     });
   }
+  
   ngAfterViewInit(): void {
     this.formSearch.get('address')!.valueChanges.pipe(debounceTime(500)).subscribe(() => {
       this.handleSuggestSearchAddress();

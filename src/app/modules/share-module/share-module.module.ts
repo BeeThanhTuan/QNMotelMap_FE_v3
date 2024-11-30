@@ -11,6 +11,7 @@ import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CapitalizePipe } from './pipes/capitalize.pipe';
 import { CapitalizeDirective } from './directives/capitalize.directive';
+import { PhonePipe } from './pipes/phone.pipe';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { CapitalizeDirective } from './directives/capitalize.directive';
     HeaderBarComponent,
     LoginComponent,
     CapitalizePipe,
-    CapitalizeDirective
+    CapitalizeDirective,
+    PhonePipe
   ],
   imports: [
     CommonModule, // Import CommonModule cho các chỉ thị cơ bản

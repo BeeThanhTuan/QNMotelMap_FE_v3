@@ -11,11 +11,11 @@
                 <div class="flex">
                     <div class=" sm:w-[160px] sm:h-[160px] mb:w-[100px] mb:h-[100px] w-[90px] h-[90px]  rounded-full
                      sm:border-4 border-2 border-white overflow-hidden relative sm:-top-[45px] mb:-top-[30px] -top-[20px] ">
-                        <img class="w-full h-full object-cover" src="/assets/images/img-motel.jpg" alt="">
+                        <img class="w-full h-full object-cover" [src]="landlord.Image ? 'http://localhost:3000/resources/img-users/' + landlord.Image : '/assets/images/default-avatar.png'" alt="">
                     </div>
                     <div class="sm:mt-6 sm:mb-4 mt-3 mb-2  flex flex-col sm:gap-2 gap-0 text-custom-color-black ml-3">
-                        <p class="sm:text-[30px] mb:text-[20px] text-[17px] sm:font-bold font-semibold">Nguyễn Thanh Tuấn</p>
-                        <p class="sm:text-[20px] mb:text-[15px] text-[13px] font-medium text-custom-color-black-light">tuan@gmail.com</p>
+                        <p class="sm:text-[30px] mb:text-[20px] text-[17px] sm:font-bold font-semibold">{{landlord.LandlordName}}</p>
+                        <p class="sm:text-[20px] mb:text-[15px] text-[13px] font-medium text-custom-color-black-light">{{landlord.Email}}</p>
                     </div>
                 </div>
                 <div class="flex justify-center items-center">
@@ -166,3 +166,4 @@
 <!-- End root -->
  <app-popup-add-motel *ngIf="isShowPopupAddMotel"></app-popup-add-motel>
  <app-update-profile-landlord *ngIf="isShowPopupUpdateProfile"></app-update-profile-landlord>
+ <app-login></app-login>

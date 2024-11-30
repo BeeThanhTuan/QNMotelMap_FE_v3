@@ -4,7 +4,7 @@ import { Landlord } from 'src/app/interfaces/landlord';
 import { RoomType } from 'src/app/interfaces/roomType';
 import { LandlordService } from 'src/app/services/landlord.service';
 import { MotelService } from 'src/app/services/motel.service';
-import { RoomService } from 'src/app/services/room.service';
+import { RoomTypeService } from 'src/app/services/roomType.service';
 
 @Component({
   selector: 'app-room-type-detail',
@@ -19,7 +19,7 @@ export class RoomTypeDetailComponent {
   //collection image
   isCollectionImageOpen = false;
   currentIndex = 0;
-  constructor(private roomService: RoomService, private router: Router, private landlordService: LandlordService, private motelService: MotelService){
+  constructor(private roomTypeService: RoomTypeService, private router: Router, private landlordService: LandlordService, private motelService: MotelService){
     this.landlord = {
       _id: '',
       Email: '',
@@ -36,7 +36,7 @@ export class RoomTypeDetailComponent {
   ngOnInit(): void {
     this.getIDRoomFormUrl();
     this.getIDMotelFormUrl()
-    this.getListRoomFormIDMotel(this.idRoom);
+    this.getListRoomTypeFormIDMotel(this.idRoom);
     this.getIDLandlordByIDMotel(this.idMotel)
    }
  
@@ -58,8 +58,8 @@ export class RoomTypeDetailComponent {
     })
   }
  
-  getListRoomFormIDMotel(id: string): void {
-    this.roomService.getRoomByIDRRoom(id).subscribe((data)=>{
+  getListRoomTypeFormIDMotel(id: string): void {
+    this.roomTypeService.getRoomTypeByIDRoomType(id).subscribe((data)=>{
       this.roomType = data  
       console.log(this.roomType);
       

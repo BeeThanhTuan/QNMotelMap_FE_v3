@@ -23,4 +23,11 @@ export class LandlordService {
     )
   }
 
+  public getLandlordByEmail(email: string): Observable<Landlord> {
+    const url = `${this.REST_API_SERVER}/api/landlord-by-email/${email}`;
+    return this.httpClient.get<Landlord>(url).pipe(
+      map((response:any) => response.data) 
+    )
+  }
+
 }

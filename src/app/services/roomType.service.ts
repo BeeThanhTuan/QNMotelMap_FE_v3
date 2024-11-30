@@ -5,7 +5,7 @@ import { RoomType } from '../interfaces/roomType';
 @Injectable({
   providedIn: 'root'
 })
-export class RoomService {
+export class RoomTypeService {
   private REST_API_SERVER = 'http://localhost:3000';
   private httpOptions = {
     headers: new HttpHeaders({
@@ -14,15 +14,15 @@ export class RoomService {
   };
   constructor(private httpClient: HttpClient) {}
 
-  public getRoomsByIDMotel(id: string): Observable<RoomType[]> {
-    const url = `${this.REST_API_SERVER}/api/roomTypes/${id}`;
+  public getRoomTypesByIDMotel(id: string): Observable<RoomType[]> {
+    const url = `${this.REST_API_SERVER}/api/room-types/${id}`;
     return this.httpClient.get<RoomType[]>(url).pipe(
       map((response:any) => response.data) 
     )
   }
 
-  public getRoomByIDRRoom(id: string): Observable<RoomType> {
-    const url = `${this.REST_API_SERVER}/api/roomType/${id}`;
+  public getRoomTypeByIDRoomType(id: string): Observable<RoomType> {
+    const url = `${this.REST_API_SERVER}/api/room-type/${id}`;
     return this.httpClient.get<RoomType>(url).pipe(
       map((response:any) => response.data) 
     )

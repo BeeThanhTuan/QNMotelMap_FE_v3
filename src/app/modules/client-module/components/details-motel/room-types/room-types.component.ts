@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { RoomType } from 'src/app/interfaces/roomType';
-import { RoomService } from 'src/app/services/room.service';
+import { RoomTypeService } from 'src/app/services/roomType.service';
 
 @Component({
   selector: 'app-room-types',
@@ -11,7 +11,7 @@ import { RoomService } from 'src/app/services/room.service';
 export class RoomTypesComponent {
   idMotel!: string;
   listRooms : RoomType[] = [] ;
-  constructor(private router: Router, private roomService: RoomService) {}
+  constructor(private router: Router, private roomTypeService: RoomTypeService) {}
 
   ngOnInit(): void {
     this.getIDMotelFormUrl();
@@ -26,7 +26,7 @@ export class RoomTypesComponent {
    }
  
   getListRoomFormIDMotel(id: string): void {
-    this.roomService.getRoomsByIDMotel(id).subscribe((data)=>{
+    this.roomTypeService.getRoomTypesByIDMotel(id).subscribe((data)=>{
       this.listRooms = data  
     }) 
    }

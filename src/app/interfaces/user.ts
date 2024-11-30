@@ -2,7 +2,6 @@ export interface User {
   _id: string;
   Email: string;
   Username: string;
-  Password: string;
   RoleID: string;
   Image: string;
   PhoneNumber: string;

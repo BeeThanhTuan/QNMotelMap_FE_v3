@@ -17,7 +17,7 @@
                             <button type="button" class="text-custom-bg-blue-light text-[16px] px-3 py-[6px] rounded-md  hover:bg-[#eeeeee]" (click)="showPopupUpdateAvatar()">Chỉnh sửa</button>
                         </div>
                         <div class="w-full flex items-center justify-center py-5">
-                            <img src="assets/images/img-motel.jpg" alt="" class="w-[168px] h-[168px] rounded-full">
+                            <img [src]="landlord.Image ? 'http://localhost:3000/resources/img-users/' + landlord.Image : '/assets/images/default-avatar.png'" alt="" class="w-[168px] h-[168px] rounded-full">
                         </div>
                     </div>
                 </div>
@@ -30,15 +30,15 @@
                         <div class="w-full flex flex-col gap-3 mt-3  text-custom-color-black-light">
                             <div class="flex items-center gap-2">
                                 <i class='bx bxs-user text-[22px] text-[#839abe]'></i>
-                                <div class="text-[15px] font-normal flex">Họ và tên: <span class="ml-1 capitalize font-medium"> Nguyễn Thanh Tuấn</span></div>
+                                <div class="text-[15px] font-normal flex">Họ và tên: <span class="ml-1 capitalize font-medium">{{landlord.LandlordName}}</span></div>
                             </div>
                             <div class="flex items-center gap-2">
                                 <i class='bx bxs-map text-[22px] text-[#839abe]'></i>
-                                <div class="text-[15px] font-normal flex">Địa chỉ: <span class="ml-1 capitalize font-medium"> 79 Biên cương, Bình định</span></div>
+                                <div class="text-[15px] font-normal flex">Địa chỉ: <span class="ml-1 capitalize font-medium">{{landlord.Address}}</span></div>
                             </div>
                             <div class="flex items-center gap-2">
                                 <i class='bx bxs-phone text-[22px] text-[#839abe]'></i>
-                                <div class="text-[15px] font-normal flex">Số điện thoại: <span class="ml-1 capitalize font-medium"> 0392 323 923</span></div>
+                                <div class="text-[15px] font-normal flex">Số điện thoại: <span class="ml-1 capitalize font-medium">{{landlord.PhoneNumber | phone }}</span></div>
                             </div>
                         </div>
                     </div>

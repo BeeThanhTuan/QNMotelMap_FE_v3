@@ -12,11 +12,13 @@ import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { PopupAddMotelComponent } from './components/popup-add-motel/popup-add-motel.component';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { UpdateProfileLandlordComponent } from './components/update-profile-landlord/update-profile-landlord.component';
+import { PhonePipe } from './pipes/phone.pipe';
 @NgModule({
   declarations: [
     ManageComponent,
     PopupAddMotelComponent,
     UpdateProfileLandlordComponent,
+    PhonePipe,
   ],
   imports: [
     CommonModule,

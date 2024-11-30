@@ -1,5 +1,5 @@
 <div id="popupAddMotel" class="overlay w-full min-w-[310px] h-[100vh] fixed top-0 left-0 justify-center items-center bg-[rgba(34,34,34,0.7)] z-50 flex">
-    <div id="containerAddMotel" class="container max-w-custom sm:h-[80vh] h-[100vh] bg-white relative sm:rounded-xl rounded-none animate-appear" (click)="stopPropagation($event)">
+    <div id="containerAddMotel" class="container max-w-custom sm:h-[85vh] h-[100vh] bg-white relative sm:rounded-xl rounded-none overflow-hidden animate-appear" (click)="stopPropagation($event)">
         <div class="w-full p-2 relative flex mb:flex-row-reverse flex-row mb:justify-between items-center border-b">
             <div class="w-[35px] h-[35px] mb:bg-white hover:bg-[#f4f4f4] text-custom-color-black mb:rounded-full rounded-md flex justify-center items-center cursor-pointer" (click)="hiddenPopupAddMotel()">
                 <i class='bx bx-x text-[30px] hidden mb:flex'></i>
@@ -8,7 +8,7 @@
             <div class="font-semibold mb:ml-3 ml-2 mb:text-[20px] text-[18px] mb:text-custom-color-black">Thêm nhà trọ mới</div>
         </div>
         <!-- Apply overflow-y-auto here for form scrolling -->
-        <div class="w-full p-4 pt-6  overflow-y-auto h-[calc(100%-52px)]">
+        <div class="w-full p-4 pt-6  overflow-y-auto h-[calc(100%-125px)]">
             <form [formGroup]="addMotelForm" class="grid grid-cols-1 sm:grid-cols-2 gap-5 ">
                 <div class="relative w-full mb-2">
                     <div>
@@ -226,9 +226,11 @@
                         </label>
                     </div>
                 </div>
-                <div *ngIf="!haveWifi"></div>
-                <button class="h-[48px] w-full text-[16px] font-medium text-white bg-[#0045a8] px-5 py-[14px] rounded-md hover:bg-[#336ab9] hover:ntt-shadow-button-login" type="submit" (click)="handleAddMotel()">Thêm</button>
+                <div *ngIf="!haveWifi" class="mb-2"></div>
             </form>
+        </div>
+        <div class="w-full absolute left-0 bottom-0 bg-white p-3 border-t flex justify-end">
+            <button class="h-[48px] sm:w-1/2 w-full text-[16px] font-medium text-white bg-[#0045a8] px-5 py-[14px] rounded-md hover:bg-[#336ab9] hover:ntt-shadow-button-login" type="submit" (click)="handleAddMotel()">Thêm</button>
         </div>
     </div>
 </div>
