@@ -13,9 +13,7 @@ import { MotelService } from 'src/app/services/motel.service';
 })
 export class OverallComponent {
   motel: Motel ;
-  landlord: Landlord;
   idMotel!: string;
-  idLandlord!: string;
 
   //collection image
   isCollectionImageOpen = false;
@@ -25,7 +23,6 @@ export class OverallComponent {
       _id: '',
       NameMotel: '',
       Location: '',
-      LandlordID: '',
       ListImages: [], 
       Address: '',
       WardCommune: '',
@@ -39,24 +36,15 @@ export class OverallComponent {
       ListRoomTypes: null,
       ListRatings: [],
       Distance: 0,
-      TotalStar: 0,
+      LandlordName: '',
+      PhoneNumberContact: '',
+      AddressLandlord: '',
+      TotalRating: 0,
+      TotalAvailableRoom: 0,
       CreateAt: '',
       CreateBy: null,
       UpdateAt: '',
       UpdateBy: null,
-    };
-
-    this.landlord = {
-      _id: '',
-      Email: '',
-      LandlordName: '',
-      Image: '',
-      PhoneNumber: '',
-      ListMotels: [],
-      Address: '',
-      CreateAt: '',
-      UpdateAt: '',
-      UpdateBy:  null,
     };
   }
 
@@ -72,21 +60,12 @@ export class OverallComponent {
     this.idMotel = segments[segments.length - 2];
   }
 
-  async getDataMotel(id: string): Promise<void> {
-    try {
-      const data = await firstValueFrom(this.motelService.getMotelByID(id));
-      this.motel = data;
-      this.getDataLandlord(data.LandlordID);
-    } catch (error) {
-      console.error('Error fetching motel data:', error);
-    }
-  }
-
-  getDataLandlord(id: string) :void{
-    this.landlordService.getLandlordByID(id).subscribe((data)=>{  
-      this.landlord = data
+  getDataMotel(id: string):void {
+    this.motelService.getMotelByID(id).subscribe((response)=>{
+      this.motel = response
     })
   }
+
 
   handleViewOnMapSpecificallyMotel(location: string):void {
     this.router.navigate(['/client/home/map'], { 

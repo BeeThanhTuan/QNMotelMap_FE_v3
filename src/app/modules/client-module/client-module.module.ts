@@ -33,6 +33,8 @@ import { NzRateModule } from 'ng-zorro-antd/rate';
 import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+
 //loading
 import { NgxSpinnerModule } from "ngx-spinner";
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
@@ -76,6 +78,7 @@ import { LineBreakPipe } from './pipes/line-break.pipe';
     NzDrawerModule,
     NzDropDownModule,
     NzRadioModule,
+    NzToolTipModule,
     NgxSpinnerModule,
     NgxSkeletonLoaderModule
   ]

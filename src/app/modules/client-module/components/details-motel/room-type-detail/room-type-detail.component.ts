@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { Router} from '@angular/router';
+import { response } from 'express';
 import { Landlord } from 'src/app/interfaces/landlord';
+import { Motel } from 'src/app/interfaces/motel';
 import { RoomType } from 'src/app/interfaces/roomType';
 import { LandlordService } from 'src/app/services/landlord.service';
 import { MotelService } from 'src/app/services/motel.service';
@@ -15,31 +17,25 @@ export class RoomTypeDetailComponent {
   idRoom!: string;
   idMotel!: string;
   roomType!: RoomType;
-  landlord!: Landlord;
+  motel!: Motel;
   //collection image
   isCollectionImageOpen = false;
   currentIndex = 0;
   constructor(private roomTypeService: RoomTypeService, private router: Router, private landlordService: LandlordService, private motelService: MotelService){
-    this.landlord = {
-      _id: '',
-      Email: '',
-      LandlordName: '',
-      Image: '',
-      PhoneNumber: '',
-      Address: '',
-      ListMotels: [],
-      CreateAt: '',
-      UpdateAt: '',
-      UpdateBy:  null,
-    }
+    
   }
   ngOnInit(): void {
     this.getIDRoomFormUrl();
     this.getIDMotelFormUrl()
     this.getListRoomTypeFormIDMotel(this.idRoom);
-    this.getIDLandlordByIDMotel(this.idMotel)
    }
  
+  getInfoMotel():void{
+    this.motelService.getMotelByID(this.idMotel).subscribe((response)=>{
+      this.motel = response
+    })
+  }
+
   getIDRoomFormUrl():void {
     const url = this.router.url
     const segments = url.split('/');
@@ -52,23 +48,11 @@ export class RoomTypeDetailComponent {
     this.idMotel = segments[segments.length - 3];
   }
 
-  getIDLandlordByIDMotel(id: string): void{
-    this.motelService.getMotelByID(id).subscribe((data)=>{
-      this.getLandlordByID(data.LandlordID);
-    })
-  }
- 
   getListRoomTypeFormIDMotel(id: string): void {
     this.roomTypeService.getRoomTypeByIDRoomType(id).subscribe((data)=>{
       this.roomType = data  
       console.log(this.roomType);
       
-    }) 
-  }
-
-  getLandlordByID(id: string): void {
-    this.landlordService.getLandlordByID(id).subscribe((data)=>{
-      this.landlord = data  
     }) 
   }
 

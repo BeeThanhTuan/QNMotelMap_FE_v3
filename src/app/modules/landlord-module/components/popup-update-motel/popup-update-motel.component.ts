@@ -1,4 +1,5 @@
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
+import { NzUploadFile } from 'ng-zorro-antd/upload';
 import { listWardCommune } from '../../../../other-data/list-ward-commune';
 import { Convenient } from 'src/app/interfaces/convenient';
 import { ConvenientService } from 'src/app/services/convenient.service';
@@ -13,19 +14,22 @@ import { AuthService } from 'src/app/services/auth.service';
 import { UserService } from 'src/app/services/user.service';
 import { User } from 'src/app/interfaces/user';
 import { Motel } from 'src/app/interfaces/motel';
+import { Images } from 'src/app/interfaces/images';
 
 const API_KEY = 'L8v4NrOC0ATKuzJoQA7ueDZqAVrsRVXLi0YJhXyG';
 
 @Component({
-  selector: 'app-popup-add-motel',
-  templateUrl: './popup-add-motel.component.html',
-  styleUrls: ['./popup-add-motel.component.css'],
+  selector: 'app-popup-update-motel',
+  templateUrl: './popup-update-motel.component.html',
+  styleUrls: ['./popup-update-motel.component.css']
 })
-export class PopupAddMotelComponent implements OnInit {
+export class PopupUpdateMotelComponent {
   listImages: File[] = [];
   imageUrls: string[] = [];
+  listOldImages: Images[] = [];
+  listOldImagesRemove: string[] = []
   listWardCommune = listWardCommune;
-  addMotelForm!: FormGroup;
+  updateMotelForm!: FormGroup;
   checkConvenient: { label: string; value: string; checked: boolean }[] = [];
   haveWifi = false;
   location!: string;
@@ -33,6 +37,7 @@ export class PopupAddMotelComponent implements OnInit {
   firstInvalidControl: string | null = null;
   user!: User;
   @Input() landlord!: Landlord;
+  @Input() motel!: Motel;
   @Output() newMotel = new EventEmitter<Motel>();
 
   //map properties
@@ -48,34 +53,41 @@ export class PopupAddMotelComponent implements OnInit {
     private userService: UserService,
   ) {
     this.initializeForm();
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if(changes['landlord']){
-     this.setInfoLandlordIntoFields();
-    }
-    
+    this.getAllConvenient();
   }
 
   ngOnInit(): void {
-    this.getAllConvenient();
     this.getInfoUser();
   }
+  
+  ngOnChanges(changes: SimpleChanges): void {
+    setTimeout(()=>{
+      if (changes['motel'] && changes['landlord'] ) { 
+        console.log(12);
+        
+        this.setInfoIntoForm(this.motel);
+      }
+    },100)
+  }
+
 
   ngAfterViewInit(): void {
     this.initializeMap();
-    this.addMotelForm
+    this.updateMotelForm
       .get('address')!
       .valueChanges.pipe(debounceTime(500))
       .subscribe(() => {
         this.getLocation();
       });
-    this.addMotelForm
+    this.updateMotelForm
       .get('wardCommune')!
       .valueChanges.pipe(debounceTime(500))
       .subscribe(() => {
         this.getLocation();
       });
+      setTimeout(()=>{
+        this.getLocation();
+      },100)
   }
 
   getInfoUser() :void{
@@ -91,7 +103,7 @@ export class PopupAddMotelComponent implements OnInit {
   }
 
   initializeForm(): void {
-    this.addMotelForm = this.formBuilder.group({
+    this.updateMotelForm = this.formBuilder.group({
       nameMotel: [''],
       price: [null, [Validators.required]],
       address: ['', [Validators.required]],
@@ -108,46 +120,89 @@ export class PopupAddMotelComponent implements OnInit {
     });
   }
 
-  setInfoLandlordIntoFields() :void{
-    this.addMotelForm.get('landlordName')?.setValue(this.landlord.LandlordName);
-    this.addMotelForm.get('phoneNumberContact')?.setValue(this.landlord.PhoneNumber);
-    this.addMotelForm.get('addressLandlord')?.setValue(this.landlord.Address);
+  setInfoIntoForm(motel: Motel){
+    this.updateMotelForm.patchValue({
+      nameMotel: motel.NameMotel,
+      price: motel.Price,
+      address: motel.Address,
+      wardCommune: motel.WardCommune,
+      description: motel.Description,
+      wifiBill: motel.WifiBill ? motel.WifiBill: null ,
+      electricityBill:  motel.ElectricityBill,
+      waterBill: motel.WaterBill,
+      liveWithLandlord: !motel.LiveWithLandlord,
+      landlordName: motel.LandlordName,
+      phoneNumberContact: motel.PhoneNumberContact,
+      addressLandlord: motel.AddressLandlord,
+    },
+    { emitEvent: false }
+    );
+
+    this.listOldImages = [...motel.ListImages]
+
+    // Chuyển đổi danh sách từ motel thành đối tượng cần thiết
+    const checkedConvenient = (motel?.ListConvenient || []).map((convenient) => ({
+      label: convenient.NameConvenient,
+      value: convenient._id,
+      checked: true, // Đánh dấu là đã chọn
+    }));
+
+    // Khởi tạo danh sách checkConvenient nếu chưa có
+    const checkConvenient = this.checkConvenient || [];
+
+    // Tạo Map để hợp nhất danh sách (loại bỏ trùng lặp dựa trên value)
+    const convenientMap = new Map<string, { label: string; value: string; checked: boolean }>(
+      [...checkConvenient, ...checkedConvenient].map((convenient) => [convenient.value, convenient])
+    );
+
+    // Cập nhật lại this.checkConvenient với danh sách hợp nhất
+    this.checkConvenient = Array.from(convenientMap.values());
+
+    // Lọc danh sách các tiện nghi đã chọn (checked === true)
+    const selectedConvenient = this.checkConvenient
+      .filter((convenient) => convenient.checked)
+      .map((convenient) => convenient.value);
+
+    // Cập nhật giá trị vào form
+    this.updateMotelForm.patchValue({
+      listConvenient: selectedConvenient, // Đảm bảo không lặp mảng
+    });
   }
 
   get addressControl() {
-    return this.addMotelForm.get('address');
+    return this.updateMotelForm.get('address');
   }
 
   get wardCommuneControl() {
-    return this.addMotelForm.get('wardCommune');
+    return this.updateMotelForm.get('wardCommune');
   }
 
   get priceControl() {
-    return this.addMotelForm.get('price');
+    return this.updateMotelForm.get('price');
   }
 
   get descriptionControl() {
-    return this.addMotelForm.get('description');
+    return this.updateMotelForm.get('description');
   }
 
   get electricityBillControl() {
-    return this.addMotelForm.get('electricityBill');
+    return this.updateMotelForm.get('electricityBill');
   }
 
   get waterBillControl() {
-    return this.addMotelForm.get('waterBill');
+    return this.updateMotelForm.get('waterBill');
   }
 
   get landlordNameControl() {
-    return this.addMotelForm.get('landlordName');
+    return this.updateMotelForm.get('landlordName');
   }
 
   get phoneNumberContactControl() {
-    return this.addMotelForm.get('phoneNumberContact');
+    return this.updateMotelForm.get('phoneNumberContact');
   }
 
   get addressLandlordControl() {
-    return this.addMotelForm.get('addressLandlord');
+    return this.updateMotelForm.get('addressLandlord');
   }
 
   // Initialize map
@@ -174,34 +229,45 @@ export class PopupAddMotelComponent implements OnInit {
       });
     } else {
       this.haveWifi = false;
+      this.updateMotelForm.get('wifiBill')?.setValue(null);
     }
   }
 
-  getAllConvenient(): void {
-    this.convenientService
-      .getAllConvenient()
-      .subscribe((response: Convenient[]) => {
-        this.checkConvenient = response.map((convenient) => ({
-          label: convenient.NameConvenient,
-          value: convenient._id,
-          checked: false,
-        }));
-      });
+  getAllConvenient(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.convenientService.getAllConvenient().subscribe(
+        (response: Convenient[]) => {
+          this.checkConvenient = response.map((convenient) => ({
+            label: convenient.NameConvenient,
+            value: convenient._id,
+            checked: false,
+          }));
+          resolve(); // Khi thành công
+        },
+        (error) => {
+          console.error('Error fetching conveniences:', error);
+          reject(error); // Khi lỗi
+        }
+      );
+    });
   }
 
-  handleAddMotel(): void {
+  handleUpdateMotel(): void {
     let checkConvenient = this.checkConvenient
-      .filter((convenient) => convenient.checked === true)
-      .map((convenient) => convenient.value);
-    this.addMotelForm.patchValue({
+    .filter((convenient) => convenient.checked === true)
+    .map((convenient) => convenient.value);
+    this.updateMotelForm.patchValue({
       listConvenient: [...checkConvenient],
     });
-    if (this.addMotelForm.invalid || this.listImages.length === 0) {
-      this.focusFirstInvalidControl(this.addMotelForm);
+
+    if (this.updateMotelForm.invalid || (this.listImages.length + this.listOldImages.length) === 0) {
+      this.focusFirstInvalidControl(this.updateMotelForm);
       return;
-    } else {
+    } 
+    else {
+      const idMotel = this.motel?._id
       const data = new FormData();
-      const formValues = this.addMotelForm.value;
+      const formValues = this.updateMotelForm.value;
       for (const key in formValues) {
         if (formValues.hasOwnProperty(key)) {
           const value = formValues[key];
@@ -212,20 +278,23 @@ export class PopupAddMotelComponent implements OnInit {
       for (let file of this.listImages) {
         data.append('listImages', file);
       }
+      data.append('listOldImagesRemove', JSON.stringify(this.listOldImagesRemove));
       data.append('location', this.location);
       data.append('distance', this.distance.toString());
-      data.append('userID', this.user._id);
-      data.append('landlordID', this.landlord._id);
+      data.append('userID', this.user?._id);
+      data.append('landlordID', this.landlord?._id);
+      
 
-
-      this.motelService.addNewMotel(data).subscribe({
+      this.motelService.updateInfoMotelByID(idMotel, data).subscribe({
         next: (response) => {
-          this.alertService.showSuccess('Thêm mới thành công!', 'Bạn đã thêm thành công nhà trọ mới');
+          this.hiddenPopupUpdateMotel();
+          this.alertService.showSuccess('Cập nhật thành công!', 'Bạn đã cập nhật thành công thông tin nhà trọ');
           this.newMotel.emit(response);
-          this.hiddenPopupAddMotel();
+          this.setInfoIntoForm(response);  
+          console.log(response);
         },
         error: (error) => {
-          this.alertService.showError('Thêm mới thất bại!', error.error.message); 
+          this.alertService.showError('Cập nhật mới thất bại!', error.error.message); 
         }
       })
       
@@ -233,8 +302,8 @@ export class PopupAddMotelComponent implements OnInit {
   }
 
   async getLocation(): Promise<void> {
-    const street = this.addMotelForm.get('address')?.value;
-    const wardCommune = this.addMotelForm.get('wardCommune')?.value;
+    const street = this.updateMotelForm.get('address')?.value;
+    const wardCommune = this.updateMotelForm.get('wardCommune')?.value;
   
     if (!street || !wardCommune) {
       console.log('Vui lòng nhập cả số nhà, tên đường và phường/xã.');
@@ -350,19 +419,20 @@ export class PopupAddMotelComponent implements OnInit {
     }
   }
 
-  hiddenPopupAddMotel() {
-    const popupAddMotel = document.getElementById(
-      'popupAddMotel'
+  hiddenPopupUpdateMotel() {
+    const popupUpdateMotel = document.getElementById(
+      'popupUpdateMotel'
     ) as HTMLElement;
     const body = document.querySelector('body') as HTMLElement;
     body.style.overflow = 'auto';
-    if (popupAddMotel && popupAddMotel.classList.contains('flex')) {
-      popupAddMotel.classList.remove('flex');
-      popupAddMotel.classList.add('hidden');
+    if (popupUpdateMotel && popupUpdateMotel.classList.contains('flex')) {
+      popupUpdateMotel.classList.remove('flex');
+      popupUpdateMotel.classList.add('hidden');
     }
-    this.addMotelForm.reset();
+    this.updateMotelForm.reset();
     this.listImages = [];
     this.imageUrls = [];
+    this.listOldImages = [...this.motel.ListImages];
   }
 
   stopPropagation(event: Event) {
@@ -374,8 +444,8 @@ export class PopupAddMotelComponent implements OnInit {
     const files: FileList = event.target.files;
     const filesArray = Array.from(files); // Chuyển FileList thành mảng
     // Kiểm tra nếu số lượng ảnh đã chọn vượt quá 8
-    if (this.listImages.length + filesArray.length > 8) {
-      this.alertService.showWarning('Cảnh báo!', 'Ảnh bạn chọn quá 8 ảnh!');
+    if (this.listImages.length + this.listOldImages.length  + filesArray.length > 8) {
+      this.alertService.showWarning('Cảnh báo!', 'Tổng số lương ảnh của nhà trọ là 8 ảnh!');
       return;
     }
     // Thêm ảnh vào danh sách
@@ -389,7 +459,7 @@ export class PopupAddMotelComponent implements OnInit {
   }
 
   // Hàm xóa ảnh
-  removeImage(imageUrl: string): void {
+  removeImageNew(imageUrl: string): void {
     // Tìm và xóa URL trong imageUrls
     const index = this.imageUrls.indexOf(imageUrl);
     if (index !== -1) {
@@ -401,6 +471,9 @@ export class PopupAddMotelComponent implements OnInit {
       this.listImages = this.listImages.filter((_, i) => i !== index);
     }
   }
-}
 
- 
+  removeImageOld(index: number, id: string): void{
+    this.listOldImages.splice(index, 1)
+    this.listOldImagesRemove.push(id);
+  }
+}

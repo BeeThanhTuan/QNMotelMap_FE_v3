@@ -11,9 +11,9 @@
                 <span class="mb:text-[18px] text-[15px] font-normal"><span class="w-fit h-fit text-custom-color-black-light text-[10px] relative -top-[2px]">●</span> khoảng cách tới trường {{motel.Distance}} km.</span>
             </div>
         </div>
-        <div title="Lưu" class="mb:w-[78px] w-fit flex justify-start mb:items-center items-end mt-5 mb:pb-0 pb-2">
-            <button class="mb:w-[55px] mb:h-[55px] w-[40px] h-[40px] flex justify-center items-center rounded-full border-2 border-[#e7e7e7] bg-white hover:bg-[#f2f2f2] group">
-                <i class="bx bx-heart mb:text-[35px] text-[25px] text-custom-color-black-light group-hover:text-[red]"></i>
+        <div class="mb:w-[78px] w-fit flex justify-start mb:items-center items-end mt-5 mb:pb-0 pb-2" >
+            <button class="mb:w-[55px] mb:h-[55px] w-[48px] h-[48px] flex justify-center items-center  group">
+                <i class="fa-solid fa-heart mb:text-[35px] text-[30px] text-[#babbbd] group-hover:text-[red]" nz-tooltip nzTooltipTitle="Lưu nhà trọ"></i>
             </button>
         </div>
     </div>
@@ -39,7 +39,7 @@
                             <span class="text-[15px] font-normal text-custom-color-black">{{motel.ListRatings.length}} đánh giá</span>
                         </div>
                         <div class="min-w-9 h-9 flex justify-center items-center bg-[#003B95] rounded-[5px] rounded-bl-none">
-                            <span class="text-[17px] font-semibold text-white">{{motel.TotalStar.toFixed(1)}}</span>
+                            <span class="text-[17px] font-semibold text-white">{{motel.TotalRating}}</span>
                         </div>
                     </div>
                     <div class="w-full p-4 pt-3 flex flex-col border-b border-[#e7e7e7]">
@@ -51,15 +51,15 @@
                         <div class="mt-3 flex flex-col gap-3">
                             <div class="w-full flex justify-start items-center gap-2 ">
                                 <i class="fa-solid fa-user text-[18px] text-custom-color-blue"></i>
-                                <span class="text-[15px] font-normal capitalize">{{landlord.LandlordName}}</span> 
+                                <span class="text-[15px] font-normal capitalize">{{motel.LandlordName}}</span> 
                             </div>
                             <div class="w-full flex justify-start items-center gap-2">
                                 <i class="fa-solid fa-phone text-[18px] text-custom-color-blue"></i>
-                                <span class="text-[15px] font-normal">{{landlord.PhoneNumber | phone}}</span>
+                                <span class="text-[15px] font-normal">{{motel.PhoneNumberContact | phone}}</span>
                             </div>
                             <div class="w-full flex justify-start items-center gap-2">
                                 <i class="fa-solid fa-location-dot text-[18px] text-custom-color-blue"></i>
-                                <span class="text-[15px] font-normal capitalize">{{landlord.Address}}</span>
+                                <span class="text-[15px] font-normal capitalize">{{motel.AddressLandlord}}</span>
                             </div>
                         </div>
                     </div>
@@ -81,7 +81,7 @@
         </div>
     </div>
     <div class="convenient w-full mb:mt-10 mt-0 mb:px-2 px-0 ">
-       <div class="mb:ntt-shadow-box mb:border-none border w-full mb:rounded-md rounded-none">
+       <div class="mb:border-none border w-full mb:rounded-md rounded-none">
             <div class="w-full border-b border-[#e7e7e7]">
                 <h3 class="p-4 mb:text-[20px] text-[17px] text-custom-color-black font-sans font-semibold">Tiện nghi của nhà trọ</h3>
             </div>
@@ -98,7 +98,7 @@
        </div>
     </div> <!--End convenient-->
     <div class="description w-full mb:mt-8 mt-0 mb:px-2 px-0 pb-10">
-        <div class="mb:ntt-shadow-box w-full rounded-md">
+        <div class="w-full rounded-md">
              <div class="w-full border-b border-[#e7e7e7]">
                  <h3 class="p-4 mb:text-[20px] text-[17px] text-custom-color-black font-sans font-semibold">Mô tả về nhà trọ</h3>
              </div>
@@ -112,6 +112,7 @@
         </div>
      </div> <!--End description-->
 </div>
+
 <div class="w-full h-[100vh] fixed top-0 left-0 overflow-hidden z-20 flex justify-center items-center animate-appear mb:animate-none" *ngIf="isCollectionImageOpen" >
     <div class="absolute w-full h-full bg-[rgba(0,0,0,0.6)] backdrop-blur-[1.5px]" (click)="handleCloseCollectionImage()"></div>
     <div class=" mx-auto relative mb:w-[95%] mb:h-[95%] w-full h-full bg-white z-10 mb:rounded-xl rounded-none flex flex-col overflow-hidden ">

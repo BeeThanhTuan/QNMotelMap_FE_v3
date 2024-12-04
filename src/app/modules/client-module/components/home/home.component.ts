@@ -155,7 +155,6 @@ export class HomeComponent {
       this.showBannerWrapper = false;
       this.showFormSearch = true; 
       this.showHeader = true; 
-
     }
   }
 

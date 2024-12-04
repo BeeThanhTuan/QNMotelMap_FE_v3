@@ -6,12 +6,12 @@ import Swal from 'sweetalert2';
 export class AlertService {
 
   constructor() { }
-  showSuccess(message: string) {
+  showSuccess(title:string, message: string) {
     Swal.fire({
-      title: 'Success',
+      title: title,
       text: message,
       icon: 'success',
-      confirmButtonText: 'Ok'
+      confirmButtonText: 'OK'
     });
   }
 
@@ -24,12 +24,12 @@ export class AlertService {
     });
   }
 
-  showWarning(message: string) {
+  showWarning(title:string, message: string) {
     Swal.fire({
-      title: 'Warning',
+      title: title,
       text: message,
       icon: 'warning',
-      confirmButtonText: 'Got it!'
+      confirmButtonText: 'OK'
     });
   }
 

@@ -7,7 +7,6 @@ export interface RoomType {
     _id: string;
     MotelID: string | Motel;
     ListImages: Images[];
-    Floor: number;
     Amount: number;
     Available: number;
     Area: number;

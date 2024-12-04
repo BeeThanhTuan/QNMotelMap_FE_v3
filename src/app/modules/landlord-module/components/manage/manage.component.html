@@ -1,10 +1,10 @@
 <div class="root min-w-[375px]">
     <div class="content_wrappper w-full text-base">
-        <header class="w-full bg-custom-bg-blue pt-2">
+        <header class="w-full bg-custom-bg-blue pt-2" >
             <app-header-bar/>
         </header>
-        <div class="max-w-custom mx-auto relative ">
-            <div class="w-full sm:h-[210px] h-[130px] bg-gray-200 rounded-bl-lg rounded-br-lg flex items-center ">
+        <div class="max-w-custom mx-auto relative " *ngIf="showHeader">
+            <div class="w-full sm:h-[210px] h-[130px] bg-gray-200 sm:rounded-bl-lg rounded-bl-none sm:rounded-br-lg rounded-br-none flex items-center ">
                 <div class="text-[30px]">Chào mừng bạn đến với</div>
             </div>
             <div class="w-full sm:h-[130px] h-[80px] relative sm:px-8 px-3 flex justify-between border-b border-slate-200">
@@ -27,143 +27,11 @@
             </div>
         </div>
         <main class="max-w-custom h-auto mx-auto sm:mt-5 mt-3 relative ">
-            <div class="w-full sm:ntt-shadow-box rounded-tl-lg rounded-tr-lg border md:border-slate-200 border-slate-300 border-b-transparent ">
-                <div class="sm:px-6 px-3 py-3 rounded-tl-lg rounded-tr-lg border-b flex justify-between items-center">
-                    <div><span class="font-medium md:text-[18px] text-[16px] ">Nhà trọ của bạn</span></div>
-                    <button class="md:h-[36px] h-[32px] md:px-3 px-2 py-[6px] bg-custom-color-blue rounded-md text-[15px] text-white flex items-center justify-center hover:bg-custom-bg-hover-blue">
-                        <i class='bx bx-plus-circle text-[18px]'></i>
-                        <span class="flex sm:hidden font-medium text-[13px] ml-1" (click)="showPopupAddMotel()">Thêm mới</span>
-                        <span class="sm:flex hidden font-medium ml-1" (click)="showPopupAddMotel()">Thêm nhà trọ mới</span>
-                    </button>
-                </div>
-                <div class="w-full">
-                    <ul class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 p-3 pb-10">
-                        <li class=" rounded-lg cursor-pointer overflow-hidden ntt-shadow-motel-card border">
-                            <div class="w-full h-full relative">
-                                <a class="w-full h-full flex sm:flex-col">
-                                    <div class="w-2/5 aspect-[4/3.2] sm:w-full sm:h-[250px] sm:aspect-square">
-                                        <img class="w-full h-full object-cover border" src="assets/images/img-motel.jpg" alt="Hình ảnh về nhà trọ">
-                                    </div>
-                                    <div class="w-3/5 p-2 flex flex-col gap-2 sm:w-full h-auto">
-                                        <div>
-                                            <div class="ntt-custom-name-motel text-[16px] font-semibold text-custom-color-black">
-                                                Tên nhà trọ
-                                            </div>
-                                            <div class="ntt-custom-address-motel text-[12px] font-normal text-custom-color-black-light">
-                                                79 Biên Cương, Ngô Mây
-                                            </div>
-                                        </div>
-                                        <div class="flex gap-2">
-                                            <div class="w-6 h-6 flex justify-center items-center bg-[#003B95] rounded-[3px] rounded-bl-none">
-                                                <span class="text-[12px] font-semibold text-white">5.0</span>
-                                            </div>
-                                            <div class="ntt-custom-address-motel text-[12px] font-normal text-custom-color-black-light">
-                                                <span>34</span> <span> đánh giá 0</span>
-                                            </div>
-                                        </div>
-                                        <div class="pb-1">
-                                            <div class="text-[16px] font-semibold text-custom-color-black text-right">1.123.333 VND</div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        </li>
-                        <li class=" rounded-lg cursor-pointer overflow-hidden ntt-shadow-motel-card border">
-                            <div class="w-full h-full relative">
-                                <a class="w-full h-full flex sm:flex-col">
-                                    <div class="w-2/5 aspect-[4/3.2] sm:w-full sm:h-[250px] sm:aspect-square">
-                                        <img class="w-full h-full object-cover border" src="assets/images/img-motel.jpg" alt="Hình ảnh về nhà trọ">
-                                    </div>
-                                    <div class="w-3/5 p-2 flex flex-col gap-2 sm:w-full h-auto">
-                                        <div>
-                                            <div class="ntt-custom-name-motel text-[16px] font-semibold text-custom-color-black">
-                                                Tên nhà trọ
-                                            </div>
-                                            <div class="ntt-custom-address-motel text-[12px] font-normal text-custom-color-black-light">
-                                                79 Biên Cương, Ngô Mây
-                                            </div>
-                                        </div>
-                                        <div class="flex gap-2">
-                                            <div class="w-6 h-6 flex justify-center items-center bg-[#003B95] rounded-[3px] rounded-bl-none">
-                                                <span class="text-[12px] font-semibold text-white">5.0</span>
-                                            </div>
-                                            <div class="ntt-custom-address-motel text-[12px] font-normal text-custom-color-black-light">
-                                                <span>34</span> <span> đánh giá 0</span>
-                                            </div>
-                                        </div>
-                                        <div class="pb-1">
-                                            <div class="text-[16px] font-semibold text-custom-color-black text-right">1.123.333 VND</div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        </li><li class=" rounded-lg cursor-pointer overflow-hidden ntt-shadow-motel-card border">
-                            <div class="w-full h-full relative">
-                                <a class="w-full h-full flex sm:flex-col">
-                                    <div class="w-2/5 aspect-[4/3.2] sm:w-full sm:h-[250px] sm:aspect-square">
-                                        <img class="w-full h-full object-cover border" src="assets/images/img-motel.jpg" alt="Hình ảnh về nhà trọ">
-                                    </div>
-                                    <div class="w-3/5 p-2 flex flex-col gap-2 sm:w-full h-auto">
-                                        <div>
-                                            <div class="ntt-custom-name-motel text-[16px] font-semibold text-custom-color-black">
-                                                Tên nhà trọ
-                                            </div>
-                                            <div class="ntt-custom-address-motel text-[12px] font-normal text-custom-color-black-light">
-                                                79 Biên Cương, Ngô Mây
-                                            </div>
-                                        </div>
-                                        <div class="flex gap-2">
-                                            <div class="w-6 h-6 flex justify-center items-center bg-[#003B95] rounded-[3px] rounded-bl-none">
-                                                <span class="text-[12px] font-semibold text-white">5.0</span>
-                                            </div>
-                                            <div class="ntt-custom-address-motel text-[12px] font-normal text-custom-color-black-light">
-                                                <span>34</span> <span> đánh giá 0</span>
-                                            </div>
-                                        </div>
-                                        <div class="pb-1">
-                                            <div class="text-[16px] font-semibold text-custom-color-black text-right">1.123.333 VND</div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        </li><li class=" rounded-lg cursor-pointer overflow-hidden ntt-shadow-motel-card border">
-                            <div class="w-full h-full relative">
-                                <a class="w-full h-full flex sm:flex-col">
-                                    <div class="w-2/5 aspect-[4/3.2] sm:w-full sm:h-[250px] sm:aspect-square">
-                                        <img class="w-full h-full object-cover border" src="assets/images/img-motel.jpg" alt="Hình ảnh về nhà trọ">
-                                    </div>
-                                    <div class="w-3/5 p-2 flex flex-col gap-2 sm:w-full h-auto">
-                                        <div>
-                                            <div class="ntt-custom-name-motel text-[16px] font-semibold text-custom-color-black">
-                                                Tên nhà trọ
-                                            </div>
-                                            <div class="ntt-custom-address-motel text-[12px] font-normal text-custom-color-black-light">
-                                                79 Biên Cương, Ngô Mây
-                                            </div>
-                                        </div>
-                                        <div class="flex gap-2">
-                                            <div class="w-6 h-6 flex justify-center items-center bg-[#003B95] rounded-[3px] rounded-bl-none">
-                                                <span class="text-[12px] font-semibold text-white">5.0</span>
-                                            </div>
-                                            <div class="ntt-custom-address-motel text-[12px] font-normal text-custom-color-black-light">
-                                                <span>34</span> <span> đánh giá 0</span>
-                                            </div>
-                                        </div>
-                                        <div class="pb-1">
-                                            <div class="text-[16px] font-semibold text-custom-color-black text-right">1.123.333 VND</div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        </li>
-                    </ul>                    
-                </div>
-            </div>
+            <router-outlet></router-outlet>
         </main>
     </div>
     <!-- End content wrapper -->
 </div>
 <!-- End root -->
- <app-popup-add-motel *ngIf="isShowPopupAddMotel"></app-popup-add-motel>
  <app-update-profile-landlord *ngIf="isShowPopupUpdateProfile"></app-update-profile-landlord>
  <app-login></app-login>

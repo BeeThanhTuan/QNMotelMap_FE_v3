@@ -9,9 +9,8 @@ import { jwtDecode } from 'jwt-decode';
 export class AuthService {
   private REST_API_SERVER = 'http://localhost:3000';
   private httpOptions = {
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json',
-    }),
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    withCredentials: true, // Đảm bảo gửi cookie qua CORS
   };
 
   private isLoginSubject = new BehaviorSubject<boolean>(false);
@@ -27,10 +26,11 @@ export class AuthService {
 
     return this.httpClient.post<any>(url, data, this.httpOptions).pipe(
       tap((response: any) => {
-        // Lưu accessToken vào localStorage
         const accessToken = response?.data?.accessToken;
-        if (accessToken) {
+        const refreshToken = response?.data?.refreshToken;
+        if (accessToken && refreshToken) {
           localStorage.setItem('accessToken', accessToken);
+          this.setRefreshTokenCookie(refreshToken);
           this.isLoginSubject.next(true);
         }
       }),
@@ -49,9 +49,9 @@ export class AuthService {
     );
   }
 
-  public refreshToken(): Observable<string> {
+  public refreshToken(): Observable<any> {
     const url = `${this.REST_API_SERVER}/api/refresh-token`; 
-    return this.httpClient.post<string>(url, {}, { withCredentials: true });
+    return this.httpClient.post<any>(url,{}, { withCredentials: true });
   }
 
   public decodeToken(token: string): any {
@@ -108,5 +108,12 @@ export class AuthService {
         console.log('Chưa đăng nhập');
       }
     });
+  }
+
+  // Hàm để set refreshToken vào cookie
+  private setRefreshTokenCookie(refreshToken: string): void {
+    const cookieExpireDate = new Date();
+    cookieExpireDate.setDate(cookieExpireDate.getDate() + 7); // Token sẽ hết hạn trong 7 ngày
+    document.cookie = `refreshToken=${refreshToken}; path=/; expires=${cookieExpireDate.toUTCString()}; secure; HttpOnly; SameSite=None`;
   }
 }

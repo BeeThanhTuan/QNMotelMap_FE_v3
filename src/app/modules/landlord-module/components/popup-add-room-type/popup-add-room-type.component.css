@@ -68,14 +68,31 @@ input:-moz-autofill {
 
 :host ::ng-deep nz-checkbox-group.ant-checkbox-group{
   display: grid;
-  grid-template-columns: repeat(4, 1fr); /* 4 cột với kích thước bằng nhau */
+  grid-template-columns: repeat(6, 1fr); /* 4 cột với kích thước bằng nhau */
   row-gap: 10px; /* Khoảng cách giữa các ô */
 }
 
 @media (max-width: 950px) {
   :host ::ng-deep nz-checkbox-group.ant-checkbox-group {
-    grid-template-columns: repeat(3, 1fr); /* Chuyển thành 3 cột */
+    grid-template-columns: repeat(5, 1fr); /* Chuyển thành 3 cột */
   }
+}
+
+@media (max-width: 750px) {
+    :host ::ng-deep nz-checkbox-group.ant-checkbox-group {
+      grid-template-columns: repeat(4, 1fr); /* Chuyển thành 3 cột */
+    }
+}
+
+@media (max-width: 550px) {
+    :host ::ng-deep nz-checkbox-group.ant-checkbox-group {
+      grid-template-columns: repeat(3, 1fr); /* Chuyển thành 3 cột */
+    }
+}
+@media (max-width: 400px) {
+    :host ::ng-deep nz-checkbox-group.ant-checkbox-group {
+      grid-template-columns: repeat(2, 1fr); /* Chuyển thành 3 cột */
+    }
 }
 
 :host ::ng-deep span {

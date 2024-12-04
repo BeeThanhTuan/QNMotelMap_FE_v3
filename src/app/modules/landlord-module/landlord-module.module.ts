@@ -13,12 +13,26 @@ import { PopupAddMotelComponent } from './components/popup-add-motel/popup-add-m
 import { NgxSpinnerModule } from "ngx-spinner";
 import { UpdateProfileLandlordComponent } from './components/update-profile-landlord/update-profile-landlord.component';
 import { PhonePipe } from './pipes/phone.pipe';
+import { MotelsComponent } from './components/motels/motels.component';
+import { MoneyPipe } from './pipes/money.pipe';
+import { PopupUpdateMotelComponent } from './components/popup-update-motel/popup-update-motel.component';
+import { RoomTypesComponent } from './components/room-types/room-types.component';
+import { MotelDetailComponent } from './components/motel-detail/motel-detail.component';
+import { PopupAddRoomTypeComponent } from './components/popup-add-room-type/popup-add-room-type.component';
+import { PopupUpdateRoomTypeComponent } from './components/popup-update-room-type/popup-update-room-type.component';
 @NgModule({
   declarations: [
     ManageComponent,
     PopupAddMotelComponent,
     UpdateProfileLandlordComponent,
     PhonePipe,
+    MotelsComponent,
+    MoneyPipe,
+    PopupUpdateMotelComponent,
+    RoomTypesComponent,
+    MotelDetailComponent,
+    PopupAddRoomTypeComponent,
+    PopupUpdateRoomTypeComponent,
   ],
   imports: [
     CommonModule,

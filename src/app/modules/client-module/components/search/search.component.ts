@@ -414,7 +414,7 @@ export class SearchComponent {
         this.listMotels = [...this.listMotels].sort((a: Motel, b: Motel) => (a.Distance ?? 0) - (b.Distance ?? 0));
         break;
       case 'rating-highest':
-        this.listMotels = [...this.listMotels].sort((a: Motel, b: Motel) => (b.TotalStar ?? 0) - (a.TotalStar ?? 0));
+        this.listMotels = [...this.listMotels].sort((a: Motel, b: Motel) => (b.TotalRating ?? 0) - (a.TotalRating ?? 0));
         break;
       case 'default':
         this.listMotels = [...this.originalMotels]; 

@@ -130,7 +130,6 @@ export class LoginComponent {
       title: title,
       text: message,
       icon: 'success',
-      showCloseButton: true,
       showDenyButton: true, 
       denyButtonText: 'Đăng nhập',  // Nút Go to Login
       confirmButtonText: 'OK',  // Nút OK
@@ -208,6 +207,7 @@ export class LoginComponent {
               this.handleNavigation(response.RoleName);
               this.loginForm.reset();
               this.hiddenPopupLoginRegister();
+              window.location.reload();
             },
             error: (roleError) => {
               this.alert.showError('Lỗi khi lấy thông tin!', roleError.error.message);

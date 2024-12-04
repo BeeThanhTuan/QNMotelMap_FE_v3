@@ -45,4 +45,18 @@ export class MotelService {
       map((response:any) => response.data) 
     )
   }
+
+  public addNewMotel(data: FormData): Observable<Motel>{
+    const url = `${this.REST_API_SERVER}/api/motel`;
+    return this.httpClient.post<Motel>(url, data).pipe(
+      map((response:any) => response.data) 
+    )
+  }
+
+  public updateInfoMotelByID(idMotel: string, data: FormData): Observable<Motel>{
+    const url = `${this.REST_API_SERVER}/api/motel/${idMotel}`;
+    return this.httpClient.put<Motel>(url, data).pipe(
+      map((response:any) => response.data) 
+    )
+  }
 }

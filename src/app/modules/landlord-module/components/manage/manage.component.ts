@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
 import { Landlord } from 'src/app/interfaces/landlord';
 import { AuthService } from 'src/app/services/auth.service';
 import { LandlordService } from 'src/app/services/landlord.service';
@@ -10,11 +11,10 @@ import { LandlordService } from 'src/app/services/landlord.service';
   styleUrls: ['./manage.component.css'],
 })
 export class ManageComponent {
-  isShowPopupAddMotel = false;
   isShowPopupUpdateProfile = false
   landlord: Landlord;
-
-  constructor(private authService: AuthService, private landlordService: LandlordService){
+  showHeader = true;
+  constructor(private authService: AuthService, private landlordService: LandlordService, private router: Router){
     this.landlord = {
       _id: '',
       Email: '',
@@ -28,9 +28,17 @@ export class ManageComponent {
       UpdateBy:  null,
     };
   }
+  
 
   ngOnInit(): void {
     this.getInfoLandlord();
+    // Lắng nghe sự kiện NavigationEnd khi có thay đổi router
+    this.handleHiddenElement(this.router.url);
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        this.handleHiddenElement(event.urlAfterRedirects); // Kiểm tra lại URL sau điều hướng
+      }
+    });
   }
 
   getInfoLandlord() :void{
@@ -45,18 +53,6 @@ export class ManageComponent {
     })
   }
 
-  
-  showPopupAddMotel(): void {
-    this.isShowPopupAddMotel = true
-    const popupAddMotel = document.getElementById('popupAddMotel') as HTMLElement;
-    const body = document.querySelector('body') as HTMLElement;
-    body.style.overflow = 'hidden';
-    if(popupAddMotel && popupAddMotel.classList.contains('hidden')){
-      popupAddMotel.classList.remove('hidden')
-      popupAddMotel.classList.add('flex')
-    }
-  }
-
   showPopupUpdateProfile(): void {
     this.isShowPopupUpdateProfile = true
     const popupUpdateProfileLandlord = document.getElementById('popupUpdateProfileLandlord') as HTMLElement;
@@ -67,4 +63,14 @@ export class ManageComponent {
       popupUpdateProfileLandlord.classList.add('flex')
     }
   }
+
+  handleHiddenElement(url: string){
+    if (url.includes('/motels')) {
+      this.showHeader = true;  
+    }
+    else{
+      this.showHeader = false;
+    }
+  }
+  
 }

@@ -8,7 +8,6 @@ export interface Motel {
     _id: string;
     NameMotel: string,
     Location: string;
-    LandlordID: string;
     ListImages: Images[];
     Address: string;
     WardCommune: string;
@@ -22,7 +21,11 @@ export interface Motel {
     ListRoomTypes: RoomType[] | null;
     ListRatings: Rating[];
     Distance: number;
-    TotalStar:number;
+    TotalRating:number;
+    TotalAvailableRoom: number;
+    LandlordName: string;
+    PhoneNumberContact: string;
+    AddressLandlord:string;
     CreateAt: string;
     CreateBy: string | null;
     UpdateAt: string;
