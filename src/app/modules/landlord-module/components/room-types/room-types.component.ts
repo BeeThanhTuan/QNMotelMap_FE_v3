@@ -1,4 +1,5 @@
 import { Component, Input, SimpleChanges } from '@angular/core';
+import { map } from 'rxjs';
 import { RoomType } from 'src/app/interfaces/roomType';
 import { RoomTypeService } from 'src/app/services/roomType.service';
 
@@ -10,11 +11,14 @@ import { RoomTypeService } from 'src/app/services/roomType.service';
 export class RoomTypesComponent {
   @Input() idMotel!: string ;
   listRoomTypes: RoomType[] = []
+  roomType!:RoomType;
   //collection image
   isCollectionImageOpen = false;
   indexRoomType = 0;
+  indexRoomTypeUpdate = 0;
   currentIndex = 0;
   isShowPopupAddRoomType = false;
+  isShowPopupUpdateRoomType = false;
   constructor(private roomTypeService: RoomTypeService){}
   ngOnChanges(changes: SimpleChanges): void {
     if(changes['idMotel']){
@@ -22,22 +26,21 @@ export class RoomTypesComponent {
     }
   }
 
-  ngOnInit(): void {
-    console.log(this.idMotel);
-    this.getRoomTypesByIDMotel(this.idMotel);
-    
-  }
-  
   getRoomTypesByIDMotel(id:string) :void{
-    this.roomTypeService.getRoomTypesByIDMotel(id).subscribe({
-      next: (response) => {
-        this.listRoomTypes = response;
-        console.log(this.listRoomTypes);
+    this.roomTypeService.getRoomTypesByIDMotel(id).pipe(
+      map(response => response.reverse()) 
+    ).subscribe({
+      next: (reversedResponse) => {
+        this.listRoomTypes = reversedResponse;
       },
       error: (roleError) => {
         console.log('Lỗi khi lấy thông tin!', roleError.error.message);
       }
-    })
+    });
+  }
+
+  receiveNewRoomTypeFormAddRoomType(data: RoomType): void {
+    this.listRoomTypes.unshift(data)
   }
 
   handleOpenCollectionImage(index: number, indexRoomType: number){
@@ -61,6 +64,7 @@ export class RoomTypesComponent {
   
   showPopupAddRoomType(): void {
     this.isShowPopupAddRoomType = true
+    this.idMotel = this.idMotel;
     const popupAddRoomType = document.getElementById('popupAddRoomType') as HTMLElement;
     const body = document.querySelector('body') as HTMLElement;
     body.style.overflow = 'hidden';
@@ -68,5 +72,23 @@ export class RoomTypesComponent {
       popupAddRoomType.classList.remove('hidden')
       popupAddRoomType.classList.add('flex')
     }
+  }
+
+  showPopupUpdateRoomType(indexUpdate: number, motelID: string, roomTypeData: RoomType): void {
+    this.indexRoomTypeUpdate = indexUpdate;
+    this.isShowPopupUpdateRoomType= true
+    this.idMotel = motelID;   
+    this.roomType = {...roomTypeData};
+    const popupUpdateRoomType = document.getElementById('popupUpdateRoomType') as HTMLElement;
+    const body = document.querySelector('body') as HTMLElement;
+    body.style.overflow = 'hidden';
+    if(popupUpdateRoomType && popupUpdateRoomType.classList.contains('hidden')){
+      popupUpdateRoomType.classList.remove('hidden')
+      popupUpdateRoomType.classList.add('flex')
+    }
+  }
+
+  receiveNewRoomTypeFormUpdateMRoomType(data: RoomType): void {
+    this.listRoomTypes[this.indexRoomTypeUpdate] = data;
   }
 }

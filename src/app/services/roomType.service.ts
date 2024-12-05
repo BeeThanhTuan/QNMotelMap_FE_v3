@@ -27,4 +27,18 @@ export class RoomTypeService {
       map((response:any) => response.data) 
     )
   }
+
+  public addNewRoomType(data: FormData): Observable<RoomType> {
+    const url = `${this.REST_API_SERVER}/api/room-type`;
+    return this.httpClient.post<RoomType>(url, data).pipe(
+      map((response:any) => response.data) 
+    )
+  }
+
+  public updateInfoRoomType(id: string, data: FormData): Observable<RoomType> {
+    const url = `${this.REST_API_SERVER}/api/room-type/${id}`;
+    return this.httpClient.put<RoomType>(url, data).pipe(
+      map((response:any) => response.data) 
+    )
+  }
 }

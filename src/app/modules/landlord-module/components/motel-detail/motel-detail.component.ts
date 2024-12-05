@@ -81,8 +81,8 @@ export class MotelDetailComponent {
   
   showPopupUpdateMotel(landlordData: any, motelData: any): void {
     this.isShowPopupUpdateMotel = true
-    this.landlord = landlordData;
-    this.motel = motelData;   
+    this.landlord = {...landlordData};
+    this.motel = {...motelData};   
     const popupUpdateMotel = document.getElementById('popupUpdateMotel') as HTMLElement;
     const body = document.querySelector('body') as HTMLElement;
     body.style.overflow = 'hidden';

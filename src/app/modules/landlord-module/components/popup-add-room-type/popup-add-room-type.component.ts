@@ -11,6 +11,8 @@ import { UserService } from 'src/app/services/user.service';
 import { User } from 'src/app/interfaces/user';
 import { Motel } from 'src/app/interfaces/motel';
 import { checkAmountValidator } from '../../validator-custom/checkAmountValidator';
+import { RoomType } from 'src/app/interfaces/roomType';
+import { RoomTypeService } from 'src/app/services/roomType.service';
 @Component({
   selector: 'app-popup-add-room-type',
   templateUrl: './popup-add-room-type.component.html',
@@ -24,10 +26,9 @@ export class PopupAddRoomTypeComponent {
   checkConvenient: { label: string; value: string; checked: boolean }[] = [];
   firstInvalidControl: string | null = null;
   user!: User;
-  @Output() newMotel = new EventEmitter<Motel>();
+  @Input() motelID!: string;
+  @Output() newRoomType = new EventEmitter<RoomType>();
 
-  //map properties
-  map!: L.Map;
   constructor(
     private convenientService: ConvenientService,
     private formBuilder: FormBuilder,
@@ -36,6 +37,7 @@ export class PopupAddRoomTypeComponent {
     private motelService: MotelService,
     private authService: AuthService,
     private userService: UserService,
+    private roomTypeService: RoomTypeService,
   ) {
     this.initializeForm();
   }
@@ -105,7 +107,7 @@ export class PopupAddRoomTypeComponent {
       });
   }
 
-  handleAddMotel(): void {
+  handleAddRoomType(): void {
     let checkConvenient = this.checkConvenient
       .filter((convenient) => convenient.checked === true)
       .map((convenient) => convenient.value);
@@ -129,12 +131,13 @@ export class PopupAddRoomTypeComponent {
         data.append('listImages', file);
       }
       data.append('userID', this.user._id);
-
-      this.motelService.addNewMotel(data).subscribe({
+      data.append('motelID', this.motelID);
+ 
+      this.roomTypeService.addNewRoomType(data).subscribe({
         next: (response) => {
-          this.alertService.showSuccess('Thêm mới thành công!', 'Bạn đã thêm thành công nhà trọ mới');
-          this.newMotel.emit(response);
-          this.hiddenPopupAddMotel();
+          this.alertService.showSuccess('Thêm mới thành công!', 'Bạn đã thêm thành công loại phòng mới.');
+          this.newRoomType.emit(response);
+          this.hiddenPopupAddMotel(); 
         },
         error: (error) => {
           this.alertService.showError('Thêm mới thất bại!', error.error.message); 

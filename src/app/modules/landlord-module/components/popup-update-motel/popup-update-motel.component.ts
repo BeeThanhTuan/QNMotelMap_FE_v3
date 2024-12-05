@@ -63,8 +63,6 @@ export class PopupUpdateMotelComponent {
   ngOnChanges(changes: SimpleChanges): void {
     setTimeout(()=>{
       if (changes['motel'] && changes['landlord'] ) { 
-        console.log(12);
-        
         this.setInfoIntoForm(this.motel);
       }
     },100)
