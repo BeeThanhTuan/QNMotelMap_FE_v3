@@ -10,7 +10,12 @@ import { RoomTypeService } from 'src/app/services/roomType.service';
 })
 export class RoomTypesComponent {
   idMotel!: string;
-  listRooms : RoomType[] = [] ;
+  listRoomTypes : RoomType[] = [] ;
+  //collection image
+  isCollectionImageOpen = false;
+  indexRoomType = 0;
+  indexRoomTypeUpdate = 0;
+  currentIndex = 0;
   constructor(private router: Router, private roomTypeService: RoomTypeService) {}
 
   ngOnInit(): void {
@@ -27,7 +32,26 @@ export class RoomTypesComponent {
  
   getListRoomFormIDMotel(id: string): void {
     this.roomTypeService.getRoomTypesByIDMotel(id).subscribe((data)=>{
-      this.listRooms = data  
+      this.listRoomTypes = data  
     }) 
    }
+
+   handleOpenCollectionImage(index: number, indexRoomType: number){
+    this.isCollectionImageOpen = true;
+    this.currentIndex = index;
+    this.indexRoomType = indexRoomType;
+  }
+
+  handleCloseCollectionImage(){
+    this.isCollectionImageOpen = false
+  }
+
+  nextImage(index:number): void {
+    this.currentIndex = (this.currentIndex + 1) % this.listRoomTypes[index].ListImages.length;
+  }
+
+  prevImage(index:number): void {
+    this.currentIndex = (this.currentIndex - 1 + this.listRoomTypes[index].ListImages.length) % this.listRoomTypes[index].ListImages.length;
+  }
+
 }

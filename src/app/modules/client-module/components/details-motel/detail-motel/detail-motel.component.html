@@ -3,12 +3,12 @@
         <nav>
             <ul class="flex items-end   h-[70px]">
                 <li class="w-1/3 h-full">
-                    <a class="ntt-a-router" routerLink="/client/home/detail-motel/{{motelId}}/overall" routerLinkActive="router-active">
+                    <a class="ntt-a-router" routerLink="/client/home/detail-motel/{{motelID}}/overall" routerLinkActive="router-active">
                         <span class="mb:text-[16px] text-[14px]">Tổng quan về nhà trọ</span>
                     </a>
                 </li>
                 <li class="w-1/3 h-full">
-                    <a class="ntt-a-router" routerLink="/client/home/detail-motel/{{motelId}}/roomTypes" routerLinkActive="router-active">
+                    <a class="ntt-a-router" routerLink="/client/home/detail-motel/{{motelID}}/room-types" routerLinkActive="router-active">
                         <span class="mb:text-[16px] text-[14px]">Xem các loại phòng trọ</span>
                     </a>
                 </li>
@@ -33,7 +33,7 @@
                 <div class="flex justify-between pb-5 border-b border-[#e7e7e7]">
                     <div class="flex gap-2">
                         <div class="w-10 h-10 flex justify-center items-center bg-[#003B95] rounded-md rounded-bl-none">
-                            <span class="text-[18px] font-semibold text-white">{{motel.TotalRating}}</span>
+                            <span class="text-[18px] font-semibold text-white">{{motel.TotalRating | number:'1.1-1'}}</span>
                         </div>
                         <div class="text-[15px] font-normal text-custom-color-black-light flex items-end gap-1">
                             <span>{{motel.ListRatings.length}}</span>
@@ -41,7 +41,7 @@
                         </div>
                     </div>
                     <div>
-                        <button type="button" (click)="handleShowRatingPopup()" class="mb:mr-4 mr-0 px-3 py-1 border border-custom-bg-hover-blue rounded-[5px] text-[14px] font-semibold text-custom-color-blue hover:bg-custom-hv-color-blue cursor-pointer">
+                        <button type="button" *ngIf="!isRated" (click)="handleShowRatingPopup()" class="mb:mr-4 mr-0 px-3 py-1 border border-custom-bg-hover-blue rounded-[5px] text-[14px] font-semibold text-custom-color-blue hover:bg-custom-hv-color-blue cursor-pointer">
                             Viết đánh giá
                         </button>
                     </div>
@@ -51,7 +51,7 @@
                         <li class="py-3 border-b border-[#e7e7e7]" *ngFor="let rating of ListRatings">
                             <div class="flex justify-between gap-1">
                                 <div class="flex gap-1 mb:w-[200px] ">
-                                    <img src="http://localhost:3000/resources/img-users/{{rating.UserAvatar}}" alt="" class="mb:w-[50px] mb:h-[50px] w-[40px] h-[40px] object-cover rounded-full" style="border:  1px solid #babbbd;">
+                                    <img [src]="rating.UserAvatar ? 'http://localhost:3000/resources/img-users/' + rating.UserAvatar : '/assets/images/default-avatar.png'"  alt="" class="mb:w-[50px] mb:h-[50px] w-[40px] h-[40px] object-cover rounded-full" style="border:  1px solid #babbbd;">
                                     <div class="mb:flex hidden"><span class="text-[15px] font-semibold "> {{rating.UserName}}</span></div>
                                 </div>
                                 <div class="flex justify-between mb:w-[calc(100%-200px)] flex-1 mb:pr-5 pr-0">
@@ -86,8 +86,11 @@
                     <div class="w-full p-2 ">
                         <textarea id="commentInput" rows="4" nz-input formControlName="comment" placeholder="Bình luận của bạn..." spellcheck="false" class="text-custom-color-black-light"></textarea>
                     </div>
+                    <div *ngIf="commentControl?.invalid && commentControl?.touched">
+                        <small class="masseage-error text-red-500 pl-2 " *ngIf="commentControl?.hasError('required')"> <i class="fa-solid fa-circle-info mr-1"></i>Bình luận không để trống.</small>
+                    </div>
                     <div class="w-full flex justify-center items-center mt-2 px-2 mb-4">
-                        <button type="button" class="w-full py-[5px] bg-[#1392ff] rounded-sm text-white font-medium hover:bg-custom-color-blue">Gửi</button>
+                        <button type="button" class="w-full py-[5px] bg-[#1392ff] rounded-sm text-white font-medium hover:bg-custom-color-blue" (click)="postNewRating()">Gửi</button>
                     </div>
                 </form>
             </div>

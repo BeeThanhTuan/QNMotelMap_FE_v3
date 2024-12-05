@@ -5,7 +5,7 @@ import { HeaderBarComponent } from './components/header-bar/header-bar.component
 import { LoginComponent } from './components/login/login.component';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
-import { NzIconModule, NZ_ICONS } from 'ng-zorro-antd/icon';
+import { NzIconModule, } from 'ng-zorro-antd/icon';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -33,7 +33,6 @@ import { PhonePipe } from './pipes/phone.pipe';
     ReactiveFormsModule
   ],
   providers: [
-    // { provide: NZ_ICONS, useValue: icons } // Đăng ký các biểu tượng
   ],
   exports: [
     HeaderBarComponent,

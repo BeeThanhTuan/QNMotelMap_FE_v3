@@ -21,4 +21,18 @@ export class RatingService {
       map((response:any) => response.data.ListRatings) 
     )
   }
+
+  public postNewRating(data: any): Observable<Rating> {
+    const url = `${this.REST_API_SERVER}/api/rating`;
+    return this.httpClient.post<Rating>(url, data).pipe(
+      map((response:any) => response.data) 
+    )
+  }
+
+  public checkIsRated(data: any): Observable<boolean> {
+    const url = `${this.REST_API_SERVER}/api/rating/check`;
+    return this.httpClient.post<boolean>(url, data).pipe(
+      map((response:any) => response.hasRated) 
+    )
+  }
 }

@@ -20,6 +20,7 @@ import { RoomTypesComponent } from './components/room-types/room-types.component
 import { MotelDetailComponent } from './components/motel-detail/motel-detail.component';
 import { PopupAddRoomTypeComponent } from './components/popup-add-room-type/popup-add-room-type.component';
 import { PopupUpdateRoomTypeComponent } from './components/popup-update-room-type/popup-update-room-type.component';
+
 @NgModule({
   declarations: [
     ManageComponent,

@@ -7,7 +7,6 @@ import { ClickOutsideDesiredPriceDirective } from './directives/click-outside-de
 import { ClickOutsideOtherChooseFieldsDirective } from './directives/click-outside-other-choose-fields.directive';
 import { MoneyPipe } from './pipes/money.pipe';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
-// Import MatSlideToggleModule
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ContentMainComponent } from './components/content-main/content-main.component';
@@ -18,7 +17,6 @@ import { NgApexchartsModule } from 'ng-apexcharts';
 import { DetailMotelComponent } from './components/details-motel/detail-motel/detail-motel.component';
 import { OverallComponent } from './components/details-motel/overall/overall.component';
 import { RoomTypesComponent } from './components/details-motel/room-types/room-types.component';
-import { RoomTypeDetailComponent } from './components/details-motel/room-type-detail/room-type-detail.component';
 import { ViewOnMapComponent } from './components/view-on-map/view-on-map.component';
 import { ViewMotelOnMapComponent } from './components/view-motel-on-map/view-motel-on-map.component';
 import { ClickOutsidePopupMotelOnMapDirective } from './directives/click-outside-popup-motel-on-map.directive';
@@ -40,6 +38,7 @@ import { NgxSpinnerModule } from "ngx-spinner";
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { LineBreakPipe } from './pipes/line-break.pipe';
 
+//
 @NgModule({
   declarations: [
     HomeComponent,
@@ -54,7 +53,6 @@ import { LineBreakPipe } from './pipes/line-break.pipe';
     SearchComponent,
     DetailMotelComponent,
     OverallComponent,
-    RoomTypeDetailComponent,
     ViewOnMapComponent,
     ViewMotelOnMapComponent,
     PhonePipe,
