@@ -4,69 +4,33 @@
             <div class="mb:text-[24px] text-[20px] mb:pl-0 pl-2 font-sans font-bold text-custom-color-black ">Những nhà trọ gợi ý cho bạn</div>
         </div>
         <div class="w-full py-3 mb:mt-5 mt-2 relative mb:min-w-[700px] min-w-full overflow-x-auto scroll-smooth">
-            <ul class="mb:w-full w-fit flex flex-nowrap gap-4 ntt-custom-ul relative px-3  ">
-                <li class="flex-1 mb:max-w-[calc(25%-12px)] max-w-none min-w-[calc(25%-12px)] mb:w-auto w-[350px] rounded-xl mb-2 cursor-pointer " >
+            <ul class="mb:w-full w-fit flex flex-nowrap gap-4 ntt-custom-ul  z-10 relative px-3  ">
+                <li class="flex-1 mb:max-w-[calc(25%-12px)] max-w-none min-w-[calc(25%-12px)] mb:w-auto  rounded-xl mb-2 cursor-pointer " *ngFor="let motel of listTopMotels">
                     <div class="w-full relative " >
-                        <a routerLink="/client/home/detail-motel/:id/overall" class="w-full">
+                        <a routerLink="/client/home/detail-motel/{{motel._id}}/overall" class="w-full">
                             <div class="w-full aspect-[4/3.2]"> <!-- Giữ tỷ lệ 4:3 -->
-                                <img class="w-full h-full rounded-tl-xl rounded-tr-xl object-cover" src="assets/images/img-motel.jpg" alt="Hình ảnh về nhà trọ">
+                                <img class="w-full h-full rounded-tl-xl rounded-tr-xl object-cover" src="http://localhost:3000/resources/img-motels/{{motel.ListImages[0].LinkImage}}" alt="Hình ảnh về nhà trọ">
                             </div>
                             <div class="info p-2 ntt-shadow-motel-card  rounded-bl-xl rounded-br-xl flex flex-col gap-2">
                                 <div>
                                     <div class="ntt-custom-name-motel text-[16px] font-semibold text-custom-color-black ">
-                                        Tên nhà trọ
+                                        Nhà trọ {{motel.NameMotel ? motel.NameMotel : (motel.Address + ', ' + motel.WardCommune)}}
                                     </div>
                                     <div class="ntt-custom-address-motel text-[12px] font-normal text-custom-color-black-light">
-                                        79 Biên Cương, Ngô Mây
+                                        {{motel.Address}}, {{motel.WardCommune}}
                                     </div>
                                 </div>
                                 <div class="flex gap-2">
                                     <div class="w-6 h-6 flex justify-center items-center bg-[#003B95] rounded-[3px] rounded-bl-none">
-                                        <span class="text-[12px] font-semibold text-white">5.0</span>
+                                        <span class="text-[12px] font-semibold text-white">{{motel.TotalRating | number:'1.1-1'}}</span>
                                     </div>
                                     <div class="ntt-custom-address-motel text-[12px] font-normal text-custom-color-black-light ">
-                                        <span>34</span> 
-                                        <span> đánh giá 0</span>
-                                    </div>
-                                </div>
-                                <div class="pb-1">
-                                    <div class="text-[16px] font-semibold text-custom-color-black text-right"> 1.123.333 VND</div>
-                                </div>
-                            </div>
-                        </a>
-                        <div title="Lưu">
-                            <button class="w-9 h-9 favorite-motel absolute top-3 right-3 flex justify-center items-center rounded-full bg-white hover:bg-[#f2f2f2] group">
-                                <i class="bx bx-heart text-[20px] text-custom-color-black-light group-hover:text-[red]"></i>
-                            </button>
-                        </div>
-                    </div>
-                </li>
-                <li class="flex-1 max-w-[calc(25%-12px)] min-w-[calc(25%-12px)] rounded-xl mb-2 cursor-pointer">
-                    <div class="w-full relative " >
-                        <a href="" class="w-full">
-                            <div class="w-full aspect-[4/3.2]"> <!-- Giữ tỷ lệ 4:3 -->
-                                <img class="w-full h-full rounded-tl-xl rounded-tr-xl object-cover" src="assets/images/img-motel.jpg" alt="Hình ảnh về nhà trọ">
-                            </div>
-                            <div class="info p-2 ntt-shadow-motel-card rounded-bl-xl rounded-br-xl flex flex-col gap-2">
-                                <div>
-                                    <div class="ntt-custom-name-motel text-[16px] font-semibold text-custom-color-black ">
-                                        Tên nhà trọ
-                                    </div>
-                                    <div class="ntt-custom-address-motel text-[12px] font-normal text-custom-color-black-light">
-                                        79 Biên Cương, Ngô Mây
-                                    </div>
-                                </div>
-                                <div class="flex gap-2">
-                                    <div class="w-6 h-6 flex justify-center items-center bg-[#003B95] rounded-[3px] rounded-bl-none">
-                                        <span class="text-[12px] font-semibold text-white">5.0</span>
-                                    </div>
-                                    <div class="ntt-custom-name-motel text-[12px] font-normal text-custom-color-black-light ">
-                                        <span>34</span> 
+                                        <span>{{motel.ListRatings.length}} đánh giá</span> 
                                         <span> đánh giá</span>
                                     </div>
                                 </div>
                                 <div class="pb-1">
-                                    <div class="text-[16px] font-semibold text-custom-color-black text-right"> 1.123.333 VND</div>
+                                    <div class="text-[16px] font-semibold text-custom-color-blue text-right ">{{motel.Price | money}} VND</div>
                                 </div>
                             </div>
                         </a>
@@ -77,158 +41,13 @@
                         </div>
                     </div>
                 </li>
-                <li class="flex-1 max-w-[calc(25%-12px)] min-w-[calc(25%-12px)] rounded-xl mb-2 cursor-pointer">
-                    <div class="w-full relative " >
-                        <a href="" class="w-full">
-                            <div class="w-full aspect-[4/3.2]"> <!-- Giữ tỷ lệ 4:3 -->
-                                <img class="w-full h-full rounded-tl-xl rounded-tr-xl object-cover" src="assets/images/img-motel.jpg" alt="Hình ảnh về nhà trọ">
-                            </div>
-                            <div class="info p-2 ntt-shadow-motel-card rounded-bl-xl rounded-br-xl flex flex-col gap-2">
-                                <div>
-                                    <div class="ntt-custom-name-motel text-[16px] font-semibold text-custom-color-black ">
-                                        Tên nhà trọ
-                                    </div>
-                                    <div class="ntt-custom-address-motel text-[12px] font-normal text-custom-color-black-light">
-                                        79 Biên Cương, Ngô Mây
-                                    </div>
-                                </div>
-                                <div class="flex gap-2">
-                                    <div class="w-6 h-6 flex justify-center items-center bg-[#003B95] rounded-[3px] rounded-bl-none">
-                                        <span class="text-[12px] font-semibold text-white">5.0</span>
-                                    </div>
-                                    <div class="ntt-custom-name-motel text-[12px] font-normal text-custom-color-black-light ">
-                                        <span>34</span> 
-                                        <span> đánh giá</span>
-                                    </div>
-                                </div>
-                                <div class="pb-1">
-                                    <div class="text-[16px] font-semibold text-custom-color-black text-right"> 1.123.333 VND</div>
-                                </div>
-                            </div>
-                        </a>
-                        <div title="Lưu">
-                            <button class="w-9 h-9 favorite-motel absolute top-3 right-3 flex justify-center items-center rounded-full bg-white hover:bg-[#f2f2f2] group">
-                                <i class="bx bx-heart text-[20px] text-custom-color-black-light group-hover:text-[red]"></i>
-                            </button>
-                        </div>
-                    </div>
-                </li>
-                <li class="flex-1 max-w-[calc(25%-12px)] min-w-[calc(25%-12px)] rounded-xl mb-2 cursor-pointer">
-                    <div class="w-full relative " >
-                        <a href="" class="w-full">
-                            <div class="w-full aspect-[4/3.2]"> <!-- Giữ tỷ lệ 4:3 -->
-                                <img class="w-full h-full rounded-tl-xl rounded-tr-xl object-cover" src="assets/images/img-motel.jpg" alt="Hình ảnh về nhà trọ">
-                            </div>
-                            <div class="info p-2 ntt-shadow-motel-card rounded-bl-xl rounded-br-xl flex flex-col gap-2">
-                                <div>
-                                    <div class="ntt-custom-name-motel text-[16px] font-semibold text-custom-color-black ">
-                                        Tên nhà trọ
-                                    </div>
-                                    <div class="ntt-custom-address-motel text-[12px] font-normal text-custom-color-black-light">
-                                        79 Biên Cương, Ngô Mây
-                                    </div>
-                                </div>
-                                <div class="flex gap-2">
-                                    <div class="w-6 h-6 flex justify-center items-center bg-[#003B95] rounded-[3px] rounded-bl-none">
-                                        <span class="text-[12px] font-semibold text-white">5.0</span>
-                                    </div>
-                                    <div class="ntt-custom-name-motel text-[12px] font-normal text-custom-color-black-light ">
-                                        <span>34</span> 
-                                        <span> đánh giá</span>
-                                    </div>
-                                </div>
-                                <div class="pb-1">
-                                    <div class="text-[16px] font-semibold text-custom-color-black text-right"> 1.123.333 VND</div>
-                                </div>
-                            </div>
-                        </a>
-                        <div title="Lưu">
-                            <button class="w-9 h-9 favorite-motel absolute top-3 right-3 flex justify-center items-center rounded-full bg-white hover:bg-[#f2f2f2] group">
-                                <i class="bx bx-heart text-[20px] text-custom-color-black-light group-hover:text-[red]"></i>
-                            </button>
-                        </div>
-                    </div>
-                </li>
-                <li class="flex-1 max-w-[calc(25%-12px)] min-w-[calc(25%-12px)] rounded-xl mb-2 cursor-pointer">
-                    <div class="w-full relative " >
-                        <a href="" class="w-full">
-                            <div class="w-full aspect-[4/3.2]"> <!-- Giữ tỷ lệ 4:3 -->
-                                <img class="w-full h-full rounded-tl-xl rounded-tr-xl object-cover" src="assets/images/img-motel.jpg" alt="Hình ảnh về nhà trọ">
-                            </div>
-                            <div class="info p-2 ntt-shadow-motel-card rounded-bl-xl rounded-br-xl flex flex-col gap-2">
-                                <div>
-                                    <div class="ntt-custom-name-motel text-[16px] font-semibold text-custom-color-black ">
-                                        Tên nhà trọ
-                                    </div>
-                                    <div class="ntt-custom-address-motel text-[12px] font-normal text-custom-color-black-light">
-                                        79 Biên Cương, Ngô Mây
-                                    </div>
-                                </div>
-                                <div class="flex gap-2">
-                                    <div class="w-6 h-6 flex justify-center items-center bg-[#003B95] rounded-[3px] rounded-bl-none">
-                                        <span class="text-[12px] font-semibold text-white">5.0</span>
-                                    </div>
-                                    <div class="ntt-custom-name-motel text-[12px] font-normal text-custom-color-black-light ">
-                                        <span>34</span> 
-                                        <span> đánh giá</span>
-                                    </div>
-                                </div>
-                                <div class="pb-1">
-                                    <div class="text-[16px] font-semibold text-custom-color-black text-right"> 1.123.333 VND</div>
-                                </div>
-                            </div>
-                        </a>
-                        <div title="Lưu">
-                            <button class="w-9 h-9 favorite-motel absolute top-3 right-3 flex justify-center items-center rounded-full bg-white hover:bg-[#f2f2f2] group">
-                                <i class="bx bx-heart text-[20px] text-custom-color-black-light group-hover:text-[red]"></i>
-                            </button>
-                        </div>
-                    </div>
-                </li>
-                <li class="flex-1 max-w-[calc(25%-12px)] min-w-[calc(25%-12px)] rounded-xl mb-2 cursor-pointer">
-                    <div class="w-full relative " >
-                        <a href="" class="w-full">
-                            <div class="w-full aspect-[4/3.2]"> <!-- Giữ tỷ lệ 4:3 -->
-                                <img class="w-full h-full rounded-tl-xl rounded-tr-xl object-cover" src="assets/images/img-motel.jpg" alt="Hình ảnh về nhà trọ">
-                            </div>
-                            <div class="info p-2 ntt-shadow-motel-card rounded-bl-xl rounded-br-xl flex flex-col gap-2">
-                                <div>
-                                    <div class="ntt-custom-name-motel text-[16px] font-semibold text-custom-color-black ">
-                                        Tên nhà trọ
-                                    </div>
-                                    <div class="ntt-custom-address-motel text-[12px] font-normal text-custom-color-black-light">
-                                        79 Biên Cương, Ngô Mây
-                                    </div>
-                                </div>
-                                <div class="flex gap-2">
-                                    <div class="w-6 h-6 flex justify-center items-center bg-[#003B95] rounded-[3px] rounded-bl-none">
-                                        <span class="text-[12px] font-semibold text-white">5.0</span>
-                                    </div>
-                                    <div class="ntt-custom-name-motel text-[12px] font-normal text-custom-color-black-light ">
-                                        <span>34</span> 
-                                        <span> đánh giá</span>
-                                    </div>
-                                </div>
-                                <div class="pb-1">
-                                    <div class="text-[16px] font-semibold text-custom-color-black text-right"> 1.123.333 VND</div>
-                                </div>
-                            </div>
-                        </a>
-                        <div title="Lưu">
-                            <button class="w-9 h-9 favorite-motel absolute top-3 right-3 flex justify-center items-center rounded-full bg-white hover:bg-[#f2f2f2] group">
-                                <i class="bx bx-heart text-[20px] text-custom-color-black-light group-hover:text-[red]"></i>
-                            </button>
-                        </div>
-                    </div>
-                </li>
-                
                 
             </ul><!-- End list recommend motels  -->
-            <div class="w-full absolute z-10 top-[30%] left-0 mb:flex hidden justify-between pointer-events-none">
-                <button class="ntt-custom-button-prev-next flex justify-center items-center" aria-label="Trước đó" appClickPrevRecommendMotel>
+            <div class="w-full absolute z-20 top-[30%] left-0 mb:flex hidden justify-between pointer-events-none">
+                <button class="ntt-custom-button-prev-next flex justify-center items-center bg-white" aria-label="Trước đó" appClickPrevRecommendMotel>
                     <i class='bx bx-chevron-left text-[20px] text-custom-color-black-light'></i>
                 </button>
-                <button class="ntt-custom-button-prev-next flex justify-center items-center" aria-label="Kế tiếp" appClickNextRecommendMotel>
+                <button class="ntt-custom-button-prev-next flex justify-center items-center bg-white" aria-label="Kế tiếp" appClickNextRecommendMotel>
                     <i class='bx bx-chevron-right text-[20px] text-custom-color-black-light'></i>
                 </button>
             </div>

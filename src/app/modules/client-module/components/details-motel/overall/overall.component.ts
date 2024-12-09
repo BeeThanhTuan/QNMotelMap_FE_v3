@@ -63,7 +63,9 @@ export class OverallComponent {
 
   getDataMotel(id: string):void {
     this.motelService.getMotelByID(id).subscribe((response)=>{
-      this.motel = response
+      this.motel = response;
+      console.log(response);
+      
     })
   }
 

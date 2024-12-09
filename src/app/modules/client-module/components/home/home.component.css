@@ -1,17 +1,22 @@
+:host ::ng-deep .ant-slider-mark {
+  display: flex;
+  justify-content: space-between;
+}
+
 :host ::ng-deep .ant-slider-mark-text.ant-slider-mark-active.ng-star-inserted {
-    all: unset; /* Loại bỏ tất cả các CSS hiện tại */
-    transform:translate3d(0px, 0px, 0px) !important;
-    color: '#535353' !important;
-    font-size: 13px !important;
-  }
-  
-  :host ::ng-deep span.ant-slider-mark-text.ng-star-inserted {
-    white-space: nowrap;
-    transform: translate3d(-100%, 0px, 0px) !important;
-  }
-  
-  :host ::ng-deep span.ant-slider-mark-text.ng-star-inserted p{
-    white-space: nowrap !important;
-    font-size: 13px;
-    color: #1A1A1A;
-  }
+  all: unset; /* Loại bỏ tất cả các CSS hiện tại */
+  transform:translate3d(0px, 0px, 0px) !important;
+  color: '#535353' !important;
+  font-size: 13px !important;
+}
+
+:host ::ng-deep span.ant-slider-mark-text.ng-star-inserted {
+  white-space: nowrap;
+  transform: translate3d(-100%, 0px, 0px) !important;
+}
+
+:host ::ng-deep span.ant-slider-mark-text.ng-star-inserted p{
+  white-space: nowrap !important;
+  font-size: 13px;
+  color: #1A1A1A;
+}

@@ -41,7 +41,9 @@ export class HeaderBarComponent {
     const email = this.authService.getEmailFromToken();
     this.userService.getInfoUserByEmail(email).subscribe({
       next: (response) => {
-        this.user = response
+        this.user = response;
+        console.log(this.user);
+        
       },
       error: (roleError) => {
         console.log('Lỗi khi lấy thông tin!', roleError.error.message);

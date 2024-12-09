@@ -20,6 +20,13 @@ export class MotelService {
     return this.httpClient.get<any>(url)
   }
 
+  public getTop8MotelsByRating(): Observable<Motel[]> {
+    const url = `${this.REST_API_SERVER}/api/top-motels`;
+    return this.httpClient.get<Motel[]>(url).pipe(
+      map((response:any) => response.data) 
+    )
+  }
+
   public getMotelByID(id: string): Observable<Motel> {
     const url = `${this.REST_API_SERVER}/api/motel/${id}`;
     return this.httpClient.get<Motel>(url).pipe(

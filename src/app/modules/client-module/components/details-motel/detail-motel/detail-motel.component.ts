@@ -76,12 +76,13 @@ export class DetailMotelComponent {
     this.authService.isLogin$.subscribe((isLogin) => {
       this.isLogin = isLogin;
     });
-    // Kiểm tra login khi component khởi tạo
+
     this.authService.checkIsLogin();
+    this.getIDUser()
+    // Kiểm tra login khi component khởi tạo
 
     this.getListRatings(this.motelID);
     this.getDataMotel(this.motelID);
-    this.getIDUser()
 
   }
   ngAfterViewInit(): void {
@@ -94,8 +95,6 @@ export class DetailMotelComponent {
       this.ratingService.checkIsRated(data).subscribe({
         next: (response) => {
           this.isRated = response;
-          console.log(response);
-          
         }  
       })
   }
@@ -164,15 +163,17 @@ export class DetailMotelComponent {
     loginPopup.style.display = "flex";
   }
 
-  postNewRating():void{
-    if(!this.formRating.valid){
-      return
+  async postNewRating(): Promise<void> {
+    if (!this.formRating.valid) {
+      return;
     }
-    else{
-      const {star, comment} = this.formRating.value;
+    try {
+      await this.getIDUser(); // Ensure the user ID is fetched asynchronously
+      const { star, comment } = this.formRating.value;
       const userID = this.userID;
       const motelID = this.motelID;
-      const data = {star, comment, motelID, userID};
+      const data = { star, comment, motelID, userID };
+  
       this.ratingService.postNewRating(data).subscribe({
         next: (response) => {
           this.alertService.showSuccess('Đánh giá thành công!', 'Bạn đã đánh giá thành công nhà trọ.');
@@ -186,8 +187,10 @@ export class DetailMotelComponent {
         error: (error) => {
           this.alertService.showError('Đánh giá thất bại!', error.error.message);
         }
-      })
+      });
+    } catch (error) {
+      console.error('Error fetching user ID:', error);
+      this.alertService.showError('Lỗi', 'Không thể lấy thông tin người dùng.');
     }
-    
   }
 }

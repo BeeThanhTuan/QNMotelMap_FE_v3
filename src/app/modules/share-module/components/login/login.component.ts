@@ -178,8 +178,9 @@ export class LoginComponent {
   }
 
   handleNavigation(target: string){
-    if(target === RoleName.User){
+    if(target === RoleName.Client){
       this.router.navigate(['client/home']);
+      window.location.reload();
     }
     else if(target === RoleName.Landlord){
       this.router.navigate(['landlord/manage']);
@@ -204,10 +205,10 @@ export class LoginComponent {
           const roleID = this.authService.getRoleIDFromToken();
           this.roleService.getRoleNameByRoleId(roleID).subscribe({  
             next: (response) => {
+              console.log(response.RoleName);  
               this.handleNavigation(response.RoleName);
               this.loginForm.reset();
               this.hiddenPopupLoginRegister();
-              window.location.reload();
             },
             error: (roleError) => {
               this.alert.showError('Lỗi khi lấy thông tin!', roleError.error.message);

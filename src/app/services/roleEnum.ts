@@ -1,5 +1,5 @@
 export enum RoleName {
     Admin = 'Admin',
     Landlord = 'Landlord',
-    User = 'User'
+    Client = 'Client'
   }
