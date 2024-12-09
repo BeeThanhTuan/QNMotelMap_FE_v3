@@ -30,6 +30,7 @@ export class MotelsComponent {
       CreateAt: '',
       UpdateAt: '',
       UpdateBy:  null,
+      IsDelete: false,
     };
   }
   

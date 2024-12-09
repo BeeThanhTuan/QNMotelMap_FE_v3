@@ -26,6 +26,7 @@ export class ManageComponent {
       CreateAt: '',
       UpdateAt: '',
       UpdateBy:  null,
+      IsDelete: false,
     };
   }
   

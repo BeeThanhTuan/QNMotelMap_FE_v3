@@ -17,4 +17,5 @@ export interface RoomType {
     CreateBy: string;
     UpdateAt: string;
     UpdateBy: string;
+    IsDelete: boolean;
   }

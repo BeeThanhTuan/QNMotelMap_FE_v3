@@ -60,6 +60,7 @@ export class DetailMotelComponent {
       CreateBy: null,
       UpdateAt: '',
       UpdateBy: null,
+      IsDelete: false,
     };
     this.formRating = this.formBuilder.group({
       star: [5],

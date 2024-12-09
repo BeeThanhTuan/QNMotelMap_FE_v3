@@ -29,6 +29,7 @@ export class UpdateProfileLandlordComponent {
       CreateAt: '',
       UpdateAt: '',
       UpdateBy:  null,
+      IsDelete: false,
     };
     this.initializeForm();
   }

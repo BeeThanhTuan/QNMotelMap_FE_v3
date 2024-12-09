@@ -12,4 +12,5 @@ export interface Landlord {
     CreateAt: string;
     UpdateAt: string;
     UpdateBy: object | User | null;
+    IsDelete: boolean,
   }

@@ -21,6 +21,7 @@ export class HeaderBarComponent {
     CreateAt: '',
     UpdateAt: '',
     UpdateBy: '',
+    IsDelete: false,
   };
   constructor(private authService: AuthService, private userService: UserService){}
 

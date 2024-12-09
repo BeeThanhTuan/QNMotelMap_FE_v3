@@ -36,6 +36,7 @@ export class ViewMotelOnMapComponent {
     CreateBy: null,
     UpdateAt: '',
     UpdateBy: null,
+    IsDelete: false,
   };
 
   constructor(private motelService: MotelService){}

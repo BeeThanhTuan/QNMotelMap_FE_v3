@@ -45,6 +45,7 @@ export class OverallComponent {
       CreateBy: null,
       UpdateAt: '',
       UpdateBy: null,
+      IsDelete: false,
     };
   }
 

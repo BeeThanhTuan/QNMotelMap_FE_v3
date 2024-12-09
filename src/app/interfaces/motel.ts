@@ -30,4 +30,5 @@ export interface Motel {
     CreateBy: string | null;
     UpdateAt: string;
     UpdateBy: string | null;
+    IsDelete: boolean;
   }

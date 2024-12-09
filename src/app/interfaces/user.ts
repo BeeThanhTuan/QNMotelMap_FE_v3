@@ -8,4 +8,5 @@ export interface User {
   CreateAt: string;
   UpdateAt: string | null;
   UpdateBy: string;
+  IsDelete: boolean;
 }

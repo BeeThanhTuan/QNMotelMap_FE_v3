@@ -40,6 +40,7 @@ export class MotelDetailComponent {
     CreateBy: null,
     UpdateAt: '',
     UpdateBy: null,
+    IsDelete: false,
   };
   isShowPopupUpdateMotel = false;
   //collection image
