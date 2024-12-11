@@ -1,0 +1,304 @@
+<div id="popupAddMotel" class="overlay w-full min-w-[310px] h-[100vh] fixed top-0 left-0 justify-center items-center bg-[rgba(34,34,34,0.7)] z-50 flex">
+    <div id="containerAddMotel" class="container max-w-[1000px] sm:h-[85vh] h-[100vh] bg-white relative sm:rounded-xl rounded-none overflow-hidden animate-appear" (click)="stopPropagation($event)">
+        <div class="w-full p-2 relative flex mb:flex-row-reverse flex-row mb:justify-between items-center border-b">
+            <div class="w-[35px] h-[35px] mb:bg-white hover:bg-[#f4f4f4] text-custom-color-black mb:rounded-full rounded-md flex justify-center items-center cursor-pointer" (click)="hiddenPopupAddMotel()">
+                <i class='bx bx-x text-[30px] hidden mb:flex'></i>
+                <i class='bx bx-chevron-left text-[40px] mb:hidden flex'></i>
+            </div>
+            <div class="font-semibold mb:ml-3 ml-2 mb:text-[20px] text-[18px] mb:text-custom-color-black">Thêm nhà trọ mới</div>
+        </div>
+        <!-- Apply overflow-y-auto here for form scrolling -->
+        <div class="w-full p-4 pt-6  overflow-y-auto h-[calc(100%-125px)]">
+            <form [formGroup]="addMotelForm" class="grid grid-cols-1 sm:grid-cols-2 gap-5 ">
+                <div class="relative w-full mb-2">
+                    <div>
+                        <input type="text" id="nameMotel" formControlName="nameMotel" class="ntt-custom-input-sm peer" placeholder=" " />
+                        <label for="nameMotel" class="absolute text-gray-500 text-[14px] transition-all duration-300 transform 
+                               scale-100 origin-top-left bg-white 
+                               peer-placeholder-shown:top-3
+                               peer-placeholder-shown:left-5
+                               peer-placeholder-shown:text-gray-500 
+                               peer-focus:top-0 
+                               peer-focus:-translate-y-0 
+                               peer-focus:-translate-x-[6px]
+                               peer-focus:text-gray-500 
+                               peer:not-placeholder-shown:top-0 
+                               peer:not-placeholder-shown:-translate-y-[16px] 
+                               peer:not-placeholder-shown:text-gray-400">
+                            Tên nhà trọ
+                        </label>
+                    </div>
+                </div>
+                <div class="relative w-full mb-2 ">
+                    <div class="">
+                        <input type="number" id="price" step="1000" formControlName="price" class="ntt-custom-input-sm peer" placeholder=" " [ngClass]="{'input-invalid': priceControl?.invalid && firstInvalidControl === 'price'}" />
+                        <label for="price" class="absolute text-gray-500 text-[14px] transition-all duration-300 transform 
+                               scale-100 origin-top-left bg-white 
+                               peer-placeholder-shown:top-3
+                               peer-placeholder-shown:left-5
+                               peer-placeholder-shown:text-gray-500 
+                               peer-focus:top-0 
+                               peer-focus:-translate-y-0 
+                               peer-focus:-translate-x-[6px]
+                               peer-focus:text-gray-500 
+                               peer:not-placeholder-shown:top-0 
+                               peer:not-placeholder-shown:-translate-y-[16px] 
+                               peer:not-placeholder-shown:text-gray-400" [ngClass]="{'label-invalid': (priceControl?.invalid && firstInvalidControl === 'price')}">
+                            Giá thuê/tháng
+                        </label>
+                    </div>
+                    <div *ngIf="firstInvalidControl === 'price' && priceControl?.invalid">
+                        <small class="masseage-error " *ngIf="priceControl?.hasError('required')"> <i class="fa-solid fa-circle-info"></i> Giá nhà trọ là bắt buộc.</small>
+                    </div>
+                </div>
+                <div class="relative w-full mb-2 ">
+                    <div class="">
+                        <input type="text" id="address" formControlName="address" class="ntt-custom-input-sm peer" placeholder=" " [ngClass]="{'input-invalid': addressControl?.invalid && firstInvalidControl === 'address'}" />
+                        <label for="address" class="absolute text-gray-500 text-[14px] transition-all duration-300 transform 
+                               scale-100 origin-top-left bg-white 
+                               peer-placeholder-shown:top-3
+                               peer-placeholder-shown:left-5
+                               peer-placeholder-shown:text-gray-500 
+                               peer-focus:top-0 
+                               peer-focus:-translate-y-0 
+                               peer-focus:-translate-x-[6px]
+                               peer-focus:text-gray-500 
+                               peer:not-placeholder-shown:top-0 
+                               peer:not-placeholder-shown:-translate-y-[16px] 
+                               peer:not-placeholder-shown:text-gray-400" [ngClass]="{'label-invalid': (addressControl?.invalid && firstInvalidControl === 'address')}">
+                            Địa chỉ(số nhà - tên đường)
+                        </label>
+                    </div>
+                    <div *ngIf="firstInvalidControl === 'address' && addressControl?.invalid">
+                        <small class="masseage-error " *ngIf="addressControl?.hasError('required')"> <i class="fa-solid fa-circle-info"></i> Vui lòng nhập địa chỉ.</small>
+                    </div>
+                </div>
+                <div class="relative w-full mb-3 ">
+                    <div class="">
+                        <input type="text" id="wardCommune" formControlName="wardCommune" class="ntt-custom-input-sm peer placeholder:text-gray-500 placeholder:text-[14px]" [ngClass]="{'input-invalid': wardCommuneControl?.invalid && firstInvalidControl === 'wardCommune'}" readonly
+                            nz-dropdown nzTrigger="click" [nzDropdownMenu]="menu" placeholder="" />
+                        <label for="wardCommune" class="absolute text-gray-500 text-[14px] transition-all duration-300 transform 
+                               scale-100 origin-top-left bg-white 
+                               peer-placeholder-shown:top-3
+                               peer-placeholder-shown:left-5
+                               peer-placeholder-shown:text-gray-500 
+                               peer-focus:top-0 
+                               peer-focus:-translate-y-0 
+                               peer-focus:-translate-x-[6px]
+                               peer-focus:text-gray-500 
+                               peer:not-placeholder-shown:top-0 
+                               peer:not-placeholder-shown:-translate-y-[16px] 
+                               peer:not-placeholder-shown:text-gray-400" [ngClass]="{'label-invalid': (wardCommuneControl?.invalid && firstInvalidControl === 'wardCommune')}">
+                            Phường/Xã
+                        </label>
+                        <nz-dropdown-menu #menu="nzDropdownMenu">
+                            <ul nz-menu class="h-[200px] overflow-auto">
+                                <li nz-menu-item *ngFor="let wardCommune of listWardCommune" (click)="addMotelForm.get('wardCommune')?.setValue(wardCommune)">{{wardCommune}}</li>
+                            </ul>
+                        </nz-dropdown-menu>
+                    </div>
+                    <div *ngIf="firstInvalidControl === 'wardCommune' && wardCommuneControl?.invalid">
+                        <small class="masseage-error " *ngIf="wardCommuneControl?.hasError('required')"> <i class="fa-solid fa-circle-info"></i> Vui lòng chọn phường/xã.</small>
+                    </div>
+                </div>
+                <div class="mb:h-[210px] h-[180px] w-full mb-3 relative">
+                    <ngx-spinner bdColor="rgba(0, 0, 0, 0.2)" size="medium" color="#fff" type="ball-clip-rotate" [fullScreen]="false"></ngx-spinner>
+                    <div id="mapAddMotel" class=" w-full h-full rounded-md">
+                    </div>
+                    <div *ngIf="location===''">
+                        <small class="masseage-error "> <i class="fa-solid fa-circle-info"></i>Không tìm thấy địa chỉ.</small>
+                    </div>
+                </div>
+                <div class="h-fit w-full mb-3 ">
+                    <div>Tiện nghi</div>
+                    <nz-checkbox-group class="py-2" [(ngModel)]="checkConvenient" [ngModelOptions]="{standalone: true}" (ngModelChange)="handleChangeCheckConvenient()"></nz-checkbox-group>
+                    <nz-checkbox nz-checkbox formControlName="liveWithLandlord" class="text-custom-color-black pointer-events-auto">Không chung với chủ</nz-checkbox>
+                </div>
+                <div class="relative w-full mb-2 ">
+                    <div class="">
+                        <textarea type="text" id="description" formControlName="description" class="ntt-custom-textarea h-auto peer " autocomplete="off" spellcheck="false" placeholder=" " [ngClass]="{'input-invalid': descriptionControl?.invalid && firstInvalidControl === 'description'}"></textarea>
+                        <label for="description" class="absolute text-gray-500 text-[14px] transition-all duration-300 transform 
+                               scale-100 origin-top-left bg-white 
+                               peer-placeholder-shown:top-3
+                               peer-placeholder-shown:left-5
+                               peer-placeholder-shown:text-gray-500 
+                               peer-focus:top-0 
+                               peer-focus:-translate-y-0 
+                               peer-focus:-translate-x-[6px]
+                               peer-focus:text-gray-500 
+                               peer:not-placeholder-shown:top-0 
+                               peer:not-placeholder-shown:-translate-y-[16px] 
+                               peer:not-placeholder-shown:text-gray-400" [ngClass]="{'label-invalid': (descriptionControl?.invalid && firstInvalidControl === 'description')}">
+                            Mô tả về nhà trọ
+                        </label>
+                    </div>
+                    <div *ngIf="firstInvalidControl === 'description' && descriptionControl?.invalid">
+                        <small class="masseage-error " *ngIf="descriptionControl?.hasError('required')"> <i class="fa-solid fa-circle-info"></i> Vui lònh ghi mô tả về nhà trọ.</small>
+                    </div>
+                </div>
+                <!-- Upload Area -->
+                <div class=" w-full  mb-2">
+                    <div class="w-full flex mb:flex-row flex-col gap-1">
+                        <div *ngIf="listImages.length < 8" class="border-2 border-dashed border-gray-300 hover:border-custom-color-blue rounded-lg p-2 mb-2 w-[100px] h-[96px]">
+                            <label class="cursor-pointer flex flex-col items-center justify-center space-y-2 relative">
+                            <input  type="file" accept="image/*"  multiple (change)="onFileSelected($event)" 
+                                class="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer pointer-events-auto">
+                            <div class="flex flex-col items-center justify-center pointer-events-none">
+                                <i class="bx bx-upload text-gray-500 text-3xl"></i>
+                                <p class="text-custom-color-black">Thêm ảnh</p>
+                            </div>
+                            </label>
+                        </div>
+                        <!-- Preview Images -->
+                        <div class="mb:w-[calc(100%-100px)] w-full h-full flex flex-row flex-wrap gap-1 px-1" *ngIf="listImages.length > 0">
+                            <div *ngFor="let imageUrl of imageUrls; let i = index" class="relative w-[50px] h-[50px] border border-[#98bfe6] p-[2px] rounded-sm">
+                                <img [src]="imageUrl" alt="Uploaded Image" class="w-full h-full object-cover rounded-sm">
+                                <button 
+                                  class="absolute top-1 right-1 w-[18px] h-[18px] bg-white text-red-600 p-1 font-semibold rounded-full text-[10px] flex justify-center items-center" 
+                                  (click)="removeImage(imageUrl)" 
+                                  nz-tooltip 
+                                  nzTooltipTitle="Xoá ảnh">
+                                  ✕
+                                </button>
+                              </div>
+                        </div> 
+                        <div *ngIf="listImages.length === 0" class="pl-2 pb-1 flex items-end">
+                            <small class="masseage-error "> <i class="fa-solid fa-circle-info"></i> Vui lòng chọn ít nhất 1 ảnh, tối đa 8 ảnh!</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="relative w-full mb-2 ">
+                    <div class="">
+                        <input type="text" id="landlordName" formControlName="landlordName" class="ntt-custom-input-sm peer" placeholder=" " [ngClass]="{'input-invalid': landlordNameControl?.invalid && firstInvalidControl === 'landlordName'}" />
+                        <label for="landlordName" class="absolute text-gray-500 text-[14px] transition-all duration-300 transform 
+                               scale-100 origin-top-left bg-white 
+                               peer-placeholder-shown:top-3
+                               peer-placeholder-shown:left-5
+                               peer-placeholder-shown:text-gray-500 
+                               peer-focus:top-0 
+                               peer-focus:-translate-y-0 
+                               peer-focus:-translate-x-[6px]
+                               peer-focus:text-gray-500 
+                               peer:not-placeholder-shown:top-0 
+                               peer:not-placeholder-shown:-translate-y-[16px] 
+                               peer:not-placeholder-shown:text-gray-400" [ngClass]="{'label-invalid': (landlordNameControl?.invalid && firstInvalidControl === 'landlordName')}">
+                            Tên chủ trọ
+                        </label>
+                    </div>
+                    <div *ngIf="firstInvalidControl === 'landlordName' && landlordNameControl?.invalid">
+                        <small class="masseage-error " *ngIf="landlordNameControl?.hasError('required')"> <i class="fa-solid fa-circle-info"></i> Tên chủ trọ là bắt buộc.</small>
+                    </div>
+                </div>
+                <div class="relative w-full mb-2 ">
+                    <div class="">
+                        <input type="text" id="phoneNumberContact" formControlName="phoneNumberContact" class="ntt-custom-input-sm peer" placeholder=" " [ngClass]="{'input-invalid': phoneNumberContactControl?.invalid && firstInvalidControl === 'phoneNumberContact'}" />
+                        <label for="phoneNumberContact" class="absolute text-gray-500 text-[14px] transition-all duration-300 transform 
+                               scale-100 origin-top-left bg-white 
+                               peer-placeholder-shown:top-3
+                               peer-placeholder-shown:left-5
+                               peer-placeholder-shown:text-gray-500 
+                               peer-focus:top-0 
+                               peer-focus:-translate-y-0 
+                               peer-focus:-translate-x-[6px]
+                               peer-focus:text-gray-500 
+                               peer:not-placeholder-shown:top-0 
+                               peer:not-placeholder-shown:-translate-y-[16px] 
+                               peer:not-placeholder-shown:text-gray-400" [ngClass]="{'label-invalid': (phoneNumberContactControl?.invalid && firstInvalidControl === 'phoneNumberContact')}">
+                            Số điện thoại liên hệ
+                        </label>
+                    </div>
+                    <div *ngIf="firstInvalidControl === 'phoneNumberContact' && phoneNumberContactControl?.invalid">
+                        <small class="masseage-error " *ngIf="phoneNumberContactControl?.hasError('required')"> <i class="fa-solid fa-circle-info"></i> Số điện thoại là bắt buộc.</small>
+                    </div>
+                </div>
+                <div class="relative w-full mb-2 ">
+                    <div class="">
+                        <input type="text" id="addressLandlord" formControlName="addressLandlord" class="ntt-custom-input-sm peer" placeholder=" " [ngClass]="{'input-invalid': addressLandlordControl?.invalid && firstInvalidControl === 'addressLandlord'}" />
+                        <label for="addressLandlord" class="absolute text-gray-500 text-[14px] transition-all duration-300 transform 
+                               scale-100 origin-top-left bg-white 
+                               peer-placeholder-shown:top-3
+                               peer-placeholder-shown:left-5
+                               peer-placeholder-shown:text-gray-500 
+                               peer-focus:top-0 
+                               peer-focus:-translate-y-0 
+                               peer-focus:-translate-x-[6px]
+                               peer-focus:text-gray-500 
+                               peer:not-placeholder-shown:top-0 
+                               peer:not-placeholder-shown:-translate-y-[16px] 
+                               peer:not-placeholder-shown:text-gray-400" [ngClass]="{'label-invalid': (phoneNumberContactControl?.invalid && firstInvalidControl === 'addressLandlord')}">
+                            Địa chỉ liên hệ
+                        </label>
+                    </div>
+                </div>
+                <div class="relative w-full mb-2 ">
+                    <div class="">
+                        <input type="number" id="electricityBill" step="500" formControlName="electricityBill" class="ntt-custom-input-sm peer" placeholder=" " [ngClass]="{'input-invalid': electricityBillControl?.invalid && firstInvalidControl === 'electricityBill'}" />
+                        <label for="electricityBill" class="absolute text-gray-500 text-[14px] transition-all duration-300 transform 
+                        scale-100 origin-top-left bg-white 
+                        peer-placeholder-shown:top-3
+                        peer-placeholder-shown:left-5
+                               peer-placeholder-shown:text-gray-500 
+                               peer-focus:top-0 
+                               peer-focus:-translate-y-0 
+                               peer-focus:-translate-x-[6px]
+                               peer-focus:text-gray-500 
+                               peer:not-placeholder-shown:top-0 
+                               peer:not-placeholder-shown:-translate-y-[16px] 
+                               peer:not-placeholder-shown:text-gray-400" [ngClass]="{'label-invalid': (electricityBillControl?.invalid && firstInvalidControl === 'electricityBill')}">
+                            Tiền điện
+                        </label>
+                    </div>
+                    <div *ngIf="firstInvalidControl === 'electricityBill' && electricityBillControl?.invalid">
+                        <small class="masseage-error " *ngIf="electricityBillControl?.hasError('required')"> <i class="fa-solid fa-circle-info"></i> Giá điện là bắt buộc.</small>
+                    </div>
+                </div>
+                <div class="relative w-full mb-2 ">
+                    <div class="">
+                        <input type="number" id="waterBill" step="1000" formControlName="waterBill" class="ntt-custom-input-sm peer" placeholder=" " [ngClass]="{'input-invalid': waterBillControl?.invalid && firstInvalidControl === 'waterBill'}" />
+                        <label for="waterBill" class="absolute text-gray-500 text-[14px] transition-all duration-300 transform 
+                               scale-100 origin-top-left bg-white 
+                               peer-placeholder-shown:top-3
+                               peer-placeholder-shown:left-5
+                               peer-placeholder-shown:text-gray-500 
+                               peer-focus:top-0 
+                               peer-focus:-translate-y-0 
+                               peer-focus:-translate-x-[6px]
+                               peer-focus:text-gray-500 
+                               peer:not-placeholder-shown:top-0 
+                               peer:not-placeholder-shown:-translate-y-[16px] 
+                               peer:not-placeholder-shown:text-gray-400" [ngClass]="{'label-invalid': (waterBillControl?.invalid && firstInvalidControl === 'waterBill')}">
+                            Tiền nước
+                        </label>
+                    </div>
+                    <div *ngIf="firstInvalidControl === 'waterBill' && waterBillControl?.invalid">
+                        <small class="masseage-error " *ngIf="waterBillControl?.hasError('required')"> <i class="fa-solid fa-circle-info"></i> Giá nước là bắt buộc.</small>
+                    </div>
+                </div>
+                <div class="relative w-full mb-2 " *ngIf="haveWifi">
+                    <div class="">
+                        <input type="number" id="wifiBill" step="1000" formControlName="wifiBill" class="ntt-custom-input-sm peer" placeholder=" " />
+                        <label for="wifiBill" class="absolute text-gray-500 text-[14px] transition-all duration-300 transform 
+                               scale-100 origin-top-left bg-white 
+                               peer-placeholder-shown:top-3
+                               peer-placeholder-shown:left-5
+                               peer-placeholder-shown:text-gray-500 
+                               peer-focus:top-0 
+                               peer-focus:-translate-y-0 
+                               peer-focus:-translate-x-[6px]
+                               peer-focus:text-gray-500 
+                               peer:not-placeholder-shown:top-0 
+                               peer:not-placeholder-shown:-translate-y-[16px] 
+                               peer:not-placeholder-shown:text-gray-400">
+                            Tiền wifi
+                        </label>
+                    </div>
+                </div>
+                <div *ngIf="!haveWifi" class="mb-2"></div>
+                
+            </form>
+        </div>
+        <div class="w-full absolute left-0 bottom-0 bg-white p-3 border-t flex justify-end">
+            <button class="h-[48px] sm:w-1/2 w-full text-[16px] font-medium text-white bg-[#0045a8] px-5 py-[14px] rounded-md hover:bg-[#336ab9] hover:ntt-shadow-button-login" type="button" (click)="handleAddMotel()">Thêm</button>
+        </div>
+    </div>
+</div>

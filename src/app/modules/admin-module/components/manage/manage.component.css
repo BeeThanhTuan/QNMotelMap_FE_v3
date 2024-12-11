@@ -1,4 +1,8 @@
 .active-router{
-    background-color: #e8eefd;
+    color: #1e40af;
+}
+
+ul li:hover{
+    background-color: #edf1fc;
 }
 

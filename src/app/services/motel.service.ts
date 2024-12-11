@@ -66,4 +66,11 @@ export class MotelService {
       map((response:any) => response.data) 
     )
   }
+
+  public softDeleteMotelByID(idMotel:string): Observable<Motel>{
+    const url = `${this.REST_API_SERVER}/api/motel-soft-delete/${idMotel}`;
+    return this.httpClient.delete<Motel>(url).pipe(
+      map((response:any) => response.data) 
+    )
+  }
 }

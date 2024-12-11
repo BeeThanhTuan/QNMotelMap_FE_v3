@@ -126,5 +126,9 @@
     @apply h-[96px] w-full border border-[#aaa] text-[16px] outline-none rounded-md px-5 py-2 focus:border-custom-bg-hover-blue focus:ring-0 
 }
 
+.ntt-custom-th{
+    @apply text-left py-3 px-4 font-semibold text-sm whitespace-nowrap w-fit min-w-[150px]
+}
+
 
 

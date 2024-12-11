@@ -3,8 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { ManageComponent } from './components/manage/manage.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { MotelsComponent } from './components/motels/motels.component';
-import { RoomsComponent } from './components/rooms/rooms.component';
 import { UsersComponent } from './components/users/users.component';
+import { RoomTypesComponent } from './components/room-types/room-types.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'manage', pathMatch: 'full' },
@@ -15,7 +15,7 @@ const routes: Routes = [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: DashboardComponent},
       { path: 'motels', component: MotelsComponent},
-      { path: 'rooms', component: RoomsComponent},
+      { path: 'rooms', component: RoomTypesComponent},
       { path: 'users', component: UsersComponent},
 
     ],

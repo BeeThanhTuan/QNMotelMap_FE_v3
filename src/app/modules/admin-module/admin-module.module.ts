@@ -1,25 +1,44 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
+import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { AdminModuleRoutingModule } from './admin-module-routing.module';
 import { ManageComponent } from './components/manage/manage.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { MotelsComponent } from './components/motels/motels.component';
-import { RoomsComponent } from './components/rooms/rooms.component';
 import { UsersComponent } from './components/users/users.component';
-
-
+import { RoomTypesComponent } from './components/room-types/room-types.component';
+import { MoneyPipe } from './pipes/money.pipe';
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { PopupAddMotelComponent } from './components/popup-add-motel/popup-add-motel.component';
+import { NgxSpinnerModule } from "ngx-spinner";
+import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
+import { RouterModule } from '@angular/router';
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { PopupUpdateMotelComponent } from './components/popup-update-motel/popup-update-motel.component';
 @NgModule({
   declarations: [
     ManageComponent,
     DashboardComponent,
     MotelsComponent,
-    RoomsComponent,
-    UsersComponent
+    UsersComponent,
+    RoomTypesComponent,
+    MoneyPipe,
+    PopupAddMotelComponent,
+    PopupUpdateMotelComponent
   ],
   imports: [
     CommonModule,
-    AdminModuleRoutingModule
+    AdminModuleRoutingModule,
+    NzToolTipModule,
+    NgxPaginationModule,
+    NgxSpinnerModule,
+    NzCheckboxModule,
+    RouterModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NzDropDownModule
   ]
 })
 export class AdminModuleModule { }

@@ -1,0 +1,100 @@
+label {
+  pointer-events: none; /* Để label không chặn sự kiện click trên input và textarea */
+  color: #9ca3af; /* Màu nhạt cho label khi không có focus và không có giá trị */
+  transition: color 0.3s ease, top 0.3s ease;
+}
+
+/* Khi input hoặc textarea được focus hoặc có giá trị, label sẽ di chuyển lên trên và đổi màu */
+input:focus + label,
+input:not(:placeholder-shown) + label,
+textarea:focus + label,
+textarea:not(:placeholder-shown) + label {
+  top: -16px; /* Điều chỉnh giá trị top cho label khi focus hoặc có giá trị */
+  color: #3b82f6; /* Màu cho label khi focus hoặc có giá trị */
+}
+
+/* Khi input hoặc textarea có giá trị và không focus, label sẽ giữ màu nhạt nhưng vẫn ở vị trí cao */
+input:not(:focus):not(:placeholder-shown) + label,
+textarea:not(:focus):not(:placeholder-shown) + label {
+  color: #9ca3af; /* Màu nhạt cho label khi không focus nhưng có giá trị */
+  top: -16px; /* Giữ label ở vị trí cao */
+  left: 10px; /* Đảm bảo left không thay đổi */
+}
+
+/* Đảm bảo label không bị dịch chuyển sang trái khi không focus */
+input:focus + label,
+input:not(:placeholder-shown) + label,
+textarea:focus + label,
+textarea:not(:placeholder-shown) + label {
+  left: 16px; /* Đảm bảo left không thay đổi */
+  padding: 0 3px; /* Đặt padding là 0 để không làm dịch chuyển */
+}
+
+
+.input-invalid {
+  border-color: #ff0000;
+}
+
+.label-invalid {
+  color: #ff0000 !important;
+}
+.masseage-error {
+  color: #ff0000;
+  font-size: 12px;
+}
+
+.custom-tabset .ant-tabs-nav-list {
+  display: flex;
+  width: 100%; /* Đảm bảo thanh tab chiếm 100% chiều rộng */
+}
+
+.custom-tabset .ant-tabs-tab {
+  flex: 1; /* Mỗi tab sẽ chiếm đều 50% của thanh điều hướng */
+  text-align: center; /* Căn giữa nội dung của tab */
+}
+
+/* Ghi đè màu nền khi trình duyệt tự động điền dữ liệu */
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 30px white inset !important; /* Nền trắng tùy chỉnh */
+  -webkit-text-fill-color: #000 !important; /* Màu chữ đen */
+}
+
+/* Để chắc chắn trong tất cả các trình duyệt */
+input:-moz-autofill {
+  box-shadow: 0 0 0 30px white inset !important;
+  color: #000 !important;
+}
+
+
+:host ::ng-deep nz-checkbox-group.ant-checkbox-group{
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 cột với kích thước bằng nhau */
+  row-gap: 10px; /* Khoảng cách giữa các ô */
+}
+
+@media (max-width: 950px) {
+  :host ::ng-deep nz-checkbox-group.ant-checkbox-group {
+    grid-template-columns: repeat(3, 1fr); /* Chuyển thành 3 cột */
+  }
+}
+
+:host ::ng-deep span {
+  max-width: 100% !important; /* Giới hạn chiều rộng tối đa của span */
+  white-space: nowrap; /* Không cho nội dung xuống dòng */
+  overflow-x: height; /* Ẩn phần nội dung vượt quá chiều rộng */
+  text-overflow: ellipsis; /* Thêm dấu ba chấm (...) khi vượt quá */
+  padding-right: 0; /* Bỏ padding bên phải */
+}
+
+:host ::ng-deep span.ant-checkbox-inner{
+  border: 1px solid #a7a7a7;
+}
+
+:host ::ng-deep .leaflet-control-zoom.leaflet-bar.leaflet-control,
+:host ::ng-deep .leaflet-control-attribution.leaflet-control{
+  display: none;
+}
+
+:host ::ng-deep label{
+  color:#1A1A1A
+}

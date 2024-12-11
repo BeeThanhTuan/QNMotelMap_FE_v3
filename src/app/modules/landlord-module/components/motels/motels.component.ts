@@ -67,11 +67,13 @@ export class MotelsComponent {
 
 
   receiveNewMotelFormAddMotel(data: Motel): void {
-    this.landlord.ListMotels.push(data)
+    this.landlord.ListMotels.unshift(data)
   }
 
   stopPropagation(event: Event) {
     event.stopPropagation();
   }
+
+  
   
 }
