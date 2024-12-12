@@ -1,16 +1,9 @@
-
-/* #scroll-container::-webkit-scrollbar {
-    height: 8px; 
-    background: #ffffff; 
-    border-radius: 4px; 
-}
-
-#scroll-container::-webkit-scrollbar-thumb {
-    background: #6fb5ee; 
-    border-radius: 4px;
-}
-
-
-#scroll-container::-webkit-scrollbar-track {
-    background: #e6e6e6;
-} */
+.truncate-description {
+    display: block;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Hiển thị tối đa 2 dòng */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis; /* Thêm dấu "..." */
+    white-space: normal; /* Đảm bảo dòng được bọc lại */
+  }

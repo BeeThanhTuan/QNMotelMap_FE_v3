@@ -88,7 +88,7 @@ export class RoomTypesComponent {
     }
   }
 
-  receiveNewRoomTypeFormUpdateMRoomType(data: RoomType): void {
+  receiveNewRoomTypeFormUpdateRoomType(data: RoomType): void {
     this.listRoomTypes[this.indexRoomTypeUpdate] = data;
   }
 }

@@ -107,4 +107,4 @@
     </div>
 </div>
 <app-popup-add-room-type *ngIf="isShowPopupAddRoomType" [motelID]="idMotel" (newRoomType)="receiveNewRoomTypeFormAddRoomType($event)"></app-popup-add-room-type>
-<app-popup-update-room-type *ngIf="isShowPopupUpdateRoomType"  [motelID]="idMotel" [roomType]="roomType" (newRoomType)="receiveNewRoomTypeFormAddRoomType($event)" ></app-popup-update-room-type>
+<app-popup-update-room-type *ngIf="isShowPopupUpdateRoomType"  [motelID]="idMotel" [roomType]="roomType" (newRoomType)="receiveNewRoomTypeFormUpdateRoomType($event)" ></app-popup-update-room-type>

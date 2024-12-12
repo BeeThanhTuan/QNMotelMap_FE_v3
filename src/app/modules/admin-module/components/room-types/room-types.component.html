@@ -1,1 +1,101 @@
-<p>room-types works!</p>
+<div class="w-full p-2 relative h-full">
+    <!-- Thanh tìm kiếm và nút Thêm mới -->
+    <div class="w-full flex pb-2 justify-between">
+        <div class="flex items-center bg-gray-100 w-[350px] p-1 px-3 rounded-md shadow">
+            <i class='bx bx-search text-[25px] p-1 text-custom-color-black-light'></i>
+            <input type="text" placeholder="Tìm kiếm" class="w-full outline-none bg-transparent text-[17px] placeholder-custom-color-black-light">
+        </div>
+    </div>
+
+    <!-- Bảng chỉ cuộn ngang -->
+    <div class="rounded-md w-full max-w-[1254px] overflow-x-auto custom-scrollbar" id="scroll-container">
+        <table class="min-w-[1200px] table-auto border custom-scrollbar" >
+            <thead class="bg-gray-100 text-gray-700 border-b">
+                <tr>
+                    <th class="ntt-custom-th max-w-[100px]">Giá loại phòng</th>
+                    <th class="ntt-custom-th">Hình ảnh</th>
+                    <th class="ntt-custom-th">Số lượng phòng</th>
+                    <th class="ntt-custom-th">Số lượng phòng còn trống</th>
+                    <th class="ntt-custom-th">Tiện nghi</th>
+                    <th class="ntt-custom-th">Mô tả</th>
+                    <th class="ntt-custom-th">Người tạo</th>
+                    <th class="ntt-custom-th">Ngày tạo</th>
+                    <th class="ntt-custom-th">Người cập nhật</th>
+                    <th class="ntt-custom-th">Ngày cập nhật</th>
+                    <th class="ntt-custom-th">Chức năng</th>
+
+                </tr>
+            </thead>
+            <tbody class="text-gray-700">
+                <tr *ngFor="let roomType of listRoomTypes | paginate: { itemsPerPage: 6, currentPage: currentPage }; let i = index" class="border-b">
+                    <td class="text-left my-3 px-4">{{roomType.Price | money}}</td>
+                    <td class="text-center my-3 px-4 flex items-center flex-wrap gap-1">
+                        <div class="w-fit" *ngFor="let image of roomType.ListImages; let index = index">
+                            <img  (click)="handleOpenCollectionImage(index, i)"  nzTooltipTitle="Xem ảnh" nz-tooltip
+                            src="http://localhost:3000/resources/img-rooms/{{image.LinkImage}}"
+                            alt="" class="w-[25px] h-[25px] object-cover cursor-pointer">
+                        </div>
+                    </td>
+                    <td class="text-center my-3 px-4">{{roomType.Amount}}</td>
+                    <td class="text-center my-3 px-4" [ngStyle]="{ color: roomType.Available> 0 ? '#00b14f' : 'red' }">{{roomType.Available}}</td>
+                    <td class="w-full text-left py-3 px-4 min-w-[200px]">
+                        <div class="flex flex-wrap gap-1">
+                            <div class="w-fit" *ngFor="let convenient of roomType.ListConvenient">
+                                <img class="w-[25px] h-[25px]" src="http://localhost:3000/resources/img-convenients/{{convenient.LinkImage}}" nzTooltipTitle="{{convenient.NameConvenient}}" nz-tooltip alt="">
+                            </div>
+                        </div>
+                    </td>
+                    <td class="text-left my-3 px-4 truncate-description ">{{roomType.Description}}</td>
+                    <td class="text-left my-3 px-4 hover:underline cursor-pointer">{{roomType.CreateBy}}</td>
+                    <td class="text-left my-3 px-4 ">{{roomType.CreateAt}}</td>
+                    <td class="text-left my-3 px-4 hover:underline cursor-pointer">{{roomType.UpdateBy}}</td>
+                    <td class="text-left my-3 px-4 ">{{roomType.UpdateAt}}</td>
+                    <td class="flex gap-2 items-center  text-[25px]">
+                        <i class='bx bxs-edit cursor-pointer hover:text-yellow-500' nzTooltipTitle="Cập nhật" nz-tooltip (click)="showPopupUpdateRoomType(i, roomType.MotelID, roomType)"></i>
+                        <i class='bx bx-trash cursor-pointer hover:text-red-500'  nzTooltipTitle="Xoá" nz-tooltip (click)="showSoftDeleteRoomTypeAlert('Cảnh báo!', 'Bạn có muốn xoá loại phòng này!', roomType._id, i)"></i>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="flex w-full items-center justify-center absolute left-0 bottom-0 ">
+        <pagination-controls (pageChange)="onPageChange($event)" previousLabel="Prev" nextLabel="Next"></pagination-controls>
+    </div>
+</div>
+
+
+<app-popup-update-room-type *ngIf="isShowPopupUpdateRoomType" [roomType]="roomType" [motelID]="motelID" (newRoomType)="receiveNewRoomTypeFormUpdateRoomType($event)"></app-popup-update-room-type>
+
+<div class="w-full h-[100vh] fixed top-0 left-0 overflow-hidden z-20 flex justify-center items-center animate-appear sm:animate-none" *ngIf="isCollectionImageOpen" >
+    <div class="absolute w-full h-full bg-[rgba(0,0,0,0.6)] backdrop-blur-[1.5px]" (click)="handleCloseCollectionImage()"></div>
+    <div class=" mx-auto relative sm:w-[95%] sm:h-[95%] w-full h-full bg-white z-10 sm:rounded-xl rounded-none flex flex-col overflow-hidden ">
+        <div class="w-full h-[7%] flex justify-between items-center border-b">
+            <div><span class="ml-5 text-[18px] font-semibold">Ảnh phòng trọ</span></div>
+            <button class="px-4 py-2 flex justify-center items-center text-custom-color-black-light hover:text-custom-color-blue"
+                (click)="handleCloseCollectionImage()">
+                <i class='bx bx-x text-[35px]'></i>
+            </button>
+        </div>
+        <div class="w-full h-[75%] flex flex-col">
+            <div class="w-full h-[95%] flex justify-between items-center  ">
+                <button (click)="prevImage(indexMotel)" class=" text-custom-color-black-light hover:text-custom-color-blue"><i class='bx bx-chevron-left sm:text-[70px] text-[50px]'></i></button>
+                <div class="w-[90%] h-[90%] flex justify-center items-center">
+                    <img src="http://localhost:3000/resources/img-rooms/{{listRoomTypes[indexMotel].ListImages[currentIndexRoomType].LinkImage}}" alt="" class=" w-fit h-full object-contain rounded-md " >
+                </div>
+                <button (click)="nextImage(indexMotel)" class=" text-custom-color-black-light hover:text-custom-color-blue"><i class='bx bx-chevron-right sm:text-[70px] text-[50px]'></i></button>
+            </div>
+            <div class="w-full h-[5%] flex justify-center"><span>{{currentIndexRoomType + 1}}/{{listRoomTypes[indexMotel].ListImages.length}}</span></div>
+        </div>
+        <div class="w-full h-[18%] flex sm:justify-center justify-normal gap-3 p-3 overflow-x-auto px-3" >
+            <img *ngFor="let image of listRoomTypes[indexMotel].ListImages, let i = index" src="http://localhost:3000/resources/img-rooms/{{image.LinkImage}}" alt="" tabindex="0"
+            (click)="currentIndexRoomType = i"
+            [ngClass]="{
+                'ntt-shadow-image': currentIndexRoomType === i, 
+                'opacity-100': currentIndexRoomType === i,
+                'opacity-50': currentIndexRoomType !== i,
+            }"
+            class="cursor-pointer w-fit md:h-[100px] h-[80px] object-contain focus:ntt-shadow-image 
+            focus:outline-none rounded-sm focus:opacity-100 hover:opacity-100 opacity-50 transition-opacity duration-100 delay-55">
+        </div>
+    </div>
+</div>

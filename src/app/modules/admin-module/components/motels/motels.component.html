@@ -22,9 +22,11 @@
                     <th class="ntt-custom-th !min-w-[200px]">Địa chỉ</th>
                     <th class="ntt-custom-th max-w-[100px]">Giá thuê</th>
                     <th class="ntt-custom-th">Khoảng cách tới Trường</th>
+                    <th class="ntt-custom-th">Hình ảnh</th>
                     <th class="ntt-custom-th">Số phòng còn trống</th>
                     <th class="ntt-custom-th">Số lượng loại phòng</th>
-                    <th class="ntt-custom-th">Hình ảnh</th>
+                    <th class="ntt-custom-th">Tiện nghi</th>
+                    <th class="ntt-custom-th">Giới thiệu</th>
                     <th class="ntt-custom-th">Tên chủ trọ</th>
                     <th class="ntt-custom-th">SĐT liên hệ</th>
                     <th class="ntt-custom-th">Địa chỉ liên hệ</th>
@@ -41,30 +43,40 @@
             </thead>
             <tbody class="text-gray-700">
                 <tr *ngFor="let motel of listMotels | paginate: { itemsPerPage: 6, currentPage: currentPage }; let i = index" class="border-b">
-                    <td class="text-left py-3 px-4 !max-w-[250px]">{{motel.Address}}, {{motel.WardCommune}}</td>
-                    <td class="text-left py-3 px-4">{{motel.Price | money}}</td>
-                    <td class="text-center py-3 px-4 ">{{motel.Distance}} km</td>
-                    <td class="text-center py-3 px-4" [ngStyle]="{ color: motel.TotalAvailableRoom> 0 ? '#00b14f' : 'red' }">{{motel.TotalAvailableRoom}}</td>
-                    <td class="text-center py-3 px-4">{{motel.ListRoomTypes?.length}}</td>
-                    <td class="text-center py-3 px-4 flex items-center ">
-                        <img  (click)="handleOpenCollectionImage(0, i)"  nzTooltipTitle="Xem ảnh" nz-tooltip
-                        src="http://localhost:3000/resources/img-motels/{{motel.ListImages[0].LinkImage}}"
-                         alt="" class="w-[40px] h-[40px] object-cover cursor-pointer">
-                        <span *ngIf="motel.ListImages.length -1  > 0">+{{motel.ListImages.length - 1}}</span>
+                    <td class="text-left my-3 px-4 !max-w-[250px] ">{{motel.Address}}, {{motel.WardCommune}}</td>
+                    <td class="text-left my-3 px-4">{{motel.Price | money}}</td>
+                    <td class="text-center my-3 px-4 ">{{motel.Distance}} km</td>
+                    <td class="text-center my-3 px-4 flex items-center flex-wrap gap-1">
+                        <div class="w-fit" *ngFor="let image of motel.ListImages; let index = index">
+                            <img  (click)="handleOpenCollectionImage(index, i)"  nzTooltipTitle="Xem ảnh" nz-tooltip
+                            src="http://localhost:3000/resources/img-motels/{{image.LinkImage}}"
+                            alt="" class="w-[25px] h-[25px] object-cover cursor-pointer">
+                        </div>
                     </td>
-                    <td class="text-left py-3 px-4">{{motel.LandlordName}}</td>
-                    <td class="text-left py-3 px-4">{{motel.PhoneNumberContact}}</td>
-                    <td class="text-left py-3 px-4  overflow-x-hidden whitespace-nowrap text-ellipsis">{{motel.AddressLandlord}} </td>
-                    <td class="text-left py-3 px-4">{{motel.ElectricityBill | money}}</td>
-                    <td class="text-left py-3 px-4">{{motel.WaterBill | money}}</td>
-                    <td class="text-left py-3 px-4 ">{{motel.WifiBill | money}}</td>
-                    <td class="text-left py-3 px-4 hover:underline cursor-pointer">{{motel.CreateBy}}</td>
-                    <td class="text-left py-3 px-4 ">{{motel.CreateAt}}</td>
-                    <td class="text-left py-3 px-4 hover:underline cursor-pointer">{{motel.UpdateBy}}</td>
-                    <td class="text-left py-3 px-4 ">{{motel.UpdateAt}}</td>
+                    <td class="text-center my-3 px-4" [ngStyle]="{ color: motel.TotalAvailableRoom> 0 ? '#00b14f' : 'red' }">{{motel.TotalAvailableRoom}}</td>
+                    <td class="text-center my-3 px-4">{{motel.ListRoomTypes?.length}}</td>
+                    <td class="w-full text-left my-3 px-4 min-w-[200px]">
+                        <div class="flex flex-wrap gap-1 py-3">
+                            <div class="w-fit" *ngFor="let convenient of motel.ListConvenient">
+                                <img class="w-[25px] h-[25px]" src="http://localhost:3000/resources/img-convenients/{{convenient.LinkImage}}" nzTooltipTitle="{{convenient.NameConvenient}}" nz-tooltip alt="">
+                            </div>
+                        </div>
+                    </td>
+                    <td class="text-left my-3 px-4 truncate-description">{{motel.Description}}</td>
+                    <td class="text-left my-3 px-4">{{motel.LandlordName}}</td>
+                    <td class="text-left my-3 px-4">{{motel.PhoneNumberContact}}</td>
+                    <td class="text-left my-3 px-4  overflow-x-hidden whitespace-nowrap text-ellipsis">{{motel.AddressLandlord}} </td>
+                    <td class="text-left my-3 px-4">{{motel.ElectricityBill | money}}</td>
+                    <td class="text-left my-3 px-4">{{motel.WaterBill | money}}</td>
+                    <td class="text-left my-3 px-4 ">{{motel.WifiBill | money}}</td>
+                    <td class="text-left my-3 px-4 hover:underline cursor-pointer">{{motel.CreateBy}}</td>
+                    <td class="text-left my-3 px-4 ">{{motel.CreateAt}}</td>
+                    <td class="text-left my-3 px-4 hover:underline cursor-pointer">{{motel.UpdateBy}}</td>
+                    <td class="text-left my-3 px-4 ">{{motel.UpdateAt}}</td>
                     <td class="flex gap-2 items-center  text-[25px]">
                         <i class='bx bxs-edit cursor-pointer hover:text-yellow-500' nzTooltipTitle="Cập nhật" nz-tooltip (click)="showPopupUpdateMotel(motel, i)"></i>
                         <i class='bx bx-trash cursor-pointer hover:text-red-500'  nzTooltipTitle="Xoá" nz-tooltip (click)="showSoftDeleteMotelAlert('Cảnh báo!', 'Bạn có muốn xoá nhà trọ này!', motel._id, i)"></i>
+                        <i class='bx bx-plus-circle cursor-pointer hover:text-blue-500' nzTooltipTitle="Thêm loại phòng" nz-tooltip (click)="showPopupAddRoomType(motel._id)"></i>
                     </td>
                 </tr>
             </tbody>
@@ -77,6 +89,7 @@
 
 <app-popup-add-motel *ngIf="isShowPopupAddMotel" (newMotel)="receiveNewMotelFormAddMotel($event)"></app-popup-add-motel>
 <app-popup-update-motel *ngIf="isShowPopupUpdateMotel" [motel]="motel" (newMotel)="receiveNewMotelFormUpdateMotel($event)"></app-popup-update-motel>
+<app-popup-add-room-type *ngIf="isShowPopupAddRoomType" [motelID]="motelID"></app-popup-add-room-type>
 
 <div class="w-full h-[100vh] fixed top-0 left-0 overflow-hidden z-20 flex justify-center items-center animate-appear sm:animate-none" *ngIf="isCollectionImageOpen" >
     <div class="absolute w-full h-full bg-[rgba(0,0,0,0.6)] backdrop-blur-[1.5px]" (click)="handleCloseCollectionImage()"></div>

@@ -17,6 +17,8 @@ import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { RouterModule } from '@angular/router';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { PopupUpdateMotelComponent } from './components/popup-update-motel/popup-update-motel.component';
+import { PopupAddRoomTypeComponent } from './components/popup-add-room-type/popup-add-room-type.component';
+import { PopupUpdateRoomTypeComponent } from './components/popup-update-room-type/popup-update-room-type.component';
 @NgModule({
   declarations: [
     ManageComponent,
@@ -26,7 +28,9 @@ import { PopupUpdateMotelComponent } from './components/popup-update-motel/popup
     RoomTypesComponent,
     MoneyPipe,
     PopupAddMotelComponent,
-    PopupUpdateMotelComponent
+    PopupUpdateMotelComponent,
+    PopupAddRoomTypeComponent,
+    PopupUpdateRoomTypeComponent
   ],
   imports: [
     CommonModule,

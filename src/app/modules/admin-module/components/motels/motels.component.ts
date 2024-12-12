@@ -16,8 +16,9 @@ export class MotelsComponent {
   motel!: Motel;
   isShowPopupAddMotel = false;
   isShowPopupUpdateMotel = false;
+  isShowPopupAddRoomType = false;
   indexUpdate!: number;
-
+  motelID!: string;
   //collection image
   isCollectionImageOpen = false;
   indexMotel = 0;
@@ -64,6 +65,18 @@ export class MotelsComponent {
     if(popupUpdateMotel && popupUpdateMotel.classList.contains('hidden')){
       popupUpdateMotel.classList.remove('hidden')
       popupUpdateMotel.classList.add('flex')
+    }
+  }
+
+  showPopupAddRoomType(motelID: string): void {
+    this.isShowPopupAddRoomType = true;
+    this.motelID = motelID;
+    const popupAddRoomType = document.getElementById('popupAddRoomType') as HTMLElement;
+    const body = document.querySelector('body') as HTMLElement;
+    body.style.overflow = 'hidden';
+    if(popupAddRoomType && popupAddRoomType.classList.contains('hidden')){
+      popupAddRoomType.classList.remove('hidden')
+      popupAddRoomType.classList.add('flex')
     }
   }
 

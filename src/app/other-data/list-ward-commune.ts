@@ -19,4 +19,5 @@ export const listWardCommune = [
   'Thị Nại',
   'Trần Phú',
   'Trần Quang Diệu',
+  'Trần Hưng Đạo'
 ];

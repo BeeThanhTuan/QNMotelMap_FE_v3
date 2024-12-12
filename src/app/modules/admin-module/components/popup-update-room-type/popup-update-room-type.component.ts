@@ -3,28 +3,34 @@ import { listWardCommune } from '../../../../other-data/list-ward-commune';
 import { Convenient } from 'src/app/interfaces/convenient';
 import { ConvenientService } from 'src/app/services/convenient.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AlertService } from 'src/app/services/alert.service';;
+import { AlertService } from 'src/app/services/alert.service';
 import { MotelService } from 'src/app/services/motel.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { UserService } from 'src/app/services/user.service';
 import { User } from 'src/app/interfaces/user';
-import { checkAmountValidator } from '../../validator-custom/checkAmountValidator';
+import { checkAmountValidator } from 'src/app/modules/landlord-module/validator-custom/checkAmountValidator';
 import { RoomType } from 'src/app/interfaces/roomType';
 import { RoomTypeService } from 'src/app/services/roomType.service';
+import { Images } from 'src/app/interfaces/images';
+import { id_ID } from 'ng-zorro-antd/i18n';
 @Component({
-  selector: 'app-popup-add-room-type',
-  templateUrl: './popup-add-room-type.component.html',
-  styleUrls: ['./popup-add-room-type.component.css']
+  selector: 'app-popup-update-room-type',
+  templateUrl: './popup-update-room-type.component.html',
+  styleUrls: ['./popup-update-room-type.component.css']
 })
-export class PopupAddRoomTypeComponent {
+export class PopupUpdateRoomTypeComponent {
   listImages: File[] = [];
   imageUrls: string[] = [];
+  listOldImages: Images[] = [];
+  listOldImagesRemove: string[] = []
   listWardCommune = listWardCommune;
-  addRoomTypeForm!: FormGroup;
+  updateRoomTypeForm!: FormGroup;
   checkConvenient: { label: string; value: string; checked: boolean }[] = [];
   firstInvalidControl: string | null = null;
   user!: User;
   @Input() motelID!: string;
+  @Input() roomType!: RoomType;
+
   @Output() newRoomType = new EventEmitter<RoomType>();
 
   constructor(
@@ -32,18 +38,24 @@ export class PopupAddRoomTypeComponent {
     private formBuilder: FormBuilder,
     private cdr: ChangeDetectorRef,
     private alertService: AlertService,
-    private motelService: MotelService,
     private authService: AuthService,
     private userService: UserService,
     private roomTypeService: RoomTypeService,
   ) {
     this.initializeForm();
+    this.getAllConvenient();
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+   setTimeout(() => {
+    if(changes['motelID'] || changes['roomType']){
+        this.setInfoIntoForm(this.roomType);
+     }
+   }, 10);
+  }
 
   ngOnInit(): void {
-    this.getAllConvenient();
-    this.getInfoUser();
+    this.getInfoUser();  
   }
 
   getInfoUser() :void{
@@ -59,7 +71,7 @@ export class PopupAddRoomTypeComponent {
   }
 
   initializeForm(): void {
-    this.addRoomTypeForm = this.formBuilder.group({
+    this.updateRoomTypeForm = this.formBuilder.group({
       price: [null, [Validators.required, Validators.min(500000)] ],
       area: [null, [Validators.required, Validators.min(6), Validators.max(99)]],
       amount: [null, [Validators.required, Validators.max(99)]],
@@ -69,55 +81,103 @@ export class PopupAddRoomTypeComponent {
     });
   }
 
+  setInfoIntoForm(roomType: RoomType){
+    this.updateRoomTypeForm.patchValue({
+      price: roomType.Price,
+      area: roomType.Area,
+      amount: roomType.Amount,
+      available: roomType.Available,
+      description: roomType.Description,
+    },{ emitEvent: false }
+    );
+
+    this.listOldImages = [...roomType.ListImages]
+
+    // Chuyển đổi danh sách từ motel thành đối tượng cần thiết
+    const checkedConvenient = (roomType?.ListConvenient || []).map((convenient) => ({
+      label: convenient.NameConvenient,
+      value: convenient._id,
+      checked: true, // Đánh dấu là đã chọn
+    }));
+
+    // Khởi tạo danh sách checkConvenient nếu chưa có
+    const checkConvenient = this.checkConvenient || [];
+
+    // Tạo Map để hợp nhất danh sách (loại bỏ trùng lặp dựa trên value)
+    const convenientMap = new Map<string, { label: string; value: string; checked: boolean }>(
+      [...checkConvenient, ...checkedConvenient].map((convenient) => [convenient.value, convenient])
+    );
+
+    // Cập nhật lại this.checkConvenient với danh sách hợp nhất
+    this.checkConvenient = Array.from(convenientMap.values());
+
+    // Lọc danh sách các tiện nghi đã chọn (checked === true)
+    const selectedConvenient = this.checkConvenient
+      .filter((convenient) => convenient.checked)
+      .map((convenient) => convenient.value);
+   
+    // Cập nhật giá trị vào form
+    this.updateRoomTypeForm.patchValue({
+      listConvenient: selectedConvenient, // Đảm bảo không lặp mảng
+    });
+  }
+
   get priceControl() {
-    return this.addRoomTypeForm.get('price');
+    return this.updateRoomTypeForm.get('price');
   }
   
   get areaControl() {
-    return this.addRoomTypeForm.get('area');
+    return this.updateRoomTypeForm.get('area');
   }
   
   get amountControl() {
-    return this.addRoomTypeForm.get('amount');
+    return this.updateRoomTypeForm.get('amount');
   }
   
   get availableControl() {
-    return this.addRoomTypeForm.get('available');
+    return this.updateRoomTypeForm.get('available');
   }
   
   get descriptionControl() {
-    return this.addRoomTypeForm.get('description');
+    return this.updateRoomTypeForm.get('description');
   }
   
   get listConvenientControl() {
-    return this.addRoomTypeForm.get('listConvenient');
+    return this.updateRoomTypeForm.get('listConvenient');
   }
 
-  getAllConvenient(): void {
-    this.convenientService
-      .getAllConvenient()
-      .subscribe((response: Convenient[]) => {
-        this.checkConvenient = response.map((convenient) => ({
-          label: convenient.NameConvenient,
-          value: convenient._id,
-          checked: false,
-        }));
-      });
+  getAllConvenient(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.convenientService.getAllConvenient().subscribe(
+        (response: Convenient[]) => {
+          this.checkConvenient = response.map((convenient) => ({
+            label: convenient.NameConvenient,
+            value: convenient._id,
+            checked: false,
+          }));
+          resolve(); // Khi thành công
+        },
+        (error) => {
+          console.error('Error fetching conveniences:', error);
+          reject(error); // Khi lỗi
+        }
+      );
+    });
   }
 
-  handleAddRoomType(): void {
+  handleUpdateRoomType(): void {
     let checkConvenient = this.checkConvenient
       .filter((convenient) => convenient.checked === true)
       .map((convenient) => convenient.value);
-    this.addRoomTypeForm.patchValue({
+    this.updateRoomTypeForm.patchValue({
       listConvenient: [...checkConvenient],
     });
-    if (this.addRoomTypeForm.invalid || this.listImages.length === 0) {
-      this.focusFirstInvalidControl(this.addRoomTypeForm);
+    if (this.updateRoomTypeForm.invalid || (this.listImages.length + this.listOldImages.length) === 0) {
+      this.focusFirstInvalidControl(this.updateRoomTypeForm);
       return;
     } else {
       const data = new FormData();
-      const formValues = this.addRoomTypeForm.value;
+      const formValues = this.updateRoomTypeForm.value;
       for (const key in formValues) {
         if (formValues.hasOwnProperty(key)) {
           const value = formValues[key];
@@ -128,17 +188,18 @@ export class PopupAddRoomTypeComponent {
       for (let file of this.listImages) {
         data.append('listImages', file);
       }
+      data.append('listOldImagesRemove', JSON.stringify(this.listOldImagesRemove));
       data.append('userID', this.user._id);
       data.append('motelID', this.motelID);
  
-      this.roomTypeService.addNewRoomType(data).subscribe({
+      this.roomTypeService.updateInfoRoomType(this.roomType._id, data).subscribe({
         next: (response) => {
-          this.alertService.showSuccess('Thêm mới thành công!', 'Bạn đã thêm thành công loại phòng mới.');
+          this.alertService.showSuccess('Cập nhật thành công!', 'Bạn đã cập nhật thành công loại phòng.');
           this.newRoomType.emit(response);
-          this.hiddenPopupAddMotel(); 
+          this.hiddenPopupUpdateMotel(); 
         },
         error: (error) => {
-          this.alertService.showError('Thêm mới thất bại!', error.error.message); 
+          this.alertService.showError('Cập nhật thất bại!', error.error.message); 
         }
       })
       
@@ -164,19 +225,20 @@ export class PopupAddRoomTypeComponent {
     }
   }
 
-  hiddenPopupAddMotel() {
-    const popupAddRoomType = document.getElementById(
-      'popupAddRoomType'
+  hiddenPopupUpdateMotel() {
+    const popupUpdateRoomType = document.getElementById(
+      'popupUpdateRoomType'
     ) as HTMLElement;
     const body = document.querySelector('body') as HTMLElement;
     body.style.overflow = 'auto';
-    if (popupAddRoomType && popupAddRoomType.classList.contains('flex')) {
-      popupAddRoomType.classList.remove('flex');
-      popupAddRoomType.classList.add('hidden');
+    if (popupUpdateRoomType && popupUpdateRoomType.classList.contains('flex')) {
+      popupUpdateRoomType.classList.remove('flex');
+      popupUpdateRoomType.classList.add('hidden');
     }
-    this.addRoomTypeForm.reset();
+    this.updateRoomTypeForm.reset();
     this.listImages = [];
     this.imageUrls = [];
+    this.listOldImages = [...this.roomType.ListImages];
   }
 
   stopPropagation(event: Event) {
@@ -203,7 +265,7 @@ export class PopupAddRoomTypeComponent {
   }
 
   // Hàm xóa ảnh
-  removeImage(imageUrl: string): void {
+  removeImageNew(imageUrl: string): void {
     // Tìm và xóa URL trong imageUrls
     const index = this.imageUrls.indexOf(imageUrl);
     if (index !== -1) {
@@ -214,5 +276,10 @@ export class PopupAddRoomTypeComponent {
       // Cập nhật lại danh sách ảnh trong listImages nếu cần
       this.listImages = this.listImages.filter((_, i) => i !== index);
     }
+  }
+
+  removeImageOld(index: number, id: string): void{
+    this.listOldImages.splice(index, 1)
+    this.listOldImagesRemove.push(id);
   }
 }

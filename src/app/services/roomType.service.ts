@@ -14,6 +14,13 @@ export class RoomTypeService {
   };
   constructor(private httpClient: HttpClient) {}
 
+  public getAllRoomTypes(): Observable<RoomType[]> {
+    const url = `${this.REST_API_SERVER}/api/all-room-type`;
+    return this.httpClient.get<RoomType[]>(url).pipe(
+      map((response:any) => response.data) 
+    )
+  }
+
   public getRoomTypesByIDMotel(id: string): Observable<RoomType[]> {
     const url = `${this.REST_API_SERVER}/api/room-types/${id}`;
     return this.httpClient.get<RoomType[]>(url).pipe(
@@ -38,6 +45,13 @@ export class RoomTypeService {
   public updateInfoRoomType(id: string, data: FormData): Observable<RoomType> {
     const url = `${this.REST_API_SERVER}/api/room-type/${id}`;
     return this.httpClient.put<RoomType>(url, data).pipe(
+      map((response:any) => response.data) 
+    )
+  }
+
+  public softDeleteRoomTypeByID(id:string): Observable<RoomType>{
+    const url = `${this.REST_API_SERVER}/api/soft-delete-room-type/${id}`;
+    return this.httpClient.delete<RoomType>(url).pipe(
       map((response:any) => response.data) 
     )
   }

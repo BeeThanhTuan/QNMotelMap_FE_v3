@@ -3,13 +3,11 @@ import { listWardCommune } from '../../../../other-data/list-ward-commune';
 import { Convenient } from 'src/app/interfaces/convenient';
 import { ConvenientService } from 'src/app/services/convenient.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AlertService } from 'src/app/services/alert.service';;
-import { MotelService } from 'src/app/services/motel.service';
+import { AlertService } from 'src/app/services/alert.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { UserService } from 'src/app/services/user.service';
 import { User } from 'src/app/interfaces/user';
-import { checkAmountValidator } from '../../validator-custom/checkAmountValidator';
-import { RoomType } from 'src/app/interfaces/roomType';
+import { checkAmountValidator } from 'src/app/modules/landlord-module/validator-custom/checkAmountValidator';
 import { RoomTypeService } from 'src/app/services/roomType.service';
 @Component({
   selector: 'app-popup-add-room-type',
@@ -25,14 +23,12 @@ export class PopupAddRoomTypeComponent {
   firstInvalidControl: string | null = null;
   user!: User;
   @Input() motelID!: string;
-  @Output() newRoomType = new EventEmitter<RoomType>();
 
   constructor(
     private convenientService: ConvenientService,
     private formBuilder: FormBuilder,
     private cdr: ChangeDetectorRef,
     private alertService: AlertService,
-    private motelService: MotelService,
     private authService: AuthService,
     private userService: UserService,
     private roomTypeService: RoomTypeService,
@@ -44,6 +40,8 @@ export class PopupAddRoomTypeComponent {
   ngOnInit(): void {
     this.getAllConvenient();
     this.getInfoUser();
+    console.log(this.motelID);
+    
   }
 
   getInfoUser() :void{
@@ -134,7 +132,6 @@ export class PopupAddRoomTypeComponent {
       this.roomTypeService.addNewRoomType(data).subscribe({
         next: (response) => {
           this.alertService.showSuccess('Thêm mới thành công!', 'Bạn đã thêm thành công loại phòng mới.');
-          this.newRoomType.emit(response);
           this.hiddenPopupAddMotel(); 
         },
         error: (error) => {
@@ -216,3 +213,4 @@ export class PopupAddRoomTypeComponent {
     }
   }
 }
+
