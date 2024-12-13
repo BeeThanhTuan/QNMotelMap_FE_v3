@@ -19,6 +19,7 @@ import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { PopupUpdateMotelComponent } from './components/popup-update-motel/popup-update-motel.component';
 import { PopupAddRoomTypeComponent } from './components/popup-add-room-type/popup-add-room-type.component';
 import { PopupUpdateRoomTypeComponent } from './components/popup-update-room-type/popup-update-room-type.component';
+import { PopupAddUserComponent } from './components/popup-add-user/popup-add-user.component';
 @NgModule({
   declarations: [
     ManageComponent,
@@ -30,7 +31,8 @@ import { PopupUpdateRoomTypeComponent } from './components/popup-update-room-typ
     PopupAddMotelComponent,
     PopupUpdateMotelComponent,
     PopupAddRoomTypeComponent,
-    PopupUpdateRoomTypeComponent
+    PopupUpdateRoomTypeComponent,
+    PopupAddUserComponent,
   ],
   imports: [
     CommonModule,

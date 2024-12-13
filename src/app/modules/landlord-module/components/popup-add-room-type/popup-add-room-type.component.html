@@ -30,8 +30,8 @@
                             </label>
                         </div>
                         <div *ngIf="firstInvalidControl === 'price' && priceControl?.invalid">
-                            <small class="masseage-error " *ngIf="priceControl?.hasError('required')"> <i class="fa-solid fa-circle-info"></i> Giá loại phòng trọ là bắt buộc.</small>
-                            <small class="masseage-error " *ngIf="priceControl?.hasError('min')"> <i class="fa-solid fa-circle-info"></i> Giá loại phòng trọ  không hơp lệ.</small>
+                            <small class="message-error " *ngIf="priceControl?.hasError('required')"> <i class="fa-solid fa-circle-info"></i> Giá loại phòng trọ là bắt buộc.</small>
+                            <small class="message-error " *ngIf="priceControl?.hasError('min')"> <i class="fa-solid fa-circle-info"></i> Giá loại phòng trọ  không hơp lệ.</small>
                         </div>
                     </div> 
                     <div class="relative w-full mb-2">
@@ -53,8 +53,8 @@
                             </label>
                         </div>
                         <div *ngIf="firstInvalidControl === 'area' && areaControl?.invalid">
-                            <small class="masseage-error " *ngIf="areaControl?.hasError('required')"> <i class="fa-solid fa-circle-info"></i> Diện tích phòng trọ là bắt buộc.</small>
-                            <small class="masseage-error " *ngIf="areaControl?.hasError('max') || areaControl?.hasError('min')" > <i class="fa-solid fa-circle-info"></i> Diện tích phòng không hơp lệ</small>
+                            <small class="message-error " *ngIf="areaControl?.hasError('required')"> <i class="fa-solid fa-circle-info"></i> Diện tích phòng trọ là bắt buộc.</small>
+                            <small class="message-error " *ngIf="areaControl?.hasError('max') || areaControl?.hasError('min')" > <i class="fa-solid fa-circle-info"></i> Diện tích phòng không hơp lệ</small>
                         </div>
                     </div>     
                     <div class="relative w-full mb-2">
@@ -76,8 +76,8 @@
                             </label>
                         </div>
                         <div *ngIf="firstInvalidControl === 'amount' && amountControl?.invalid">
-                            <small class="masseage-error " *ngIf="amountControl?.hasError('required')"> <i class="fa-solid fa-circle-info"></i> Sô lượng phòng là bắt buộc.</small>
-                            <small class="masseage-error " *ngIf="amountControl?.hasError('max')" > <i class="fa-solid fa-circle-info"></i> Sô lượng phòng không hơp lệ</small>
+                            <small class="message-error " *ngIf="amountControl?.hasError('required')"> <i class="fa-solid fa-circle-info"></i> Sô lượng phòng là bắt buộc.</small>
+                            <small class="message-error " *ngIf="amountControl?.hasError('max')" > <i class="fa-solid fa-circle-info"></i> Sô lượng phòng không hơp lệ</small>
                         </div>
                     </div>   
                     <div class="relative w-full mb-2">
@@ -99,8 +99,8 @@
                             </label>
                         </div>
                         <div *ngIf="firstInvalidControl === 'available' && availableControl?.invalid">
-                            <small class="masseage-error " *ngIf="availableControl?.hasError('required')"> <i class="fa-solid fa-circle-info"></i> Sô lượng phòng trống là bắt buộc.</small>
-                            <small class="masseage-error " *ngIf="availableControl?.hasError('max') || availableControl?.hasError('larger')" > <i class="fa-solid fa-circle-info"></i> Sô lượng phòng trống không hơp lệ</small>
+                            <small class="message-error " *ngIf="availableControl?.hasError('required')"> <i class="fa-solid fa-circle-info"></i> Sô lượng phòng trống là bắt buộc.</small>
+                            <small class="message-error " *ngIf="availableControl?.hasError('max') || availableControl?.hasError('larger')" > <i class="fa-solid fa-circle-info"></i> Sô lượng phòng trống không hơp lệ</small>
                         </div>
                     </div>             
                     <div class="relative w-full mb-2 ">
@@ -122,7 +122,7 @@
                             </label>
                         </div>
                         <div *ngIf="firstInvalidControl === 'description' && descriptionControl?.invalid">
-                            <small class="masseage-error " *ngIf="descriptionControl?.hasError('required')"> <i class="fa-solid fa-circle-info"></i> Vui lònh ghi mô tả về nhà trọ.</small>
+                            <small class="message-error " *ngIf="descriptionControl?.hasError('required')"> <i class="fa-solid fa-circle-info"></i> Vui lònh ghi mô tả về nhà trọ.</small>
                         </div>
                     </div>
                     <!-- Upload Area -->
@@ -152,7 +152,7 @@
                                   </div>
                             </div>
                             <div *ngIf="listImages.length === 0" class="pl-2 pb-1 flex items-end">
-                                <small class="masseage-error "> <i class="fa-solid fa-circle-info"></i> Vui lòng chọn ít nhất 1 ảnh, tối đa 8 ảnh!</small>
+                                <small class="message-error "> <i class="fa-solid fa-circle-info"></i> Vui lòng chọn ít nhất 1 ảnh, tối đa 8 ảnh!</small>
                             </div>
                         </div>
                     </div>

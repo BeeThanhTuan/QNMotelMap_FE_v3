@@ -1,1 +1,81 @@
-<p>users works!</p>
+<div class="w-full p-2 relative h-full">
+    <!-- Thanh tìm kiếm và nút Thêm mới -->
+    <div class="w-full flex pb-2 justify-between">
+        <div class="flex items-center bg-gray-100 w-[350px] p-1 px-3 rounded-md shadow">
+            <i class='bx bx-search text-[25px] p-1 text-custom-color-black-light'></i>
+            <input type="text" placeholder="Tìm kiếm" class="w-full outline-none bg-transparent text-[17px] placeholder-custom-color-black-light">
+        </div>
+    </div>
+    <!-- Bảng chỉ cuộn ngang -->
+    <div class="rounded-md w-full max-w-[1254px] overflow-x-auto custom-scrollbar" id="scroll-container">
+        <table class="min-w-[1200px] table-auto border custom-scrollbar" >
+            <thead class="bg-gray-100 text-gray-700 border-b">
+                <tr class="h-[40px]">
+                    <th class="ntt-custom-th">Tên người dùng</th>
+                    <th class="ntt-custom-th">Hình ảnh</th>
+                    <th class="ntt-custom-th">Email</th>
+                    <th class="ntt-custom-th">Địa chỉ</th>
+                    <th class="ntt-custom-th">SĐT</th>
+                    <th class="ntt-custom-th">Vai trò</th>
+                    <th class="ntt-custom-th">Ngày tạo</th>
+                    <th class="ntt-custom-th">Ngày cập nhật</th>
+                    <th class="ntt-custom-th">Người cập nhật</th>
+                    <th class="ntt-custom-th">Chức năng</th>
+
+                </tr>
+            </thead>
+            <tbody class="text-gray-700">
+                <tr *ngFor="let user of listUser | paginate: { itemsPerPage: 6, currentPage: currentPage }; let i = index" class="border-b">
+                    <td class="text-left my-3 px-4 whitespace-nowrap">{{user.Username}}</td>
+                    <td class="h-full text-left my-3 px-4 flex items-center ">
+                        <div class="w-fit ">
+                            <img (click)="handleOpenCollectionImage(i)" nzTooltipTitle="Xem ảnh" nz-tooltip
+                            [src]="user.Image ? 'http://localhost:3000/resources/img-users/' + user.Image : '/assets/images/default-avatar.png'"
+                            alt="" class="w-[35px] h-[35px] object-cover cursor-pointer">
+                        </div>
+                    </td>
+                    <td class="text-left my-3 px-4">{{user.Email}}</td>
+                    <td class="text-left my-3 px-4 ">
+                        <div class="truncate-description min-w-[200px] ">{{user.Address}}</div>
+                    </td>
+                    <td class="text-left my-3 px-4 ">{{user.PhoneNumber}}</td>
+                    <td class="text-left my-3 px-4">{{user.RoleID.RoleName}}</td>
+                    <td class="text-left my-3 px-4 ">{{user.CreateAt}}</td>
+                    <td class="text-left my-3 px-4 hover:underline cursor-pointer">{{user.UpdateBy}}</td>
+                    <td class="text-left my-3 px-4 ">{{user.UpdateAt}}</td>
+                    <td class="flex gap-2 items-center  text-[25px]">
+                        <i class='bx bxs-edit cursor-pointer hover:text-yellow-500' nzTooltipTitle="Cập nhật" nz-tooltip ></i>
+                        <i class='bx bx-trash cursor-pointer hover:text-red-500'  nzTooltipTitle="Xoá" nz-tooltip (click)="showSoftDeleteUserAlert('Cảnh báo!', 'Bạn có muốn xoá loại phòng này!', user._id, i)"></i>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="flex w-full items-center justify-center absolute left-0 bottom-0 ">
+        <pagination-controls (pageChange)="onPageChange($event)" previousLabel="Prev" nextLabel="Next"></pagination-controls>
+    </div>
+</div>
+
+<div class="w-full h-[100vh] fixed top-0 left-0 overflow-hidden z-20 flex justify-center items-center animate-appear sm:animate-none" *ngIf="isCollectionImageOpen" >
+    <div class="absolute w-full h-full bg-[rgba(0,0,0,0.6)] backdrop-blur-[1.5px]" (click)="handleCloseCollectionImage()"></div>
+    <div class=" mx-auto relative sm:w-[55%] sm:h-[55%] w-full h-full bg-white z-10 sm:rounded-xl rounded-none flex flex-col overflow-hidden ">
+        <div class="w-full h-[10%] flex justify-between items-center border-b">
+            <div><span class="ml-5 text-[18px] font-semibold">Ảnh người dùng</span></div>
+            <button class="px-4 py-2 flex justify-center items-center text-custom-color-black-light hover:text-custom-color-blue"
+                (click)="handleCloseCollectionImage()">
+                <i class='bx bx-x text-[35px]'></i>
+            </button>
+        </div>
+        <div class="w-full h-[90%] p-10">
+            <div class="w-full h-[100%] flex justify-between items-center  ">
+                <div class="w-[100%] h-[100%] flex justify-center items-center">
+                    <img [src]="listUser[indexUser].Image? 'http://localhost:3000/resources/img-users/' + listUser[indexUser].Image : '/assets/images/default-avatar.png'" alt="" class=" w-fit h-full object-contain rounded-md " >
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+
+<app-popup-add-user></app-popup-add-user>

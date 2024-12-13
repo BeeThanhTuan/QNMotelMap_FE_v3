@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { response } from 'express';
+import { Role } from 'src/app/interfaces/role';
 import { User } from 'src/app/interfaces/user';
 import { AuthService } from 'src/app/services/auth.service';
 import { UserService } from 'src/app/services/user.service';
@@ -15,8 +16,9 @@ export class HeaderBarComponent {
     _id: '',
     Email: '',
     Username: '',
-    RoleID: '',
+    RoleID: {} as Role,
     Image: '',
+    Address: '',
     PhoneNumber: '',
     CreateAt: '',
     UpdateAt: '',
@@ -42,8 +44,6 @@ export class HeaderBarComponent {
     this.userService.getInfoUserByEmail(email).subscribe({
       next: (response) => {
         this.user = response;
-        console.log(this.user);
-        
       },
       error: (roleError) => {
         console.log('Lỗi khi lấy thông tin!', roleError.error.message);

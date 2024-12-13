@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
+import { Role } from '../interfaces/role';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,13 @@ export class RoleService {
     }),
   };
   constructor(private httpClient: HttpClient) {}
+
+  public getAllRoles(): Observable<Role[]> {
+      const url = `${this.REST_API_SERVER}/api/roles`;
+      return this.httpClient.get<Role[]>(url).pipe(
+        map((response:any) => response.data) 
+      )
+  }
 
   public getRoleIDByRoleName(roleName: string): Observable<any> {
     const url = `${this.REST_API_SERVER}/api/role-id/${roleName}`;
@@ -27,4 +35,6 @@ export class RoleService {
       map((response:any) => response.data) 
     )
   }
+
+
 }

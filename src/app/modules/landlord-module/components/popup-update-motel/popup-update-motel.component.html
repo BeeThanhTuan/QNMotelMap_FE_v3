@@ -48,7 +48,7 @@
                         </label>
                     </div>
                     <div *ngIf="firstInvalidControl === 'price' && priceControl?.invalid">
-                        <small class="masseage-error " *ngIf="priceControl?.hasError('required')"> <i class="fa-solid fa-circle-info"></i> Giá nhà trọ là bắt buộc.</small>
+                        <small class="message-error " *ngIf="priceControl?.hasError('required')"> <i class="fa-solid fa-circle-info"></i> Giá nhà trọ là bắt buộc.</small>
                     </div>
                 </div>
                 <div class="relative w-full mb-2 ">
@@ -70,7 +70,7 @@
                         </label>
                     </div>
                     <div *ngIf="firstInvalidControl === 'address' && addressControl?.invalid">
-                        <small class="masseage-error " *ngIf="addressControl?.hasError('required')"> <i class="fa-solid fa-circle-info"></i> Vui lòng nhập địa chỉ.</small>
+                        <small class="message-error " *ngIf="addressControl?.hasError('required')"> <i class="fa-solid fa-circle-info"></i> Vui lòng nhập địa chỉ.</small>
                     </div>
                 </div>
                 <div class="relative w-full mb-3 ">
@@ -98,7 +98,7 @@
                         </nz-dropdown-menu>
                     </div>
                     <div *ngIf="firstInvalidControl === 'wardCommune' && wardCommuneControl?.invalid">
-                        <small class="masseage-error " *ngIf="wardCommuneControl?.hasError('required')"> <i class="fa-solid fa-circle-info"></i> Vui lòng chọn phường/xã.</small>
+                        <small class="message-error " *ngIf="wardCommuneControl?.hasError('required')"> <i class="fa-solid fa-circle-info"></i> Vui lòng chọn phường/xã.</small>
                     </div>
                 </div>
                 <div class="mb:h-[210px] h-[180px] w-full mb-3 relative">
@@ -106,7 +106,7 @@
                     <div id="mapAddMotel" class=" w-full h-full rounded-md">
                     </div>
                     <div *ngIf="location===''">
-                        <small class="masseage-error "> <i class="fa-solid fa-circle-info"></i>Không tìm thấy địa chỉ.</small>
+                        <small class="message-error "> <i class="fa-solid fa-circle-info"></i>Không tìm thấy địa chỉ.</small>
                     </div>
                 </div>
                 <div class="h-fit w-full mb-3 ">
@@ -133,7 +133,7 @@
                         </label>
                     </div>
                     <div *ngIf="firstInvalidControl === 'description' && descriptionControl?.invalid">
-                        <small class="masseage-error " *ngIf="descriptionControl?.hasError('required')"> <i class="fa-solid fa-circle-info"></i> Vui lònh ghi mô tả về nhà trọ.</small>
+                        <small class="message-error " *ngIf="descriptionControl?.hasError('required')"> <i class="fa-solid fa-circle-info"></i> Vui lònh ghi mô tả về nhà trọ.</small>
                     </div>
                 </div>
                 <!-- Upload Area -->
@@ -173,7 +173,7 @@
                             </div>
                         </div>
                         <div *ngIf="(listImages.length + listOldImages.length) === 0" class="pl-2 pb-1 flex items-end">
-                            <small class="masseage-error "> <i class="fa-solid fa-circle-info"></i> Vui lòng chọn ít nhất 1 ảnh, tối đa 8 ảnh!</small>
+                            <small class="message-error "> <i class="fa-solid fa-circle-info"></i> Vui lòng chọn ít nhất 1 ảnh, tối đa 8 ảnh!</small>
                         </div>
                     </div>
                 </div>
@@ -196,7 +196,7 @@
                         </label>
                     </div>
                     <div *ngIf="firstInvalidControl === 'landlordName' && landlordNameControl?.invalid">
-                        <small class="masseage-error " *ngIf="landlordNameControl?.hasError('required')"> <i class="fa-solid fa-circle-info"></i> Tên chủ trọ là bắt buộc.</small>
+                        <small class="message-error " *ngIf="landlordNameControl?.hasError('required')"> <i class="fa-solid fa-circle-info"></i> Tên chủ trọ là bắt buộc.</small>
                     </div>
                 </div>
                 <div class="relative w-full mb-2 ">
@@ -218,7 +218,7 @@
                         </label>
                     </div>
                     <div *ngIf="firstInvalidControl === 'phoneNumberContact' && phoneNumberContactControl?.invalid">
-                        <small class="masseage-error " *ngIf="phoneNumberContactControl?.hasError('required')"> <i class="fa-solid fa-circle-info"></i> Số điện thoại là bắt buộc.</small>
+                        <small class="message-error " *ngIf="phoneNumberContactControl?.hasError('required')"> <i class="fa-solid fa-circle-info"></i> Số điện thoại là bắt buộc.</small>
                     </div>
                 </div>
                 <div class="relative w-full mb-2 ">
@@ -259,7 +259,7 @@
                         </label>
                     </div>
                     <div *ngIf="firstInvalidControl === 'electricityBill' && electricityBillControl?.invalid">
-                        <small class="masseage-error " *ngIf="electricityBillControl?.hasError('required')"> <i class="fa-solid fa-circle-info"></i> Giá điện là bắt buộc.</small>
+                        <small class="message-error " *ngIf="electricityBillControl?.hasError('required')"> <i class="fa-solid fa-circle-info"></i> Giá điện là bắt buộc.</small>
                     </div>
                 </div>
                 <div class="relative w-full mb-2 ">
@@ -281,7 +281,7 @@
                         </label>
                     </div>
                     <div *ngIf="firstInvalidControl === 'waterBill' && waterBillControl?.invalid">
-                        <small class="masseage-error " *ngIf="waterBillControl?.hasError('required')"> <i class="fa-solid fa-circle-info"></i> Giá nước là bắt buộc.</small>
+                        <small class="message-error " *ngIf="waterBillControl?.hasError('required')"> <i class="fa-solid fa-circle-info"></i> Giá nước là bắt buộc.</small>
                     </div>
                 </div>
                 <div class="relative w-full mb-2 " *ngIf="haveWifi || motel.WifiBill!== null">

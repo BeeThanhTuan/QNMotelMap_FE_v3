@@ -313,7 +313,7 @@
                 </div>
                 <div class="relative w-full mb-5 ">
                     <div>
-                        <input type="text" id="phoneNumberReisterLandlord" formControlName="phoneNumber" appCapitalize class="ntt-custom-input peer" [ngClass]="{'input-invalid': phoneNumberControlRegisterLandlord?.invalid && isRegisterLandlordSubmitted && firstInvalidControl === 'username'}"
+                        <input type="text" id="phoneNumberReisterLandlord" formControlName="phoneNumber" appCapitalize class="ntt-custom-input peer" [ngClass]="{'input-invalid': phoneNumberControlRegisterLandlord?.invalid && isRegisterLandlordSubmitted && firstInvalidControl === 'phoneNumber'}"
                             placeholder=" " />
                         <label for="phoneNumberReisterLandlord" class="absolute text-gray-500 text-[14px] transition-all duration-300 transform 
                            scale-100 origin-top-left bg-white
@@ -327,7 +327,7 @@
                            peer-focus:text-gray-500 
                            peer:not-placeholder-shown:top-0 
                            peer:not-placeholder-shown:-translate-y-[16px] 
-                           peer:not-placeholder-shown:text-gray-400" [ngClass]="{'label-invalid': (phoneNumberControlRegisterLandlord?.invalid && isRegisterLandlordSubmitted && firstInvalidControl === 'username')}">
+                           peer:not-placeholder-shown:text-gray-400" [ngClass]="{'label-invalid': (phoneNumberControlRegisterLandlord?.invalid && isRegisterLandlordSubmitted && firstInvalidControl === 'phoneNumber')}">
                         Số điện thoại
                     </label>
                     </div>

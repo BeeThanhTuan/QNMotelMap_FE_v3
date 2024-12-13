@@ -388,6 +388,8 @@ export class PopupAddMotelComponent implements OnInit {
       this.listImages = this.listImages.filter((_, i) => i !== index);
     }
   }
+
+  
 }
 
  

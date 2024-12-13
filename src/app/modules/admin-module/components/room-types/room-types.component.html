@@ -11,7 +11,7 @@
     <div class="rounded-md w-full max-w-[1254px] overflow-x-auto custom-scrollbar" id="scroll-container">
         <table class="min-w-[1200px] table-auto border custom-scrollbar" >
             <thead class="bg-gray-100 text-gray-700 border-b">
-                <tr>
+                <tr class="h-[40px]">
                     <th class="ntt-custom-th max-w-[100px]">Giá loại phòng</th>
                     <th class="ntt-custom-th">Hình ảnh</th>
                     <th class="ntt-custom-th">Số lượng phòng</th>
@@ -45,7 +45,9 @@
                             </div>
                         </div>
                     </td>
-                    <td class="text-left my-3 px-4 truncate-description ">{{roomType.Description}}</td>
+                    <td class="text-left my-3 px-4 ">
+                        <div class="truncate-description">{{roomType.Description}}</div>
+                    </td>
                     <td class="text-left my-3 px-4 hover:underline cursor-pointer">{{roomType.CreateBy}}</td>
                     <td class="text-left my-3 px-4 ">{{roomType.CreateAt}}</td>
                     <td class="text-left my-3 px-4 hover:underline cursor-pointer">{{roomType.UpdateBy}}</td>

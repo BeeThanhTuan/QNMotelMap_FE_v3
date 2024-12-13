@@ -127,7 +127,7 @@
 }
 
 .ntt-custom-th{
-    @apply text-left py-3 px-4 font-semibold text-sm whitespace-nowrap w-fit min-w-[150px]
+    @apply text-left px-2 font-semibold text-sm whitespace-nowrap w-fit min-w-[150px]
 }
 
 

@@ -38,7 +38,7 @@ textarea:not(:placeholder-shown) + label {
 .label-invalid {
   color: #ff0000 !important;
 }
-.masseage-error {
+.message-error {
   color: #ff0000;
   font-size: 12px;
 }

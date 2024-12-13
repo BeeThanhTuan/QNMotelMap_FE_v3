@@ -15,10 +15,24 @@ export class UserService {
   };
   constructor(private httpClient: HttpClient) {}
 
+  public getAllUsers(): Observable<User[]> {
+    const url = `${this.REST_API_SERVER}/api/users`;
+    return this.httpClient.get<User[]>(url).pipe(
+      map((response:any) => response.data) 
+    )
+  }
+
   public getInfoUserByEmail(id: string): Observable<User> {
     const url = `${this.REST_API_SERVER}/api/user/${id}`;
     return this.httpClient.get<User>(url).pipe(
       map((response:any) => response.data) 
     )
   }
+
+  public softDeleteUserByID(idl:string): Observable<User>{
+      const url = `${this.REST_API_SERVER}/api/user-soft-delete/${idl}`;
+      return this.httpClient.delete<User>(url).pipe(
+        map((response:any) => response.data) 
+      )
+    }
 }
