@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, EventEmitter, Output} from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, Output, SimpleChanges} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RoleService } from 'src/app/services/role.service';
 import { confirmPasswordValidator } from '../../../share-module/validator-custom/confirmPasswordValidator';
@@ -6,22 +6,26 @@ import { AlertService } from 'src/app/services/alert.service';
 import { Role } from 'src/app/interfaces/role';
 import { UserService } from 'src/app/services/user.service';
 import { User } from 'src/app/interfaces/user';
+import { Images } from 'src/app/interfaces/images';
+
 @Component({
-  selector: 'app-popup-add-user',
-  templateUrl: './popup-add-user.component.html',
-  styleUrls: ['./popup-add-user.component.css']
+  selector: 'app-popup-update-user',
+  templateUrl: './popup-update-user.component.html',
+  styleUrls: ['./popup-update-user.component.css']
 })
-export class PopupAddUserComponent {
+export class PopupUpdateUserComponent {
   image!: File | null;
   imageUrl= '';
+  oldImage!:string;
   listRoles: Role [] = [];
   passwordAddUserVisible = false;
   confirmPasswordAddUserVisible = false;
-  addUserForm!: FormGroup;
+  updateUserForm!: FormGroup;
 
   firstInvalidControl: string | null = null;
   selectedTab: string = 'user'; 
   roleID!: string;
+  @Input() user!:User;
   @Output() newUser = new EventEmitter<User>()
   constructor(private formBuilder: FormBuilder,
     private roleService: RoleService,
@@ -31,17 +35,22 @@ export class PopupAddUserComponent {
     this.initializeFormRegisterUser();
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+   if(changes['user']){
+    this.setInfoIntoForm(this.user)
+   }
+    
+  }
+
   ngOnInit(): void {
     this.getAllRoles();
   }
 
   // Initialize form register user
   initializeFormRegisterUser(): void {
-    this.addUserForm= this.formBuilder.group({
+    this.updateUserForm= this.formBuilder.group({
       username: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(16)]],
-      confirmPassword: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(16), confirmPasswordValidator]],
       phoneNumber:['', [Validators.required,Validators.minLength(10), Validators.maxLength(10),]],
       address:['' ],
       roleID: [''],
@@ -49,31 +58,31 @@ export class PopupAddUserComponent {
   }
 
   get usernameControl() {
-    return this.addUserForm.get('username');
+    return this.updateUserForm.get('username');
   }
 
   get emailControl() {
-    return this.addUserForm.get('email');
+    return this.updateUserForm.get('email');
   }
 
   get passwordControl() {
-    return this.addUserForm.get('password');
+    return this.updateUserForm.get('password');
   }
 
   get confirmPasswordControl() {
-    return this.addUserForm.get('confirmPassword');
+    return this.updateUserForm.get('confirmPassword');
   }
 
   get phoneNumberControl() {
-    return this.addUserForm.get('phoneNumber');
+    return this.updateUserForm.get('phoneNumber');
   }
 
   get addressControl() {
-    return this.addUserForm.get('address');
+    return this.updateUserForm.get('address');
   }
 
   get roleIDControl() {
-    return this.addUserForm.get('roleID');
+    return this.updateUserForm.get('roleID');
   }
 
   getAllRoles():void{
@@ -110,25 +119,36 @@ export class PopupAddUserComponent {
     }
   }
 
-
   stopPropagation(event: Event) {
     event.stopPropagation();
   }
 
+  setInfoIntoForm(user:User){
+      this.updateUserForm.patchValue({
+        username: user.Username,
+        email: user.Email,
+        phoneNumber: user.PhoneNumber,
+        address: user.Address,
+        roleID: user.RoleID._id
+      },
+      { emitEvent: false }
+      );
+      this.oldImage = user.Image
+  }
 
-  // add user
-  handleAddUser(): void {
-    if (this.addUserForm.invalid) {
-      this.focusFirstInvalidControl(this.addUserForm); // Gọi hàm để tập trung vào trường đầu tiên không hợp lệ
+
+  // update user
+  handleUpdateUser(): void {
+    if (this.updateUserForm.invalid) {
+      this.focusFirstInvalidControl(this.updateUserForm); // Gọi hàm để tập trung vào trường đầu tiên không hợp lệ
       return; 
     }
     else{
-      const { username, email, password, phoneNumber, address, roleID} = this.addUserForm.value;
-      const dataRequest = { username, email,password,phoneNumber, address, roleID,}
+      const { username, email, phoneNumber, address, roleID} = this.updateUserForm.value;
+      const dataRequest = { username, email, phoneNumber, address, roleID,}
       const data = new FormData();
       data.append('username', username);
       data.append('email', email);
-      data.append('password', password);
       data.append('phoneNumber', phoneNumber);
       data.append('address', address);
       data.append('roleID', roleID);
@@ -137,34 +157,36 @@ export class PopupAddUserComponent {
       if (this.image) {
         data.append('image', this.image);
       }
-      else{
+
+      if(!this.image && !this.oldImage){
         this.alertService.showError('Tạo người dùng thất bại!', 'Vui lòng chọn 1 ảnh'); 
         return;
       }
-      this.userService.addNewUser(data).subscribe({
+      this.userService.updateInfoUserRoleAdmin(data).subscribe({
         next: (response) => {
-          this.alertService.showSuccess('Tạo người thành công!', 'Bạn đã tạo tài khoản mới thành công.');
+          this.alertService.showSuccess('Cập nhật thành công!', 'Bạn đã cập nhật thông tin thành công.');
           this.newUser.emit(response);
-          this.hiddenPopupAddUser();
+          this.hiddenPopupUpdateUser();
         },
         error: (error) => {
-          this.alertService.showError('Tạo người dùng thất bại!', error.error.message); 
+          this.alertService.showError('Cập nhật thất bại!', error.error.message); 
         }
       });
     }
   }
 
-  hiddenPopupAddUser():void{
-    const popupAddUser = document.getElementById('popupAddUser') as HTMLElement;
+  hiddenPopupUpdateUser():void{
+    const popupUpdateUser = document.getElementById('popupUpdateUser') as HTMLElement;
     const body = document.querySelector('body') as HTMLElement;
     body.style.overflow = 'hidden';
-    if(popupAddUser && popupAddUser.classList.contains('flex')){
-      popupAddUser.classList.remove('flex')
-      popupAddUser.classList.add('hidden')
+    if(popupUpdateUser && popupUpdateUser.classList.contains('flex')){
+      popupUpdateUser.classList.remove('flex')
+      popupUpdateUser.classList.add('hidden')
     }
-    this.addUserForm.reset();
+    this.updateUserForm.reset();
     this.image = null;
     this.imageUrl = '';
+    this.oldImage = '';
 
   }
 
@@ -193,6 +215,7 @@ export class PopupAddUserComponent {
     this.imageUrl = ''; // Xóa URL của ảnh
   }
 
-
-
+  removeImageOld():void{
+    this.oldImage = ''
+  }
 }

@@ -29,10 +29,24 @@ export class UserService {
     )
   }
 
-  public softDeleteUserByID(idl:string): Observable<User>{
-      const url = `${this.REST_API_SERVER}/api/user-soft-delete/${idl}`;
+  public addNewUser(data: FormData): Observable<User> {
+    const url = `${this.REST_API_SERVER}/api/user-role-admin`;
+    return this.httpClient.post<User>(url, data).pipe(
+      map((response:any) => response.data) 
+    )
+  }
+
+  public updateInfoUserRoleAdmin(data: FormData): Observable<User> {
+    const url = `${this.REST_API_SERVER}/api/user-role-admin`;
+    return this.httpClient.put<User>(url, data).pipe(
+      map((response:any) => response.data) 
+    )
+  }
+
+  public softDeleteUserByEmail(email:string): Observable<User>{
+      const url = `${this.REST_API_SERVER}/api/soft-delete-user/${email}`;
       return this.httpClient.delete<User>(url).pipe(
         map((response:any) => response.data) 
       )
-    }
+  }
 }

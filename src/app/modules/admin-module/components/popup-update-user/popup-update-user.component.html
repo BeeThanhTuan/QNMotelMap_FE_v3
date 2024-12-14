@@ -1,14 +1,14 @@
-<div id="popupAddUser" (click)="hiddenPopupAddUser()" class="overlay w-full min-w-[310px] h-[100vh] fixed top-0 left-0 flex justify-center items-center bg-[rgba(34,34,34,0.7)] z-20 ">
-    <div class="container w-[450px] max-w-[450px] relative  bg-white sm:p-[30px] p-[15px] rounded-none  !h-[82%] overflow-y-auto sm:h-fit sm:rounded-md  flex flex-col justify-center  animate-appear" (click)="stopPropagation($event)">
-        <div (click)="hiddenPopupAddUser()" class="sm:w-[30px] sm:h-[30px] h-[50px] w-[50px] bg-[#f4f4f4] sm:bg-white absolute top-1 sm:right-1 right-2 hover:bg-[#f4f4f4] sm:rounded-full rounded-md flex justify-center items-center cursor-pointer">
+<div id="popupUpdateUser" (click)="hiddenPopupUpdateUser()" class="overlay w-full min-w-[310px] h-[100vh] fixed top-0 left-0 flex justify-center items-center bg-[rgba(34,34,34,0.7)] z-20 ">
+    <div class="container w-[450px] max-w-[450px] relative  bg-white sm:p-[30px] p-[15px] rounded-none  !h-fit overflow-y-auto sm:h-fit sm:rounded-md  flex flex-col justify-center  animate-appear" (click)="stopPropagation($event)">
+        <div (click)="hiddenPopupUpdateUser()" class="sm:w-[30px] sm:h-[30px] h-[50px] w-[50px] bg-[#f4f4f4] sm:bg-white absolute top-1 sm:right-1 right-2 hover:bg-[#f4f4f4] sm:rounded-full rounded-md flex justify-center items-center cursor-pointer">
             <i class='bx bx-x sm:text-[22px] text-[40px] text-[#b4b4b4] sm:text-custom-color-black '></i>
         </div>
         <!-- form register -->
         <div class="w-full h-full relative">
             <div class="w-full text-center text-[20px] uppercase font-bold mb-5">
-                <h4 class="text-[#0045a8]">Thêm người dùng</h4>
+                <h4 class="text-[#0045a8]">Cập nhật thông tin</h4>
             </div>
-            <form [formGroup]="addUserForm" class="w-full " >
+            <form [formGroup]="updateUserForm" class="w-full " >
                 <div class="relative w-full mb-5 ">
                     <div>
                         <input type="text" id="usernameReisterUser" formControlName="username" appCapitalize class="ntt-custom-input peer" [ngClass]="{'input-invalid': usernameControl?.invalid && firstInvalidControl === 'username'}" placeholder=" "
@@ -55,68 +55,6 @@
                     <div *ngIf="emailControl?.invalid && firstInvalidControl === 'email'">
                         <small class="message-error " *ngIf="emailControl?.hasError('required')"> <i class="fa-solid fa-circle-info"></i> Email là bắt buộc.</small>
                         <small class="message-error" *ngIf="emailControl?.hasError('email')"><i class="fa-solid fa-circle-info"></i> Email không hợp lệ.</small>
-                    </div>
-                </div>
-                <div class="relative w-full mb-5 ">
-                    <div class="sm:h-[54px] h-[48px] relative">
-                        <input [type]="passwordAddUserVisible ? 'text' : 'password'" id="passwordAddUser" formControlName="password" class="ntt-custom-input pr-[60px!important] peer" [ngClass]="{'input-invalid': passwordControl?.invalid && firstInvalidControl === 'password'}"
-                            placeholder=" " />
-                        <label for="passwordAddUser" class="absolute text-[14px] text-gray-500 transition-all duration-300 transform 
-                           scale-100 origin-top-left bg-white 
-                           sm:peer-placeholder-shown:top-4
-                           peer-placeholder-shown:top-3
-                           peer-placeholder-shown:left-5
-                           peer-placeholder-shown:text-gray-500 
-                           peer-focus:top-0 
-                           peer-focus:-translate-y-0 
-                           peer-focus:-translate-x-[6px]
-                           peer-focus:text-gray-500 
-                           peer:not-placeholder-shown:top-0 
-                           peer:not-placeholder-shown:-translate-y-[12px] 
-                           peer:not-placeholder-shown:text-gray-400" [ngClass]="{'label-invalid': (passwordControl?.invalid &&  firstInvalidControl === 'password')}">
-                            Mật khẩu
-                        </label>
-                        <button type="button" class="absolute h-full w-[54px] right-1 top-0 cursor-pointer" (click)="togglePasswordAddUserVisibility()">
-                        <i [ngClass]="passwordAddUserVisible ? 'fas fa-eye-slash' : 'fas fa-eye'" class="text-gray-500"></i>
-                    </button>
-                    </div>
-                    <div *ngIf=" passwordControl?.invalid && firstInvalidControl === 'password'">
-                        <small class="message-error " *ngIf="passwordControl?.hasError('required')"> <i class="fa-solid fa-circle-info"></i> Mật khẩu là bắt buộc.</small>
-                        <small class="message-error" *ngIf="passwordControl?.hasError('minlength')"><i class="fa-solid fa-circle-info"></i> Mật khẩu phải có ít nhất 8 ký tự.</small>
-                        <small class="message-error" *ngIf="passwordControl?.hasError('maxlength')"><i class="fa-solid fa-circle-info"></i> Mật khẩu không được vượt quá 16 ký tự.</small>
-
-                    </div>
-                </div>
-                <div class="relative w-full mb-5 ">
-                    <div class="sm:h-[54px] h-[48px] relative">
-                        <input [type]="confirmPasswordAddUserVisible ? 'text' : 'password'" id="confirmPasswordAddUser" formControlName="confirmPassword" class="ntt-custom-input pr-[60px!important] peer" [ngClass]="{'input-invalid': confirmPasswordControl?.invalid &&  firstInvalidControl === 'confirmPassword'}"
-                            placeholder=" " />
-                        <label for="confirmPasswordAddUser" class="absolute text-[14px] text-gray-500 transition-all duration-300 transform 
-                           scale-100 origin-top-left bg-white 
-                           sm:peer-placeholder-shown:top-4
-                           peer-placeholder-shown:top-3
-                           peer-placeholder-shown:left-5
-                           peer-placeholder-shown:text-gray-500 
-                           peer-focus:top-0 
-                           peer-focus:-translate-y-0 
-                           peer-focus:-translate-x-[6px]
-                           peer-focus:text-gray-500 
-                           peer:not-placeholder-shown:top-0 
-                           peer:not-placeholder-shown:-translate-y-[12px] 
-                           peer:not-placeholder-shown:text-gray-400" [ngClass]="{'label-invalid': (confirmPasswordControl?.invalid && firstInvalidControl === 'confirmPassword')}">
-                        Xác nhận mật khẩu
-                    </label>
-                        <button type="button" class="absolute h-full w-[54px] right-1 top-0 cursor-pointer" (click)="toggleConfirmPasswordAddUserVisibility()">
-                        <i [ngClass]="confirmPasswordAddUserVisible ? 'fas fa-eye-slash' : 'fas fa-eye'" class="text-gray-500"></i>
-                    </button>
-                    </div>
-                    <div *ngIf="confirmPasswordControl?.invalid && firstInvalidControl === 'confirmPassword'">
-                        <small class="message-error " *ngIf="confirmPasswordControl?.hasError('required')"> <i class="fa-solid fa-circle-info"></i>Xác nhận mật khẩu là bắt buộc.</small>
-                        <small class="message-error" *ngIf="confirmPasswordControl?.hasError('minlength')"><i class="fa-solid fa-circle-info"></i>Xác nhận mật khẩu phải có ít nhất 8 ký tự.</small>
-                        <small class="message-error" *ngIf="confirmPasswordControl?.hasError('maxlength')"><i class="fa-solid fa-circle-info"></i>Xác nhận mật khẩu không được vượt quá 16 ký tự.</small>
-                        <small class="message-error" *ngIf="confirmPasswordControl?.hasError('mismatch')">
-                            <i class="fa-solid fa-circle-info"></i>Mật khẩu không khớp.
-                        </small>
                     </div>
                 </div>
                 <div class="relative w-full mb-5 ">
@@ -189,7 +127,7 @@
                         </label>
                         <nz-dropdown-menu #menu="nzDropdownMenu">
                             <ul nz-menu class="h-fit overflow-auto">
-                                <li nz-menu-item *ngFor="let role of listRoles" (click)="addUserForm.get('roleID')?.setValue(role._id)">{{role.RoleName}}</li>
+                                <li nz-menu-item *ngFor="let role of listRoles" (click)="updateUserForm.get('roleID')?.setValue(role._id)">{{role.RoleName}}</li>
                             </ul>
                         </nz-dropdown-menu>
                     </div>
@@ -201,7 +139,7 @@
                 <div class="w-full mb-3 mt-5">
                     <div class="w-full flex flex-row gap-1">
                       <!-- Upload Image Section -->
-                      <div *ngIf="!image" class="border-2 border-dashed border-gray-300 hover:border-custom-color-blue rounded-lg p-2 mb-2 w-[100px] h-[96px]">
+                      <div *ngIf="!image && !oldImage" class="border-2 border-dashed border-gray-300 hover:border-custom-color-blue rounded-lg p-2 mb-2 w-[100px] h-[96px]">
                         <label class="cursor-pointer flex flex-col items-center justify-center space-y-2 relative">
                           <input type="file"
                             (change)="onFileSelected($event)" 
@@ -213,8 +151,18 @@
                         </label>
                       </div>
                       <!-- Preview Single Image -->
-                      <div class="w-full h-full flex items-center justify-start px-1" *ngIf="imageUrl">
-                        <div class="relative w-[100px] h-[100px] border-2 border-[#98bfe6] p-[2px] rounded-sm">
+                      <div class="w-full h-full flex items-center justify-start px-1" *ngIf="image || oldImage">
+                        <div  *ngIf="!image && oldImage"  class="relative w-[100px] h-[100px] border-2 border-[#98bfe6] p-[2px] rounded-sm">
+                            <img src="http://localhost:3000/resources/img-users/{{oldImage}}"  class="w-full h-full object-cover rounded-sm">
+                            <button 
+                              class="absolute top-1 right-1 w-[20px] h-[20px] bg-white text-red-600 p-1 font-semibold rounded-full text-[12px] flex justify-center items-center"
+                              (click)="removeImageOld()" 
+                              nz-tooltip 
+                              nzTooltipTitle="Xoá ảnh cũ">
+                              ✕
+                            </button>
+                        </div>
+                        <div   *ngIf="image && !oldImage" class="relative w-[100px] h-[100px] border-2 border-[#98bfe6] p-[2px] rounded-sm">
                           <img [src]="imageUrl" alt="Uploaded Image" class="w-full h-full object-cover rounded-sm">
                           <button 
                             class="absolute top-1 right-1 w-[20px] h-[20px] bg-white text-red-600 p-1 font-semibold rounded-full text-[12px] flex justify-center items-center" 
@@ -226,7 +174,7 @@
                         </div>
                       </div>
                       <!-- Error Message -->
-                      <div *ngIf="!image" class="pl-2 pb-1 flex items-end">
+                      <div *ngIf="!image && !oldImage" class="pl-2 pb-1 flex items-end">
                         <small class="message-error">
                           <i class="fa-solid fa-circle-info"></i> Vui lòng chọn một ảnh!
                         </small>
@@ -236,7 +184,7 @@
                   
             </form>
             <div class="w-full py-3 ">
-                <button type="button" (click)="handleAddUser()" class="w-full text-[15px] font-medium text-white bg-[#0045a8] px-5 py-[14px] rounded-md hover:bg-[#336ab9] hover:ntt-shadow-button-login">Thêm</button>
+                <button type="button" (click)="handleUpdateUser()" class="w-full text-[15px] font-medium text-white bg-[#0045a8] px-5 py-[14px] rounded-md hover:bg-[#336ab9] hover:ntt-shadow-button-login">Thêm</button>
             </div>
         </div>
     </div>

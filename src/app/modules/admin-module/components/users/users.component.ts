@@ -5,7 +5,6 @@ import { RoomType } from 'src/app/interfaces/roomType';
 import { User } from 'src/app/interfaces/user';
 import { AlertService } from 'src/app/services/alert.service';
 import { MotelService } from 'src/app/services/motel.service';
-import { RoomTypeService } from 'src/app/services/roomType.service';
 import { UserService } from 'src/app/services/user.service';
 import Swal from 'sweetalert2';
 @Component({
@@ -16,12 +15,12 @@ import Swal from 'sweetalert2';
 export class UsersComponent {
   listUser: User[] = [];
   currentPage: number = 1;
-  motel!: Motel;
   isShowPopupUpdateRoomType = false;
-  indexUpdate!: number;
+  isShowPopupAddUser = false;
+  isShowPopupUpdateUser = false;
   indexUserUpdate!:number;
-  motelID!:string;
-  roomType!: RoomType;
+  user!: User;
+
   //collection image
   isCollectionImageOpen = false;
   indexUser = 0;
@@ -36,9 +35,7 @@ export class UsersComponent {
       map(response => response.reverse()) // Reverse the data array
     )
     .subscribe((reversedData) => {
-      this.listUser = reversedData;
-      console.log(reversedData);
-      
+      this.listUser = reversedData;   
     });
   }
 
@@ -47,28 +44,17 @@ export class UsersComponent {
     this.currentPage = page;
   }
 
-
-  showPopupUpdateRoomType(indexUpdate: number, motelID: string, roomTypeData: RoomType): void {
-    this.indexUserUpdate = indexUpdate;
-    this.isShowPopupUpdateRoomType= true
-    this.motelID = motelID;   
-    this.roomType = {...roomTypeData};
-    const popupUpdateRoomType = document.getElementById('popupUpdateRoomType') as HTMLElement;
-    const body = document.querySelector('body') as HTMLElement;
-    body.style.overflow = 'hidden';
-    if(popupUpdateRoomType && popupUpdateRoomType.classList.contains('hidden')){
-      popupUpdateRoomType.classList.remove('hidden')
-      popupUpdateRoomType.classList.add('flex')
-    }
-  }
-
-  receiveNewRoomTypeFormUpdateRoomType(data: User): void {
+  receiveNewUserFormUpdateUser(data: User): void {
     this.listUser[this.indexUserUpdate] = data;
   }
 
+  receiveNewUserFormAddUser(data: User): void {
+    this.listUser.unshift(data)
+}
+
 
   //Cảnh báo xác nhận xóa mềm loại phòng
-  showSoftDeleteUserAlert(title: string, message: string, id: string, index: number) {
+  showSoftDeleteUserAlert(title: string, message: string, email: string, index: number) {
     Swal.fire({
       title: title,
       text: message,
@@ -81,7 +67,7 @@ export class UsersComponent {
       reverseButtons: true
     }).then((result) => {
       if (result.isConfirmed) {
-        this.userService.softDeleteUserByID(id).subscribe({
+        this.userService.softDeleteUserByEmail(email).subscribe({
             next: (response) => {
               this.listUser.splice(index, 1);
               this.alert.showSuccess('Xoá thành công!', 'Bạn đã xoá thành công loại phòng.')
@@ -102,15 +88,33 @@ export class UsersComponent {
     this.indexUser = indexUser;
   }
 
-  handleCloseCollectionImage(){
+  handleCloseCollectionImage():void{
     this.isCollectionImageOpen = false
   }
 
-  // nextImage(index:number): void {
-  //   this.currentIndexRoomType = (this.currentIndexRoomType + 1) % this.listUser[index].ListImages.length;
-  // }
+  showPopupAddUser():void{
+    this.isShowPopupAddUser = true;
+    const popupAddUser = document.getElementById('popupAddUser') as HTMLElement;
+    const body = document.querySelector('body') as HTMLElement;
+    body.style.overflow = 'hidden';
+    if(popupAddUser && popupAddUser.classList.contains('hidden')){
+      popupAddUser.classList.remove('hidden')
+      popupAddUser.classList.add('flex')
+    }
+  }
 
-  // prevImage(index:number): void {
-  //   this.currentIndexRoomType = (this.currentIndexRoomType - 1 + this.listUser[index].ListImages.length) % this.listUser[index].ListImages.length;
-  // }
+  showPopupUpdateUser(indexUpdate: number, user: User):void{
+    this.isShowPopupUpdateUser = true;
+    this.indexUserUpdate = indexUpdate;
+    this.user = {...user};
+    const popupUpdateUser = document.getElementById('popupUpdateUser') as HTMLElement;
+    const body = document.querySelector('body') as HTMLElement;
+    body.style.overflow = 'hidden';
+    if(popupUpdateUser && popupUpdateUser.classList.contains('hidden')){
+      popupUpdateUser.classList.remove('hidden')
+      popupUpdateUser.classList.add('flex')
+    }
+  }
+
+  
 }

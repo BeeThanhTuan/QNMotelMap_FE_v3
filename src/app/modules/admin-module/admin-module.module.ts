@@ -20,6 +20,7 @@ import { PopupUpdateMotelComponent } from './components/popup-update-motel/popup
 import { PopupAddRoomTypeComponent } from './components/popup-add-room-type/popup-add-room-type.component';
 import { PopupUpdateRoomTypeComponent } from './components/popup-update-room-type/popup-update-room-type.component';
 import { PopupAddUserComponent } from './components/popup-add-user/popup-add-user.component';
+import { PopupUpdateUserComponent } from './components/popup-update-user/popup-update-user.component';
 @NgModule({
   declarations: [
     ManageComponent,
@@ -33,6 +34,7 @@ import { PopupAddUserComponent } from './components/popup-add-user/popup-add-use
     PopupAddRoomTypeComponent,
     PopupUpdateRoomTypeComponent,
     PopupAddUserComponent,
+    PopupUpdateUserComponent,
   ],
   imports: [
     CommonModule,
