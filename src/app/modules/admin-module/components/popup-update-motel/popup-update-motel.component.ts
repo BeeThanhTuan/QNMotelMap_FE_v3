@@ -103,7 +103,7 @@ export class PopupUpdateMotelComponent {
   initializeForm(): void {
     this.updateMotelForm = this.formBuilder.group({
       nameMotel: [''],
-      price: [null, [Validators.required]],
+      price: [null, [Validators.required, Validators.min(500000), Validators.max(5000000)]],
       address: ['', [Validators.required]],
       wardCommune: ['', [Validators.required]],
       description: ['', [Validators.required]],

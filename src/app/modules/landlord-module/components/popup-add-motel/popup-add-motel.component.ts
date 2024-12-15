@@ -93,7 +93,7 @@ export class PopupAddMotelComponent implements OnInit {
   initializeForm(): void {
     this.addMotelForm = this.formBuilder.group({
       nameMotel: [''],
-      price: [null, [Validators.required]],
+      price: [null, [Validators.required, Validators.min(500000), Validators.max(5000000)]],
       address: ['', [Validators.required]],
       wardCommune: ['', [Validators.required]],
       description: ['', [Validators.required]],

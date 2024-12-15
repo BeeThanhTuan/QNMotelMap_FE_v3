@@ -31,7 +31,7 @@
                         </div>
                         <div *ngIf="firstInvalidControl === 'price' && priceControl?.invalid">
                             <small class="message-error " *ngIf="priceControl?.hasError('required')"> <i class="fa-solid fa-circle-info"></i> Giá loại phòng trọ là bắt buộc.</small>
-                            <small class="message-error " *ngIf="priceControl?.hasError('min')"> <i class="fa-solid fa-circle-info"></i> Giá loại phòng trọ  không hơp lệ.</small>
+                            <small class="message-error " *ngIf="priceControl?.hasError('min') || priceControl?.hasError('max')"> <i class="fa-solid fa-circle-info"></i> Giá loại phòng trọ không hơp lệ.</small>
                         </div>
                     </div> 
                     <div class="relative w-full mb-2">

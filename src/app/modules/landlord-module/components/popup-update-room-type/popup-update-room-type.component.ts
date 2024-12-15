@@ -71,7 +71,7 @@ export class PopupUpdateRoomTypeComponent {
 
   initializeForm(): void {
     this.updateRoomTypeForm = this.formBuilder.group({
-      price: [null, [Validators.required, Validators.min(500000)] ],
+      price: [null, [Validators.required, Validators.min(500000), Validators.max(5000000)]],
       area: [null, [Validators.required, Validators.min(6), Validators.max(99)]],
       amount: [null, [Validators.required, Validators.max(99)]],
       available: [null, [Validators.required ,Validators.max(99), checkAmountValidator]],
