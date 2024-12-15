@@ -21,6 +21,9 @@ import { PopupAddRoomTypeComponent } from './components/popup-add-room-type/popu
 import { PopupUpdateRoomTypeComponent } from './components/popup-update-room-type/popup-update-room-type.component';
 import { PopupAddUserComponent } from './components/popup-add-user/popup-add-user.component';
 import { PopupUpdateUserComponent } from './components/popup-update-user/popup-update-user.component';
+import { ConvenientComponent } from './components/convenient/convenient.component';
+import { PopupAddConvenientComponent } from './components/popup-add-convenient/popup-add-convenient.component';
+import { PopupUpdateConvenientComponent } from './components/popup-update-convenient/popup-update-convenient.component';
 @NgModule({
   declarations: [
     ManageComponent,
@@ -35,6 +38,9 @@ import { PopupUpdateUserComponent } from './components/popup-update-user/popup-u
     PopupUpdateRoomTypeComponent,
     PopupAddUserComponent,
     PopupUpdateUserComponent,
+    ConvenientComponent,
+    PopupAddConvenientComponent,
+    PopupUpdateConvenientComponent,
   ],
   imports: [
     CommonModule,

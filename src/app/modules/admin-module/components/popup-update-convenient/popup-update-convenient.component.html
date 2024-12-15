@@ -1,0 +1,92 @@
+
+<div id="popupUpdateConvenient" (click)="hiddenPopupUpdateConvenient()" class="overlay w-full min-w-[310px] h-[100vh] fixed top-0 left-0 flex justify-center items-center bg-[rgba(34,34,34,0.7)] z-20 ">
+    <div class="container w-[450px] max-w-[450px] relative  bg-white sm:p-[30px] p-[15px] rounded-none  !h-fit overflow-y-auto sm:h-fit sm:rounded-md  flex flex-col justify-center  animate-appear" (click)="stopPropagation($event)">
+        <div (click)="hiddenPopupUpdateConvenient()" class="sm:w-[30px] sm:h-[30px] h-[50px] w-[50px] bg-[#f4f4f4] sm:bg-white absolute top-1 sm:right-1 right-2 hover:bg-[#f4f4f4] sm:rounded-full rounded-md flex justify-center items-center cursor-pointer">
+            <i class='bx bx-x sm:text-[22px] text-[40px] text-[#b4b4b4] sm:text-custom-color-black '></i>
+        </div>
+        <!-- form register -->
+        <div class="w-full h-full relative">
+            <div class="w-full text-center text-[20px] uppercase font-bold mb-5">
+                <h4 class="text-[#0045a8]">Cập nhật tiện nghi</h4>
+            </div>
+            <form [formGroup]="updateConvenientForm" class="w-full " >
+                <div class="relative w-full mb-5 ">
+                    <div>
+                        <input type="text" id="nameConvenient" formControlName="nameConvenient" appCapitalize class="ntt-custom-input peer" [ngClass]="{'input-invalid': nameConvenientControl?.invalid && firstInvalidControl === 'nameConvenient'}" placeholder=" "
+                        />
+                        <label for="nameConvenient" class="absolute text-gray-500 text-[14px] transition-all duration-300 transform 
+                           scale-100 origin-top-left bg-white 
+                           sm:peer-placeholder-shown:top-4
+                           peer-placeholder-shown:top-3
+                           peer-placeholder-shown:left-5
+                           peer-placeholder-shown:text-gray-500 
+                           peer-focus:top-0 
+                           peer-focus:-translate-y-0 
+                           peer-focus:-translate-x-[6px]
+                           peer-focus:text-gray-500 
+                           peer:not-placeholder-shown:top-0 
+                           peer:not-placeholder-shown:-translate-y-[16px] 
+                           peer:not-placeholder-shown:text-gray-400" [ngClass]="{'label-invalid': (nameConvenientControl?.invalid && firstInvalidControl === 'nameConvenient')}">
+                        Tên tiện nghi
+                    </label>
+                    </div>
+                    <div *ngIf="nameConvenientControl?.invalid && firstInvalidControl === 'nameConvenient'">
+                        <small class="message-error " *ngIf="nameConvenientControl?.hasError('required')"> <i class="fa-solid fa-circle-info"></i> Tên tiện nghi là bắt buộc.</small>
+                    </div>
+                </div>
+                <!-- Upload Area -->
+                <div class="w-full mb-3 mt-5">
+                    <div class="w-full flex flex-row gap-1">
+                      <!-- Upload Image Section -->
+                      <div *ngIf="!image && !oldImage" class="border-2 border-dashed border-gray-300 hover:border-custom-color-blue rounded-lg p-2 mb-2 w-[100px] h-[96px]">
+                        <label class="cursor-pointer flex flex-col items-center justify-center space-y-2 relative">
+                          <input type="file"
+                            (change)="onFileSelected($event)" 
+                            class="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer pointer-events-auto">
+                          <div class="flex flex-col items-center justify-center pointer-events-none">
+                            <i class="bx bx-upload text-gray-500 text-3xl"></i>
+                            <p class="text-custom-color-black">Thêm ảnh</p>
+                          </div>
+                        </label>
+                      </div>
+                      <!-- Preview Single Image -->
+                      <div class="w-full h-full flex items-center justify-start px-1"  *ngIf="image || oldImage">
+                        <div  *ngIf="!image && oldImage"  class="relative w-[100px] h-[100px] border-2 border-[#98bfe6] p-[2px] rounded-sm">
+                            <img src="http://localhost:3000/resources/img-convenients/{{oldImage}}"  class="w-full h-full object-cover rounded-sm">
+                            <button 
+                              class="absolute top-1 right-1 w-[20px] h-[20px] bg-white text-red-600 p-1 font-semibold rounded-full text-[12px] flex justify-center items-center"
+                              (click)="removeImageOld()" 
+                              nz-tooltip 
+                              nzTooltipTitle="Xoá ảnh cũ">
+                              ✕
+                            </button>
+                        </div>
+                        <div *ngIf="image && !oldImage"class="relative w-[100px] h-[100px] border-2 border-[#98bfe6] p-[2px] rounded-sm">
+                          <img [src]="imageUrl" alt="Uploaded Image" class="w-full h-full object-cover rounded-sm">
+                          <button 
+                            class="absolute top-1 right-1 w-[20px] h-[20px] bg-white text-red-600 p-1 font-semibold rounded-full text-[12px] flex justify-center items-center" 
+                            (click)="removeImage()" 
+                            nz-tooltip 
+                            nzTooltipTitle="Xoá ảnh">
+                            ✕
+                          </button>
+                        </div>
+                      </div>
+                      <!-- Error Message -->
+                      <div *ngIf="!image && !oldImage" class="pl-2 pb-1 flex items-end">
+                        <small class="message-error">
+                          <i class="fa-solid fa-circle-info"></i> Vui lòng chọn một ảnh!
+                        </small>
+                      </div>
+                    </div>
+                  </div>
+                  
+            </form>
+            <div class="w-full py-3 ">
+                <button type="button" (click)="handleUpdateConvenient()" class="w-full text-[15px] font-medium text-white bg-[#0045a8] px-5 py-[14px] rounded-md hover:bg-[#336ab9] hover:ntt-shadow-button-login">Thêm</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+

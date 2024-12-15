@@ -21,4 +21,18 @@ export class ConvenientService {
       map((response:any) => response.data) 
     )
   }
+
+  public addNewConvenient(data: FormData): Observable<Convenient> {
+    const url = `${this.REST_API_SERVER}/api/convenient`;
+    return this.httpClient.post<Convenient>(url, data).pipe(
+      map((response:any) => response.data) 
+    )
+  }
+
+  public updateConvenientByID(data: FormData, id:string): Observable<Convenient> {
+    const url = `${this.REST_API_SERVER}/api/convenient/${id}`;
+    return this.httpClient.put<Convenient>(url, data).pipe(
+      map((response:any) => response.data) 
+    )
+  }
 }

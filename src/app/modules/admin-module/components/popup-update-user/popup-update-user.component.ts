@@ -145,7 +145,6 @@ export class PopupUpdateUserComponent {
     }
     else{
       const { username, email, phoneNumber, address, roleID} = this.updateUserForm.value;
-      const dataRequest = { username, email, phoneNumber, address, roleID,}
       const data = new FormData();
       data.append('username', username);
       data.append('email', email);

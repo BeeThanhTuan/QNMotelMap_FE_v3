@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
 import { map } from 'rxjs';
-import { Motel } from 'src/app/interfaces/motel';
-import { RoomType } from 'src/app/interfaces/roomType';
 import { User } from 'src/app/interfaces/user';
 import { AlertService } from 'src/app/services/alert.service';
 import { MotelService } from 'src/app/services/motel.service';

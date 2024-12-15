@@ -124,7 +124,6 @@ export class PopupAddUserComponent {
     }
     else{
       const { username, email, password, phoneNumber, address, roleID} = this.addUserForm.value;
-      const dataRequest = { username, email,password,phoneNumber, address, roleID,}
       const data = new FormData();
       data.append('username', username);
       data.append('email', email);
@@ -132,7 +131,6 @@ export class PopupAddUserComponent {
       data.append('phoneNumber', phoneNumber);
       data.append('address', address);
       data.append('roleID', roleID);
-      console.log(this.image);
       
       if (this.image) {
         data.append('image', this.image);
@@ -143,7 +141,7 @@ export class PopupAddUserComponent {
       }
       this.userService.addNewUser(data).subscribe({
         next: (response) => {
-          this.alertService.showSuccess('Tạo người thành công!', 'Bạn đã tạo tài khoản mới thành công.');
+          this.alertService.showSuccess('Tạo người dùng thành công!', 'Bạn đã tạo tài khoản mới thành công.');
           this.newUser.emit(response);
           this.hiddenPopupAddUser();
         },

@@ -1,0 +1,71 @@
+<div class="w-full p-2 relative h-full">
+    <!-- Thanh tìm kiếm và nút Thêm mới -->
+    <div class="w-full flex pb-2 justify-between">
+        <div class="flex items-center bg-gray-100 w-[350px] p-1 px-3 rounded-md shadow">
+            <i class='bx bx-search text-[25px] p-1 text-custom-color-black-light'></i>
+            <input type="text" placeholder="Tìm kiếm" class="w-full outline-none bg-transparent text-[17px] placeholder-custom-color-black-light">
+        </div>
+        <div>
+            <button (click)="showPopupAddConvenient()"
+            class="bg-custom-bg-blue-light hover:bg-custom-bg-hover-blue text-white px-4 py-2 rounded-md flex items-center justify-center gap-1">
+                <i class='bx bx-plus-circle text-[20px]'></i>
+                <span class="font-medium">Thêm mới</span>
+           </button>
+        </div>
+    </div>
+    <!-- Bảng chỉ cuộn ngang -->
+    <div class="rounded-md w-full  overflow-x-auto custom-scrollbar" id="scroll-container">
+        <table class="table-auto w-full border custom-scrollbar" >
+            <thead class="bg-gray-100 text-gray-700 border-b">
+                <tr class="h-[40px]">
+                    <th class="ntt-custom-th">Tên tiện nghi</th>
+                    <th class="ntt-custom-th">Hình ảnh</th>
+                    <th class="w-[100px] text-left">Chức năng</th>
+                </tr>
+            </thead>
+            <tbody class="text-gray-700">
+                <tr *ngFor="let convenient of listConvenient | paginate: { itemsPerPage: 6, currentPage: currentPage }; let i = index" class="border-b">
+                    <td class="text-left my-3 px-4 whitespace-nowrap">{{convenient.NameConvenient}}</td>
+                    <td class="h-full text-left my-3 px-4 flex items-center ">
+                        <div class="w-fit ">
+                            <img (click)="handleOpenCollectionImage(i)" nzTooltipTitle="Xem ảnh" nz-tooltip
+                            src="http://localhost:3000/resources/img-convenients/{{convenient.LinkImage}}"
+                            alt="" class="w-[35px] h-[35px] rounded-sm border object-cover cursor-pointer">
+                        </div>
+                    </td>
+                    <td class="gap-2 text-center text-[25px]">
+                        <i class='bx bxs-edit cursor-pointer hover:text-yellow-500' nzTooltipTitle="Cập nhật" nz-tooltip  (click)="showPopupUpdateConvenient(i, convenient)"></i>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="flex w-full items-center justify-center absolute left-0 bottom-0 ">
+        <pagination-controls (pageChange)="onPageChange($event)" previousLabel="Prev" nextLabel="Next"></pagination-controls>
+    </div>
+</div>
+
+<div class="w-full h-[100vh] fixed top-0 left-0 overflow-hidden z-20 flex justify-center items-center animate-appear sm:animate-none" *ngIf="isCollectionImageOpen" >
+    <div class="absolute w-full h-full bg-[rgba(0,0,0,0.6)] backdrop-blur-[1.5px]" (click)="handleCloseCollectionImage()"></div>
+    <div class=" mx-auto relative sm:w-[50%] sm:h-[55%] w-full h-full bg-white z-10 sm:rounded-xl rounded-none flex flex-col overflow-hidden ">
+        <div class="w-full h-[10%] flex justify-between items-center border-b">
+            <div><span class="ml-5 text-[18px] font-semibold">Ảnh người dùng</span></div>
+            <button class="px-4 py-2 flex justify-center items-center text-custom-color-black-light hover:text-custom-color-blue"
+                (click)="handleCloseCollectionImage()">
+                <i class='bx bx-x text-[35px]'></i>
+            </button>
+        </div>
+        <div class="w-full h-[90%] p-10">
+            <div class="w-full h-[100%] flex justify-between items-center  ">
+                <div class="w-[100%] h-[100%] flex justify-center items-center">
+                    <img [src]="'http://localhost:3000/resources/img-convenients/' + listConvenient[indexConvenient].LinkImage " alt="" class=" w-fit h-full object-cover rounded-md " >
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<app-popup-add-convenient *ngIf="isShowPopupAddConvenient" (newUser)="receiveNewConvenientFormAddConvenient($event)"></app-popup-add-convenient>
+<app-popup-update-convenient *ngIf="isShowPopupUpdateConvenient" [convenient]="convenient" (newUser)="receiveNewConvenientFormUpdateConvenient($event)"></app-popup-update-convenient>
+
+

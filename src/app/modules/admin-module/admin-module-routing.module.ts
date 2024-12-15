@@ -5,6 +5,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { MotelsComponent } from './components/motels/motels.component';
 import { UsersComponent } from './components/users/users.component';
 import { RoomTypesComponent } from './components/room-types/room-types.component';
+import { ConvenientComponent } from './components/convenient/convenient.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'manage', pathMatch: 'full' },
@@ -17,6 +18,7 @@ const routes: Routes = [
       { path: 'motels', component: MotelsComponent},
       { path: 'rooms', component: RoomTypesComponent},
       { path: 'users', component: UsersComponent},
+      { path: 'convenient', component: ConvenientComponent},
 
     ],
   },
