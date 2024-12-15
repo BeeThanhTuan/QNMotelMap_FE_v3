@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { response } from 'express';
 import { Role } from 'src/app/interfaces/role';
 import { User } from 'src/app/interfaces/user';
 import { AuthService } from 'src/app/services/auth.service';

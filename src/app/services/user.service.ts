@@ -49,4 +49,11 @@ export class UserService {
         map((response:any) => response.data) 
       )
   }
+
+  public updateAvatarUser(data: FormData): Observable<User> {
+    const url = `${this.REST_API_SERVER}/api/user-update-image`;
+    return this.httpClient.put<User>(url, data).pipe(
+      map((response:any) => response.data) 
+    )
+  }
 }

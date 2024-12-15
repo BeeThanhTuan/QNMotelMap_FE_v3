@@ -97,4 +97,6 @@ export class UpdateProfileLandlordComponent {
     event.stopPropagation();
   }
 
+  
+
 }

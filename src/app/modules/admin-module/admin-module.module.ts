@@ -24,6 +24,8 @@ import { PopupUpdateUserComponent } from './components/popup-update-user/popup-u
 import { ConvenientComponent } from './components/convenient/convenient.component';
 import { PopupAddConvenientComponent } from './components/popup-add-convenient/popup-add-convenient.component';
 import { PopupUpdateConvenientComponent } from './components/popup-update-convenient/popup-update-convenient.component';
+import { UpdateProfileComponent } from './components/update-profile/update-profile.component';
+import { PhonePipe } from './pipes/phone.pipe';
 @NgModule({
   declarations: [
     ManageComponent,
@@ -41,6 +43,8 @@ import { PopupUpdateConvenientComponent } from './components/popup-update-conven
     ConvenientComponent,
     PopupAddConvenientComponent,
     PopupUpdateConvenientComponent,
+    UpdateProfileComponent,
+    PhonePipe,
   ],
   imports: [
     CommonModule,

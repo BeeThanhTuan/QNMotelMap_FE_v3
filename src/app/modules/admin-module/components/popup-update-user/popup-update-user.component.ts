@@ -199,8 +199,6 @@ export class PopupUpdateUserComponent {
       this.alertService.showWarning('Cảnh báo!', 'Chỉ được chọn 1 ảnh!');
       return;
     }
-    console.log(file);
-    
     this.image = file; // Lưu file vào biến image
     this.imageUrl = URL.createObjectURL(file); // Tạo URL để hiển thị ảnh
   

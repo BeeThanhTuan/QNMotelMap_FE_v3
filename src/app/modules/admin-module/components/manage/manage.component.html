@@ -25,25 +25,30 @@
                         <span>Tiện nghi</span>
                     </li>
                 </ul>
-                <div class="w-full px-3 py-5 absolute bottom-0">
-                    <div class="font-medium w-full flex items-center gap-2 p-5 cursor-pointer hover:bg-[#e8eefd] rounded-md">
-                        <i class='bx bx-log-in text-[25px]'></i>
-                        <span>Đăng xuất</span>
-                    </div>
-                </div>
             </nav>
             <div class="main_content flex-1 h-full bg-[#fafafa] flex flex-col">
                 <div class="w-full border-b-2 flex items-center justify-between">
                     <div class="w-1/2 flex flex-col ml-10">
                         <h2 class="text-[21px] font-bold tracking-wide">Wellcom Back</h2>
-                        <p class="text-[15px] text-custom-color-black-light font-medium mt-1">Hello Nguyễn Thanh Tuấn</p>
+                        <p class="text-[15px] text-custom-color-black-light font-medium mt-1">Hello <span class="capitalize">{{user.Username}}</span></p>
                     </div>
                     <div class="w-1/2 flex justify-end py-2 ">
                         <div class="flex items-center gap-2 py-3 mr-5">
-                            <div class="h-[45px] w-[45px] rounded-full border-2 border-white overflow-hidden">
-                                <img class="w-full h-full object-cover" src="/assets/images/img-motel.jpg" alt="">
+                            <div class="h-[45px] w-[45px] rounded-full border-2 border-white overflow-hidden cursor-pointer" nz-dropdown [nzDropdownMenu]="menu" nzPlacement="bottomRight">
+                                <img class="w-full h-full object-cover" [src]="user.Image ? 'http://localhost:3000/resources/img-users/' + user.Image : '/assets/images/default-avatar.png'" alt="">
                             </div>
                         </div>
+                        <nz-dropdown-menu #menu="nzDropdownMenu">
+                            <ul nz-menu nzSelectable class="!text-base !w-full">
+                                <li nz-menu-item (click)="showPupUpdateProfile(user)">Cập nhật thông tin</li>
+                                <li nz-menu-item class="!w-full" (click)="handleLogout()">
+                                  <div class="flex flex-row gap-1 items-center justify-between !w-full">
+                                    <span >Đăng xuất</span>
+                                    <i class='bx bx-log-in text-[16px] ml-2'></i>  
+                                  </div>
+                                </li>
+                            </ul>
+                        </nz-dropdown-menu>
                     </div>
                 </div>
                 <div class="w-full h-full">
@@ -53,3 +58,5 @@
         </div>
     </div>
 </div>
+
+<app-update-profile [user]="user" *ngIf="isShowUpdateProfile" (newUser)="receiveNewInfoUser($event)"></app-update-profile>

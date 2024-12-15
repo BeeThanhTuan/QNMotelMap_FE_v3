@@ -2,6 +2,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, catchError, map, Observable, of, tap } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
+import { Router } from '@angular/router';
+import { AlertService } from './alert.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +17,7 @@ export class AuthService {
 
   private isLoginSubject = new BehaviorSubject<boolean>(false);
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient, private router: Router, private alertService: AlertService) {}
   
   get isLogin$() {
     return this.isLoginSubject.asObservable();
@@ -41,7 +43,16 @@ export class AuthService {
     );
   }
 
-
+  public logout(): void {
+    // Remove tokens from localStorage
+    localStorage.removeItem('accessToken');
+    // Clear refresh token cookie
+    document.cookie = 'refreshToken=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    this.isLoginSubject.next(false);
+    this.router.navigate(['/client/home']);
+    this.alertService.showSuccess('Đăng xuất thành công!', 'Bạn đã đăng xuất tin thành công.');
+  }
+  
   public register(data: any): Observable<any> {
     const url = `${this.REST_API_SERVER}/api/register`;
     return this.httpClient.post<any>(url, data, this.httpOptions).pipe(
