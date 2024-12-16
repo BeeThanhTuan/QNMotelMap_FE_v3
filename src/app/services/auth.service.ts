@@ -25,7 +25,6 @@ export class AuthService {
   
   public login(data: { email: string; password: string }): Observable<any> {
     const url = `${this.REST_API_SERVER}/api/login`;
-
     return this.httpClient.post<any>(url, data, this.httpOptions).pipe(
       tap((response: any) => {
         const accessToken = response?.data?.accessToken;

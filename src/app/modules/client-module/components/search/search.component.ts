@@ -613,7 +613,7 @@ export class SearchComponent {
     this.favoriteMotelsService.addMotelIntoFavorites(id).subscribe({
       next: (response) => {
         this.listFavoriteMotels = response.ListMotels
-        this.showMessage('success', 'Thêm nhà nhà trọ vào danh sách yêu thích thành công.')
+        this.showMessage('success', 'Thêm nhà trọ vào danh sách yêu thích thành công.')
       },
       error: (error) => {
         this.showMessage('error', error.error.message)

@@ -141,7 +141,7 @@ export class HomeComponent {
     if (url.includes('/map')) {
       this.showHeader= false;  
     }
-    if (url.includes('/content')) {
+    if (url.includes('/content') || url.includes('/favorite-motels') ) {
       this.showBannerWrapper = true;
       this.showFormSearch = true; 
       this.showHeader = true; 
