@@ -3,7 +3,8 @@
     <div class="w-full flex pb-2 justify-between">
         <div class="flex items-center bg-gray-100 w-[350px] p-1 px-3 rounded-md shadow">
             <i class='bx bx-search text-[25px] p-1 text-custom-color-black-light'></i>
-            <input type="text" placeholder="Tìm kiếm" class="w-full outline-none bg-transparent text-[17px] placeholder-custom-color-black-light">
+            <input type="text" placeholder="Tìm kiếm" [formControl]="searchControl"
+            class="w-full outline-none bg-transparent text-[17px] placeholder-custom-color-black-light">
         </div>
         <div>
             <button (click)="showPopupAddConvenient()"
@@ -24,7 +25,7 @@
                 </tr>
             </thead>
             <tbody class="text-gray-700">
-                <tr *ngFor="let convenient of listConvenient | paginate: { itemsPerPage: 6, currentPage: currentPage }; let i = index" class="border-b">
+                <tr *ngFor="let convenient of listConvenient | searchFilter: searchText  | paginate: { itemsPerPage: 6, currentPage: currentPage }; let i = index" class="border-b">
                     <td class="text-left my-3 px-4 whitespace-nowrap">{{convenient.NameConvenient}}</td>
                     <td class="h-full text-left my-3 px-4 flex items-center ">
                         <div class="w-fit ">

@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
-import { map } from 'rxjs';
+import { FormControl } from '@angular/forms';
+import { debounceTime, distinctUntilChanged, map } from 'rxjs';
 import { User } from 'src/app/interfaces/user';
 import { AlertService } from 'src/app/services/alert.service';
 import { MotelService } from 'src/app/services/motel.service';
 import { UserService } from 'src/app/services/user.service';
 import Swal from 'sweetalert2';
+import { RoleName } from 'src/app/services/roleEnum';
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
@@ -12,20 +14,32 @@ import Swal from 'sweetalert2';
 })
 export class UsersComponent {
   listUser: User[] = [];
+  filteredUsers: User[] = [];
   currentPage: number = 1;
   isShowPopupUpdateRoomType = false;
   isShowPopupAddUser = false;
   isShowPopupUpdateUser = false;
   indexUserUpdate!:number;
   user!: User;
-
+  roleName = RoleName;
   //collection image
   isCollectionImageOpen = false;
   indexUser = 0;
+
+  searchText = '';
+  searchControl: FormControl = new FormControl('');
   constructor(private motelService: MotelService, private alert: AlertService, private userService: UserService){}
 
   ngOnInit(): void {
     this.getAllRoomTypes();
+    this.searchControl.valueChanges
+      .pipe(
+        debounceTime(300), // Đợi 300ms sau khi người dùng dừng nhập liệu
+        distinctUntilChanged() // Chỉ phát tín hiệu khi giá trị thay đổi
+      )
+      .subscribe((value) => {
+        this.searchText = value;
+      });
   }
 
   getAllRoomTypes():void{
@@ -33,7 +47,8 @@ export class UsersComponent {
       map(response => response.reverse()) // Reverse the data array
     )
     .subscribe((reversedData) => {
-      this.listUser = reversedData;   
+      this.listUser = reversedData;  
+      this.filteredUsers = reversedData; 
     });
   }
 
@@ -113,6 +128,17 @@ export class UsersComponent {
       popupUpdateUser.classList.add('flex')
     }
   }
+
+  filterByRoleName(roleName: string): void {
+    if (!roleName || roleName === 'All') {
+      this.listUser = [...this.filteredUsers];
+    } else {
+      this.listUser = this.filteredUsers.filter(user => 
+        user.RoleID.RoleName.toLocaleLowerCase().includes(roleName.toLocaleLowerCase())
+      );
+    }
+  }
+
 
   
 }

@@ -22,7 +22,7 @@ import { UpdateProfileComponent } from './components/update-profile/update-profi
     CapitalizePipe,
     CapitalizeDirective,
     PhonePipe,
-    UpdateProfileComponent
+    UpdateProfileComponent,
   ],
   imports: [
     CommonModule, // Import CommonModule cho các chỉ thị cơ bản

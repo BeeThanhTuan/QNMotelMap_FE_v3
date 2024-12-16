@@ -1,12 +1,8 @@
 import { Component } from '@angular/core';
-import { map } from 'rxjs';
+import { FormControl } from '@angular/forms';
+import { debounceTime, distinctUntilChanged, map } from 'rxjs';
 import { Convenient } from 'src/app/interfaces/convenient';
-import { User } from 'src/app/interfaces/user';
-import { AlertService } from 'src/app/services/alert.service';
 import { ConvenientService } from 'src/app/services/convenient.service';
-import { MotelService } from 'src/app/services/motel.service';
-import { UserService } from 'src/app/services/user.service';
-import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-convenient',
@@ -25,10 +21,21 @@ export class ConvenientComponent {
   //collection image
   isCollectionImageOpen = false;
   indexConvenient = 0;
+
+  searchText = '';
+  searchControl: FormControl = new FormControl('');
   constructor(private convenientService: ConvenientService,){}
 
   ngOnInit(): void {
     this.getAllConvenient();
+    this.searchControl.valueChanges
+      .pipe(
+        debounceTime(300), // Đợi 300ms sau khi người dùng dừng nhập liệu
+        distinctUntilChanged() // Chỉ phát tín hiệu khi giá trị thay đổi
+      )
+      .subscribe((value) => {
+        this.searchText = value;
+      });
   }
 
   getAllConvenient():void{

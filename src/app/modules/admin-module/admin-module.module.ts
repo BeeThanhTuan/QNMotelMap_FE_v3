@@ -26,6 +26,7 @@ import { PopupAddConvenientComponent } from './components/popup-add-convenient/p
 import { PopupUpdateConvenientComponent } from './components/popup-update-convenient/popup-update-convenient.component';
 import { UpdateProfileComponent } from './components/update-profile/update-profile.component';
 import { PhonePipe } from './pipes/phone.pipe';
+import { SearchFilterPipe } from './pipes/search-filter.pipe';
 @NgModule({
   declarations: [
     ManageComponent,
@@ -45,6 +46,7 @@ import { PhonePipe } from './pipes/phone.pipe';
     PopupUpdateConvenientComponent,
     UpdateProfileComponent,
     PhonePipe,
+    SearchFilterPipe
   ],
   imports: [
     CommonModule,

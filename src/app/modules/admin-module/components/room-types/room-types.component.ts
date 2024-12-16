@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { map } from 'rxjs';
+import { FormControl } from '@angular/forms';
+import { debounceTime, distinctUntilChanged, map } from 'rxjs';
 import { Motel } from 'src/app/interfaces/motel';
 import { RoomType } from 'src/app/interfaces/roomType';
 import { AlertService } from 'src/app/services/alert.service';
@@ -25,10 +26,21 @@ export class RoomTypesComponent {
   indexMotel = 0;
   indexRoomTypeUpdate = 0;
   currentIndexRoomType = 0;
-  constructor(private motelService: MotelService, private alert: AlertService, private roomTypeService: RoomTypeService){}
+
+  searchText = '';
+  searchControl: FormControl = new FormControl('');
+  constructor( private alert: AlertService, private roomTypeService: RoomTypeService){}
 
   ngOnInit(): void {
     this.getAllRoomTypes();
+    this.searchControl.valueChanges
+          .pipe(
+            debounceTime(300), 
+            distinctUntilChanged() // Chỉ phát tín hiệu khi giá trị thay đổi
+          )
+          .subscribe((value) => {
+            this.searchText = value;
+          });
   }
 
   getAllRoomTypes():void{

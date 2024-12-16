@@ -3,7 +3,8 @@
     <div class="w-full flex pb-2 justify-between">
         <div class="flex items-center bg-gray-100 w-[350px] p-1 px-3 rounded-md shadow">
             <i class='bx bx-search text-[25px] p-1 text-custom-color-black-light'></i>
-            <input type="text" placeholder="Tìm kiếm" class="w-full outline-none bg-transparent text-[17px] placeholder-custom-color-black-light">
+            <input type="text" placeholder="Tìm kiếm" [formControl]="searchControl"
+             class="w-full outline-none bg-transparent text-[17px] placeholder-custom-color-black-light">
         </div>
         <div>
             <button (click)="showPopupAddUser()"
@@ -23,16 +24,23 @@
                     <th class="ntt-custom-th">Email</th>
                     <th class="ntt-custom-th">Địa chỉ</th>
                     <th class="ntt-custom-th">SĐT</th>
-                    <th class="ntt-custom-th">Vai trò</th>
+                    <th class="ntt-custom-th cursor-pointer" nz-dropdown [nzDropdownMenu]="menu" nzPlacement="bottomRight">Vai trò <i class='bx bx-filter-alt'></i></th>
                     <th class="ntt-custom-th">Ngày tạo</th>
                     <th class="ntt-custom-th">Người cập nhật</th>
                     <th class="ntt-custom-th">Ngày cập nhật</th>
                     <th class="ntt-custom-th">Chức năng</th>
-
+                    <nz-dropdown-menu #menu="nzDropdownMenu">
+                        <ul nz-menu nzSelectable class="!text-base !w-full">
+                            <li nz-menu-item (click)="filterByRoleName('All')" >Tất cả</li>
+                            <li nz-menu-item (click)="filterByRoleName(roleName.Client)" >Client</li>
+                            <li nz-menu-item (click)="filterByRoleName(roleName.Landlord)">Landlord</li>
+                            <li nz-menu-item (click)="filterByRoleName(roleName.Admin)">Admin</li>           
+                        </ul>
+                    </nz-dropdown-menu>
                 </tr>
             </thead>
             <tbody class="text-gray-700">
-                <tr *ngFor="let user of listUser | paginate: { itemsPerPage: 6, currentPage: currentPage }; let i = index" class="border-b">
+                <tr *ngFor="let user of listUser | searchFilter: searchText  | paginate: { itemsPerPage: 6, currentPage: currentPage }; let i = index" class="border-b">
                     <td class="text-left my-3 px-4 whitespace-nowrap">{{user.Username}}</td>
                     <td class="h-full text-left my-3 px-4 flex items-center ">
                         <div class="w-fit ">
