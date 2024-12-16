@@ -3,29 +3,31 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Role } from 'src/app/interfaces/role';
 import { User } from 'src/app/interfaces/user';
 import { AlertService } from 'src/app/services/alert.service';
+import { AuthService } from 'src/app/services/auth.service';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-update-profile',
   templateUrl: './update-profile.component.html',
-  styleUrls: ['./update-profile.component.css'],
+  styleUrls: ['./update-profile.component.css']
 })
 export class UpdateProfileComponent {
-  updateInfoForm!: FormGroup;
+updateInfoForm!: FormGroup;
   isShowPopupUpdateAvatar = false;
   isShowPopupUpdateInfo = false;
   image!: File | null;
   imageUrl = '';
   firstInvalidControl: string | null = null
   @ViewChild('fileInput') fileInput!: ElementRef;
-  @Input() user!: User;
+  user!: User;
   @Output() newUser = new EventEmitter<User>();
 
   constructor(
     private formBuilder: FormBuilder,
     private cdr: ChangeDetectorRef,
     private userService: UserService,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private authService: AuthService
   ) {
     this.user = {
       _id: '',
@@ -41,6 +43,10 @@ export class UpdateProfileComponent {
       IsDelete: false,
     };
     this.initializeForm();
+  }
+
+  ngOnInit(): void {
+    this.getInfoUser();
   }
 
   initializeForm(): void {
@@ -61,6 +67,18 @@ export class UpdateProfileComponent {
 
   get phoneNumberControl() {
     return this.updateInfoForm.get('phoneNumber');
+  }
+
+  getInfoUser() :void{
+    const email = this.authService.getEmailFromToken();
+    this.userService.getInfoUserByEmail(email).subscribe({
+      next: (response) => {
+        this.user = response;
+      },
+      error: (roleError) => {
+        console.log('Lỗi khi lấy thông tin!', roleError.error.message);
+      }
+    })
   }
 
 

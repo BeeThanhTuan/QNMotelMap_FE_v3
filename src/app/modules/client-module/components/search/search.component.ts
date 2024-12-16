@@ -8,8 +8,8 @@ import { MotelService } from 'src/app/services/motel.service';
 import { Motel } from 'src/app/interfaces/motel';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { NzMarks } from 'ng-zorro-antd/slider';
-
-
+import { FavoriteMotelsService } from 'src/app/services/favorite-motels.service';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 interface FieldSearch {
   address: string,
@@ -87,8 +87,11 @@ export class SearchComponent {
   selectedSortLabel = 'Mặc định';
   selectedSort = 'default';
 
+  listFavoriteMotels:Motel [] = [];
+
   constructor(private titleService: Title, private formBuilder: FormBuilder, private router: Router,
-    private route: ActivatedRoute, private motelService: MotelService) {
+    private route: ActivatedRoute, private motelService: MotelService,
+    private favoriteMotelsService: FavoriteMotelsService, private message: NzMessageService) {
     this.titleService.setTitle('QNMoteMap | Tìm kiếm ');
     this.initializeForm();
     this.setDataFormLocal();
@@ -98,6 +101,7 @@ export class SearchComponent {
     this.setFieldSearchIntoFormFilter();
     this.initializeDataPriceChart();  
     this.initializeDataDistanceChart(); 
+    this.getFavoriteMotels();
   }
 
   ngAfterViewInit(): void {
@@ -585,6 +589,47 @@ export class SearchComponent {
     this.router.navigate([], {
       queryParams: { filters: decodedFilters },
      
+    });
+  }
+
+  showMessage(type: string, message: string): void {
+    this.message.create(type, message,{nzDuration: 3000});
+  }
+
+
+  isFavorited(motelId: string): boolean {
+    return this.listFavoriteMotels.some((motel) => motel._id === motelId);
+  }
+
+  getFavoriteMotels():void{
+    this.favoriteMotelsService.getFavoriteMotels().subscribe({
+      next: (response) => {
+        this.listFavoriteMotels = response.ListMotels;
+      },
+    })
+  }
+
+  addMotelIntoFavorites(id: string){
+    this.favoriteMotelsService.addMotelIntoFavorites(id).subscribe({
+      next: (response) => {
+        this.listFavoriteMotels = response.ListMotels
+        this.showMessage('success', 'Thêm nhà nhà trọ vào danh sách yêu thích thành công.')
+      },
+      error: (error) => {
+        this.showMessage('error', error.error.message)
+      }
+    })
+  }
+
+  removeMotelFromFavorites(id: string) {
+    this.favoriteMotelsService.removeMotelFormFavorites(id).subscribe({
+      next: (response) => {
+        this.listFavoriteMotels = response.ListMotels; // Cập nhật danh sách yêu thích
+        this.showMessage('success', 'Xóa nhà trọ khỏi danh sách yêu thích thành công.');
+      },
+      error: (error) => {
+        this.showMessage('error', error.error.message);
+      }
     });
   }
 

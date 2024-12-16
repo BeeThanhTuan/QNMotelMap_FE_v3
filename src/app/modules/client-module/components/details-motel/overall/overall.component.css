@@ -41,3 +41,12 @@ img.img-motel {
     grid-row: 4 / span 3;
 }
 
+::ng-deep .ant-message-custom-content {
+    display: flex;
+    align-items: center;
+    gap: 2px; /* Add spacing between the icon and the text */
+}
+
+::ng-deep .ant-message .anticon {
+    top: 0px;
+}

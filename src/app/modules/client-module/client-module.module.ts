@@ -32,11 +32,12 @@ import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
-
+import { NzMessageModule } from 'ng-zorro-antd/message';
 //loading
 import { NgxSpinnerModule } from "ngx-spinner";
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { LineBreakPipe } from './pipes/line-break.pipe';
+import { FavoriteMotelsComponent } from './components/favorite-motels/favorite-motels.component';
 
 //
 @NgModule({
@@ -58,6 +59,7 @@ import { LineBreakPipe } from './pipes/line-break.pipe';
     PhonePipe,
     RoomTypesComponent,
     LineBreakPipe,
+    FavoriteMotelsComponent,
     
   ],
   imports: [
@@ -77,6 +79,7 @@ import { LineBreakPipe } from './pipes/line-break.pipe';
     NzDropDownModule,
     NzRadioModule,
     NzToolTipModule,
+    NzMessageModule,
     NgxSpinnerModule,
     NgxSkeletonLoaderModule
   ]

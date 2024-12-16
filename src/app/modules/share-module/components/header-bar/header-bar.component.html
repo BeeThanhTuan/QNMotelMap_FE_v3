@@ -19,7 +19,8 @@
                 </div>
                 <button  class="ntt-custom-button md:flex hidden" (click)="showPopupLoginRegister()"><span>Đăng ký/Đăng nhập</span></button>
             </div>
-            <div *ngIf="isLogin" class="h-[48px] md:bg-[#1a4f9f] hover:md:bg-[#1a589f] hover:bg-[#1a4f9f] bg-[transparant] w-fit px-2 sm:px-3 py-[6px] text-white flex items-center md:gap-2 gap-0 rounded-sm cursor-pointer">
+            <div *ngIf="isLogin" class="h-[48px] md:bg-[#1a4f9f] hover:md:bg-[#1a589f] hover:bg-[#1a4f9f] bg-[transparant] w-fit px-2 sm:px-3 py-[6px] text-white flex items-center md:gap-2 gap-0 rounded-sm cursor-pointer"
+                nz-dropdown [nzDropdownMenu]="menu" nzPlacement="bottomRight">
                 <div class="h-[34px] w-[34px] rounded-full border-2 border-white overflow-hidden">
                     <img class="w-full h-full object-cover" [src]="user.Image ? 'http://localhost:3000/resources/img-users/' + user.Image : '/assets/images/default-avatar.png'"  alt="">
                 </div>
@@ -29,6 +30,20 @@
                 </div>
                 <i class='bx bxs-chevron-down md:flex hidden'></i>
             </div>
+            <nz-dropdown-menu #menu="nzDropdownMenu">
+                <ul nz-menu nzSelectable class="!text-base !w-full">
+                    <li nz-menu-item (click)="showPupUpdateProfile()">Cập nhật thông tin</li>
+                    <li nz-menu-item routerLink="/client/home/favorite-motels">Danh sách nhà trọ yêu thích</li>
+                    <li nz-menu-item routerLink="/admin/manage" *ngIf="roleName === enumRoleName.Admin">Đến trang Quản lý</li>
+                    <li nz-menu-item routerLink="/landlord/manage" *ngIf="roleName === enumRoleName.Landlord">Đến trang Chủ trọ</li>
+                    <li nz-menu-item class="!w-full" (click)="handleLogout()">
+                      <div class="flex flex-row gap-1 items-center justify-between !w-full">
+                        <span >Đăng xuất</span>
+                        <i class='bx bx-log-in text-[16px] ml-2'></i>  
+                      </div>
+                    </li>
+                </ul>
+            </nz-dropdown-menu>
         </div>
     </div>
     <!-- End header control -->

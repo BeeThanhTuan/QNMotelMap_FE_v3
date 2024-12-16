@@ -18,12 +18,6 @@
                         <p class="sm:text-[20px] mb:text-[15px] text-[13px] font-medium text-custom-color-black-light">{{landlord.Email}}</p>
                     </div>
                 </div>
-                <div class="flex justify-center items-center">
-                    <button class="md:h-[36px] h-[32px] md:px-3 px-2 py-[6px] flex items-center justify-center gap-1 text-[15px] bg-[#e4e6eb] hover:bg-[#d5d6d8] rounded-md cursor-pointer" (click)="showPopupUpdateProfile()">
-                        <i class='bx bxs-pencil md:text-[20px] text-[17px]'></i>
-                        <span class="md:flex hidden font-medium">Chỉnh sửa thông tin</span>
-                    </button>
-                </div>
             </div>
         </div>
         <main class="max-w-custom h-auto mx-auto sm:mt-5 mt-3 relative ">
@@ -33,4 +27,3 @@
     <!-- End content wrapper -->
 </div>
 <!-- End root -->
- <app-update-profile-landlord *ngIf="isShowPopupUpdateProfile"></app-update-profile-landlord>

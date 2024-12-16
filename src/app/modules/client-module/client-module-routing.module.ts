@@ -7,6 +7,7 @@ import { OverallComponent } from './components/details-motel/overall/overall.com
 import { RoomTypesComponent } from './components/details-motel/room-types/room-types.component';
 import { SearchComponent } from './components/search/search.component';
 import { ViewOnMapComponent } from './components/view-on-map/view-on-map.component';
+import { FavoriteMotelsComponent } from './components/favorite-motels/favorite-motels.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -16,6 +17,7 @@ const routes: Routes = [
     children: [
       { path: '', redirectTo: 'content', pathMatch: 'full' },
       { path: 'content', component: ContentMainComponent },
+      { path: 'favorite-motels', component: FavoriteMotelsComponent },
       { path: 'search', component: SearchComponent },
       { path: 'map', component: ViewOnMapComponent},
       {

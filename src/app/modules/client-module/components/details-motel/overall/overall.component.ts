@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
 import {  Router } from '@angular/router';
-import { firstValueFrom } from 'rxjs';
-import { Landlord } from 'src/app/interfaces/landlord';
+import { NzMessageService } from 'ng-zorro-antd/message';
 import { Motel } from 'src/app/interfaces/motel';
-import { LandlordService } from 'src/app/services/landlord.service';
+import { FavoriteMotelsService } from 'src/app/services/favorite-motels.service';
 import { MotelService } from 'src/app/services/motel.service';
 
 @Component({
@@ -14,11 +13,12 @@ import { MotelService } from 'src/app/services/motel.service';
 export class OverallComponent {
   motel: Motel ;
   idMotel!: string;
-
+  listFavoriteMotels :Motel[] = [];
   //collection image
   isCollectionImageOpen = false;
   currentIndex = 0;
-  constructor(private router: Router, private motelService: MotelService, private landlordService: LandlordService) {
+  constructor(private router: Router, private motelService: MotelService, 
+    private favoriteMotelsService: FavoriteMotelsService, private message: NzMessageService) {
     this.motel = {
       _id: '',
       NameMotel: '',
@@ -52,7 +52,7 @@ export class OverallComponent {
   ngOnInit(): void {
    this.getIDMotelFormUrl();
    this.getDataMotel(this.idMotel);
-   
+   this.getFavoriteMotels();
   }
 
   getIDMotelFormUrl():void {
@@ -64,8 +64,6 @@ export class OverallComponent {
   getDataMotel(id: string):void {
     this.motelService.getMotelByID(id).subscribe((response)=>{
       this.motel = response;
-      console.log(response);
-      
     })
   }
 
@@ -100,5 +98,46 @@ export class OverallComponent {
 
   prevImage(): void {
     this.currentIndex = (this.currentIndex - 1 + this.motel.ListImages.length) % this.motel.ListImages.length;
+  }
+
+  showMessage(type: string, message: string): void {
+    this.message.create(type, message,{nzDuration: 3000});
+  }
+
+
+  isFavorited(motelId: string): boolean {
+    return this.listFavoriteMotels.some((motel) => motel._id === motelId);
+  }
+
+  getFavoriteMotels():void{
+    this.favoriteMotelsService.getFavoriteMotels().subscribe({
+      next: (response) => {
+        this.listFavoriteMotels = response.ListMotels;
+      },
+    })
+  }
+
+  addMotelIntoFavorites(id: string){
+    this.favoriteMotelsService.addMotelIntoFavorites(id).subscribe({
+      next: (response) => {
+        this.listFavoriteMotels = response.ListMotels
+        this.showMessage('success', 'Thêm nhà nhà trọ vào danh sách yêu thích thành công.')
+      },
+      error: (error) => {
+        this.showMessage('error', error.error.message)
+      }
+    })
+  }
+
+  removeMotelFromFavorites(id: string) {
+    this.favoriteMotelsService.removeMotelFormFavorites(id).subscribe({
+      next: (response) => {
+        this.listFavoriteMotels = response.ListMotels; // Cập nhật danh sách yêu thích
+        this.showMessage('success', 'Xóa nhà trọ khỏi danh sách yêu thích thành công.');
+      },
+      error: (error) => {
+        this.showMessage('error', error.error.message);
+      }
+    });
   }
 }

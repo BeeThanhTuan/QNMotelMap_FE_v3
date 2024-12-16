@@ -34,9 +34,14 @@
                                 </div>
                             </div>
                         </a>
-                        <div title="Lưu">
-                            <button class="w-9 h-9 favorite-motel absolute top-3 right-3 flex justify-center items-center rounded-full bg-white hover:bg-[#f2f2f2] group">
-                                <i class="bx bx-heart text-[20px] text-custom-color-black-light group-hover:text-[red]"></i>
+                        <div >
+                            <button *ngIf="!isFavorited(motel._id)" (click)="addMotelIntoFavorites(motel._id)" title="Thêm vào danh sách yêu thích"
+                             class="w-9 h-9 favorite-motel absolute top-3 right-3 flex justify-center items-center rounded-full bg-white hover:bg-[#f2f2f2] group">
+                                <i *ngIf="!isFavorited(motel._id) " class="bx bxs-heart text-[22px] text-[#babbbd] group-hover:text-red-500"></i>
+                            </button>
+                            <button *ngIf="isFavorited(motel._id)" (click)="removeMotelFromFavorites(motel._id)"  title="Xoá khỏi danh sách yêu thích"
+                             class="w-9 h-9 favorite-motel absolute top-3 right-3 flex justify-center items-center rounded-full bg-white hover:bg-[#f2f2f2] group">
+                                <i *ngIf="isFavorited(motel._id)" class="bx bxs-heart text-[22px] text-red-500 group-hover:text-[red]"></i>
                             </button>
                         </div>
                     </div>

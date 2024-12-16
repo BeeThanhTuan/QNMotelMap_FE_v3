@@ -1,11 +1,11 @@
-<div id="popupUpdateProfileLandlord" class="overlay w-full min-w-[310px] h-[100vh] fixed top-0 left-0 justify-center items-center bg-[rgba(209,209,209,0.7)] z-40 flex" (click)="hiddenPopupUpdateProfileLandlord()">
-    <div id="containerUpdateProfileLandlord" class="container pb-5 max-w-custom w-[450px] sm:h-fit h-[100vh] ntt-shadow-popup bg-white relative sm:rounded-xl rounded-none animate-appear" (click)="stopPropagation($event)">
+<div id="popupUpdateProfile" class="overlay w-full min-w-[310px] h-[100vh] fixed top-0 left-0 justify-center items-center bg-[rgba(209,209,209,0.7)] z-40 hidden" (click)="hiddenPopupUpdateProfile()">
+    <div id="containerUpdateProfile" class="container pb-5 max-w-custom w-[450px] sm:h-fit h-[100vh] ntt-shadow-popup bg-white relative sm:rounded-xl rounded-none animate-appear" (click)="stopPropagation($event)">
         <div class="w-full p-2 relative flex mb:flex-row-reverse flex-row mb:justify-between items-center border-b">
-            <div class="w-[35px] h-[35px] mb:bg-white hover:bg-[#f4f4f4] text-custom-color-black mb:rounded-full rounded-md flex justify-center items-center cursor-pointer" (click)="hiddenPopupUpdateProfileLandlord()">
+            <div class="w-[35px] h-[35px] mb:bg-white hover:bg-[#f4f4f4] text-custom-color-black mb:rounded-full rounded-md flex justify-center items-center cursor-pointer" (click)="hiddenPopupUpdateProfile()">
                 <i class='bx bx-x text-[30px] hidden mb:flex'></i>
                 <i class='bx bx-chevron-left text-[40px] mb:hidden flex'></i>
             </div>
-            <div class="font-semibold mb:ml-3 ml-2 mb:text-[20px] text-[18px] mb:text-custom-color-black">Cập nhật thông tin cá nhân</div>
+            <div class="font-semibold mb:ml-3 ml-2 mb:text-[20px] text-[18px] text-[#0045a8]">Cập nhật thông tin cá nhân</div>
         </div>
         <!-- Apply overflow-y-auto here for form scrolling -->
         <div class="w-full p-4 pt-3  overflow-y-auto ">
@@ -17,7 +17,9 @@
                             <button type="button" class="text-custom-bg-blue-light text-[16px] px-3 py-[6px] rounded-md  hover:bg-[#eeeeee]" (click)="showPopupUpdateAvatar()">Chỉnh sửa</button>
                         </div>
                         <div class="w-full flex items-center justify-center py-5">
-                            <img [src]="landlord.Image ? 'http://localhost:3000/resources/img-users/' + landlord.Image : '/assets/images/default-avatar.png'" alt="" class="w-[168px] h-[168px] rounded-full">
+                            <div class="w-fit border-2 rounded-full">
+                                <img [src]="user.Image ? 'http://localhost:3000/resources/img-users/' + user.Image : '/assets/images/default-avatar.png'" alt="" class="w-[168px] h-[168px] rounded-full">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -30,15 +32,15 @@
                         <div class="w-full flex flex-col gap-3 mt-3  text-custom-color-black-light">
                             <div class="flex items-center gap-2">
                                 <i class='bx bxs-user text-[22px] text-[#839abe]'></i>
-                                <div class="text-[15px] font-normal flex">Họ và tên: <span class="ml-1 capitalize font-medium">{{landlord.LandlordName}}</span></div>
+                                <div class="text-[15px] font-normal flex">Họ và tên: <span class="ml-1 capitalize font-medium">{{user.Username}}</span></div>
                             </div>
                             <div class="flex items-center gap-2">
                                 <i class='bx bxs-map text-[22px] text-[#839abe]'></i>
-                                <div class="text-[15px] font-normal flex">Địa chỉ: <span class="ml-1 capitalize font-medium">{{landlord.Address}}</span></div>
+                                <div class="text-[15px] font-normal flex">Địa chỉ: <span class="ml-1 capitalize font-medium">{{user.Address}}</span></div>
                             </div>
                             <div class="flex items-center gap-2">
                                 <i class='bx bxs-phone text-[22px] text-[#839abe]'></i>
-                                <div class="text-[15px] font-normal flex">Số điện thoại: <span class="ml-1 capitalize font-medium">{{landlord.PhoneNumber | phone }}</span></div>
+                                <div class="text-[15px] font-normal flex">Số điện thoại: <span class="ml-1 capitalize font-medium">{{user.PhoneNumber | phone }}</span></div>
                             </div>
                         </div>
                     </div>
@@ -51,26 +53,27 @@
 <div class="z-50 w-full min-w-[310px] h-[100vh] fixed top-0 left-0 flex justify-center items-center bg-[rgba(209,209,209,0.7)]" *ngIf="isShowPopupUpdateAvatar" (click)="hiddenPopupUpdateAvatar()">
     <div class="w-[450px] min-h-[200px] h-fit bg-white ntt-shadow-popup  rounded-none mb:rounded-2xl animate-appear" (click)="stopPropagation($event)">
         <div class="w-full p-2 relative flex ustify-between items-center border-b">
-            <div class="font-semibold text-[16px] mb:text-[18px] text-custom-color-black w-full text-center">Chọn ảnh đại diện</div>
+            <div class="font-semibold text-[16px] mb:text-[18px] text-[#0045a8] w-full text-center">Chọn ảnh đại diện</div>
             <div class="absolute top-1 right-1 w-[35px] h-[35px] hover:bg-[#f4f4f4] text-custom-color-black rounded-full  flex justify-center items-center cursor-pointer" (click)="hiddenPopupUpdateAvatar()">
                 <i class='bx bx-x text-[25px] mb:text-[30px]'></i>
             </div>
         </div>
         <div>
-            <div class="px-3" *ngIf="false">
+            <div class="px-3" *ngIf="!imageUrl">
                 <button (click)="triggerFileInput()" class="mt-3 px-10 py-2 bg-[#ebf5ff] hover:bg-[#e1eefc] text-[#0064d1] flex items-center justify-center rounded-md gap-2 relative">
                     <i class='bx bx-plus text-[20px]'></i>
                     <span class="text-[15px] font-semibold">Tải ảnh lên</span>
                 </button>
-                <input type="file" id="fileInput" class="absolute w-full opacity-0 cursor-pointer" #fileInput>
+                <input type="file" id="fileInput" class="absolute w-full opacity-0 cursor-pointer" (change)="onFileSelected($event)" #fileInput>
+
             </div>
-            <div class="w-full" *ngIf="true">
+            <div class="w-full" *ngIf="imageUrl">
                 <div class="w-full flex items-center justify-center py-5">
-                    <img src="assets/images/img-motel.jpg" alt="" class="w-[150px] h-[150px] rounded-full">
+                    <img [src]="imageUrl" alt="" class="w-[150px] h-[150px] rounded-full">
                 </div>
                 <div class="flex justify-end px-3 text-[14px] font-medium gap-2 border-t py-3">
-                    <button type="button" class="h-[32px] px-5 rounded-md text-[#0866FF]  hover:bg-[#f7f7f7]">Huỷ</button>
-                    <button type="button" class="h-[32px] px-8 rounded-md bg-[#0866FF] text-white ">Lưu</button>
+                    <button type="button" class="h-[32px] px-5 rounded-md text-[#0866FF]  hover:bg-[#f7f7f7]" (click)="removeImage()">Huỷ</button>
+                    <button type="button" class="h-[32px] px-8 rounded-md bg-[#0866FF] text-white " (click)="handleUpdateAvatar()">Lưu</button>
                 </div>
             </div>
         </div>
@@ -80,18 +83,19 @@
 <div class="z-50 w-full min-w-[310px] h-[100vh] fixed top-0 left-0 flex justify-center items-center bg-[rgba(209,209,209,0.7)]" *ngIf="isShowPopupUpdateInfo" (click)="hiddenPopupUpdateInfo()">
     <div class="w-[450px] min-h-[200px] h-fit bg-white ntt-shadow-popup  rounded-none mb:rounded-2xl animate-appear" (click)="stopPropagation($event)">
         <div class="w-full p-2 relative flex ustify-between items-center border-b">
-            <div class="font-semibold text-[16px] mb:text-[18px] text-custom-color-black w-full text-center">Thông tin cá nhân</div>
+            <div class="font-semibold text-[16px] mb:text-[18px] text-[#0045a8] w-full text-center">Thông tin cá nhân</div>
             <div class="absolute top-1 right-1 w-[35px] h-[35px] hover:bg-[#f4f4f4] text-custom-color-black rounded-full  flex justify-center items-center cursor-pointer" (click)="hiddenPopupUpdateInfo()">
                 <i class='bx bx-x text-[25px] mb:text-[30px]'></i>
             </div>
         </div>
         <div>
-            <div class="w-full" *ngIf="true">
-                <form [formGroup]="updateInfoLandlordForm" class="p-5 flex flex-col gap-5">
+            <div class="w-full" >
+                <form [formGroup]="updateInfoForm" class="p-5 flex flex-col gap-5">
                     <div class="relative w-full mb-2 ">
                         <div>
-                            <input type="text" id="nameLandlord" formControlName="nameLandlord" class="ntt-custom-input-sm peer" placeholder=" " />
-                            <label for="nameLandlord" class="absolute text-gray-500 text-[14px] transition-all duration-300 transform 
+                            <input type="text" id="username" formControlName="username" class="ntt-custom-input-sm peer"
+                             [ngClass]="{'input-invalid': usernameControl?.invalid && firstInvalidControl === 'username'}"  placeholder=" " />
+                            <label for="username" class="absolute text-gray-500 text-[14px] transition-all duration-300 transform 
                                    scale-100 origin-top-left bg-white 
                                    peer-placeholder-shown:top-3
                                    peer-placeholder-shown:left-5
@@ -102,14 +106,18 @@
                                    peer-focus:text-gray-500 
                                    peer:not-placeholder-shown:top-0 
                                    peer:not-placeholder-shown:-translate-y-[16px] 
-                                   peer:not-placeholder-shown:text-gray-400">
+                                   peer:not-placeholder-shown:text-gray-400" [ngClass]="{'label-invalid': (usernameControl?.invalid && firstInvalidControl === 'username')}">
                                 Họ và tên
                             </label>
+                        </div>
+                        <div *ngIf="usernameControl?.invalid && firstInvalidControl === 'username'">
+                            <small class="message-error " *ngIf="usernameControl?.hasError('required')"> <i class="fa-solid fa-circle-info"></i> Họ và tên là bắt buộc.</small>
                         </div>
                     </div>
                     <div class="relative w-full mb-2 ">
                         <div>
-                            <input type="text" id="address" formControlName="address" class="ntt-custom-input-sm peer" placeholder=" " />
+                            <input type="text" id="address" formControlName="address" class="ntt-custom-input-sm peer"
+                            [ngClass]="{'input-invalid': addressControl?.invalid  && firstInvalidControl === 'username'}" placeholder=" " />
                             <label for="address" class="absolute text-gray-500 text-[14px] transition-all duration-300 transform 
                                    scale-100 origin-top-left bg-white 
                                    peer-placeholder-shown:top-3
@@ -121,14 +129,19 @@
                                    peer-focus:text-gray-500 
                                    peer:not-placeholder-shown:top-0 
                                    peer:not-placeholder-shown:-translate-y-[16px] 
-                                   peer:not-placeholder-shown:text-gray-400">
-                                Địa chỉ liên hệ
+                                   peer:not-placeholder-shown:text-gray-400" 
+                                [ngClass]="{'label-invalid': (addressControl?.invalid && firstInvalidControl === 'address')}">
+                                Địa chỉ
                             </label>
+                        </div>
+                        <div *ngIf="addressControl?.invalid && firstInvalidControl === 'address'">
+                            <small class="message-error " *ngIf="addressControl?.hasError('required')"> <i class="fa-solid fa-circle-info"></i>Địa chỉ là bắt buộc.</small>
                         </div>
                     </div>
                     <div class="relative w-full mb-2 ">
                         <div>
-                            <input type="text" id="phoneNumber" formControlName="phoneNumber" class="ntt-custom-input-sm peer" placeholder=" " />
+                            <input type="text" id="phoneNumber" formControlName="phoneNumber" class="ntt-custom-input-sm peer" 
+                            [ngClass]="{'input-invalid': phoneNumberControl?.invalid && firstInvalidControl === 'phoneNumber'}" placeholder=" " />
                             <label for="phoneNumber" class="absolute text-gray-500 text-[14px] transition-all duration-300 transform 
                                    scale-100 origin-top-left bg-white 
                                    peer-placeholder-shown:top-3
@@ -140,17 +153,23 @@
                                    peer-focus:text-gray-500 
                                    peer:not-placeholder-shown:top-0 
                                    peer:not-placeholder-shown:-translate-y-[16px] 
-                                   peer:not-placeholder-shown:text-gray-400">
-                                Số điện thoại liên hệ
+                                   peer:not-placeholder-shown:text-gray-400" [ngClass]="{'label-invalid': (phoneNumberControl?.invalid &&  firstInvalidControl === 'phoneNumber')}">
+                                Số điện thoại
                             </label>
+                        </div>
+                        <div *ngIf="phoneNumberControl?.invalid && firstInvalidControl === 'phoneNumber'">
+                            <small class="message-error " *ngIf="phoneNumberControl?.hasError('required')"> <i class="fa-solid fa-circle-info"></i> Số điện thoại là bắt buộc.</small>
+                            <small class="message-error " *ngIf="phoneNumberControl?.hasError('minlength') || phoneNumberControl?.hasError('maxlength')"> <i class="fa-solid fa-circle-info"></i> Số điện thoại không hợp lệ.</small>
+    
                         </div>
                     </div>
                 </form>
                 <div class="flex justify-end px-3 text-[14px] font-medium gap-2 border-t py-3">
                     <button type="button" class="h-[32px] px-5 rounded-md text-[#0866FF]  hover:bg-[#f7f7f7]" (click)="hiddenPopupUpdateInfo()">Huỷ</button>
-                    <button type="button" class="h-[32px] px-8 rounded-md bg-[#0866FF] text-white ">Lưu</button>
+                    <button type="button" class="h-[32px] px-8 rounded-md bg-[#0866FF] text-white " (click)="handleUpdateInfo()">Lưu</button>
                 </div>
             </div>
         </div>
     </div>
 </div>
+

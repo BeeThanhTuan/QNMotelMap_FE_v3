@@ -44,14 +44,17 @@ export class AuthService {
   }
 
   public logout(): void {
-    // Remove tokens from localStorage
+    // Xóa token khỏi localStorage
     localStorage.removeItem('accessToken');
-    // Clear refresh token cookie
+    // Xóa refresh token cookie
     document.cookie = 'refreshToken=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
     this.isLoginSubject.next(false);
-    this.router.navigate(['/client/home']);
-    this.alertService.showSuccess('Đăng xuất thành công!', 'Bạn đã đăng xuất tin thành công.');
-  }
+    this.alertService.showSuccess('Đăng xuất thành công!', 'Bạn đã đăng xuất thành công.');
+    this.router.navigate(['/client/home']).then(() => {
+        location.reload(); // Làm mới trang sau khi navigate hoàn tất
+    });
+}
+
   
   public register(data: any): Observable<any> {
     const url = `${this.REST_API_SERVER}/api/register`;

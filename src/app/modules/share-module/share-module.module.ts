@@ -12,7 +12,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { CapitalizePipe } from './pipes/capitalize.pipe';
 import { CapitalizeDirective } from './directives/capitalize.directive';
 import { PhonePipe } from './pipes/phone.pipe';
-
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { UpdateProfileComponent } from './components/update-profile/update-profile.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { PhonePipe } from './pipes/phone.pipe';
     LoginComponent,
     CapitalizePipe,
     CapitalizeDirective,
-    PhonePipe
+    PhonePipe,
+    UpdateProfileComponent
   ],
   imports: [
     CommonModule, // Import CommonModule cho các chỉ thị cơ bản
@@ -29,6 +31,7 @@ import { PhonePipe } from './pipes/phone.pipe';
     NzIconModule,  // Module cho icon
     NzTabsModule,
     NzToolTipModule,
+    NzDropDownModule,
     FormsModule,
     ReactiveFormsModule
   ],
@@ -37,6 +40,7 @@ import { PhonePipe } from './pipes/phone.pipe';
   exports: [
     HeaderBarComponent,
     LoginComponent,
+    UpdateProfileComponent
   ]  
 })
 export class ShareModuleModule { }

@@ -12,6 +12,7 @@
         <table class="min-w-[1200px] table-auto border custom-scrollbar" >
             <thead class="bg-gray-100 text-gray-700 border-b">
                 <tr class="h-[40px]">
+                    <th class="ntt-custom-th max-w-[200px]">ID nhà trọ</th>
                     <th class="ntt-custom-th max-w-[100px]">Giá loại phòng</th>
                     <th class="ntt-custom-th">Hình ảnh</th>
                     <th class="ntt-custom-th">Số lượng phòng</th>
@@ -28,6 +29,7 @@
             </thead>
             <tbody class="text-gray-700">
                 <tr *ngFor="let roomType of listRoomTypes | paginate: { itemsPerPage: 6, currentPage: currentPage }; let i = index" class="border-b">
+                    <td class="text-left my-3 px-4">{{roomType.MotelID}}</td>
                     <td class="text-left my-3 px-4">{{roomType.Price | money}}</td>
                     <td class="text-center my-3 px-4 flex items-center flex-wrap gap-1">
                         <div class="w-fit" *ngFor="let image of roomType.ListImages; let index = index">

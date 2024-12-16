@@ -20,7 +20,6 @@ export class PopupAddUserComponent {
   addUserForm!: FormGroup;
 
   firstInvalidControl: string | null = null;
-  selectedTab: string = 'user'; 
   roleID!: string;
   @Output() newUser = new EventEmitter<User>()
   constructor(private formBuilder: FormBuilder,
