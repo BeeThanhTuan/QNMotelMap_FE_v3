@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { NavigationEnd, Router } from '@angular/router';
 import { Landlord } from 'src/app/interfaces/landlord';
 import { AuthService } from 'src/app/services/auth.service';
@@ -14,7 +15,7 @@ export class ManageComponent {
   isShowPopupUpdateProfile = false
   landlord: Landlord;
   showHeader = true;
-  constructor(private authService: AuthService, private landlordService: LandlordService, private router: Router){
+  constructor(private titleService:Title, private authService: AuthService, private landlordService: LandlordService, private router: Router){
     this.landlord = {
       _id: '',
       Email: '',
@@ -32,6 +33,8 @@ export class ManageComponent {
   
 
   ngOnInit(): void {
+    this.titleService.setTitle('QNMoteMap | Chủ trọ ');
+
     this.getInfoLandlord();
     // Lắng nghe sự kiện NavigationEnd khi có thay đổi router
     this.handleHiddenElement(this.router.url);

@@ -1,8 +1,11 @@
 import { Component } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { Role } from 'src/app/interfaces/role';
 import { User } from 'src/app/interfaces/user';
 import { AuthService } from 'src/app/services/auth.service';
+import { MotelService } from 'src/app/services/motel.service';
 import { UserService } from 'src/app/services/user.service';
+
 
 @Component({
   selector: 'app-manage',
@@ -25,9 +28,11 @@ export class ManageComponent {
     UpdateBy: '',
     IsDelete: false,
   };
-  constructor(private authService: AuthService, private userService: UserService){}
+  constructor(private titleService:Title, private authService: AuthService,
+     private userService: UserService){}
 
   ngOnInit(): void {
+    this.titleService.setTitle('QNMoteMap | Quản lý ');
     this.authService.isLogin$.subscribe((isLogin) => {
       this.isLogin = isLogin;
       console.log(isLogin ? 'Đã đăng nhập' : 'Chưa đăng nhập');
@@ -70,4 +75,6 @@ export class ManageComponent {
   handleLogout():void{
     this.authService.logout();
   }
+
+  
 }

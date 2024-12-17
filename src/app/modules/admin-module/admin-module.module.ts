@@ -27,6 +27,7 @@ import { PopupUpdateConvenientComponent } from './components/popup-update-conven
 import { UpdateProfileComponent } from './components/update-profile/update-profile.component';
 import { PhonePipe } from './pipes/phone.pipe';
 import { SearchFilterPipe } from './pipes/search-filter.pipe';
+import { NgApexchartsModule } from "ng-apexcharts";
 @NgModule({
   declarations: [
     ManageComponent,
@@ -58,7 +59,8 @@ import { SearchFilterPipe } from './pipes/search-filter.pipe';
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
-    NzDropDownModule
+    NzDropDownModule,
+    NgApexchartsModule
   ]
 })
 export class AdminModuleModule { }

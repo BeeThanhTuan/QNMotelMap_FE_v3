@@ -1,7 +1,7 @@
-<div class="root min-w-[1140px] bg-[#F6F6F7]">
+<div class="root min-w-[1140px] bg-[#F6F6F7] overflow-hidden">
     <div class="content_wrapper w-full h-[100vh] text-base max-w-[1520px] mx-auto ">
         <div class="w-full h-full flex ">
-            <nav class="w-[250px] bg-white relative text-custom-color-black-light border-r-2">
+            <nav class="min-w-[250px] bg-white relative text-custom-color-black-light border-r-2">
                 <div class="w-full py-7 text-center text-[24px] text-blue-800 font-bold ">
                     <a routerLink="/client/home">QNMotelMap</a>
                 </div>
@@ -35,8 +35,8 @@
                         <p class="text-[15px] text-custom-color-black-light font-medium mt-1">Hello <span class="capitalize">{{user.Username}}</span></p>
                     </div>
                     <div class="w-1/2 flex justify-end py-2 ">
-                        <div class="flex items-center gap-2 py-3 mr-5">
-                            <div class="h-[45px] w-[45px] rounded-full border-2 border-white overflow-hidden cursor-pointer" nz-dropdown [nzDropdownMenu]="menu" nzPlacement="bottomRight">
+                        <div class="flex w-fit items-center  gap-2 py-3 mr-5">
+                            <div class="h-[45px] w-[45px] rounded-full border-2 border-custom-bg-blue-light overflow-hidden cursor-pointer" nz-dropdown [nzDropdownMenu]="menu" nzPlacement="bottomRight">
                                 <img class="w-full h-full object-cover" [src]="user.Image ? 'http://localhost:3000/resources/img-users/' + user.Image : '/assets/images/default-avatar.png'" alt="">
                             </div>
                         </div>

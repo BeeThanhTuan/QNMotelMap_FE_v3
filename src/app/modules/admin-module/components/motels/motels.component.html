@@ -44,7 +44,7 @@
                 </tr>
             </thead>
             <tbody class="text-gray-700">
-                <tr *ngFor="let motel of listMotels | searchFilter: searchText | paginate: { itemsPerPage: 6, currentPage: currentPage }; let i = index" class="border-b">
+                <tr *ngFor="let motel of listMotels | searchFilter: searchText | paginate: { itemsPerPage: 5, currentPage: currentPage }; let i = index" class="border-b">
                     <td class="text-left my-3 px-4">{{motel._id}}</td>   
                     <td class="text-left my-3 px-4 !max-w-[250px] ">{{motel.Address}}, {{motel.WardCommune}}</td>
                     <td class="text-left my-3 px-4">{{motel.Price | money}}</td>   

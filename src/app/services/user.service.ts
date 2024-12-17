@@ -63,4 +63,12 @@ export class UserService {
       map((response:any) => response.data) 
     )
   }
+
+  public countUsers(): Observable<any> {
+    const url = `${this.REST_API_SERVER}/api/count-users`;
+    return this.httpClient.get<any>(url).pipe(
+      map((response:any) => response.data) 
+    )
+  }
+
 }
