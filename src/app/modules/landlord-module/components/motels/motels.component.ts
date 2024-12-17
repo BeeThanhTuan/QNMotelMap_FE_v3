@@ -36,6 +36,7 @@ export class MotelsComponent {
   
   ngOnInit(): void {
     this.getInfoLandlord();
+    
   }
 
   getInfoLandlord() :void{
@@ -43,6 +44,8 @@ export class MotelsComponent {
     this.landlordService.getLandlordByEmail(email).subscribe({
       next: (response) => {
         this.landlord= response 
+        console.log(this.landlord);
+        
       },
       error: (roleError) => {
         console.log('Lỗi khi lấy thông tin!', roleError.error.message);

@@ -3,23 +3,6 @@
         <header class="w-full bg-custom-bg-blue pt-2" >
             <app-header-bar/>
         </header>
-        <div class="max-w-custom mx-auto relative " *ngIf="showHeader">
-            <div class="w-full sm:h-[210px] h-[130px] bg-gray-200 sm:rounded-bl-lg rounded-bl-none sm:rounded-br-lg rounded-br-none flex items-center ">
-                <div class="text-[30px]">Chào mừng bạn đến với</div>
-            </div>
-            <div class="w-full sm:h-[130px] h-[80px] relative sm:px-8 px-3 flex justify-between border-b border-slate-200">
-                <div class="flex">
-                    <div class=" sm:w-[160px] sm:h-[160px] mb:w-[100px] mb:h-[100px] w-[90px] h-[90px]  rounded-full
-                     sm:border-4 border-2 border-white overflow-hidden relative sm:-top-[45px] mb:-top-[30px] -top-[20px] ">
-                        <img class="w-full h-full object-cover" [src]="landlord.Image ? 'http://localhost:3000/resources/img-users/' + landlord.Image : '/assets/images/default-avatar.png'" alt="">
-                    </div>
-                    <div class="sm:mt-6 sm:mb-4 mt-3 mb-2  flex flex-col sm:gap-2 gap-0 text-custom-color-black ml-3">
-                        <p class="sm:text-[30px] mb:text-[20px] text-[17px] sm:font-bold font-semibold">{{landlord.LandlordName}}</p>
-                        <p class="sm:text-[20px] mb:text-[15px] text-[13px] font-medium text-custom-color-black-light">{{landlord.Email}}</p>
-                    </div>
-                </div>
-            </div>
-        </div>
         <main class="max-w-custom h-auto mx-auto sm:mt-5 mt-3 relative ">
             <router-outlet></router-outlet>
         </main>
