@@ -176,6 +176,7 @@ export class PopupAddRoomTypeComponent {
     this.addRoomTypeForm.reset();
     this.listImages = [];
     this.imageUrls = [];
+    this.getAllConvenient();
   }
 
   stopPropagation(event: Event) {

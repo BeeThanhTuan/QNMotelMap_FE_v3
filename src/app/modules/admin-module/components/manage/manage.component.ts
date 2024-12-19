@@ -59,7 +59,7 @@ export class ManageComponent {
   showPupUpdateProfile(user: User): void {
     this.isShowUpdateProfile = true;
     this.user = {...user};
-    const popupUpdateProfile = document.getElementById('popupUpdateProfile') as HTMLElement;
+    const popupUpdateProfile = document.getElementById('popupUpdateProfileAdmin') as HTMLElement;
     const body = document.querySelector('body') as HTMLElement;
     body.style.overflow = 'hidden';
     if(popupUpdateProfile && popupUpdateProfile.classList.contains('hidden')){

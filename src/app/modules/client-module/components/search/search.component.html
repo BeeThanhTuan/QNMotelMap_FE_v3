@@ -250,7 +250,7 @@
                                     <div class="flex justify-between mb:flex-row flex-col w-full">
                                         <ngx-skeleton-loader class="mb:flex hidden w-full mr-5" *ngIf="isLoading" appearance="line" [theme]="{height: '30px', 'margin-bottom': '0' }"></ngx-skeleton-loader>
                                         <ngx-skeleton-loader class="flex mb:hidden w-full mr-2" *ngIf="isLoading" appearance="line" [theme]="{height: '30px', 'margin-bottom': '10px' }"></ngx-skeleton-loader>
-                                        <div *ngIf="!isLoading" class="w-full mb:mb-1 mb-0 mb:h-[26px] h-auto mb:text-[18px]  text-[16px] font-sans font-bold text-custom-color-blue capitalize mb:line-clamp-1 line-clamp-2">Nhà trọ {{motel.NameMotel ? motel.NameMotel : (motel.Address + ', ' + motel.WardCommune) }}</div>
+                                        <div *ngIf="!isLoading" class="w-full mb:mb-1 mb-0 mb:h-[26px] h-auto mb:text-[18px]  text-[16px] font-sans font-bold text-custom-color-blue capitalize mb:line-clamp-1 line-clamp-2">Nhà trọ {{motel.NameMotel || motel.NameMotel === null ? motel.NameMotel : (motel.Address + ', ' + motel.WardCommune) }}</div>
                                         <ngx-skeleton-loader class="mb:flex hidden" *ngIf="isLoading" appearance="line" [theme]="{height: '40px', width: '100px'}"></ngx-skeleton-loader>
                                         <ngx-skeleton-loader class="flex mb:hidden" *ngIf="isLoading" appearance="line" [theme]="{height: '30px', width: '100px'}"></ngx-skeleton-loader>
                                         <div *ngIf="!isLoading" class="flex w-fit mb:items-end items-center mb:flex-row flex-row-reverse justify-end mb:gap-2 gap-1 h-9">
@@ -258,7 +258,7 @@
                                                 <span class="mb:text-[14px] text-[13px] font-normal text-custom-color-black"> {{motel.ListRatings.length ? motel.ListRatings.length : '0'}} đánh giá</span>
                                             </div>
                                             <div class="mb:w-8 mb:h-8 w-[26px] h-[26px] flex justify-center items-center bg-[#003B95] rounded-[5px] rounded-bl-none">
-                                                <span class="mb:text-[17px] text-[13px] mb:font-semibold font-normal text-white">{{motel.TotalRating}}</span>
+                                                <span class="mb:text-[17px] text-[13px] mb:font-semibold font-normal text-white">{{motel.TotalRating | number:'1.1-1'}}</span>
                                             </div>
                                         </div>
                                     </div>

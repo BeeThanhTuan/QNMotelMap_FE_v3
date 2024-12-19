@@ -431,6 +431,8 @@ export class PopupUpdateMotelComponent {
     this.listImages = [];
     this.imageUrls = [];
     this.listOldImages = [...this.motel.ListImages];
+    this.getAllConvenient();
+    this.updateMotelForm.get('liveWithLandlord')?.setValue(true);
   }
 
   stopPropagation(event: Event) {

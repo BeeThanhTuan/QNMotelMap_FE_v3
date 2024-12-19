@@ -363,6 +363,8 @@ export class PopupAddMotelComponent implements OnInit {
     this.addMotelForm.reset();
     this.listImages = [];
     this.imageUrls = [];
+    this.getAllConvenient();
+    this.addMotelForm.get('liveWithLandlord')?.setValue(true);
   }
 
   stopPropagation(event: Event) {

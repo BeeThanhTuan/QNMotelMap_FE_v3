@@ -238,6 +238,7 @@ export class PopupUpdateRoomTypeComponent {
     this.listImages = [];
     this.imageUrls = [];
     this.listOldImages = [...this.roomType.ListImages];
+    this.getAllConvenient();
   }
 
   stopPropagation(event: Event) {

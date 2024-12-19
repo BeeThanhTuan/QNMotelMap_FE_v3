@@ -75,8 +75,9 @@ export class UpdateProfileComponent {
   }
 
   hiddenPopupUpdateProfile() {
+
     const popupUpdateProfile = document.getElementById(
-      'popupUpdateProfile'
+      'popupUpdateProfileAdmin'
     ) as HTMLElement;
     const body = document.querySelector('body') as HTMLElement;
     body.style.overflow = 'auto';

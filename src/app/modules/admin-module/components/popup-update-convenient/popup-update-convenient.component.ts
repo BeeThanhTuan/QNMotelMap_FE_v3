@@ -96,12 +96,17 @@ export class PopupUpdateConvenientComponent {
       data.append('nameConvenient', nameConvenient);
       
       if (this.image) {
+        // Nếu người dùng đã chọn ảnh mới, thêm ảnh mới vào FormData
         data.append('image', this.image);
-      }
-      else{
-        this.alertService.showError('Cập nhật thất bại!', 'Vui lòng chọn 1 ảnh'); 
+      } else if (this.oldImage) {
+        // Nếu không có ảnh mới nhưng có ảnh cũ, thêm ảnh cũ vào FormData
+        data.append('image', this.oldImage);
+      } else {
+        // Nếu không có cả ảnh cũ và ảnh mới, thông báo lỗi
+        this.alertService.showError('Cập nhật thất bại!', 'Vui lòng chọn 1 ảnh');
         return;
       }
+      
       this.convenientService.updateConvenientByID(data, this.convenient._id).subscribe({
         next: (response) => {
           this.alertService.showSuccess('Cập nhật thành công!', 'Bạn đã cập nhật thông tin tiện nghi thành công.');
