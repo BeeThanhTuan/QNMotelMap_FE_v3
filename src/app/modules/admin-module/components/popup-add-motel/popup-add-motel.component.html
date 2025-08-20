@@ -74,10 +74,13 @@
                         <small class="message-error " *ngIf="addressControl?.hasError('required')"> <i class="fa-solid fa-circle-info"></i> Vui lòng nhập địa chỉ.</small>
                     </div>
                 </div>
-                <div class="relative w-full mb-3 ">
-                    <div class="">
-                        <input type="text" id="wardCommune" formControlName="wardCommune" class="ntt-custom-input-sm peer placeholder:text-gray-500 placeholder:text-[14px]" [ngClass]="{'input-invalid': wardCommuneControl?.invalid && firstInvalidControl === 'wardCommune'}" readonly
-                            nz-dropdown nzTrigger="click" [nzDropdownMenu]="menu" placeholder="" />
+                <div class="relative w-full mb-3">
+                    <div class="w-full" nz-dropdown nzTrigger="click" [nzDropdownMenu]="menu">
+                        <input type="text" id="wardCommune" formControlName="wardCommune" class="ntt-custom-input-sm peer placeholder:text-gray-500 placeholder:text-[14px] w-full" [ngClass]="{
+                          'input-invalid':
+                            wardCommuneControl?.invalid && firstInvalidControl === 'wardCommune'
+                        }" readonly placeholder="Chọn phường/xã" />
+
                         <label for="wardCommune" class="absolute text-gray-500 text-[14px] transition-all duration-300 transform 
                                scale-100 origin-top-left bg-white 
                                peer-placeholder-shown:top-3
@@ -89,19 +92,30 @@
                                peer-focus:text-gray-500 
                                peer:not-placeholder-shown:top-0 
                                peer:not-placeholder-shown:-translate-y-[16px] 
-                               peer:not-placeholder-shown:text-gray-400" [ngClass]="{'label-invalid': (wardCommuneControl?.invalid && firstInvalidControl === 'wardCommune')}">
-                            Phường/Xã
-                        </label>
-                        <nz-dropdown-menu #menu="nzDropdownMenu">
-                            <ul nz-menu class="h-[200px] overflow-auto">
-                                <li nz-menu-item *ngFor="let wardCommune of listWardCommune" (click)="addMotelForm.get('wardCommune')?.setValue(wardCommune)">{{wardCommune}}</li>
-                            </ul>
-                        </nz-dropdown-menu>
+                               peer:not-placeholder-shown:text-gray-400" [ngClass]="{
+                          'label-invalid':
+                            wardCommuneControl?.invalid && firstInvalidControl === 'wardCommune'
+                        }">
+                        Phường/Xã
+                      </label>
                     </div>
+
+                    <nz-dropdown-menu #menu="nzDropdownMenu">
+                        <ul nz-menu class="h-[200px] overflow-auto">
+                            <li nz-menu-item *ngFor="let wardCommune of listWardCommune" (click)="addMotelForm.get('wardCommune')?.setValue(wardCommune)">
+                                {{ wardCommune }}
+                            </li>
+                        </ul>
+                    </nz-dropdown-menu>
+
                     <div *ngIf="firstInvalidControl === 'wardCommune' && wardCommuneControl?.invalid">
-                        <small class="message-error " *ngIf="wardCommuneControl?.hasError('required')"> <i class="fa-solid fa-circle-info"></i> Vui lòng chọn phường/xã.</small>
+                        <small class="message-error" *ngIf="wardCommuneControl?.hasError('required')">
+                        <i class="fa-solid fa-circle-info"></i>
+                        Vui lòng chọn phường/xã.
+                      </small>
                     </div>
                 </div>
+
                 <div class="mb:h-[210px] h-[180px] w-full mb-3 relative">
                     <ngx-spinner bdColor="rgba(0, 0, 0, 0.2)" size="medium" color="#fff" type="ball-clip-rotate" [fullScreen]="false"></ngx-spinner>
                     <div id="mapAddMotel" class=" w-full h-full rounded-md">
@@ -154,15 +168,11 @@
                         <div class="mb:w-[calc(100%-100px)] w-full h-full flex flex-row flex-wrap gap-1 px-1" *ngIf="listImages.length > 0">
                             <div *ngFor="let imageUrl of imageUrls; let i = index" class="relative w-[50px] h-[50px] border border-[#98bfe6] p-[2px] rounded-sm">
                                 <img [src]="imageUrl" alt="Uploaded Image" class="w-full h-full object-cover rounded-sm">
-                                <button 
-                                  class="absolute top-1 right-1 w-[18px] h-[18px] bg-white text-red-600 p-1 font-semibold rounded-full text-[10px] flex justify-center items-center" 
-                                  (click)="removeImage(imageUrl)" 
-                                  nz-tooltip 
-                                  nzTooltipTitle="Xoá ảnh">
+                                <button class="absolute top-1 right-1 w-[18px] h-[18px] bg-white text-red-600 p-1 font-semibold rounded-full text-[10px] flex justify-center items-center" (click)="removeImage(imageUrl)" nz-tooltip nzTooltipTitle="Xoá ảnh">
                                   ✕
                                 </button>
-                              </div>
-                        </div> 
+                            </div>
+                        </div>
                         <div *ngIf="listImages.length === 0" class="pl-2 pb-1 flex items-end">
                             <small class="message-error "> <i class="fa-solid fa-circle-info"></i> Vui lòng chọn ít nhất 1 ảnh, tối đa 8 ảnh!</small>
                         </div>
@@ -295,7 +305,7 @@
                     </div>
                 </div>
                 <div *ngIf="!haveWifi" class="mb-2"></div>
-                
+
             </form>
         </div>
         <div class="w-full absolute left-0 bottom-0 bg-white p-3 border-t flex justify-end">
