@@ -62,7 +62,7 @@
                                 <i class="fa-solid fa-phone text-[18px] text-custom-color-blue"></i>
                                 <span class="text-[15px] font-normal">{{motel.PhoneNumberContact | phone}}</span>
                             </div>
-                            <div class="w-full flex justify-start items-center gap-2">
+                            <div *ngIf="motel.AddressLandlord" class="w-full flex justify-start items-center gap-2">
                                 <i class="fa-solid fa-location-dot text-[18px] text-custom-color-blue"></i>
                                 <span class="text-[15px] font-normal capitalize">{{motel.AddressLandlord}}</span>
                             </div>
