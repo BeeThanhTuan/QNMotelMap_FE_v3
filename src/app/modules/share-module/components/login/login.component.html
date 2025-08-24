@@ -77,12 +77,12 @@
                 <h4 class="text-[#0045a8]">Đăng ký tài khoản</h4>
             </div>
             <div class="w-full flex mb-[20px] uppercase text-[17px] text-custom-color-black-light font-bold">
-                <div class="w-1/2 text-center py-2 border-b-2  cursor-pointer" [ngClass]="{ 'border-[#0045a8]': selectedTab === 'user' ,'text-[#0045a8]': selectedTab === 'user' }" (click)="selectTab('user',  this.registerUserForm); getRoleIdByRoleName('Client')">
+                <div class="w-full text-center py-2 border-b-2  cursor-pointer" [ngClass]="{ 'border-[#0045a8]': selectedTab === 'user' ,'text-[#0045a8]': selectedTab === 'user' }" (click)="selectTab('user',  this.registerUserForm); getRoleIdByRoleName('Client')">
                     Người dùng
                 </div>
-                <div class="w-1/2 text-center py-2 border-b-2  cursor-pointer" [ngClass]="{ 'border-[#0045a8]': selectedTab === 'landlord', 'text-[#0045a8]': selectedTab === 'landlord' }" (click)="selectTab('landlord', this.registerLandlordForm); getRoleIdByRoleName('Landlord')">
+                <!-- <div class="w-1/2 text-center py-2 border-b-2  cursor-pointer" [ngClass]="{ 'border-[#0045a8]': selectedTab === 'landlord', 'text-[#0045a8]': selectedTab === 'landlord' }" (click)="selectTab('landlord', this.registerLandlordForm); getRoleIdByRoleName('Landlord')">
                     Chủ trọ
-                </div>
+                </div> -->
             </div>
             <form [formGroup]="registerUserForm" class="w-full" *ngIf="selectedTab === 'user'">
                 <div class="relative w-full mb-5 ">
@@ -199,7 +199,7 @@
                     <button type="submit" (click)="handleRegisterUser()" class="w-full text-[13px] font-medium text-white bg-[#0045a8] px-5 py-[14px] rounded-md hover:bg-[#336ab9] hover:ntt-shadow-button-login">Đăng ký</button>
                 </div>
             </form>
-            <form [formGroup]="registerLandlordForm" class="w-full" *ngIf="selectedTab === 'landlord'">
+            <!-- <form [formGroup]="registerLandlordForm" class="w-full" *ngIf="selectedTab === 'landlord'">
                 <div class="relative w-full mb-5 ">
                     <div>
                         <input type="text" id="usernameReisterLandlord" formControlName="username" appCapitalize class="ntt-custom-input peer" [ngClass]="{'input-invalid': usernameControlRegisterLandlord?.invalid && isRegisterLandlordSubmitted && firstInvalidControl === 'username'}"
@@ -364,7 +364,7 @@
                 <div class="w-full">
                     <button type="submit" (click)="handleRegisterLandlord()" class="w-full text-[13px] font-medium text-white bg-[#0045a8] px-5 py-[14px] rounded-md hover:bg-[#336ab9] hover:ntt-shadow-button-login">Đăng ký</button>
                 </div>
-            </form>
+            </form> -->
             <div class="w-full text-center py-3 flex justify-center gap-1">
                 <div class="sm:text-[15px] text-[13px] font-light">Hoặc bạn đã có tài khoản?</div>
                 <div id="open-login" (click)="isShowLogin = true; isShowRegister = false" class="sm:text-[15px] text-[13px] text-[#0045a8] font-medium cursor-pointer hover:text-[#00b7ff]"> Đăng nhập</div>

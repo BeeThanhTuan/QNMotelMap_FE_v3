@@ -616,7 +616,7 @@ export class SearchComponent {
         this.showMessage('success', 'Thêm nhà trọ vào danh sách yêu thích thành công.')
       },
       error: (error) => {
-        this.showMessage('error', 'Bạn chưa đăng nhập!')
+        this.showMessage('error', 'Vui lòng đăng nhập để thêm vào danh sách yêu thích.')
       }
     })
   }

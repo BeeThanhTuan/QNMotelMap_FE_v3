@@ -74,34 +74,61 @@
                         <small class="message-error " *ngIf="addressControl?.hasError('required')"> <i class="fa-solid fa-circle-info"></i> Vui lòng nhập địa chỉ.</small>
                     </div>
                 </div>
-                <div class="relative w-full mb-3 ">
-                    <div class="">
-                        <input type="text" id="wardCommune" formControlName="wardCommune" class="ntt-custom-input-sm peer placeholder:text-gray-500 placeholder:text-[14px]" [ngClass]="{'input-invalid': wardCommuneControl?.invalid && firstInvalidControl === 'wardCommune'}" readonly
-                            nz-dropdown nzTrigger="click" [nzDropdownMenu]="menu" placeholder="" />
-                        <label for="wardCommune" class="absolute text-gray-500 text-[14px] transition-all duration-300 transform 
-                               scale-100 origin-top-left bg-white 
-                               peer-placeholder-shown:top-3
-                               peer-placeholder-shown:left-5
-                               peer-placeholder-shown:text-gray-500 
-                               peer-focus:top-0 
-                               peer-focus:-translate-y-0 
-                               peer-focus:-translate-x-[6px]
-                               peer-focus:text-gray-500 
-                               peer:not-placeholder-shown:top-0 
-                               peer:not-placeholder-shown:-translate-y-[16px] 
-                               peer:not-placeholder-shown:text-gray-400" [ngClass]="{'label-invalid': (wardCommuneControl?.invalid && firstInvalidControl === 'wardCommune')}">
-                            Phường/Xã
+                <div class="relative w-full mb-3">
+                    <div class="w-full" nz-dropdown nzTrigger="click" [nzDropdownMenu]="menu">
+                        <input
+                        type="text"
+                        id="wardCommune"
+                        formControlName="wardCommune"
+                        class="ntt-custom-input-sm peer placeholder:text-gray-500 placeholder:text-[14px] w-full"
+                        [ngClass]="{
+                            'input-invalid': wardCommuneControl?.invalid && firstInvalidControl === 'wardCommune'
+                        }"
+                        readonly
+                        placeholder=""
+                        />
+
+                        <label
+                        for="wardCommune"
+                        class="absolute text-gray-500 text-[14px] transition-all duration-300 transform 
+                                scale-100 origin-top-left bg-white 
+                                peer-placeholder-shown:top-3
+                                peer-placeholder-shown:left-5
+                                peer-placeholder-shown:text-gray-500 
+                                peer-focus:top-0 
+                                peer-focus:-translate-y-0 
+                                peer-focus:-translate-x-[6px]
+                                peer-focus:text-gray-500 
+                                peer:not-placeholder-shown:top-0 
+                                peer:not-placeholder-shown:-translate-y-[16px] 
+                                peer:not-placeholder-shown:text-gray-400"
+                        [ngClass]="{
+                            'label-invalid': wardCommuneControl?.invalid && firstInvalidControl === 'wardCommune'
+                        }"
+                        >
+                        Phường/Xã
                         </label>
-                        <nz-dropdown-menu #menu="nzDropdownMenu">
-                            <ul nz-menu class="h-[200px] overflow-auto">
-                                <li nz-menu-item *ngFor="let wardCommune of listWardCommune" (click)="updateMotelForm.get('wardCommune')?.setValue(wardCommune)">{{wardCommune}}</li>
-                            </ul>
-                        </nz-dropdown-menu>
                     </div>
+
+                    <nz-dropdown-menu #menu="nzDropdownMenu">
+                        <ul nz-menu class="h-[200px] overflow-auto">
+                        <li
+                            nz-menu-item
+                            *ngFor="let wardCommune of listWardCommune"
+                            (click)="updateMotelForm.get('wardCommune')?.setValue(wardCommune)"
+                        >
+                            {{ wardCommune }}
+                        </li>
+                        </ul>
+                    </nz-dropdown-menu>
+
                     <div *ngIf="firstInvalidControl === 'wardCommune' && wardCommuneControl?.invalid">
-                        <small class="message-error " *ngIf="wardCommuneControl?.hasError('required')"> <i class="fa-solid fa-circle-info"></i> Vui lòng chọn phường/xã.</small>
+                        <small class="message-error" *ngIf="wardCommuneControl?.hasError('required')">
+                        <i class="fa-solid fa-circle-info"></i> Vui lòng chọn phường/xã.
+                        </small>
                     </div>
-                </div>
+                    </div>
+
                 <div class="mb:h-[210px] h-[180px] w-full mb-3 relative">
                     <ngx-spinner bdColor="rgba(0, 0, 0, 0.2)" size="medium" color="#fff" type="ball-clip-rotate" [fullScreen]="false"></ngx-spinner>
                     <div id="mapAddMotel" class=" w-full h-full rounded-md">

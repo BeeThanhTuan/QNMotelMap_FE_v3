@@ -127,12 +127,14 @@ export class HomeComponent {
     if(addressLocal !== ' ' && addressLocal){
       this.formSearch.get('address')?.setValue(addressLocal);
     }
-    this.formSearch.get('desiredPrice')?.setValue(filtersLocal.desiredPrice);
-    this.formSearch.get('desiredDistance')?.setValue(filtersLocal.desiredDistance);
-    this.formSearch.get('haveMezzanine')?.setValue(filtersLocal.haveMezzanine);
-    this.formSearch.get('haveToilet')?.setValue(filtersLocal.haveToilet);
-    this.formSearch.get('haveAirConditioner')?.setValue(filtersLocal.haveAirConditioner);
-    this.formSearch.get('noLiveWithLandlord')?.setValue(filtersLocal.noLiveWithLandlord);
+    if(filtersLocal){
+      this.formSearch.get('desiredPrice')?.setValue(filtersLocal.desiredPrice);
+      this.formSearch.get('desiredDistance')?.setValue(filtersLocal.desiredDistance);
+      this.formSearch.get('haveMezzanine')?.setValue(filtersLocal.haveMezzanine);
+      this.formSearch.get('haveToilet')?.setValue(filtersLocal.haveToilet);
+      this.formSearch.get('haveAirConditioner')?.setValue(filtersLocal.haveAirConditioner);
+      this.formSearch.get('noLiveWithLandlord')?.setValue(filtersLocal.noLiveWithLandlord);
+    }
     
   }
 

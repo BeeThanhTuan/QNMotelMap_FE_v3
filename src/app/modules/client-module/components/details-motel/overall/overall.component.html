@@ -12,14 +12,15 @@
             </div>
         </div>
         <div class="mb:w-[78px] w-fit flex justify-start mb:items-center items-end mt-5 mb:pb-0 pb-2" >
-            <button *ngIf="!isFavorited(motel._id)"  (click)="addMotelIntoFavorites(motel._id)"  title="Thêm vào danh sách yêu thích"
-                class="mb:w-[55px] mb:h-[55px] w-[48px] h-[48px] flex justify-center items-center  group">
-                <i class="bx bxs-heart mb:text-[45px] text-[35px] text-[#babbbd] group-hover:text-[red]"></i>
+            <button 
+            (click)="isFavorited(motel._id) ? removeMotelFromFavorites(motel._id) : addMotelIntoFavorites(motel._id)"
+            [title]="isFavorited(motel._id) ? 'Xoá khỏi danh sách yêu thích' : 'Thêm vào danh sách yêu thích'"
+            class="mb:w-[55px] mb:h-[55px] w-[48px] h-[48px] flex justify-center items-center group">
+
+            <i class="bx bxs-heart mb:text-[45px] text-[35px]" 
+                [ngClass]="isFavorited(motel._id) ? 'text-red-500' : 'text-[#babbbd]'">
+            </i>
             </button>
-            <button *ngIf="isFavorited(motel._id)" (click)="removeMotelFromFavorites(motel._id)"  title="Xoá khỏi danh sách yêu thích"
-                class="mb:w-[55px] mb:h-[55px] w-[48px] h-[48px] flex justify-center items-center  group">
-               <i class="bx bxs-heart mb:text-[45px] text-[35px] text-red-500 group-hover:text-[red]"></i>
-           </button>
         </div>
     </div>
     <div class="flex sm:flex-row flex-col mt-3 ">

@@ -233,13 +233,14 @@
                                 <img class="w-full h-full object-cover rounded-md" src="http://localhost:3000/resources/img-motels/{{motel.ListImages[0].LinkImage}}" alt="">
                             </a>
                             <div >
-                                <button *ngIf="!isFavorited(motel._id)" (click)="addMotelIntoFavorites(motel._id)"  title="Thêm vào danh sách yêu thích"
-                                 class="w-9 h-9 favorite-motel absolute top-3 right-3 flex justify-center items-center rounded-full bg-white hover:bg-[#f2f2f2] group">
-                                    <i *ngIf="!isFavorited(motel._id) " class="bx bxs-heart text-[22px] text-[#babbbd] group-hover:text-red-500"></i>
-                                </button>
-                                <button *ngIf="isFavorited(motel._id)" (click)="removeMotelFromFavorites(motel._id)"  title="Xoá khỏi danh sách yêu thích"
-                                 class="w-9 h-9 favorite-motel absolute top-3 right-3 flex justify-center items-center rounded-full bg-white hover:bg-[#f2f2f2] group">
-                                    <i *ngIf="isFavorited(motel._id)" class="bx bxs-heart text-[22px] text-red-500 group-hover:text-[red]"></i>
+                                <button 
+                                (click)="isFavorited(motel._id) ? removeMotelFromFavorites(motel._id) : addMotelIntoFavorites(motel._id)"
+                                [title]="isFavorited(motel._id) ? 'Xoá khỏi danh sách yêu thích' : 'Thêm vào danh sách yêu thích'"
+                                class="w-9 h-9 favorite-motel absolute top-3 right-3 flex justify-center items-center rounded-full bg-white hover:bg-[#f2f2f2]">
+
+                                <i class="bx bxs-heart text-[22px]" 
+                                    [ngClass]="isFavorited(motel._id) ? 'text-red-500' : 'text-[#babbbd]'">
+                                </i>
                                 </button>
                             </div>
                         </div>
@@ -250,14 +251,14 @@
                                     <div class="flex justify-between mb:flex-row flex-col w-full">
                                         <ngx-skeleton-loader class="mb:flex hidden w-full mr-5" *ngIf="isLoading" appearance="line" [theme]="{height: '30px', 'margin-bottom': '0' }"></ngx-skeleton-loader>
                                         <ngx-skeleton-loader class="flex mb:hidden w-full mr-2" *ngIf="isLoading" appearance="line" [theme]="{height: '30px', 'margin-bottom': '10px' }"></ngx-skeleton-loader>
-                                        <div *ngIf="!isLoading" class="w-full mb:mb-1 mb-0 mb:h-[26px] h-auto mb:text-[18px]  text-[16px] font-sans font-bold text-custom-color-blue capitalize mb:line-clamp-1 line-clamp-2">Nhà trọ {{motel.NameMotel || motel.NameMotel === null ? motel.NameMotel : (motel.Address + ', ' + motel.WardCommune) }}</div>
+                                        <div *ngIf="!isLoading" class="mb:w-[370px] w-full mb:mb-1 mb-0 mb:h-[26px] h-auto mb:text-[18px]  text-[16px] font-sans font-bold text-custom-color-blue capitalize mb:line-clamp-1 line-clamp-2">Nhà trọ {{motel.NameMotel || motel.NameMotel === null ? motel.NameMotel : (motel.Address + ', ' + motel.WardCommune) }}</div>
                                         <ngx-skeleton-loader class="mb:flex hidden" *ngIf="isLoading" appearance="line" [theme]="{height: '40px', width: '100px'}"></ngx-skeleton-loader>
                                         <ngx-skeleton-loader class="flex mb:hidden" *ngIf="isLoading" appearance="line" [theme]="{height: '30px', width: '100px'}"></ngx-skeleton-loader>
                                         <div *ngIf="!isLoading" class="flex w-fit mb:items-end items-center mb:flex-row flex-row-reverse justify-end mb:gap-2 gap-1 h-9">
                                             <div class="w-[70px] flex mb:justify-end items-end">
-                                                <span class="mb:text-[14px] text-[13px] font-normal text-custom-color-black"> {{motel.ListRatings.length ? motel.ListRatings.length : '0'}} đánh giá</span>
+                                                <span class="mb:text-[14px] text-[13px] font-normal text-custom-color-black whitespace-nowrap">{{motel.ListRatings.length <=0 ? 'Chưa có': motel.ListRatings.length}} đánh giá</span> 
                                             </div>
-                                            <div class="mb:w-8 mb:h-8 w-[26px] h-[26px] flex justify-center items-center bg-[#003B95] rounded-[5px] rounded-bl-none">
+                                            <div *ngIf="motel.TotalRating" class="mb:w-8 mb:h-8 w-[26px] h-[26px] flex justify-center items-center bg-[#003B95] rounded-[5px] rounded-bl-none">
                                                 <span class="mb:text-[17px] text-[13px] mb:font-semibold font-normal text-white">{{motel.TotalRating | number:'1.1-1'}}</span>
                                             </div>
                                         </div>
@@ -265,8 +266,7 @@
                                     <div class=" text-custom-color-blue flex flex-col">
                                         <ngx-skeleton-loader *ngIf="isLoading" appearance="line" [theme]="{height: '25px', width: '100%' ,'margin-bottom': '0'}"></ngx-skeleton-loader>
                                         <div *ngIf="!isLoading" class="mr-2 flex items-center flex-wrap">
-                                            <i class='bx bxs-map'></i>
-                                            <span class="capitalize text-[13px] font-semibold">{{motel.Address}}, {{motel.WardCommune}}</span>
+                                            <span class="capitalize text-[13px] font-semibold"><i class='bx bxs-map mr-1'></i>{{motel.Address}}, {{motel.WardCommune}}</span>
                                             <span class="mx-1 text-[10px]"> ● </span>
                                             <span class="text-[13px] font-semibold underline cursor-pointer" (click)="handleViewOnMapSpecificallyMotel(motel.Location)"> Xem trên bản đồ </span>
                                         </div>
