@@ -166,12 +166,6 @@ export class PopupAddMotelComponent implements OnInit {
     );
     if (checkWifi.length > 0) {
       this.haveWifi = true;
-      setTimeout(() => {
-        const inputElement = document.getElementById(
-          'wifiBill'
-        ) as HTMLInputElement;
-        inputElement.focus();
-      });
     } else {
       this.haveWifi = false;
     }

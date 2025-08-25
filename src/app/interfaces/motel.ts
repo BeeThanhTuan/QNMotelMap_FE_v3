@@ -15,8 +15,8 @@ export interface Motel {
     ListConvenient: Convenient[];
     Price: number;
     LiveWithLandlord: boolean;
-    ElectricityBill: number;
-    WaterBill: number;
+    ElectricityBill: string;
+    WaterBill: string;
     WifiBill: number;
     ListRoomTypes: RoomType[] | null;
     ListRatings: Rating[];

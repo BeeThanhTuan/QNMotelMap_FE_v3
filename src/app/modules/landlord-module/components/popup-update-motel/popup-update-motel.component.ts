@@ -219,12 +219,6 @@ export class PopupUpdateMotelComponent {
     );
     if (checkWifi.length > 0) {
       this.haveWifi = true;
-      setTimeout(() => {
-        const inputElement = document.getElementById(
-          'wifiBill'
-        ) as HTMLInputElement;
-        inputElement.focus();
-      });
     } else {
       this.haveWifi = false;
       this.updateMotelForm.get('wifiBill')?.setValue(null);

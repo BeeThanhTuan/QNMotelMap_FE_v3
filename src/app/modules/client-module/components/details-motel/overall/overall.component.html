@@ -63,9 +63,10 @@
                                 <i class="fa-solid fa-phone text-[18px] text-custom-color-blue"></i>
                                 <span class="text-[15px] font-normal">{{motel.PhoneNumberContact | phone}}</span>
                             </div>
-                            <div *ngIf="motel.AddressLandlord" class="w-full flex justify-start items-center gap-2">
+                           <div *ngIf="motel.AddressLandlord && motel.AddressLandlord !== 'null'" 
+                                class="w-full flex justify-start items-center gap-2">
                                 <i class="fa-solid fa-location-dot text-[18px] text-custom-color-blue"></i>
-                                <span class="text-[15px] font-normal capitalize">{{motel.AddressLandlord}}</span>
+                                <span class="text-[15px] font-normal capitalize">{{ motel.AddressLandlord }}</span>
                             </div>
                         </div>
                     </div>
@@ -112,10 +113,8 @@
                  <h3 class="p-4 mb:text-[20px] text-[17px] text-custom-color-black font-sans font-semibold">Mô tả về nhà trọ</h3>
              </div>
              <div class="w-full p-4 mb:text-[16px] text-[15px]">
-                <p>
-                    <span>Tiền điện: {{motel.ElectricityBill | money}}/kwh.</span>
-                    <span> Tiền nước: {{motel.WaterBill | money}}/m³.</span>
-                </p>
+                 <p>Tiền điện: {{motel.ElectricityBill }}</p>
+                 <p> Tiền nước: {{motel.WaterBill }}</p>
                 <div [innerHTML]="motel.Description | lineBreak" ></div>         
              </div>
         </div>
