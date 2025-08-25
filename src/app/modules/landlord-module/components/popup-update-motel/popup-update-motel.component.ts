@@ -298,7 +298,7 @@ export class PopupUpdateMotelComponent {
     const wardCommune = this.updateMotelForm.get('wardCommune')?.value;
   
     if (!street || !wardCommune) {
-      console.log('Vui lòng nhập cả số nhà, tên đường và phường/xã.');
+      console.log('Vui lòng nhập cả số nhà, tên đường và Phường.');
       return;
     }
   

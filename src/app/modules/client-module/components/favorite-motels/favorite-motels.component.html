@@ -15,8 +15,11 @@
                     <div class="w-full relative">
                         <a routerLink="/client/home/detail-motel/{{motel._id}}/overall" class="w-full">
                             <div class="w-full aspect-[4/3.2]">
-                                <img class="w-full h-full rounded-tl-xl rounded-tr-xl object-cover" src="http://localhost:3000/resources/img-motels/{{motel.ListImages[0].LinkImage}}" alt="Hình ảnh về nhà trọ">
+                                <img class="w-full h-full rounded-tl-xl rounded-tr-xl object-cover" [src]="motel.ListImages && motel.ListImages.length > 0 && motel.ListImages[0].LinkImage 
+                                    ? 'http://localhost:3000/resources/img-motels/' + motel.ListImages[0].LinkImage 
+                                    : '/assets/images/default-img-motel.png'" alt="Hình ảnh về nhà trọ">
                             </div>
+
                             <div class="info p-2 ntt-shadow-motel-card rounded-bl-xl rounded-br-xl flex flex-col gap-2">
                                 <div>
                                     <div class="ntt-custom-name-motel text-[16px] font-semibold text-custom-color-black">
@@ -40,8 +43,7 @@
                             </div>
                         </a>
                         <div title="Xoá nhà trọ khỏi danh sách yêu thích">
-                            <button *ngIf="isFavorited(motel._id)" (click)="removeMotelFromFavorites(motel._id)"
-                                class="w-9 h-9 favorite-motel absolute top-3 right-3 flex justify-center items-center rounded-full bg-white hover:bg-[#f2f2f2] group">
+                            <button *ngIf="isFavorited(motel._id)" (click)="removeMotelFromFavorites(motel._id)" class="w-9 h-9 favorite-motel absolute top-3 right-3 flex justify-center items-center rounded-full bg-white hover:bg-[#f2f2f2] group">
                                 <i *ngIf="isFavorited(motel._id)" class="bx bxs-heart text-[22px] text-red-500 group-hover:text-[red]"></i>
                             </button>
                         </div>
@@ -49,5 +51,7 @@
                 </li>
             </ul>
         </div>
-    </div> <!-- End recommend motels area-->
-</div> <!-- End content wrapper -->
+    </div>
+    <!-- End recommend motels area-->
+</div>
+<!-- End content wrapper -->

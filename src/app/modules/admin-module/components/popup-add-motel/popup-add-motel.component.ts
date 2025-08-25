@@ -218,7 +218,7 @@ export class PopupAddMotelComponent implements OnInit {
     const wardCommune = this.addMotelForm.get('wardCommune')?.value;
   
     if (!street || !wardCommune) {
-      console.log('Vui lòng nhập cả số nhà, tên đường và phường/xã.');
+      console.log('Vui lòng nhập cả số nhà, tên đường và Phường.');
       return;
     }
   

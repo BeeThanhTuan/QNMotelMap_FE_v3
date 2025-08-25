@@ -107,7 +107,7 @@
                             'label-invalid': wardCommuneControl?.invalid && firstInvalidControl === 'wardCommune'
                         }"
                         >
-                        Phường/Xã
+                        Phường
                         </label>
                     </div>
 
@@ -125,7 +125,7 @@
 
                     <div *ngIf="firstInvalidControl === 'wardCommune' && wardCommuneControl?.invalid">
                         <small class="message-error" *ngIf="wardCommuneControl?.hasError('required')">
-                        <i class="fa-solid fa-circle-info"></i> Vui lòng chọn phường/xã.
+                        <i class="fa-solid fa-circle-info"></i> Vui lòng chọn Phường.
                         </small>
                     </div>
                 </div>

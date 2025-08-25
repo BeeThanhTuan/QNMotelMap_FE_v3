@@ -29,8 +29,7 @@
             <div class="p-2 px-3 text-[16px] text-custom-color-black font-bold ntt-shadow-box bg-white border-[#e7e7e7] mb:hidden flex w-full justify-between items-center relative z-10 ">
                 <i class='bx bx-x text-[30px] text-custom-color-blue ' (click)="handleHiddenFormFilter()"></i>
                 <span>Bộ lọc</span>
-                <span class="text-[15px]" (click)="resetForm()" 
-                [ngStyle]="{ 'pointer-events': hasFormChanged() ? 'auto' : 'none', 'color': hasFormChanged() ? '#006ce4' :'#a2a2a2' }">Xoá</span>
+                <span class="text-[15px]" (click)="resetForm()" [ngStyle]="{ 'pointer-events': hasFormChanged() ? 'auto' : 'none', 'color': hasFormChanged() ? '#006ce4' :'#a2a2a2' }">Xoá</span>
             </div>
             <form [formGroup]="formFilters" class="filters w-full h-full mx-auto mb:my-3 my-0 border mb:rounded-md rounded-none border-[#e7e7e7] bg-white ">
                 <div class="p-2 text-[16px] mb:flex hidden text-custom-color-black font-bold border-b border-[#e7e7e7] ">Chọn lọc theo:</div>
@@ -161,17 +160,17 @@
 
         <div id="sortArea" class="sort_area w-[100vw] mb:p-2 mb:pr-0 p-0 h-[100vh] fixed top-0 left-0 z-30 bg-[rgba(26,26,26,0.5)] mb:hidden hidden items-end " (click)="handleHiddenSort()">
             <div class="bg-white w-full h-2/3 rounded-tl-2xl rounded-tr-2xl animate-appear" (click)="stopPropagation($event)">
-               <div class="w-full px-4 pt-4 pb-2 flex justify-between items-center">
+                <div class="w-full px-4 pt-4 pb-2 flex justify-between items-center">
                     <span class="text-[22px] font-bold text-custom-color-black">Sắp xếp theo</span>
                     <i class='bx bx-x text-[25px] p-1' (click)="handleHiddenSort()"></i>
-               </div>
-               <nz-radio-group [(ngModel)]="selectedSort" (ngModelChange)="handleSort(selectedSort); handleHiddenSort()" class="w-full flex flex-col">
+                </div>
+                <nz-radio-group [(ngModel)]="selectedSort" (ngModelChange)="handleSort(selectedSort); handleHiddenSort()" class="w-full flex flex-col">
                     <label nz-radio nzValue="default" class="text-[15px] py-2 px-4">Mặc định</label>
                     <label nz-radio nzValue="price-lowest" class="text-[15px] py-2 px-4">Giá (ưu tiên thấp nhất)</label>
                     <label nz-radio nzValue="distance-closest" class="text-[15px] py-2 px-4">Khoảng cách tới trường (ưu tiên gần nhất)</label>
                     <label nz-radio nzValue="rating-highest" class="text-[15px] py-2 px-4">Xếp hạng (ưu tiên cao nhất)</label>
-              </nz-radio-group>
-              
+                </nz-radio-group>
+
             </div>
         </div>
         <!--End sort area motels-->
@@ -212,32 +211,30 @@
             </div>
             <div *ngIf="selectedSort !== 'default' || (fieldSearch.address && fieldSearch.address !== ' ')" class="w-full mb:hidden flex">
                 <div class="w-full flex gap-3 px-3 py-2 overflow-x-auto whitespace-nowrap scroll-smooth">
-                  <div *ngIf="selectedSort !== 'default'" (click)="selectedSort = 'default'; handleSort(selectedSort)"
-                     class="flex gap-1 w-fit px-3 py-1 justify-center items-center border border-custom-bg-hover-blue rounded-2xl text-custom-bg-blue-light cursor-pointer bg-custom-hv-color-blue">
-                    <span class="text-[14px] font-medium">{{selectedSortLabel}}</span>
-                    <i class='bx bx-x text-[22px] font-thin'></i>
-                  </div>
-                  <div *ngIf="fieldSearch.address && fieldSearch.address !== ' '" (click)="removeFilterAddress()" class="flex gap-1 w-fit px-3 py-1 justify-center items-center border border-custom-bg-hover-blue rounded-2xl text-custom-bg-blue-light cursor-pointer bg-custom-hv-color-blue">
-                    <span class="text-[14px] font-medium">{{fieldSearch.address}}</span>
-                    <i class='bx bx-x text-[22px] font-thin'></i>
-                  </div>
+                    <div *ngIf="selectedSort !== 'default'" (click)="selectedSort = 'default'; handleSort(selectedSort)" class="flex gap-1 w-fit px-3 py-1 justify-center items-center border border-custom-bg-hover-blue rounded-2xl text-custom-bg-blue-light cursor-pointer bg-custom-hv-color-blue">
+                        <span class="text-[14px] font-medium">{{selectedSortLabel}}</span>
+                        <i class='bx bx-x text-[22px] font-thin'></i>
+                    </div>
+                    <div *ngIf="fieldSearch.address && fieldSearch.address !== ' '" (click)="removeFilterAddress()" class="flex gap-1 w-fit px-3 py-1 justify-center items-center border border-custom-bg-hover-blue rounded-2xl text-custom-bg-blue-light cursor-pointer bg-custom-hv-color-blue">
+                        <span class="text-[14px] font-medium">{{fieldSearch.address}}</span>
+                        <i class='bx bx-x text-[22px] font-thin'></i>
+                    </div>
                 </div>
-              </div>
+            </div>
             <div class="w-full mb:pt-3 pt-0 ">
                 <ul class="w-full flex flex-col mb:gap-4 gap-0">
                     <li *ngFor="let motel of listMotels,let i = index" class="w-full mb:min-w-[712px] min-w-none mb:p-4 px-2 py-3 flex mb:border border-b border-[#e7e7e7] mb:rounded-md rounded-none ">
-                        <ngx-skeleton-loader  class="mb:flex hidden" *ngIf="isLoading" appearance="line" [theme]="{height: '250px', width: '250px', 'margin-bottom': '0'}"></ngx-skeleton-loader>
-                        <ngx-skeleton-loader  class="flex mb:hidden" *ngIf="isLoading" appearance="line" [theme]="{height: 'auto', width: '130px', 'margin-bottom': '0'}"></ngx-skeleton-loader>
+                        <ngx-skeleton-loader class="mb:flex hidden" *ngIf="isLoading" appearance="line" [theme]="{height: '250px', width: '250px', 'margin-bottom': '0'}"></ngx-skeleton-loader>
+                        <ngx-skeleton-loader class="flex mb:hidden" *ngIf="isLoading" appearance="line" [theme]="{height: 'auto', width: '130px', 'margin-bottom': '0'}"></ngx-skeleton-loader>
                         <div *ngIf="!isLoading" class="image_motel mb:w-[250px] mb:h-[250px] w-[130px] h-auto relative">
-                            <a href="/client/home/detail-motel/{{motel._id}}">
-                                <img class="w-full h-full object-cover rounded-md" src="http://localhost:3000/resources/img-motels/{{motel.ListImages[0].LinkImage}}" alt="">
+                            <a [href]="'/client/home/detail-motel/' + motel._id">
+                                <!-- Nếu có ảnh thì hiển thị ảnh thật -->
+                                <img *ngIf="motel.ListImages && motel.ListImages.length > 0 && motel.ListImages[0].LinkImage" class="w-full h-full object-cover rounded-md" [src]="'http://localhost:3000/resources/img-motels/' + motel.ListImages[0].LinkImage" alt="Hình ảnh nhà trọ">
+                                <!-- Nếu không có ảnh thì hiển thị ảnh mặc định -->
+                                <img *ngIf="!motel.ListImages || motel.ListImages.length === 0" class="w-full h-full object-cover rounded-md" src="/assets/images/default-img-motel.png" alt="Hình ảnh mặc định">
                             </a>
-                            <div >
-                                <button 
-                                (click)="isFavorited(motel._id) ? removeMotelFromFavorites(motel._id) : addMotelIntoFavorites(motel._id)"
-                                [title]="isFavorited(motel._id) ? 'Xoá khỏi danh sách yêu thích' : 'Thêm vào danh sách yêu thích'"
-                                class="w-9 h-9 favorite-motel absolute top-3 right-3 flex justify-center items-center rounded-full bg-white hover:bg-[#f2f2f2]">
-
+                            <div>
+                                <button (click)="isFavorited(motel._id) ? removeMotelFromFavorites(motel._id) : addMotelIntoFavorites(motel._id)" [title]="isFavorited(motel._id) ? 'Xoá khỏi danh sách yêu thích' : 'Thêm vào danh sách yêu thích'" class="w-9 h-9 favorite-motel absolute top-3 right-3 flex justify-center items-center rounded-full bg-white hover:bg-[#f2f2f2]">
                                 <i class="bx bxs-heart text-[22px]" 
                                     [ngClass]="isFavorited(motel._id) ? 'text-red-500' : 'text-[#babbbd]'">
                                 </i>
@@ -256,7 +253,7 @@
                                         <ngx-skeleton-loader class="flex mb:hidden" *ngIf="isLoading" appearance="line" [theme]="{height: '30px', width: '100px'}"></ngx-skeleton-loader>
                                         <div *ngIf="!isLoading" class="flex w-fit mb:items-end items-center mb:flex-row flex-row-reverse justify-end mb:gap-2 gap-1 h-9">
                                             <div class="w-[70px] flex mb:justify-end items-end">
-                                                <span class="mb:text-[14px] text-[13px] font-normal text-custom-color-black whitespace-nowrap">{{motel.ListRatings.length <=0 ? 'Chưa có': motel.ListRatings.length}} đánh giá</span> 
+                                                <span class="mb:text-[14px] text-[13px] font-normal text-custom-color-black whitespace-nowrap">{{motel.ListRatings.length <=0 ? 'Chưa có': motel.ListRatings.length}} đánh giá</span>
                                             </div>
                                             <div *ngIf="motel.TotalRating" class="mb:w-8 mb:h-8 w-[26px] h-[26px] flex justify-center items-center bg-[#003B95] rounded-[5px] rounded-bl-none">
                                                 <span class="mb:text-[17px] text-[13px] mb:font-semibold font-normal text-white">{{motel.TotalRating | number:'1.1-1'}}</span>

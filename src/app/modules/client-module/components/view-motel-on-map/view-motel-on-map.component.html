@@ -1,21 +1,22 @@
 <div class="content_wrapper text-base">
-    <div id="close"
-        (click)="handleHiddenPopupMotelOnMap()"
-        class="absolute w-6 h-6 right-2 top-2 flex justify-center items-center cursor-pointer">
+    <div id="close" (click)="handleHiddenPopupMotelOnMap()" class="absolute w-6 h-6 right-2 top-2 flex justify-center items-center cursor-pointer">
         <i class='bx bx-x text-[24px] text-custom-color-black-light hover:text-custom-color-black'></i>
     </div>
     <div class="flex pb-3 border-b border-[#e7e7e7]">
-        <div class="w-[90px] h-[90px]" *ngIf="motel && motel.ListImages && motel.ListImages.length > 0">
-            <img class="w-full h-full object-cover rounded-sm" src="http://localhost:3000/resources/img-motels/{{motel.ListImages[0].LinkImage}}" alt="">
+        <div class="w-[90px] h-[90px]" *ngIf="motel">
+            <!-- Nếu không có ảnh thì hiện ảnh mặc định -->
+            <img *ngIf="!motel.ListImages || motel.ListImages.length === 0" class="w-full h-full object-cover rounded-sm" src="/assets/images/default-img-motel.png" alt="Hình ảnh thay thế cho nhà trọ" title="Hình ảnh thay thế cho nhà trọ">
+            <!-- Nếu có ảnh thì hiện ảnh đầu tiên -->
+            <img *ngIf="motel.ListImages && motel.ListImages.length > 0 && motel.ListImages[0].LinkImage" class="w-full h-full object-cover rounded-sm" [src]="'http://localhost:3000/resources/img-motels/' + motel.ListImages[0].LinkImage" alt="Hình ảnh về nhà trọ">
         </div>
-        <div class="pl-2 w-[calc(100%-90px)] flex flex-col justify-between"> 
+        <div class="pl-2 w-[calc(100%-90px)] flex flex-col justify-between">
             <div class="text-[16px] text-custom-color-blue font-semibold pr-6 line-clamp-2 leading-5">Nhà trọ {{motel.NameMotel ? motel.NameMotel : (motel.Address + ', ' + motel.WardCommune)}}</div>
             <div class="flex gap-2">
-                <div *ngIf="motel.TotalRating" class="w-8 h-8 flex justify-center items-center bg-[#003B95] rounded-md rounded-bl-none " >
+                <div *ngIf="motel.TotalRating" class="w-8 h-8 flex justify-center items-center bg-[#003B95] rounded-md rounded-bl-none ">
                     <span class="text-[15px] font-semibold text-white">{{motel.TotalRating | number:'1.1-1'}}</span>
                 </div>
                 <div class="text-[13px] font-normal text-custom-color-black-light flex items-end gap-1 ">
-                    <span class="text-end">{{motel.ListRatings.length <=0 ? 'Chưa có': motel.ListRatings.length}} đánh giá</span> 
+                    <span class="text-end">{{motel.ListRatings.length <=0 ? 'Chưa có': motel.ListRatings.length}} đánh giá</span>
                 </div>
             </div>
         </div>
@@ -25,7 +26,7 @@
         <div>
             <a routerLink="/client/home/detail-motel/{{motel._id}}/overall" class="h-[36px] bg-custom-bg-blue-light hover:bg-custom-bg-hover-blue py-1 px-4 flex justify-center items-center gap-1 rounded-md">
                 <span class="text-[14px] text-white font-medium">Xem</span>
-                <i class='bx bx-chevron-right text-white' ></i>
+                <i class='bx bx-chevron-right text-white'></i>
             </a>
         </div>
     </div>
